@@ -1,0 +1,109 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  #root {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100vw;
+  }
+  
+  aside {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    width: 200px;
+  }
+  
+  aside a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    border-bottom: 1px solid #444;
+  }
+  
+  aside a.active {
+    background-color: #444;
+    color: #fff;
+  }
+  
+  main {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  form button[type="submit"] {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  form button[type="submit"]:hover {
+    background-color: #3e8e41;
+  }
+  
+  form input[type="email"], form input[type="password"] {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  form input[type="email"]:focus, form input[type="password"]:focus {
+    border-color: #aaa;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .profile span {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .profile img {
+    width: 500px;
+    margin: 10px;
+    border-radius: 10px;
+  }
+  
+  .profile div {
+    font-size: 18px;
+    margin: 10px;
+  }
+  .close-btn {
+    background-color: #fff;
+    border: none;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    right: 2%;
+    top: 3%;
+    position: absolute;
+  }
+  
+  .close-btn:hover {
+    background-color: #ccc;
+  }
