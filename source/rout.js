@@ -8,10 +8,10 @@ root.appendChild(pageContainer);
 
 const config = {
     menu: {
-        feed: {
-            href: '/feed',
-            text: 'Лента',
-            render: renderFeed
+        home: {
+            href: '/',
+            text: 'Домашняя страница',
+            render: renderHome
         },
         login: {
             href: '/login',
@@ -65,8 +65,8 @@ function ajax(method, url, body = null, callback) {
     xhr.send();
 }
 
-function renderMenu() {
-    Object.entries(config.menu).forEach(([key, { href, text }], index) => {
+function renderMenu( conf, id = null ) {
+    Object.entries(conf).forEach(([key, { href, text }], index) => {
         const menuElement = document.createElement('a');
         menuElement.href = href;
         menuElement.textContent = text;
@@ -83,7 +83,22 @@ function renderMenu() {
 }
 
 function renderLogin() {
-    const form = document.createElement('form');
+    const form      = document.createElement('form');
+    const closeBtn  = document.createElement( 'button' );
+    const linkToSignup  = document.createElement( 'a' );
+
+    closeBtn.className = 'close-btn';
+    closeBtn.innerHTML = 'X';
+    closeBtn.onclick = () => {
+        goToPage(state.menuElements.home);
+    };
+
+    linkToSignup.innerHTML = 'Нет аккаунта? Зарегистрируйся';
+    linkToSignup.onclick = () => {
+        //renderMenu( config.menu )
+        goToPage( state.menuElements.signup);
+
+    }
 
     const emailInput = createInput('email', 'Емайл', 'email');
     const passwordInput = createInput('password', 'Пароль', 'password');
@@ -92,6 +107,8 @@ function renderLogin() {
     submitBtn.type = 'submit';
     submitBtn.value = 'Войти!';
 
+    form.appendChild(closeBtn);
+    form.appendChild(linkToSignup)
     form.appendChild(emailInput);
     form.appendChild(passwordInput);
     form.appendChild(submitBtn);
@@ -116,19 +133,25 @@ function renderLogin() {
 }
 
 function renderSignup() {
-    const form = document.createElement('form');
+    const form      = document.createElement('form');
+    const closeBtn  = document.createElement('button');
+
+    closeBtn.className = 'close-btn';
+    closeBtn.innerHTML = 'X';
+    closeBtn.onclick = () => {
+        goToPage(state.menuElements.home);
+    };
 
     const emailInput = createInput('email', 'Емайл', 'email');
     const passwordInput = createInput('password', 'Пароль', 'password');
-    const ageInput = createInput('number', 'Возраст', 'age');
 
     const submitBtn = document.createElement('input');
     submitBtn.type = 'submit';
     submitBtn.value = 'Зарегистрироваться!';
 
+    form.appendChild(closeBtn)
     form.appendChild(emailInput);
     form.appendChild(passwordInput);
-    form.appendChild(ageInput);
     form.appendChild(submitBtn);
 
     form.addEventListener('submit', (e) => {
@@ -137,65 +160,17 @@ function renderSignup() {
         const email = emailInput.value.trim();
         const password = passwordInput.value;
 
-        ajax('POST', '/signup', { email, password }, (status, response) => {
+        ajax('POST', '/signup', { email, password }, (status) => {
             if (status >= 200 && status < 300) {
-                // Registration successful, redirect to login page
                 goToPage(state.menuElements.login);
-            } else {
-                // Registration failed, display error message
-                alert(`Registration failed: ${response} ${status}`);
+                return;
             }
+
+            alert('Регистрация не удалась');
         });
     });
 
-
     return form;
-}
-
-function renderFeed() {
-    const feedContainer = document.createElement('div');
-
-    ajax('GET', '/feed', null, (status, responseString) => {
-        let isAuthorized = status === 200;
-
-        if (!isAuthorized) {
-            alert('Нет авторизации!');
-            goToPage(state.menuElements.login);
-            return;
-        }
-
-        const images = JSON.parse(responseString);
-
-        if (images && Array.isArray(images)) {
-            const div = document.createElement('div');
-            feedContainer.appendChild(div);
-
-            images.forEach(({ src, likes, id }) => {
-                div.innerHTML += `<img src="${src}" width="500" />`;
-                const likeContainer = document.createElement('div');
-                div.appendChild(likeContainer);
-                likeContainer.textContent = `${likes} лайков`;
-                const button = document.createElement('button');
-                button.textContent = 'ЛАЙК';
-                button.type = 'button';
-                button.dataset.imageId = id;
-
-                likeContainer.appendChild(button);
-            });
-        }
-    });
-
-    feedContainer.addEventListener('click', (event) => {
-        if (event.target.tagName.toLowerCase() === 'button' && event.target.dataset.imageId) {
-            ajax('POST', '/like', { id: event.target.dataset.imageId }, (status) => {
-                if (status === 200) {
-                    goToPage(state.menuElements.feed);
-                }
-            });
-        }
-    });
-
-    return feedContainer;
 }
 
 function renderProfile() {
@@ -229,6 +204,10 @@ function renderProfile() {
     return profileElement;
 }
 
+function renderHome(){
+    
+}
+
 function goToPage(targetLinkMenu) {
     pageContainer.innerHTML = '';
 
@@ -250,5 +229,5 @@ menuContainer.addEventListener('click', (event) => {
     }
 });
 
-renderMenu();
-goToPage(state.menuElements.feed);
+renderMenu( config.menu );
+goToPage(state.menuElements.home);
