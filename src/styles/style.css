@@ -1,0 +1,294 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  #root {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100%;
+  }
+  
+  /* aside {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    width: 200px;
+    position: fixed;
+    top: 0;
+    left: -235px; 
+    transition: left 0.5s; 
+  }
+  aside:hover {
+    left: 0; 
+  }
+  aside a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    border-bottom: 1px solid #444;
+  }
+  
+  aside a.active {
+    background-color: #444;
+    color: #fff;
+  } */
+  
+  main {
+    flex: 1;
+    padding: 0px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  form button[type="submit"] {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  form button[type="submit"]:hover {
+    background-color: #3e8e41;
+  }
+  
+  form input[type="email"], form input[type="password"], form input[type="text"] {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  form input[type="email"]:focus, form input[type="password"], form input[type="text"]:focus {
+    border-color: #aaa;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .close-btn {
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    right: 2%;
+    top: 3%;
+    position: absolute;
+    
+  }
+  
+  .close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+    /* home */
+    .home-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: url('/2024_2_TeamOn/src/styles/photos/home.png');
+        background-size: cover;
+        background-position: center center;
+    }
+    .home-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.3);
+    }
+    .home-header {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        font-size: 14px;
+    }
+    .home-search-box {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        display: flex;
+        align-items: center;
+        background: white;
+        border-radius: 25px;
+        padding: 5px 15px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .home-search-box input {
+        border: none;
+        outline: none;
+        font-size: 14px;
+    }
+    .home-search-box i {
+        margin-right: 10px;
+        color: gray;
+    }
+    .home-buttons {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        gap: 10px;
+    }
+    .home-button {
+        padding: 10px 20px;
+        border-radius: 25px;
+        border: 1px solid gray;
+        background: white;
+        color: gray;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.3s, color 0.3s;
+    }
+    .home-button:hover {
+        background: gray;
+        color: white;
+    }
+    .home-button.primary {
+        background: #f8f8f8;
+        color: black;
+        border: none;
+    }
+    .home-button.primary:hover {
+        background: black;
+        color: white;
+    }
+
+    /* LOGIN CONTAINER */
+    .background-login  {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* background-color: #f0f0f0;  */
+        background: url('/2024_2_TeamOn/src/styles/photos/login.png');
+        background-size: cover;
+        background-position: center center;
+        z-index: 1; 
+    }
+
+    .login-container {
+        position: absolute; /* Add this to position the container absolutely */
+        top: 50%; /* Move the container 50% from the top */
+        left: 50%; /* Move the container 50% from the left */
+        transform: translate(-50%, -50%); /* Translate the container to center it */
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 20px;
+        padding: 40px;
+        width: 300px;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        background-size: cover;
+        
+    }
+    .login-container h2 {
+        margin: 0 0 20px;
+        font-size: 24px;
+        color: #333;
+    }
+    .login-container input[type="text"], .login-container input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        box-sizing: border-box;
+    }
+    .login-container input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        margin: 20px 0 0;
+        border: none;
+        border-radius: 20px;
+        background-color: #333;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .login-container input[type="submit"]:hover {
+        background-color: #555;
+    }
+    .login-container .register-link {
+        display: block;
+        margin-top: 10px;
+        font-size: 14px;
+        color: #333;
+    }
+    .login-container .register-link a {
+        color: #007BFF;
+        text-decoration: none;
+    }
+    .login-container .register-link a:hover {
+        text-decoration: underline;
+    }
+
+    /* SIGNUP */
+
+    .background-signup  {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* background-color: #f0f0f0;  */
+        background: url('/2024_2_TeamOn/src/styles/photos/signup.png');
+        background-size: cover;
+        background-position: center center;
+        z-index: 1; 
+    }
+    .container-signup {
+        position: absolute; /* Add this to position the container absolutely */
+        top: 50%; /* Move the container 50% from the top */
+        left: 50%; /* Move the container 50% from the left */
+        transform: translate(-50%, -50%); /* Translate the container to center it */
+
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        box-sizing: border-box;
+        padding: 40px;
+        width: 300px;
+        text-align: center;
+    }
+    .container-signup h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+    .container-signup input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 20px;
+        box-sizing: border-box;
+    }
+    .container-signup input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 20px;
+        border: none;
+        border-radius: 20px;
+        background-color: #000;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .container-signup input[type="submit"]:hover {
+        background-color: #333;
+    }
