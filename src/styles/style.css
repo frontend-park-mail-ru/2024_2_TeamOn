@@ -97,7 +97,7 @@ body {
         position: relative;
         width: 100%;
         height: 100%;
-        background: url('/2024_2_TeamOn/src/styles/photos/home.png');
+        background: url('photos/home.png');
         background-size: cover;
         background-position: center center;
     }
@@ -176,7 +176,7 @@ body {
         width: 100%;
         height: 100%;
         /* background-color: #f0f0f0;  */
-        background: url('/2024_2_TeamOn/src/styles/photos/login.png');
+        background: url('photos/login.png');
         background-size: cover;
         background-position: center center;
         z-index: 1; 
@@ -247,7 +247,7 @@ body {
         width: 100%;
         height: 100%;
         /* background-color: #f0f0f0;  */
-        background: url('/2024_2_TeamOn/src/styles/photos/signup.png');
+        background: url('photos/signup.png');
         background-size: cover;
         background-position: center center;
         z-index: 1; 

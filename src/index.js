@@ -1,4 +1,3 @@
-console.log('lol kek cheburek');
 
 const root = document.getElementById('root');
 const menuContainer = document.createElement('aside');
@@ -249,12 +248,12 @@ function renderSignup() {
     form.appendChild(inputRepeatPassword);
     form.appendChild(buttonRegister);
 
-    form.addEventListener('click', (e) => {
+    buttonRegister.addEventListener('click', (e) => {
         e.preventDefault();
         validateForm();
     });
     
-    form.addEventListener('keydown', (e) => {
+    buttonRegister.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault(); 
             validateForm(); 

@@ -1,11 +1,11 @@
 const http = require( 'http' );
 const fs = require( 'fs' );
 const { loadEnvFile } = require( 'process' );
-const port = 9090
+const port = 8080
 
 const server = http.createServer( ( req, res ) => {
   const url = req.url;
-  let filePath = `.${url}`;
+  let filePath = `..${url}`;
   
   if ( url == "/" ) {
       filePath = '../index.html';
@@ -15,7 +15,7 @@ const server = http.createServer( ( req, res ) => {
   fs.readFile( filePath, ( err, data ) => {
     if ( err ) {
       res.statusCode = 404;
-      res.end( 'Not found' );
+      res.end( `${err}` );
     } else {
       res.statusCode = 200;
       res.end( data );
