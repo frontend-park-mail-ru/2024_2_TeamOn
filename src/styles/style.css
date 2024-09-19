@@ -92,6 +92,22 @@ body {
   .close-btn:hover {
     background-color: rgba(255, 255, 255, 0.2);
   }
+  /* Стили для обработки ошибок */
+  .error {
+    color: red;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .error-input ~ input[type="text"], .error-input ~ input[type="password"] {
+    border-color: red;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+  }
+  .error-input {
+    border-color: red;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+  }
+
     /* home */
     .home-container {
         position: relative;

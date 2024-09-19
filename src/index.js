@@ -41,6 +41,8 @@ const state = {
     currentUser: null
 };
 
+const maxAttempts = 3;
+
 const users = {
     'alex': {
         email: 'alex@mail.com',
@@ -158,6 +160,8 @@ function renderLogin() {
         }
     });
 
+    let attempts = 0;
+    
     function validateLoginForm() {
         const errors = form.querySelectorAll('.error');
         for (let i = 0; i < errors.length; i++) {
@@ -175,22 +179,25 @@ function renderLogin() {
             showError(inputPassword, 'Пожалуйста, введите пароль');
             hasError = true;
         }
-        // добавить валидацию на существующий аккаунт
+
 
         if (!hasError) {
             const password = inputPassword.value;
 
             ajax('POST', '/login', { password }, (status, response) => {
-                if (status === 200) {
+                if (users[inputLogin.value] && users[inputLogin.value].password === inputPassword.value){
+                    state.currentUser = users[inputLogin.value]
                     goToPage(state.menuElements.profile);
-                    return;
+                    return; 
+                } else {
+                    attempts++;
+                    showError(inputLogin, '');
+                    showError(inputPassword, `Неправильный логин или пароль, осталось ${maxAttempts-attempts} попыток`);
+                    if ( checkAttempts(attempts) ) {
+                        goToPage(state.menuElements.home);
+                    }
                 }
 
-                if (status >= 400 && status < 500 && users[inputLogin.value]) {
-                    state.currentUser = users[inputLogin.value];
-                    alert(`Заглушка ${status}`);
-                    goToPage(state.menuElements.profile);
-                }
             });
         }
     }
@@ -202,9 +209,24 @@ function renderLogin() {
 function showError(input, message) {
     const error = document.createElement('div');
     error.className = 'error';
-    error.style.color = 'red';
     error.innerHTML = message;
     input.parentElement.insertBefore(error, input.nextSibling);
+    input.classList.add('error-input'); 
+}
+
+function addUser(username, email = null, password, imagesrc = null) { // tmp
+    users[username] = {
+        email,
+        password,
+        imagesrc
+    };
+}
+function checkAttempts(attempts){
+    if (attempts < maxAttempts) {
+        return false
+    } else {
+        return true
+    }
 }
 
 function renderSignup() {
@@ -238,7 +260,7 @@ function renderSignup() {
     inputRepeatPassword.placeholder = 'Повторите пароль';
 
     const buttonRegister = document.createElement('input');
-    buttonRegister.textContent = 'Зарегистрироваться';
+    buttonRegister.value = 'Зарегистрироватsься';
     buttonRegister.type = 'submit'
 
     form.append(closeBtn)
@@ -249,19 +271,22 @@ function renderSignup() {
     form.appendChild(buttonRegister);
 
     buttonRegister.addEventListener('click', (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Добавьте эту строку
         validateForm();
     });
     
-    buttonRegister.addEventListener('keydown', (e) => {
+    form.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
-            e.preventDefault(); 
-            validateForm(); 
+            e.preventDefault();
+            validateForm();
         }
     });
     
     function validateForm() {
         var errors = form.querySelectorAll('.error');
+        //const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{8,64}$/;
+        let passwordErrors = [];
+        
         for (var i = 0; i <errors.length; i++) {
             errors[i].remove();
         }
@@ -282,6 +307,32 @@ function renderSignup() {
             showError(inputRepeatPassword, 'Пароли должны совпадать');
             hasError = true;
         }
+        
+        if (!/^[a-zA-Z]+$/.test(inputUsername.value)) {
+            showError(inputUsername, 'Логин должен содержать только латинские буквы');
+            hasError = true;
+        }
+
+        if (inputPassword.value.length < 8) {
+            passwordErrors.push('Пароль должен быть не менее 8 символов');
+        }
+    
+        if (!/[0-9]/.test(inputPassword.value)) {
+            passwordErrors.push('Пароль должен содержать хотя бы одну цифру');
+        }
+    
+        if (!/[!@#$%^&*]/.test(inputPassword.value)) {
+            passwordErrors.push('Пароль должен содержать хотя бы один спецсимвол');
+        }
+
+        if (!/(?=.*[a-z])(?=.*[A-Z])/.test(inputPassword.value)) {
+            passwordErrors.push('Пароль должен содержать хотя бы одну латинскую букву в нижнем регистре и одну в верхнем регистре');
+        }
+    
+        if (passwordErrors.length > 0) {
+            showError(inputPassword, passwordErrors.join('<br>'));
+            hasError = true;
+        }
 
         const password = inputPassword.value;
         const passwordDouble = inputRepeatPassword.value;
@@ -294,8 +345,8 @@ function renderSignup() {
                     return;
                 }
                 if (status >= 400 && status < 500 && password === passwordDouble) {
+                    addUser(inputUsername.value, null, password, null);
                     goToPage(state.menuElements.login);
-                    alert(`Регистрация не удалась, но это заглушка ${status}`);
                     return;
                 }
             });
