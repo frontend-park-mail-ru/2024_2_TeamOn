@@ -1,9 +1,11 @@
+ 
+import { users, maxAttempts, state } from './const.js';
 
 const root = document.getElementById('root');
 const menuContainer = document.createElement('aside');
 const pageContainer = document.createElement('main');
-// root.appendChild(menuContainer);
- root.appendChild(pageContainer);
+root.appendChild(pageContainer);
+
 
 const config = {
     menu: {
@@ -31,38 +33,12 @@ const config = {
             href: '/feed',
             text: 'Лента',
             render: renderFeed
+        },
+        error: {
+            href: '/error',
+            text: 'Ошибка',
+            render: renderError
         }
-    }
-};
-
-const state = {
-    activePageLink: null,
-    menuElements: {},
-    currentUser: null
-};
-
-const maxAttempts = 3;
-
-const users = {
-    'alex': {
-        email: 'alex@mail.com',
-        password: 'alesha',
-        imagesrc: 'https://steamuserimages-a.akamaihd.net/ugc/2041856159322303572/F430E99639B6B932EA68CF4DF6B233ED78AD547B/?imw=512&amp;imh=302&amp;ima=fit&amp;impolicy=Letterbox&amp;imcolor=%23000000&amp;letterbox=true',
-    },
-    'olya': {
-        email: 'olya@mail.ru',
-        password: '12345',
-        imagesrc: 'https://distribution.faceit-cdn.net/images/06774d23-b456-4ea4-825e-d261d627db5d.jpeg',
-    },
-    'danil': {
-        email: 'danil@mail.ru',
-        password: 'javascript',
-        imagesrc: 'https://obruchalki.com/upload/iblock/4f6/4f6d56a0ad82e61874b989aac7146b1e.jpg',
-    },
-    'polina': {
-        email: 'polina@mail.ru',
-        password: 'polina_',
-        imagesrc: 'https://distribution.faceit-cdn.net/images/06774d23-b456-4ea4-825e-d261d627db5d.jpeg',
     }
 };
 
@@ -75,24 +51,39 @@ function createInput(type, text, name) {
     return input;
 }
 
-function ajax(method, url, body = null, callback) {
-    const xhr = new XMLHttpRequest();
-    xhr.open(method, url, true);
-    xhr.withCredentials = true;
-
-    xhr.addEventListener('readystatechange', function () {
-        if (xhr.readyState !== XMLHttpRequest.DONE) return;
-
-        callback(xhr.status, xhr.responseText);
-    });
+/**
+ * Отправляет запрос AJAX с помощью Fetch API с включенным CORS.
+ * @param {*} method    HTTP-метод
+ * @param {*} url       URL, на который отправляется запрос
+ * @param {*} body      Тело запроса (необязательное)
+ * @param {*} callback  Функция обратного вызова, вызываемая с ответом
+ * 
+Эта функция отправляет запрос AJAX с помощью Fetch API с включенным CORS.
+Она устанавливает заголовок Origin в * и включает заголовок Content-Type
+со значением application/json; charset=utf-8, если предоставлено тело запроса.
+Опция mode установлена в cors, чтобы включить CORS.
+ */
+function fetchAjax(method, url, body = null, callback) {
+    const headers = {
+        Origin: '*', 
+    };
 
     if (body) {
-        xhr.setRequestHeader('Content-type', 'application/json; charset=utf8');
-        xhr.send(JSON.stringify(body));
-        return;
+      headers['Content-Type'] = 'application/json; charset=utf-8';
+      body = JSON.stringify(body);
     }
-
-    xhr.send();
+  
+    const init = {
+      method,
+      headers,
+      body,
+      mode: 'cors',  
+    };
+  
+    fetch(url, init)
+    .then(response => {
+        response.text().then(text => callback(response.status, text));
+    })
 }
 
 function renderLogin() {
@@ -171,7 +162,7 @@ function renderLogin() {
         let hasError = false;
 
         if (!inputLogin.value.trim()) {
-            showError(inputLogin, 'Пожалуйста, введите емайл');
+            showError(inputLogin, 'Пожалуйста, введите логин');
             hasError = true;
         }
 
@@ -184,7 +175,7 @@ function renderLogin() {
         if (!hasError) {
             const password = inputPassword.value;
 
-            ajax('POST', '/login', { password }, (status, response) => {
+            fetchAjax('POST', '/login', { password }, (status, response) => {
                 if (users[inputLogin.value] && users[inputLogin.value].password === inputPassword.value){
                     state.currentUser = users[inputLogin.value]
                     goToPage(state.menuElements.profile);
@@ -229,6 +220,40 @@ function checkAttempts(attempts){
     }
 }
 
+function renderError(statusErr) {
+    const notFoundDiv = document.createElement('div');
+    const notFoundContainer = document.createElement('div');
+    const notFound404 = document.createElement('div');
+    const h1 = document.createElement('h1');
+    const h2 = document.createElement('h2');
+    const a = document.createElement('a');
+    const span = document.createElement('span');
+
+    notFoundDiv.id = 'notfound';
+
+    notFoundContainer.className = 'notfound';
+
+    notFound404.className = 'notfound-404';
+
+    h1.textContent = statusErr;
+    if (statusErr > 300) {
+        h2.textContent = 'Страница не найдена'
+    }
+
+    a.href = '/';
+    span.className = 'arrow';
+    a.appendChild(span);
+    a.appendChild(document.createTextNode('Вернуться на главную'));
+
+    // Строим дерево элементов
+    notFound404.appendChild(h1);
+    notFoundContainer.appendChild(notFound404);
+    notFoundContainer.appendChild(h2);
+    notFoundContainer.appendChild(a);
+    notFoundDiv.appendChild(notFoundContainer);
+
+    return notFoundDiv
+}
 function renderSignup() {
     const backgroundLayer = document.createElement('div');
     backgroundLayer.className = 'background-signup';
@@ -284,7 +309,6 @@ function renderSignup() {
     
     function validateForm() {
         var errors = form.querySelectorAll('.error');
-        //const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{8,64}$/;
         let passwordErrors = [];
         
         for (var i = 0; i <errors.length; i++) {
@@ -294,7 +318,7 @@ function renderSignup() {
         let hasError = false;
 
         if (!inputUsername.value) {
-            showError(inputUsername, 'Пожалуйста, введите емайл');
+            showError(inputUsername, 'Пожалуйста, введите логин');
             hasError = true;
         }
 
@@ -307,8 +331,8 @@ function renderSignup() {
             showError(inputRepeatPassword, 'Пароли должны совпадать');
             hasError = true;
         }
-        
-        if (!/^[a-zA-Z]+$/.test(inputUsername.value)) {
+
+        if (!/^[a-zA-Z0-9]+$/.test(inputUsername.value)) {
             showError(inputUsername, 'Логин должен содержать только латинские буквы');
             hasError = true;
         }
@@ -334,19 +358,24 @@ function renderSignup() {
             hasError = true;
         }
 
+        if (users[inputUsername.value]) {
+            showError(inputUsername, '');
+            showError(inputPassword, '');
+            showError(inputRepeatPassword, 'Пользователь уже существует');
+            hasError = true;
+        }
+
         const password = inputPassword.value;
         const passwordDouble = inputRepeatPassword.value;
-        // точно так же сделай на существующий аккаунт
-
         if (!hasError) {
-            ajax('POST', '/signup', { password }, (status, response) => {
+            fetchAjax('POST', '/signup', { password }, (status, response) => {
                 if (status >= 200 && status < 300) {
+                    addUser(inputUsername.value, null, password, null);
                     goToPage(state.menuElements.login);
                     return;
                 }
-                if (status >= 400 && status < 500 && password === passwordDouble) {
-                    addUser(inputUsername.value, null, password, null);
-                    goToPage(state.menuElements.login);
+                if (status >= 400 && status < 500) {
+                    goToPage(state.menuElements.error, status);
                     return;
                 }
             });
@@ -414,6 +443,7 @@ function renderHome(conf=null, id = null) {
     const loginButton = document.createElement('a');
     const startButton = document.createElement('a');
 
+
     container.classList.add('home-container');
 
     overlay.classList.add('home-overlay');
@@ -457,14 +487,14 @@ function renderFeed() {
 
 }
 
-function goToPage(targetLinkMenu) {
+function goToPage(targetLinkMenu, statusErr = null) {
     pageContainer.innerHTML = '';
 
     state.activePageLink.classList.remove('active');
     targetLinkMenu.classList.add('active');
     state.activePageLink = targetLinkMenu;
 
-    const newPageElement = config.menu[targetLinkMenu.dataset.section].render();
+    const newPageElement = config.menu[targetLinkMenu.dataset.section].render(statusErr);
 
     pageContainer.appendChild(newPageElement);
 }

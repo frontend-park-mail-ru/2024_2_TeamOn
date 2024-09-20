@@ -1,28 +1,41 @@
-const http = require( 'http' );
-const fs = require( 'fs' );
-const { loadEnvFile } = require( 'process' );
-const port = 8080
+const http = require('http');
+const fs = require('fs');
 
-const server = http.createServer( ( req, res ) => {
+const express = require('express');
+const app = express();
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
+const server = http.createServer((req, res) => {
   const url = req.url;
   let filePath = `..${url}`;
-  
-  if ( url == "/" ) {
-      filePath = '../index.html';
-    
+
+  if ((url == "/") || (url == '/login') || (url == '/signup')
+     || url == '/profile' || url == '/feed' || url == '/error') {
+    filePath = '../index.html';
   }
 
-  fs.readFile( filePath, ( err, data ) => {
-    if ( err ) {
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
       res.statusCode = 404;
-      res.end( `${err}` );
+      res.end(`${err}`);
     } else {
-      res.statusCode = 200;
-      res.end( data );
+      if (filePath.endsWith('.js')) {
+        res.writeHead(200, {'Content-Type': 'application/javascript'});
+      } else if (filePath.endsWith('.css')) {
+        res.writeHead(200, {'Content-Type': 'text/css'});
+      } else {
+        res.writeHead(200, {'Content-Type': 'text/html'});
+      }
+      res.end(data);
     }
   });
 });
 
-server.listen( port, () => {
-  console.log( `Server started on port ${port}` );
+server.listen(8080, () => {
+  console.log(`Server started on port 8080`);
 });
