@@ -42,15 +42,6 @@ const config = {
     }
 };
 
-function createInput(type, text, name) {
-    const input = document.createElement('input');
-    input.type = type;
-    input.name = name;
-    input.placeholder = text;
-
-    return input;
-}
-
 /**
  * Отправляет запрос AJAX с помощью Fetch API с включенным CORS.
  * @param {*} method    HTTP-метод
@@ -162,7 +153,7 @@ function renderLogin() {
     let attempts = 0;
     function validateLoginForm(){
         let hasError = false;
-        if (!users[inputLogin.value] || users[inputLogin.value].password != inputPassword.value ) {
+        if (!users[DOMPurify.sanitize(inputLogin.value)] || users[DOMPurify.sanitize(inputLogin.value)].password != DOMPurify.sanitize(inputPassword.value) ) {
             showError(inputLogin, '');
             showError(inputPassword, `Неправильный логин или пароль, осталось ${maxAttempts-attempts} попыток`);
             if ( checkAttempts(attempts) ) {
@@ -180,14 +171,14 @@ function renderLogin() {
 
         let hasError = false;
         
-        if (!inputLogin.value.trim()) {
+        if (!DOMPurify.sanitize(inputLogin.value).trim()) {
             showError(inputLogin, 'Пожалуйста, введите логин');
             hasError = true;
         }else {
             removeError(inputLogin)
         }
 
-        if (!inputPassword.value) {
+        if (!DOMPurify.sanitize(inputPassword.value)) {
             showError(inputPassword, 'Пожалуйста, введите пароль');
             hasError = true;
         }else {
@@ -198,11 +189,11 @@ function renderLogin() {
     }
     function auth(){
         if (!validateErrorLoginForm() && !validateLoginForm()) {
-            const password = inputPassword.value;
+            const password = DOMPurify.sanitize(inputPassword.value);
 
             fetchAjax('POST', '/login', { password }, (status, response) => {
                 if ( status === 200 ){
-                    state.currentUser = users[inputLogin.value]
+                    state.currentUser = users[DOMPurify.sanitize(inputLogin.value)]
                     goToPage(state.menuElements.profile);
                     return; 
                 } else {
@@ -220,7 +211,7 @@ function renderLogin() {
 function showError(input, message) {
     const error = document.createElement('div');
     error.className = 'error';
-    error.innerHTML = message;
+    error.innerHTML = DOMPurify.sanitize(message);
     input.parentElement.insertBefore(error, input.nextSibling);
     input.classList.add('error-input'); 
 }
@@ -346,7 +337,7 @@ function renderSignup() {
         let firstLoginError = false;
         let firstPasswordError = false;
 
-        if (!inputUsername.value) {
+        if (!DOMPurify.sanitize(inputUsername.value)) {
             showError(inputUsername, 'Пожалуйста, введите логин');
             hasError = true;
             firstLoginError = true;
@@ -354,7 +345,7 @@ function renderSignup() {
             removeError(inputUsername)
         }
 
-        if (!inputPassword.value) {
+        if (!DOMPurify.sanitize(inputPassword.value)) {
             showError(  inputPassword, 'Пожалуйста, введите пароль');
             hasError = true;
             firstPasswordError = true;
@@ -362,32 +353,32 @@ function renderSignup() {
             removeError(inputPassword)
         }
 
-        if (inputRepeatPassword.value != inputPassword.value) {
+        if (DOMPurify.sanitize(inputRepeatPassword.value) != DOMPurify.sanitize(inputPassword.value)) {
             showError(inputRepeatPassword, 'Пароли должны совпадать');
             hasError = true;
         } else {
             removeError(inputRepeatPassword)
         }
 
-        if (!/^[a-zA-Z0-9]+$/.test(inputUsername.value) && !firstLoginError) {
+        if (!/^[a-zA-Z0-9]+$/.test(DOMPurify.sanitize(inputUsername.value)) && !firstLoginError) {
             showError(inputUsername, 'Логин должен содержать только латинские буквы');
             hasError = true;
         } else {
             removeError(inputUsername)
         }
 
-        if (inputPassword.value.length < 8) {
+        if (DOMPurify.sanitize(inputPassword.value).length < 8) {
             passwordErrors.push('Пароль должен быть не менее 8 символов');
         }
     
-        if (!/[0-9]/.test(inputPassword.value)) {
+        if (!/[0-9]/.test(DOMPurify.sanitize(inputPassword.value))) {
             passwordErrors.push('Пароль должен содержать хотя бы одну цифру');
         }    
-        if (!/[!@#$%^&*]/.test(inputPassword.value)) {
+        if (!/[!@#$%^&*]/.test(DOMPurify.sanitize(inputPassword.value))) {
             passwordErrors.push('Пароль должен содержать хотя бы один спецсимвол');
         }
 
-        if (!/(?=.*[a-z])(?=.*[A-Z])/.test(inputPassword.value)) {
+        if (!/(?=.*[a-z])(?=.*[A-Z])/.test(DOMPurify.sanitize(inputPassword.value))) {
             passwordErrors.push('Пароль должен содержать хотя бы одну латинскую букву в нижнем регистре и одну в верхнем регистре');
         }
     
@@ -398,7 +389,7 @@ function renderSignup() {
             removeError(inputPassword)
         }
 
-        if (users[inputUsername.value] && !firstLoginError) {
+        if (users[DOMPurify.sanitize(inputUsername.value)] && !firstLoginError) {
             showError(inputUsername, 'Пользователь с таким именем уже существует');
             hasError = true;
         } else {
@@ -407,12 +398,12 @@ function renderSignup() {
         return hasError
     }
     function auth(){
-        const password = inputPassword.value;
-        const passwordDouble = inputRepeatPassword.value;
+        const password = DOMPurify.sanitize(inputPassword.value);
+        const passwordDouble = DOMPurify.sanitize(inputRepeatPassword.value);
         if (!validateForm()) {
             fetchAjax('POST', '/signup', { password }, (status, response) => {
                 if (status >= 200 && status < 300) {
-                    addUser(inputUsername.value, null, password, null);
+                    addUser(DOMPurify.sanitize(inputUsername.value), null, password, null);
                     goToPage(state.menuElements.login);
                     return;
                 }
@@ -478,12 +469,8 @@ function renderHome(conf=null, id = null) {
     const container = document.createElement('div');
     const overlay = document.createElement('div');
     const header = document.createElement('div');
-    const searchBox = document.createElement('div');
-    const searchIcon = document.createElement('i');
-    const searchInput = document.createElement('input');
     const buttons = document.createElement('div');
     const loginButton = document.createElement('a');
-    const startButton = document.createElement('a');
 
 
     container.classList.add('home-container');
@@ -493,28 +480,14 @@ function renderHome(conf=null, id = null) {
     header.classList.add('home-header');
     header.textContent = 'логотипчик';
 
-    searchBox.classList.add('home-search-box');
-
-    searchIcon.classList.add('home-fas', 'fa-search');
-
-    searchInput.type = 'text';
-    searchInput.placeholder = 'Найти автора';
-
     buttons.classList.add('home-buttons');
 
     loginButton.classList.add('home-button');
     loginButton.textContent = 'Войти';
 
-    startButton.classList.add('home-button', 'primary');
-    startButton.textContent = 'Начало работы';
-
     container.appendChild(overlay);
     container.appendChild(header);
-    searchBox.appendChild(searchIcon);
-    searchBox.appendChild(searchInput);
-    container.appendChild(searchBox);
     buttons.appendChild(loginButton);
-    buttons.appendChild(startButton);
     container.appendChild(buttons);
 
     loginButton.onclick = () => {
