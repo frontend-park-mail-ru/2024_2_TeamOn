@@ -85,7 +85,6 @@ function fetchAjax(method, url, body = null, callback) {
         response.text().then(text => callback(response.status, text));
     })
 }
-
 function renderLogin() {
     const backgroundLayer = document.createElement('div');
     backgroundLayer.className = 'background-login';
@@ -209,6 +208,7 @@ function addUser(username, email = null, password, imagesrc = null) { // tmp
     users[username] = {
         email,
         password,
+        //name: username,
         imagesrc
     };
 }
@@ -245,7 +245,6 @@ function renderError(statusErr) {
     a.appendChild(span);
     a.appendChild(document.createTextNode('Вернуться на главную'));
 
-    // Строим дерево элементов
     notFound404.appendChild(h1);
     notFoundContainer.appendChild(notFound404);
     notFoundContainer.appendChild(h2);
@@ -272,7 +271,7 @@ function renderSignup() {
     const h2 = document.createElement('h2');
     h2.textContent = 'Регистрация';
 
-    const inputUsername = document.createElement('input');
+    inputUsername = document.createElement('input');
     inputUsername.type = 'text';
     inputUsername.placeholder = 'Введите имя пользователя';
 
@@ -296,7 +295,7 @@ function renderSignup() {
     form.appendChild(buttonRegister);
 
     buttonRegister.addEventListener('click', (e) => {
-        e.preventDefault(); // Добавьте эту строку
+        e.preventDefault();
         validateForm();
     });
     
@@ -385,33 +384,163 @@ function renderSignup() {
     backgroundLayer.appendChild(form)
     return backgroundLayer;
 }
+document.addEventListener('DOMContentLoaded', () => {
+    renderProfile();
+});
 
-
-function renderProfile(conf=null, id = null) {
-    const profileElement = document.createElement('div');
-    profileElement.className = 'profile'
+function renderProfile(conf = null, id = null) {
     const user = state.currentUser;
     if (!user) {
-        alert(`Вы не авторизованы`)
+        alert(`Вы не авторизованы`);
         goToPage(state.menuElements.login);
         return profileElement;
     } else {
-        alert(`Добро пожаловать, ${Object.keys(users).find(key => users[key] === user)}`)
+        alert(`Добро пожаловать, ${Object.keys(users).find(key => users[key] === user)}`);
     }
-    const userEmailElement = document.createElement('p');
-    const userLoginElement = document.createElement('p');
-    const login = Object.keys(users).find(key => users[key] === user)
-    const userImageElement = document.createElement('img');
 
-    userEmailElement.textContent = `Email: ${user.email}`;
-    userLoginElement.textContent = `Login: ${login}`;
-    userImageElement.src = user.imagesrc;
+    const header = document.createElement('div');
+    header.classList.add('header-profile');
+    const nav = document.createElement('nav');
+    const navLinks = ['Моя страница', 
+                      /*'Лента', 
+                      'Настройки'*/];
+    const activePage = conf?.activePage || 'Моя страница';  
+    
+    navLinks.forEach(linkText => {
+        const link = document.createElement('a');
+        link.href = '#';
+        link.textContent = linkText;
+        if (linkText === activePage) {
+            link.style.fontWeight = 'bold'; 
+        }
+        nav.appendChild(link);
+    });
+    header.appendChild(nav);
 
-    profileElement.appendChild(userEmailElement);
-    profileElement.appendChild(userLoginElement);
-    profileElement.appendChild(userImageElement);
+    const logoutLink = document.createElement('a');
+    logoutLink.classList.add('logout');
+    logoutLink.href = '#';
+    logoutLink.textContent = 'Выйти';
+    logoutLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        goToPage(state.menuElements.home);
 
-    return profileElement;
+    })
+    header.appendChild(logoutLink);
+
+
+    const title = document.createElement('h1');
+    title.textContent = `${Object.keys(users).find(key => users[key] === user)} о себе: Мы крутышки!`;
+    header.appendChild(title);
+    document.body.appendChild(header);
+
+    const profile = document.createElement('div');
+    profile.classList.add('profile');
+
+    const left = document.createElement('div');
+    left.classList.add('left');
+
+    const profileImg = document.createElement('img');
+    profileImg.classList.add('image-profile');
+    left.appendChild(profileImg);
+
+    const info = document.createElement('div');
+    info.classList.add('info');
+
+    const name = document.createElement('h2');
+    name.textContent = `${Object.keys(users).find(key => users[key] === user)}`;
+    info.appendChild(name);
+
+    const desc = document.createElement('p');
+    desc.textContent = 'IT контент';
+    info.appendChild(desc);
+    
+    left.appendChild(info);
+
+    const earnings = document.createElement('div');
+    earnings.classList.add('earnings');
+
+    const earningsTitle = document.createElement('h3');
+    earningsTitle.textContent = 'Выплаты:';
+    earnings.appendChild(earningsTitle);
+
+    const earningsToday = document.createElement('p');
+    earningsToday.textContent = 'За сегодня вы заработали:';
+    earnings.appendChild(earningsToday);
+
+    const amount = document.createElement('p');
+    amount.textContent = ' ';
+    earnings.appendChild(amount);
+
+    left.appendChild(earnings);
+    profile.appendChild(left);
+
+    const right = document.createElement('div');
+    right.classList.add('right');
+
+    const stats = document.createElement('div');
+    stats.classList.add('stats');
+
+    const statsData = [
+        '2 публикаций',
+        '10000 подписчиков',
+        '7 подписок'
+    ];
+
+    statsData.forEach(statText => {
+        const stat = document.createElement('div');
+        stat.textContent = statText;
+        stats.appendChild(stat);
+    });
+
+    right.appendChild(stats);
+
+    const postsContainer = document.createElement('div');
+    postsContainer.classList.add('posts');
+    const currentDate = new Date();
+    const day = String(currentDate.getDate()).padStart(2, '0'); 
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); 
+    const year = currentDate.getFullYear(); 
+    const posts = [
+        { title: `${Object.keys(users).find(key => users[key] === user)}`, content: 'Всем привет!', date:`${day}.${month}.${year}` },
+        { title: `${Object.keys(users).find(key => users[key] === user)}`, content: 'Фронтенд рулит!', date:`${day}.${month}.${year}` }
+    ];
+    console.log(posts);
+    posts.forEach(post => {
+        const postDiv = document.createElement('div');
+        postDiv.classList.add('post');
+
+        const postTitle = document.createElement('h4');
+        postTitle.textContent = post.title;
+        postDiv.appendChild(postTitle);
+
+        const postContent = document.createElement('p');
+        postContent.textContent = post.content;
+        postDiv.appendChild(postContent);
+
+        const postDate = document.createElement('div');
+        postDate.classList.add('date');
+        postDate.textContent = post.date;
+        postDiv.appendChild(postDate);
+
+        postsContainer.appendChild(postDiv);
+    });
+
+    right.appendChild(postsContainer);
+    profile.appendChild(right);
+
+    document.body.appendChild(profile);
+/*
+    // создание публикации
+    const createButtonDiv = document.createElement('div');
+    createButtonDiv.classList.add('create-button');
+
+    const createButton = document.createElement('button');
+    createButton.textContent = 'Создать';
+    createButtonDiv.appendChild(createButton);
+
+    document.body.appendChild(createButtonDiv);
+*/    
 }
 
 function renderMenu( conf, id = null ) {
@@ -455,24 +584,24 @@ function renderHome(conf=null, id = null) {
 
     searchIcon.classList.add('home-fas', 'fa-search');
 
-    searchInput.type = 'text';
-    searchInput.placeholder = 'Найти автора';
+    /*searchInput.type = 'text';
+    searchInput.placeholder = 'Найти автора';*/
 
     buttons.classList.add('home-buttons');
 
     loginButton.classList.add('home-button');
     loginButton.textContent = 'Войти';
 
-    startButton.classList.add('home-button', 'primary');
-    startButton.textContent = 'Начало работы';
+    /*startButton.classList.add('home-button', 'primary');
+    startButton.textContent = 'Начало работы';*/
 
     container.appendChild(overlay);
     container.appendChild(header);
-    searchBox.appendChild(searchIcon);
-    searchBox.appendChild(searchInput);
-    container.appendChild(searchBox);
+    //searchBox.appendChild(searchIcon);
+    //searchBox.appendChild(searchInput);
+    //container.appendChild(searchBox);
     buttons.appendChild(loginButton);
-    buttons.appendChild(startButton);
+    //buttons.appendChild(startButton);
     container.appendChild(buttons);
 
     loginButton.onclick = () => {
