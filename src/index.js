@@ -297,7 +297,7 @@ function renderSignup() {
     inputRepeatPassword.placeholder = 'Повторите пароль';
 
     const buttonRegister = document.createElement('input');
-    buttonRegister.value = 'Зарегистрироватsься';
+    buttonRegister.value = 'Зарегистрироваться';
     buttonRegister.type = 'submit'
 
     form.append(closeBtn)
@@ -359,15 +359,21 @@ function renderSignup() {
             removeError(inputRepeatPassword)
         }
 
-        if (!/^[a-zA-Z0-9]+$/.test(DOMPurify.sanitize(inputUsername.value)) && !firstLoginError) {
-            showError(inputUsername, 'Логин должен содержать только латинские буквы');
+        if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9-_]+$/.test(DOMPurify.sanitize(inputUsername.value)) && !firstLoginError) {
+            showError(inputUsername, 'Логин должен содержать хотя бы одну латинскую букву, и может содержать цифры и знаки "-" "_"');
+            hasError = true;
+        } else {
+            removeError(inputUsername)
+        }
+        if ((DOMPurify.sanitize(inputUsername.value).length < 4 || DOMPurify.sanitize(inputUsername.value).length > 10) && !firstLoginError) {
+            showError(inputUsername, 'Логин должен быть не менее 4 и не более 10 символов');
             hasError = true;
         } else {
             removeError(inputUsername)
         }
 
-        if (DOMPurify.sanitize(inputPassword.value).length < 8) {
-            passwordErrors.push('Пароль должен быть не менее 8 символов');
+        if (DOMPurify.sanitize(inputPassword.value).length < 8 || DOMPurify.sanitize(inputPassword.value).length > 64) {
+            passwordErrors.push('Пароль должен быть не менее 8 и не более 64 символов');
         }
     
         if (!/[0-9]/.test(DOMPurify.sanitize(inputPassword.value))) {
