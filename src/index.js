@@ -6,6 +6,8 @@ const menuContainer = document.createElement('aside');
 const pageContainer = document.createElement('main');
 root.appendChild(pageContainer);
 
+const localStorage = window.localStorage;
+const sessionStorage = window.sessionStorage;
 
 const config = {
     menu: {
@@ -55,25 +57,27 @@ const config = {
 Опция mode установлена в cors, чтобы включить CORS.
  */
 function fetchAjax(method, url, body = null, callback) {
-    const headers = {
-        Origin: '*', 
-    };
-
+    const headers = {};
+  
     if (body) {
       headers['Content-Type'] = 'application/json; charset=utf-8';
       body = JSON.stringify(body);
     }
-  
+
     const init = {
       method,
       headers,
       body,
-      mode: 'cors',  
+      mode: 'cors',
+      credentials: 'include',
     };
   
+    console.log('Sending fetch request...');
     fetch(url, init)
     .then(response => {
-        response.text().then(text => callback(response.status, text));
+        response.text().then(text => {
+          callback(response.status, text);
+        });
     })
 }
 function renderLogin() {
@@ -193,6 +197,8 @@ function renderLogin() {
             fetchAjax('POST', '/login', { password }, (status, response) => {
                 if ( status === 200 ){
                     state.currentUser = users[DOMPurify.sanitize(inputLogin.value)]
+                    localStorage.setItem('login', DOMPurify.sanitize(inputLogin.value));
+                    sessionStorage.setItem('login', DOMPurify.sanitize(inputLogin.value));
                     goToPage(state.menuElements.profile);
                     return; 
                 } else {
@@ -221,7 +227,6 @@ function addUser(username, email = null, password, imagesrc = null) { // tmp
     users[username] = {
         email,
         password,
-        //name: username,
         imagesrc
     };
 }
@@ -455,6 +460,8 @@ function renderProfile(conf = null, id = null) {
     logoutLink.textContent = 'Выйти';
     logoutLink.addEventListener('click', (event) => {
         event.preventDefault();
+        localStorage.removeItem('login');
+        sessionStorage.removeItem('login');
         goToPage(state.menuElements.home);
 
     })
@@ -586,6 +593,12 @@ function renderMenu( conf, id = null ) {
 
 function renderHome(conf=null, id = null) {
 
+    const savedLogin = localStorage.getItem('login');
+    if (savedLogin ) {
+        state.currentUser = users[savedLogin];
+        goToPage(state.menuElements.profile);
+    }
+
     const container = document.createElement('div');
     const overlay = document.createElement('div');
     const header = document.createElement('div');
@@ -615,12 +628,6 @@ function renderHome(conf=null, id = null) {
         goToPage(state.menuElements.login);
     };
     return container;
-}
-
-function renderFeed() {
-
-// wait...
-
 }
 
 function goToPage(targetLinkMenu, statusErr = null) {

@@ -1,13 +1,13 @@
 const http = require('http');
 const fs = require('fs');
-
 const express = require('express');
 const app = express();
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS'); 
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
+  res.header('Access-Control-Allow-Credentials', 'true');
 });
 
 const server = http.createServer((req, res) => {
@@ -24,13 +24,22 @@ const server = http.createServer((req, res) => {
       res.statusCode = 404;
       res.end(`${err}`);
     } else {
+      let headers = {};
+
       if (filePath.endsWith('.js')) {
-        res.writeHead(200, {'Content-Type': 'application/javascript'});
+        headers['Content-Type'] = 'application/javascript';
       } else if (filePath.endsWith('.css')) {
-        res.writeHead(200, {'Content-Type': 'text/css'});
+        headers['Content-Type'] = 'text/css';
       } else {
-        res.writeHead(200, {'Content-Type': 'text/html'});
+        headers['Content-Type'] = 'text/html';
       }
+
+      
+      if ( url == '/login' && (!req.headers.cookie || !req.headers.cookie.includes('testCookie'))) {
+        headers['Set-Cookie'] = 'testCookie=testValue2; httpOnly = true; Path=/; SameSite=None; Secure=false; max-age=15';
+      }
+
+      res.writeHead(200, headers);
       res.end(data);
     }
   });
