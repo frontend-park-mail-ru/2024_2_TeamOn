@@ -140,52 +140,72 @@ function renderLogin() {
 
     submitButton.addEventListener('click', (e) => {
         e.preventDefault();
-        validateLoginForm();
+        auth();
+        attempts++;
+
     });
 
     submitButton.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();  
-            validateLoginForm();
+            auth();
+            attempts++;
         }
     });
+    form.addEventListener('input', (e) => {
+        e.preventDefault();
+        validateErrorLoginForm();
+    });
+
 
     let attempts = 0;
-    
-    function validateLoginForm() {
+    function validateLoginForm(){
+        let hasError = false;
+        if (!users[inputLogin.value] || users[inputLogin.value].password != inputPassword.value ) {
+            showError(inputLogin, '');
+            showError(inputPassword, `Неправильный логин или пароль, осталось ${maxAttempts-attempts} попыток`);
+            if ( checkAttempts(attempts) ) {
+                goToPage(state.menuElements.home);
+            }
+            hasError = true;
+        }
+        return hasError
+    }
+    function validateErrorLoginForm() {
         const errors = form.querySelectorAll('.error');
         for (let i = 0; i < errors.length; i++) {
             errors[i].remove();
         }
 
         let hasError = false;
-
+        
         if (!inputLogin.value.trim()) {
             showError(inputLogin, 'Пожалуйста, введите логин');
             hasError = true;
+        }else {
+            removeError(inputLogin)
         }
 
         if (!inputPassword.value) {
             showError(inputPassword, 'Пожалуйста, введите пароль');
             hasError = true;
+        }else {
+            removeError(inputPassword)
         }
 
-
-        if (!hasError) {
+        return hasError
+    }
+    function auth(){
+        if (!validateErrorLoginForm() && !validateLoginForm()) {
             const password = inputPassword.value;
 
             fetchAjax('POST', '/login', { password }, (status, response) => {
-                if (users[inputLogin.value] && users[inputLogin.value].password === inputPassword.value){
+                if ( status === 200 ){
                     state.currentUser = users[inputLogin.value]
                     goToPage(state.menuElements.profile);
                     return; 
                 } else {
-                    attempts++;
-                    showError(inputLogin, '');
-                    showError(inputPassword, `Неправильный логин или пароль, осталось ${maxAttempts-attempts} попыток`);
-                    if ( checkAttempts(attempts) ) {
-                        goToPage(state.menuElements.home);
-                    }
+                    return;
                 }
 
             });
@@ -203,7 +223,9 @@ function showError(input, message) {
     input.parentElement.insertBefore(error, input.nextSibling);
     input.classList.add('error-input'); 
 }
-
+function removeError(inputField) {
+    inputField.classList.remove('error-input');
+}
 function addUser(username, email = null, password, imagesrc = null) { // tmp
     users[username] = {
         email,
@@ -295,15 +317,23 @@ function renderSignup() {
     form.appendChild(buttonRegister);
 
     buttonRegister.addEventListener('click', (e) => {
-        e.preventDefault();
-        validateForm();
+<<<<<<< HEAD
+=======
+        e.preventDefault(); 
+        auth();
+>>>>>>> origin/routing
     });
     
     form.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            validateForm();
+            auth();
         }
+    });
+ 
+    form.addEventListener('input', (e) => {
+        e.preventDefault();
+        validateForm();
     });
     
     function validateForm() {
@@ -315,25 +345,37 @@ function renderSignup() {
         }
         
         let hasError = false;
+        let firstLoginError = false;
+        let firstPasswordError = false;
 
         if (!inputUsername.value) {
             showError(inputUsername, 'Пожалуйста, введите логин');
             hasError = true;
+            firstLoginError = true;
+        } else {
+            removeError(inputUsername)
         }
 
         if (!inputPassword.value) {
             showError(  inputPassword, 'Пожалуйста, введите пароль');
             hasError = true;
+            firstPasswordError = true;
+        } else {
+            removeError(inputPassword)
         }
 
         if (inputRepeatPassword.value != inputPassword.value) {
             showError(inputRepeatPassword, 'Пароли должны совпадать');
             hasError = true;
+        } else {
+            removeError(inputRepeatPassword)
         }
 
-        if (!/^[a-zA-Z0-9]+$/.test(inputUsername.value)) {
+        if (!/^[a-zA-Z0-9]+$/.test(inputUsername.value) && !firstLoginError) {
             showError(inputUsername, 'Логин должен содержать только латинские буквы');
             hasError = true;
+        } else {
+            removeError(inputUsername)
         }
 
         if (inputPassword.value.length < 8) {
@@ -342,8 +384,7 @@ function renderSignup() {
     
         if (!/[0-9]/.test(inputPassword.value)) {
             passwordErrors.push('Пароль должен содержать хотя бы одну цифру');
-        }
-    
+        }    
         if (!/[!@#$%^&*]/.test(inputPassword.value)) {
             passwordErrors.push('Пароль должен содержать хотя бы один спецсимвол');
         }
@@ -352,21 +393,25 @@ function renderSignup() {
             passwordErrors.push('Пароль должен содержать хотя бы одну латинскую букву в нижнем регистре и одну в верхнем регистре');
         }
     
-        if (passwordErrors.length > 0) {
+        if (passwordErrors.length > 0 && !firstPasswordError) {
             showError(inputPassword, passwordErrors.join('<br>'));
             hasError = true;
+        } else {
+            removeError(inputPassword)
         }
 
-        if (users[inputUsername.value]) {
-            showError(inputUsername, '');
-            showError(inputPassword, '');
-            showError(inputRepeatPassword, 'Пользователь уже существует');
+        if (users[inputUsername.value] && !firstLoginError) {
+            showError(inputUsername, 'Пользователь с таким именем уже существует');
             hasError = true;
+        } else {
+            removeError(inputUsername)
         }
-
+        return hasError
+    }
+    function auth(){
         const password = inputPassword.value;
         const passwordDouble = inputRepeatPassword.value;
-        if (!hasError) {
+        if (!validateForm()) {
             fetchAjax('POST', '/signup', { password }, (status, response) => {
                 if (status >= 200 && status < 300) {
                     addUser(inputUsername.value, null, password, null);
