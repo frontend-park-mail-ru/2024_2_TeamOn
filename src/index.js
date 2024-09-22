@@ -317,11 +317,8 @@ function renderSignup() {
     form.appendChild(buttonRegister);
 
     buttonRegister.addEventListener('click', (e) => {
-<<<<<<< HEAD
-=======
         e.preventDefault(); 
         auth();
->>>>>>> origin/routing
     });
     
     form.addEventListener('keydown', (e) => {
