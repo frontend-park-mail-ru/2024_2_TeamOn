@@ -284,7 +284,7 @@ function renderSignup() {
     const h2 = document.createElement('h2');
     h2.textContent = 'Регистрация';
 
-    inputUsername = document.createElement('input');
+    const inputUsername = document.createElement('input');
     inputUsername.type = 'text';
     inputUsername.placeholder = 'Введите имя пользователя';
 
@@ -417,19 +417,12 @@ function renderSignup() {
     backgroundLayer.appendChild(form)
     return backgroundLayer;
 }
-document.addEventListener('DOMContentLoaded', () => {
-    renderProfile();
-});
 
 function renderProfile(conf = null, id = null) {
+    const formProfile = document.createElement('div');
+    formProfile.classList.add('form-profile')
+    
     const user = state.currentUser;
-    if (!user) {
-        alert(`Вы не авторизованы`);
-        goToPage(state.menuElements.login);
-        return profileElement;
-    } else {
-        alert(`Добро пожаловать, ${Object.keys(users).find(key => users[key] === user)}`);
-    }
 
     const header = document.createElement('div');
     header.classList.add('header-profile');
@@ -465,7 +458,6 @@ function renderProfile(conf = null, id = null) {
     const title = document.createElement('h1');
     title.textContent = `${Object.keys(users).find(key => users[key] === user)} о себе: Мы крутышки!`;
     header.appendChild(title);
-    document.body.appendChild(header);
 
     const profile = document.createElement('div');
     profile.classList.add('profile');
@@ -538,10 +530,11 @@ function renderProfile(conf = null, id = null) {
         { title: `${Object.keys(users).find(key => users[key] === user)}`, content: 'Всем привет!', date:`${day}.${month}.${year}` },
         { title: `${Object.keys(users).find(key => users[key] === user)}`, content: 'Фронтенд рулит!', date:`${day}.${month}.${year}` }
     ];
-    console.log(posts);
+
     posts.forEach(post => {
         const postDiv = document.createElement('div');
         postDiv.classList.add('post');
+
 
         const postTitle = document.createElement('h4');
         postTitle.textContent = post.title;
@@ -562,18 +555,10 @@ function renderProfile(conf = null, id = null) {
     right.appendChild(postsContainer);
     profile.appendChild(right);
 
-    document.body.appendChild(profile);
-/*
-    // создание публикации
-    const createButtonDiv = document.createElement('div');
-    createButtonDiv.classList.add('create-button');
-
-    const createButton = document.createElement('button');
-    createButton.textContent = 'Создать';
-    createButtonDiv.appendChild(createButton);
-
-    document.body.appendChild(createButtonDiv);
-*/    
+    formProfile.appendChild(header)
+    formProfile.appendChild(profile)
+    
+    return formProfile
 }
 
 function renderMenu( conf, id = null ) {
@@ -609,28 +594,15 @@ function renderHome(conf=null, id = null) {
     header.classList.add('home-header');
     header.textContent = 'логотипчик';
 
-    searchBox.classList.add('home-search-box');
-
-    searchIcon.classList.add('home-fas', 'fa-search');
-
-    searchInput.type = 'text';
-    searchInput.placeholder = 'Найти автора';
 
     buttons.classList.add('home-buttons');
 
     loginButton.classList.add('home-button');
     loginButton.textContent = 'Войти';
 
-    startButton.classList.add('home-button', 'primary');
-    startButton.textContent = 'Начало работы';
-
     container.appendChild(overlay);
     container.appendChild(header);
-    searchBox.appendChild(searchIcon);
-    searchBox.appendChild(searchInput);
-    container.appendChild(searchBox);
     buttons.appendChild(loginButton);
-    buttons.appendChild(startButton);
     container.appendChild(buttons);
 
     loginButton.onclick = () => {
