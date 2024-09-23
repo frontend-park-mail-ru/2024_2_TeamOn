@@ -1,22 +1,31 @@
-const http = require('http');
-const fs = require('fs');
-const express = require('express');
+const http = require("http");
+const fs = require("fs");
+const express = require("express");
 const app = express();
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS'); 
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header("Access-Control-Allow-Origin", "http://localhost:8080");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept",
+  );
+  res.header("Access-Control-Allow-Credentials", "true");
 });
 
 const server = http.createServer((req, res) => {
   const url = req.url;
   let filePath = `..${url}`;
 
-  if ((url == "/") || (url == '/login') || (url == '/signup')
-     || url == '/profile' || url == '/feed' || url == '/error') {
-    filePath = '../index.html';
+  if (
+    url == "/" ||
+    url == "/login" ||
+    url == "/signup" ||
+    url == "/profile" ||
+    url == "/feed" ||
+    url == "/error"
+  ) {
+    filePath = "../index.html";
   }
 
   fs.readFile(filePath, (err, data) => {
@@ -26,17 +35,20 @@ const server = http.createServer((req, res) => {
     } else {
       let headers = {};
 
-      if (filePath.endsWith('.js')) {
-        headers['Content-Type'] = 'application/javascript';
-      } else if (filePath.endsWith('.css')) {
-        headers['Content-Type'] = 'text/css';
+      if (filePath.endsWith(".js")) {
+        headers["Content-Type"] = "application/javascript";
+      } else if (filePath.endsWith(".css")) {
+        headers["Content-Type"] = "text/css";
       } else {
-        headers['Content-Type'] = 'text/html';
+        headers["Content-Type"] = "text/html";
       }
 
-      
-      if ( url == '/login' && (!req.headers.cookie || !req.headers.cookie.includes('testCookie'))) {
-        headers['Set-Cookie'] = 'testCookie=testValue2; httpOnly = true; Path=/; SameSite=None; Secure=false; max-age=15';
+      if (
+        url == "/login" &&
+        (!req.headers.cookie || !req.headers.cookie.includes("testCookie"))
+      ) {
+        headers["Set-Cookie"] =
+          "testCookie=testValue2; httpOnly = true; Path=/; SameSite=None; Secure=false; max-age=15";
       }
 
       res.writeHead(200, headers);
