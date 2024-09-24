@@ -1,8 +1,14 @@
  
-import { users, maxAttempts, state } from './const.js';
+import { users, maxAttempts, state } from '../const.js';
+import { renderLogin } from './auth/loginView.js';
+import { renderSignup } from './auth/signupVew.js';
+import { renderError } from './pages/error.js';
+import { renderProfile } from './pages/profile.js';
+import { renderMenu } from './menu/menu.js';
+import { renderHome } from './pages/home.js';
 
 const root = document.getElementById('root');
-const menuContainer = document.createElement('aside');
+export const menuContainer = document.createElement('aside');
 const pageContainer = document.createElement('main');
 root.appendChild(pageContainer);
 
@@ -30,12 +36,12 @@ const config = {
             href: '/profile',
             text: 'Профиль',
             render: renderProfile
-        },
+        },/*
         feed: {
             href: '/feed',
             text: 'Лента',
             render: renderFeed
-        },
+        },*/
         error: {
             href: '/error',
             text: 'Ошибка',
@@ -44,6 +50,43 @@ const config = {
     }
 };
 
+
+export function addUser(username, email = null, password, imagesrc = null) { // tmp
+    users[username] = {
+        email,
+        password,
+        imagesrc
+    };
+}
+
+export function goToPage(targetLinkMenu, statusErr = null) {
+    pageContainer.innerHTML = "";
+  
+    state.activePageLink.classList.remove("active");
+    targetLinkMenu.classList.add("active");
+    state.activePageLink = targetLinkMenu;
+  
+    const newPageElement =
+      config.menu[targetLinkMenu.dataset.section].render(statusErr);
+  
+    pageContainer.appendChild(newPageElement);
+  }
+  
+  menuContainer.addEventListener("click", (event) => {
+    const { target } = event;
+    if (
+      target.tagName.toLowerCase() === "a" ||
+      target instanceof HTMLAnchorElement
+    ) {
+      event.preventDefault();
+  
+      goToPage(target);
+    }
+  });
+  
+  renderMenu(config.menu);
+  goToPage(state.menuElements.home);
+  
 /**
  * Отправляет запрос AJAX с помощью Fetch API с включенным CORS.
  * @param {*} method    HTTP-метод
@@ -56,6 +99,7 @@ const config = {
 со значением application/json; charset=utf-8, если предоставлено тело запроса.
 Опция mode установлена в cors, чтобы включить CORS.
  */
+/*
 function fetchAjax(method, url, body = null, callback) {
     const headers = {};
   
@@ -80,6 +124,8 @@ function fetchAjax(method, url, body = null, callback) {
         });
     })
 }
+    */
+/*
 function renderLogin() {
     const backgroundLayer = document.createElement('div');
     backgroundLayer.className = 'background-login';
@@ -190,6 +236,7 @@ function renderLogin() {
 
         return hasError
     }
+
     function auth(){
         if (!validateErrorLoginForm() && !validateLoginForm()) {
             const password = DOMPurify.sanitize(inputPassword.value);
@@ -213,23 +260,17 @@ function renderLogin() {
     return backgroundLayer;
 }
 
-function showError(input, message) {
+export function showError(input, message) {
     const error = document.createElement('div');
     error.className = 'error';
     error.innerHTML = DOMPurify.sanitize(message);
     input.parentElement.insertBefore(error, input.nextSibling);
     input.classList.add('error-input'); 
 }
-function removeError(inputField) {
+export function removeError(inputField) {
     inputField.classList.remove('error-input');
 }
-function addUser(username, email = null, password, imagesrc = null) { // tmp
-    users[username] = {
-        email,
-        password,
-        imagesrc
-    };
-}
+
 function checkAttempts(attempts){
     if (attempts < maxAttempts) {
         return false
@@ -271,7 +312,8 @@ function renderError(statusErr) {
 
     return notFoundDiv
 }
-function renderSignup() {
+
+export function renderSignup() {
     const backgroundLayer = document.createElement('div');
     backgroundLayer.className = 'background-signup';
 
@@ -329,83 +371,83 @@ function renderSignup() {
         validateForm();
     });
     
-    function validateForm() {
-        var errors = form.querySelectorAll('.error');
-        let passwordErrors = [];
-        
-        for (var i = 0; i <errors.length; i++) {
-            errors[i].remove();
-        }
-        
-        let hasError = false;
-        let firstLoginError = false;
-        let firstPasswordError = false;
-
-        if (!DOMPurify.sanitize(inputUsername.value)) {
-            showError(inputUsername, 'Пожалуйста, введите логин');
-            hasError = true;
-            firstLoginError = true;
-        } else {
-            removeError(inputUsername)
-        }
-
-        if (!DOMPurify.sanitize(inputPassword.value)) {
-            showError(  inputPassword, 'Пожалуйста, введите пароль');
-            hasError = true;
-            firstPasswordError = true;
-        } else {
-            removeError(inputPassword)
-        }
-
-        if (DOMPurify.sanitize(inputRepeatPassword.value) != DOMPurify.sanitize(inputPassword.value)) {
-            showError(inputRepeatPassword, 'Пароли должны совпадать');
-            hasError = true;
-        } else {
-            removeError(inputRepeatPassword)
-        }
-
-        if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9-_]+$/.test(DOMPurify.sanitize(inputUsername.value)) && !firstLoginError) {
-            showError(inputUsername, 'Логин должен содержать хотя бы одну латинскую букву, и может содержать цифры и знаки "-" "_"');
-            hasError = true;
-        } else {
-            removeError(inputUsername)
-        }
-        if ((DOMPurify.sanitize(inputUsername.value).length < 4 || DOMPurify.sanitize(inputUsername.value).length > 10) && !firstLoginError) {
-            showError(inputUsername, 'Логин должен быть не менее 4 и не более 10 символов');
-            hasError = true;
-        } else {
-            removeError(inputUsername)
-        }
-
-        if (DOMPurify.sanitize(inputPassword.value).length < 8 || DOMPurify.sanitize(inputPassword.value).length > 64) {
-            passwordErrors.push('Пароль должен быть не менее 8 и не более 64 символов');
-        }
+function validateForm() {
+    var errors = form.querySelectorAll('.error');
+    let passwordErrors = [];
     
-        if (!/[0-9]/.test(DOMPurify.sanitize(inputPassword.value))) {
-            passwordErrors.push('Пароль должен содержать хотя бы одну цифру');
-        }    
-        if (!/[!@#$%^&*]/.test(DOMPurify.sanitize(inputPassword.value))) {
-            passwordErrors.push('Пароль должен содержать хотя бы один спецсимвол');
-        }
-
-        if (!/(?=.*[a-z])(?=.*[A-Z])/.test(DOMPurify.sanitize(inputPassword.value))) {
-            passwordErrors.push('Пароль должен содержать хотя бы одну латинскую букву в нижнем регистре и одну в верхнем регистре');
-        }
+    for (var i = 0; i <errors.length; i++) {
+        errors[i].remove();
+    }
     
-        if (passwordErrors.length > 0 && !firstPasswordError) {
-            showError(inputPassword, passwordErrors.join('<br>'));
-            hasError = true;
-        } else {
-            removeError(inputPassword)
-        }
+    let hasError = false;
+    let firstLoginError = false;
+    let firstPasswordError = false;
 
-        if (users[DOMPurify.sanitize(inputUsername.value)] && !firstLoginError) {
-            showError(inputUsername, 'Пользователь с таким именем уже существует');
-            hasError = true;
-        } else {
-            removeError(inputUsername)
-        }
-        return hasError
+    if (!DOMPurify.sanitize(inputUsername.value)) {
+        showError(inputUsername, 'Пожалуйста, введите логин');
+        hasError = true;
+        firstLoginError = true;
+    } else {
+        removeError(inputUsername)
+    }
+
+    if (!DOMPurify.sanitize(inputPassword.value)) {
+        showError(  inputPassword, 'Пожалуйста, введите пароль');
+        hasError = true;
+        firstPasswordError = true;
+    } else {
+        removeError(inputPassword)
+    }
+
+    if (DOMPurify.sanitize(inputRepeatPassword.value) != DOMPurify.sanitize(inputPassword.value)) {
+        showError(inputRepeatPassword, 'Пароли должны совпадать');
+        hasError = true;
+    } else {
+        removeError(inputRepeatPassword)
+    }
+
+    if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9-_]+$/.test(DOMPurify.sanitize(inputUsername.value)) && !firstLoginError) {
+        showError(inputUsername, 'Логин должен содержать хотя бы одну латинскую букву, и может содержать цифры и знаки "-" "_"');
+        hasError = true;
+    } else {
+        removeError(inputUsername)
+    }
+    if ((DOMPurify.sanitize(inputUsername.value).length < 4 || DOMPurify.sanitize(inputUsername.value).length > 10) && !firstLoginError) {
+        showError(inputUsername, 'Логин должен быть не менее 4 и не более 10 символов');
+        hasError = true;
+    } else {
+        removeError(inputUsername)
+    }
+
+    if (DOMPurify.sanitize(inputPassword.value).length < 8 || DOMPurify.sanitize(inputPassword.value).length > 64) {
+        passwordErrors.push('Пароль должен быть не менее 8 и не более 64 символов');
+    }
+
+    if (!/[0-9]/.test(DOMPurify.sanitize(inputPassword.value))) {
+        passwordErrors.push('Пароль должен содержать хотя бы одну цифру');
+    }    
+    if (!/[!@#$%^&*]/.test(DOMPurify.sanitize(inputPassword.value))) {
+        passwordErrors.push('Пароль должен содержать хотя бы один спецсимвол');
+    }
+
+    if (!/(?=.*[a-z])(?=.*[A-Z])/.test(DOMPurify.sanitize(inputPassword.value))) {
+        passwordErrors.push('Пароль должен содержать хотя бы одну латинскую букву в нижнем регистре и одну в верхнем регистре');
+    }
+
+    if (passwordErrors.length > 0 && !firstPasswordError) {
+        showError(inputPassword, passwordErrors.join('<br>'));
+        hasError = true;
+    } else {
+        removeError(inputPassword)
+    }
+
+    if (users[DOMPurify.sanitize(inputUsername.value)] && !firstLoginError) {
+        showError(inputUsername, 'Пользователь с таким именем уже существует');
+        hasError = true;
+    } else {
+        removeError(inputUsername)
+    }
+    return hasError
     }
     function auth(){
         const password = DOMPurify.sanitize(inputPassword.value);
@@ -428,152 +470,9 @@ function renderSignup() {
     backgroundLayer.appendChild(form)
     return backgroundLayer;
 }
+*/
 
-function renderProfile(conf = null, id = null) {
-    const formProfile = document.createElement('div');
-    formProfile.classList.add('form-profile')
-    
-    const user = state.currentUser;
-
-    const header = document.createElement('div');
-    header.classList.add('header-profile');
-    const nav = document.createElement('nav');
-    const navLinks = ['Моя страница', 
-                      /*'Лента', 
-                      'Настройки'*/];
-    const activePage = conf?.activePage || 'Моя страница';  
-    
-    navLinks.forEach(linkText => {
-        const link = document.createElement('a');
-        link.href = '#';
-        link.textContent = linkText;
-        if (linkText === activePage) {
-            link.style.fontWeight = 'bold'; 
-        }
-        nav.appendChild(link);
-    });
-    header.appendChild(nav);
-
-    const logoutLink = document.createElement('a');
-    logoutLink.classList.add('logout');
-    logoutLink.href = '#';
-    logoutLink.textContent = 'Выйти';
-    logoutLink.addEventListener('click', (event) => {
-        event.preventDefault();
-        localStorage.removeItem('login');
-        sessionStorage.removeItem('login');
-        goToPage(state.menuElements.home);
-
-    })
-    header.appendChild(logoutLink);
-
-
-    const title = document.createElement('h1');
-    title.textContent = `${Object.keys(users).find(key => users[key] === user)} о себе: Мы крутышки!`;
-    header.appendChild(title);
-
-    const profile = document.createElement('div');
-    profile.classList.add('profile');
-
-    const left = document.createElement('div');
-    left.classList.add('left');
-
-    const profileImg = document.createElement('img');
-    profileImg.classList.add('image-profile');
-    left.appendChild(profileImg);
-
-    const info = document.createElement('div');
-    info.classList.add('info');
-
-    const name = document.createElement('h2');
-    name.textContent = `${Object.keys(users).find(key => users[key] === user)}`;
-    info.appendChild(name);
-
-    const desc = document.createElement('p');
-    desc.textContent = 'IT контент';
-    info.appendChild(desc);
-    
-    left.appendChild(info);
-
-    const earnings = document.createElement('div');
-    earnings.classList.add('earnings');
-
-    const earningsTitle = document.createElement('h3');
-    earningsTitle.textContent = 'Выплаты:';
-    earnings.appendChild(earningsTitle);
-
-    const earningsToday = document.createElement('p');
-    earningsToday.textContent = 'За сегодня вы заработали:';
-    earnings.appendChild(earningsToday);
-
-    const amount = document.createElement('p');
-    amount.textContent = ' ';
-    earnings.appendChild(amount);
-
-    left.appendChild(earnings);
-    profile.appendChild(left);
-
-    const right = document.createElement('div');
-    right.classList.add('right');
-
-    const stats = document.createElement('div');
-    stats.classList.add('stats');
-
-    const statsData = [
-        '2 публикаций',
-        '10000 подписчиков',
-        '7 подписок'
-    ];
-
-    statsData.forEach(statText => {
-        const stat = document.createElement('div');
-        stat.textContent = statText;
-        stats.appendChild(stat);
-    });
-
-    right.appendChild(stats);
-
-    const postsContainer = document.createElement('div');
-    postsContainer.classList.add('posts');
-    const currentDate = new Date();
-    const day = String(currentDate.getDate()).padStart(2, '0'); 
-    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); 
-    const year = currentDate.getFullYear(); 
-    const posts = [
-        { title: `${Object.keys(users).find(key => users[key] === user)}`, content: 'Всем привет!', date:`${day}.${month}.${year}` },
-        { title: `${Object.keys(users).find(key => users[key] === user)}`, content: 'Фронтенд рулит!', date:`${day}.${month}.${year}` }
-    ];
-
-    posts.forEach(post => {
-        const postDiv = document.createElement('div');
-        postDiv.classList.add('post');
-
-
-        const postTitle = document.createElement('h4');
-        postTitle.textContent = post.title;
-        postDiv.appendChild(postTitle);
-
-        const postContent = document.createElement('p');
-        postContent.textContent = post.content;
-        postDiv.appendChild(postContent);
-
-        const postDate = document.createElement('div');
-        postDate.classList.add('date');
-        postDate.textContent = post.date;
-        postDiv.appendChild(postDate);
-
-        postsContainer.appendChild(postDiv);
-    });
-
-    right.appendChild(postsContainer);
-    profile.appendChild(right);
-
-    formProfile.appendChild(header)
-    formProfile.appendChild(profile)
-    
-    return formProfile
-}
-
+/*
 function renderMenu( conf, id = null ) {
     Object.entries(conf).forEach(([key, { href, text }], index) => {
         const menuElement = document.createElement('a');
@@ -629,27 +528,5 @@ function renderHome(conf=null, id = null) {
     };
     return container;
 }
+*/
 
-function goToPage(targetLinkMenu, statusErr = null) {
-    pageContainer.innerHTML = '';
-
-    state.activePageLink.classList.remove('active');
-    targetLinkMenu.classList.add('active');
-    state.activePageLink = targetLinkMenu;
-
-    const newPageElement = config.menu[targetLinkMenu.dataset.section].render(statusErr);
-
-    pageContainer.appendChild(newPageElement);
-}
-
-menuContainer.addEventListener('click', (event) => {
-    const { target } = event;
-    if (target.tagName.toLowerCase() === 'a' || target instanceof HTMLAnchorElement) {
-        event.preventDefault();
-
-        goToPage(target);
-    }
-});
-
-renderMenu( config.menu );
-goToPage(state.menuElements.home);
