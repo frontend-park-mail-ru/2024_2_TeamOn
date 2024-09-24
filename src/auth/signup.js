@@ -73,12 +73,6 @@ export function validateSignupForm(form, inputUsername, inputPassword, inputRepe
         removeError(inputPassword)
     }
 
-    if (users[DOMPurify.sanitize(inputUsername.value)] && !firstLoginError) {
-        showError(inputUsername, 'Пользователь с таким именем уже существует');
-        hasError = true;
-    } else {
-        removeError(inputUsername)
-    }
     return hasError
 }
 export function authSignup(form,inputUsername, inputPassword, inputRepeatPassword ) {

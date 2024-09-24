@@ -4,9 +4,8 @@ import { state, users, maxAttempts } from '../consts.js';
 import { removeError, showError } from '../utils/errors.js';
 import { fetchAjax } from '../utils/fetchAjax.js'; 
 import { goToPage } from '../index.js'
+import { attempts } from './loginView.js';
 
-
-export let attempts = 0;
 export function validateLoginForm(inputLogin, inputPassword){
     let hasError = false;
     if (!users[DOMPurify.sanitize(inputLogin.value)] || users[DOMPurify.sanitize(inputLogin.value)].password != DOMPurify.sanitize(inputPassword.value) ) {
@@ -56,7 +55,11 @@ export function authLogin(form, inputLogin, inputPassword){
                 localStorage.setItem('login', DOMPurify.sanitize(inputLogin.value));
                 sessionStorage.setItem('login', DOMPurify.sanitize(inputLogin.value));
                 goToPage(state.menuElements.profile);
+                return;
             }
+        })
+        .catch((error) => {
+            return;
         });
     }
 }

@@ -36,9 +36,16 @@ export function renderSignup() {
     buttonRegister.value = 'Зарегистрироваться';
     buttonRegister.type = 'submit'
 
+    form.append(closeBtn);
+    form.appendChild(h2);
+    form.appendChild(inputUsername);
+    form.appendChild(inputPassword);
+    form.appendChild(inputRepeatPassword);
+    form.appendChild(buttonRegister);
+
     buttonRegister.addEventListener('click', (e) => {
         e.preventDefault(); 
-        authSignup(form, inputPassword, inputRepeatPassword, inputUsername);
+        authSignup(form, inputUsername, inputPassword, inputRepeatPassword );
     });
     
     form.addEventListener('keydown', (e) => {
@@ -53,17 +60,7 @@ export function renderSignup() {
         validateSignupForm(form, inputUsername, inputPassword, inputRepeatPassword);
     });
 
-    form.append(closeBtn);
-    //inputUsername.appendChild(input);
 
-    form.appendChild(h2);
-    form.appendChild(inputUsername);
-    form.appendChild(inputPassword);
-    form.appendChild(inputRepeatPassword);
-    form.appendChild(buttonRegister);
     backgroundLayer.appendChild(form);
-    document.body.appendChild(backgroundLayer);
     return backgroundLayer;
-
-
 }    

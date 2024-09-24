@@ -14,7 +14,7 @@ export function renderError(statusErr) {
     notFound404.className = 'notfound-404';
 
     h1.textContent = statusErr;
-    if (statusErr > 300) {
+    if (statusErr === 404) {
         h2.textContent = 'Страница не найдена'
     }
 

@@ -1,84 +1,83 @@
 import { state } from '../consts.js';
 import {goToPage} from '../index.js'
-import { authLogin, validateErrorLoginForm, attempts } from './login.js';
+import { authLogin, validateErrorLoginForm } from './login.js';
 
 export const form = document.createElement('form');
+export let attempts = 0;
 
 export function renderLogin() {
-    const backgroundLayer = document.createElement('div');
-    backgroundLayer.className = 'background-login';
-    
-    const loginContainer = document.createElement('div');
-    const h2 = document.createElement('h2');
-    const inputLogin = document.createElement('input');
-    const inputPassword = document.createElement('input');
-    const submitButton = document.createElement('input');
-    const registerLink = document.createElement('div');
-    const registerLinkAnchor = document.createElement('a');
-    const closeBtn = document.createElement('button');
+    const backgroundLayer = document.createElement("div");
+  backgroundLayer.className = "background-login";
 
-    closeBtn.className = 'close-btn';
-    closeBtn.innerHTML = 'x';
-    closeBtn.onclick = () => {
-        goToPage(state.menuElements.home);
-    };
+  const loginContainer = document.createElement("div");
+  const h2 = document.createElement("h2");
+  const form = document.createElement("form");
+  const inputLogin = document.createElement("input");
+  const inputPassword = document.createElement("input");
+  const submitButton = document.createElement("input");
+  const registerLink = document.createElement("div");
+  const registerLinkAnchor = document.createElement("a");
+  const closeBtn = document.createElement("button");
 
-    loginContainer.className = 'login-container';
-    
-    loginContainer.appendChild(closeBtn);
-    loginContainer.appendChild(h2);
+  closeBtn.className = "close-btn";
+  closeBtn.innerHTML = "x";
+  closeBtn.onclick = () => {
+    goToPage(state.menuElements.home);
+  };
 
-    h2.textContent = 'Вход';
+  loginContainer.className = "login-container";
 
-    loginContainer.appendChild(form);
+  loginContainer.appendChild(closeBtn);
+  loginContainer.appendChild(h2);
 
-    inputLogin.type = 'text';
-    inputLogin.placeholder = 'Введите email или имя пользователя';
-    inputLogin.required = true;
+  h2.textContent = "Вход";
 
-    inputPassword.type = 'password';
-    inputPassword.placeholder = 'Введите пароль';
-    inputPassword.required = true;
+  loginContainer.appendChild(form);
 
-    submitButton.type = 'submit';
-    submitButton.value = 'Войти';
+  inputLogin.type = "text";
+  inputLogin.placeholder = "Введите email или имя пользователя";
+  inputLogin.required = true;
+  form.appendChild(inputLogin);
 
-    registerLink.className = 'register-link';
-    registerLink.textContent = 'У вас нет аккаунта? ';
-    registerLinkAnchor.textContent = 'Зарегистрируйтесь';
-    
+  inputPassword.type = "password";
+  inputPassword.placeholder = "Введите пароль";
+  inputPassword.required = true;
+  form.appendChild(inputPassword);
+
+  submitButton.type = "submit";
+  submitButton.value = "Войти";
+  form.appendChild(submitButton);
+
+  registerLink.className = "register-link";
+  registerLink.textContent = "У вас нет аккаунта? ";
+  registerLinkAnchor.textContent = "Зарегистрируйтесь";
+  registerLink.appendChild(registerLinkAnchor);
+  loginContainer.appendChild(registerLink);
 
     registerLinkAnchor.addEventListener('click', (e) => {
         goToPage(state.menuElements.signup);
     });
-
+    
     submitButton.addEventListener('click', (e) => {
         e.preventDefault();
-        authLogin(form, inputLogin, inputPassword);
         attempts++;
+        authLogin(form, inputLogin, inputPassword);
 
     });
 
     submitButton.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();  
-            authLogin(form, inputLogin, inputPassword);
             attempts++;
+            authLogin(form, inputLogin, inputPassword);
         }
     });
     form.addEventListener('input', (e) => {
         e.preventDefault();
         validateErrorLoginForm(form, inputLogin, inputPassword);
     });
-    form.appendChild(inputLogin);
-    form.appendChild(inputPassword);
-    form.appendChild(submitButton);
-    loginContainer.appendChild(h2);
-    loginContainer.appendChild(form);
-    loginContainer.appendChild(registerLink);
-    registerLink.appendChild(registerLinkAnchor);
+
     backgroundLayer.appendChild(loginContainer);
     return backgroundLayer;
     
-
 }

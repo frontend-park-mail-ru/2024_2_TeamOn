@@ -27,11 +27,13 @@ export function fetchAjax(method, url, body = null, callback) {
       credentials: 'include',
     };
   
-    console.log('Sending fetch request...');
     fetch(url, init)
     .then(response => {
         response.text().then(text => {
           callback(response.status, text);
         });
     })
+    .catch((error) => {
+      callback(null, error.message);
+    });
 }
