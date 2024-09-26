@@ -3,7 +3,7 @@ import { removeError, showError } from "../utils/errors.js";
 import { fetchAjax } from "../utils/fetchAjax.js";
 import { goToPage } from "../index.js";
 
-import DOMPurify from "dompurify";
+DOMPurify = require('dompurify')
 
 export function validateSignupForm(
   form,
