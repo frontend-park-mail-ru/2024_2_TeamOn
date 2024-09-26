@@ -8,6 +8,9 @@
 любимых артистов, писателей, музыкантов и многих других</p>
 <p>  Для запуска необходимо ввести в терминал следующее: npm install && node ./src/server/server.js <p>
 
+## Деплой
+[pushart.online](http://pushart.online)
+
 ## Ссылки
 **Участники команды:**
 1. [Алексей Нарыжный](https://github.com/AlexeyBMSTU)
