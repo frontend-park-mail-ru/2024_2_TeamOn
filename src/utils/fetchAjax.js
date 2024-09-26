@@ -12,26 +12,26 @@
  */
 
 export function fetchAjax(method, url, body = null, callback) {
-    const headers = {};
-  
-    if (body) {
-      headers['Content-Type'] = 'application/json; charset=utf-8';
-      body = JSON.stringify(body);
-    }
+  const headers = {};
 
-    const init = {
-      method,
-      headers,
-      body,
-      mode: 'cors',
-      credentials: 'include',
-    };
-  
-    fetch(url, init)
-    .then(response => {
-        response.text().then(text => {
-          callback(response.status, text);
-        });
+  if (body) {
+    headers["Content-Type"] = "application/json; charset=utf-8";
+    body = JSON.stringify(body);
+  }
+
+  const init = {
+    method,
+    headers,
+    body,
+    mode: "cors",
+    credentials: "include",
+  };
+
+  fetch(url, init)
+    .then((response) => {
+      response.text().then((text) => {
+        callback(response, text);
+      });
     })
     .catch((error) => {
       callback(null, error.message);

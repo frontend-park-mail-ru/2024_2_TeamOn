@@ -3,10 +3,18 @@
     "body-parser": "^1.20.3",
     "crypto": "^1.0.1",
     "debug": "^4.3.7",
-    "dompurify": "^3.1.6",
+    "dompurify": "^3.1.7",
+    "esm": "^3.2.25",
     "express": "^4.21.0",
     "morgan": "^1.10.0",
     "path": "^0.12.7",
+    "require": "^0.4.4",
     "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.11.1",
+    "eslint": "^9.11.1",
+    "eslint-plugin-react": "^7.36.1",
+    "globals": "^15.9.0"
   }
 }

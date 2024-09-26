@@ -1,88 +1,58 @@
-import { users, state } from './consts.js';
-import { renderLogin } from './auth/loginView.js';
-import { renderSignup } from './auth/signupVew.js';
-import { renderError } from './pages/error.js';
-import { renderProfile } from './pages/profile.js';
-import { renderMenu } from './menu/menu.js';
-import { renderHome } from './pages/home.js';
-
-const root = document.getElementById('root');
-export const menuContainer = document.createElement('aside');
-const pageContainer = document.createElement('main');
-root.appendChild(pageContainer);
-
-const localStorage = window.localStorage;
-const sessionStorage = window.sessionStorage;
+import { state, ELEMENTS_CLASS } from "./consts.js";
+import { renderLogin } from "./auth/loginView.js";
+import { renderSignup } from "./auth/signupVew.js";
+import { renderError } from "./pages/error.js";
+import { renderProfile } from "./pages/profile.js";
+import { renderHome } from "./pages/home.js";
+import { LINKS } from "./consts.js";
+import { startA } from "./menu/menu.js";
 
 const config = {
-    menu: {
-        home: {
-            href: '/',
-            text: 'Домашняя страница',
-            render: renderHome
-        },
-        login: {
-            href: '/login',
-            text: 'Авторизация',
-            render: renderLogin
-        },
-        signup: {
-            href: '/signup',
-            text: 'Регистрация',
-            render: renderSignup
-        },
-        profile: {
-            href: '/profile',
-            text: 'Профиль',
-            render: renderProfile
-        },/*
-        feed: {
-            href: '/feed',
-            text: 'Лента',
-            render: renderFeed
-        },*/
-        error: {
-            href: '/error',
-            text: 'Ошибка',
-            render: renderError
-        }
-    }
+  menu: {
+    home: {
+      href: LINKS.HOME.HREF,
+      text: LINKS.HOME.TEXT,
+      render: renderHome,
+    },
+    login: {
+      href: LINKS.LOGIN.HREF,
+      text: LINKS.LOGIN.TEXT,
+      render: renderLogin,
+    },
+    signup: {
+      href: LINKS.SIGNUP.HREF,
+      text: LINKS.SIGNUP.TEXT,
+      render: renderSignup,
+    },
+    profile: {
+      href: LINKS.PROFILE.HREF,
+      text: LINKS.PROFILE.TEXT,
+      render: renderProfile,
+    },
+    error: {
+      href: LINKS.ERROR.HREF,
+      text: LINKS.ERROR.TEXT,
+      render: renderError,
+    },
+  },
 };
 
+export function goToPage(targetLinkMenu, statusErr = null) {
+  pageContainer.innerHTML = "";
 
-export function addUser(username, email = null, password, imagesrc = null) { // tmp
-    users[username] = {
-        email,
-        password,
-        imagesrc
-    };
+  state.activePageLink.classList.remove(ELEMENTS_CLASS.ACTIVE);
+  targetLinkMenu.classList.add(ELEMENTS_CLASS.ACTIVE);
+  state.activePageLink = targetLinkMenu;
+
+  const newPageElement =
+    config.menu[targetLinkMenu.dataset.section].render(statusErr);
+
+  pageContainer.appendChild(newPageElement);
+}
+if (state.activePageLink == state.menuElements.home) {
+  var root = startA(config.menu, state);
 }
 
-export function goToPage(targetLinkMenu, statusErr = null) {
-    pageContainer.innerHTML = "";
-  
-    state.activePageLink.classList.remove("active");
-    targetLinkMenu.classList.add("active");
-    state.activePageLink = targetLinkMenu;
-  
-    const newPageElement =
-      config.menu[targetLinkMenu.dataset.section].render(statusErr);
-  
-    pageContainer.appendChild(newPageElement);
-  }
-  
-  menuContainer.addEventListener("click", (event) => {
-    const { target } = event;
-    if (
-      target.tagName.toLowerCase() === "a" ||
-      target instanceof HTMLAnchorElement
-    ) {
-      event.preventDefault();
-  
-      goToPage(target);
-    }
-  });
-  
-  renderMenu(config.menu);
-  goToPage(state.menuElements.home);
- 
+const pageContainer = document.createElement("main");
+root.appendChild(pageContainer);
+goToPage(state.menuElements.home, null, pageContainer);

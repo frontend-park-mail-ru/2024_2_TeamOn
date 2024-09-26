@@ -1,9 +1,10 @@
 const http = require("http");
 const fs = require("fs");
 const express = require("express");
+
 const app = express();
 
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:8080");
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.header(
@@ -17,14 +18,8 @@ const server = http.createServer((req, res) => {
   const url = req.url;
   let filePath = `..${url}`;
 
-  if (
-    url == "/" ||
-    url == "/login" ||
-    url == "/signup" ||
-    url == "/profile" ||
-    url == "/feed" ||
-    url == "/error"
-  ) {
+  const URLS = ["/", "/login", "/signup", "/profile", "/error"];
+  if (URLS.includes(url)) {
     filePath = "../index.html";
   }
 
@@ -34,7 +29,6 @@ const server = http.createServer((req, res) => {
       res.end(`${err}`);
     } else {
       let headers = {};
-
       if (filePath.endsWith(".js")) {
         headers["Content-Type"] = "application/javascript";
       } else if (filePath.endsWith(".css")) {
