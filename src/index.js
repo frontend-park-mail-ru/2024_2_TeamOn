@@ -29,6 +29,16 @@ const config = {
       text: LINKS.PROFILE.TEXT,
       render: renderProfile,
     },
+    profile_payments: {
+      href: LINKS.PROFILE_PAYMENTS.HREF,
+      text: LINKS.PROFILE_PAYMENTS.TEXT,
+      render: renderProfile,
+    },
+    profile_post: {
+      href: LINKS.PROFILE_POST.HREF,
+      text: LINKS.PROFILE_POST.TEXT,
+      render: renderProfile,
+    },
     error: {
       href: LINKS.ERROR.HREF,
       text: LINKS.ERROR.TEXT,

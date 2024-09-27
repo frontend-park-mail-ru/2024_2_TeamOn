@@ -599,3 +599,12 @@ form input[type="text"]:focus {
   border-radius: 20px;
   cursor: pointer;
 }
+
+/* EYE */
+.password-eye {
+  left: 20pt;
+  cursor: pointer;
+  font-size: 18px;
+  color: #666;
+}
+

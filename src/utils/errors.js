@@ -1,4 +1,3 @@
-import DOMPurify from "dompurify";
 
 export function showError(input, message) {
   const error = document.createElement("div");

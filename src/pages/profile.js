@@ -1,8 +1,86 @@
 import { goToPage } from "../index.js";
-import { state, users } from "../consts.js";
+import { state } from "../consts.js";
 import { ELEMENTS, ELEMENTS_CLASS } from "../consts.js";
-function getCurrentUser() {
-  return state.currentUser;
+import { fetchAjax } from "../utils/fetchAjax.js";
+
+
+const dataTest = [
+  {
+    username: "Alexey",
+    subscriptions: 33,
+    status: "author",
+    followers: 90,
+  }
+]
+const payTest = [ 
+  {
+    amount: 12,
+  }
+]
+
+const postTest = [
+  {
+    title : "Tema",
+    text : "sTESTIKIKI",
+    media_content_url: "urlik",
+    createdAt: "2024-09-27T07:52:34.324Z",
+    updatedAt: "2024-09-27T07:52:34.324Z"
+  },
+  {
+    title : "Tema",
+    text : "sTESTIKIKI",
+    media_content_url: "urlik",
+    createdAt: "2024-09-27T07:52:34.324Z",
+    updatedAt: "2024-09-27T07:52:34.324Z"
+  },
+  {
+    title : "Tema",
+    text : "sTESTIKIKI",
+    media_content_url: "urlik",
+    createdAt: "2024-09-27T07:52:34.324Z",
+    updatedAt: "2024-09-27T07:52:34.324Z"
+  },
+  {
+    title : "Tema",
+    text : "sTESTIKIKI",
+    media_content_url: "urlik",
+    createdAt: "2024-09-27T07:52:34.324Z",
+    updatedAt: "2024-09-27T07:52:34.324Z"
+  },
+]
+function getPayments(){
+  let result = {};
+  fetchAjax("GET", "/profile/payments", {}, (response) => {
+    if (response.ok) {
+      response.json().then((data) => {
+        result = data;
+      });
+    }
+  });
+  return result
+}
+function getPosts(){
+  let result = {};
+  fetchAjax("GET", "/profile/posts", {}, (response) => {
+    if (response.ok) {
+      response.json().then((data) => {
+        result = data;
+      });
+    }
+  });
+  return result;
+}
+export function getCurrentUser() {
+  fetchAjax("GET", "/profile", {}, (response) => {
+    if (response.ok) {
+      response.json().then((data) => {
+        state.currentUser = data;
+        localStorage.setItem("login", data.username);
+        sessionStorage.setItem("login", data.username);
+      });
+    } 
+  });
+  return state.currentUser
 }
 
 function renderNavbar(conf) {
@@ -22,7 +100,7 @@ function renderNavbar(conf) {
   return nav;
 }
 
-function renderUserInfo(user) {
+function renderUserInfo(user, payments) {
   const left = document.createElement(ELEMENTS.DIV);
   left.classList.add(ELEMENTS_CLASS.LEFT);
 
@@ -37,11 +115,11 @@ function renderUserInfo(user) {
   info.classList.add(ELEMENTS_CLASS.INFO);
 
   const name = document.createElement(ELEMENTS.H2);
-  name.textContent = `${Object.keys(users).find((key) => users[key] === user)}`;
+  name.textContent = `${user.username}`;
   info.appendChild(name);
 
   const desc = document.createElement(ELEMENTS.P);
-  desc.textContent = "IT контент";
+  desc.textContent = `${user.status}`;
   info.appendChild(desc);
 
   leftbar.appendChild(info);
@@ -58,18 +136,18 @@ function renderUserInfo(user) {
   earnings.appendChild(earningsToday);
 
   const amount = document.createElement(ELEMENTS.P);
-  amount.textContent = " ";
+  amount.textContent = `${payments[0].amount}`;
   earnings.appendChild(amount);
 
   leftbar.appendChild(earnings);
   left.appendChild(leftbar);
   return left;
 }
-function renderUserStats() {
+function renderUserStats(user, posts) {
   const stats = document.createElement(ELEMENTS.DIV);
   stats.classList.add(ELEMENTS_CLASS.STATS);
 
-  const statsData = ["2 публикаций", "10000 подписчиков", "7 подписок"];
+  const statsData = [`${posts.length} посты`, `${user.subscriptions} подписчиков`, `${user.followers} подписок`];
 
   statsData.forEach((statText) => {
     const stat = document.createElement(ELEMENTS.DIV);
@@ -79,25 +157,9 @@ function renderUserStats() {
   return stats;
 }
 
-function renderUserPosts(user) {
+function renderUserPosts(user, posts) {
   const postsContainer = document.createElement(ELEMENTS.DIV);
   postsContainer.classList.add("posts");
-  const currentDate = new Date();
-  const day = String(currentDate.getDate()).padStart(2, "0");
-  const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-  const year = currentDate.getFullYear();
-  const posts = [
-    {
-      title: `${Object.keys(users).find((key) => users[key] === user)}`,
-      content: "Всем привет!",
-      date: `${day}.${month}.${year}`,
-    },
-    {
-      title: `${Object.keys(users).find((key) => users[key] === user)}`,
-      content: "Фронтенд рулит!",
-      date: `${day}.${month}.${year}`,
-    },
-  ];
 
   posts.forEach((post) => {
     const postDiv = document.createElement(ELEMENTS.DIV);
@@ -108,12 +170,12 @@ function renderUserPosts(user) {
     postDiv.appendChild(postTitle);
 
     const postContent = document.createElement(ELEMENTS.P);
-    postContent.textContent = post.content;
+    postContent.textContent = post.text;
     postDiv.appendChild(postContent);
 
     const postDate = document.createElement(ELEMENTS.DIV);
     postDate.classList.add(ELEMENTS_CLASS.DATE);
-    postDate.textContent = post.date;
+    postDate.textContent = post.createdAt;
     postDiv.appendChild(postDate);
 
     postsContainer.appendChild(postDiv);
@@ -124,7 +186,7 @@ function renderUserPosts(user) {
 
 function renderVibe(user) {
   const title = document.createElement(ELEMENTS.H1);
-  title.textContent = `${Object.keys(users).find((key) => users[key] === user)} о себе: Мы крутышки!`;
+  title.textContent = `${user.username} о себе: Мы крутышки!`;
   return title;
 }
 
@@ -145,8 +207,12 @@ function renderLogoutButton(Item) {
 export function renderProfile() {
   const formProfile = document.createElement(ELEMENTS.DIV);
   formProfile.classList.add(ELEMENTS_CLASS.FORM_PROFILE);
-
-  const user = getCurrentUser();
+  
+  
+  //const user = getCurrentUser();
+  const user = state.currentUser;
+  const payments = getPayments();
+  const posts = getPosts();
 
   const header = document.createElement(ELEMENTS.DIV);
   header.classList.add(ELEMENTS_CLASS.HEADER_PROFILE);
@@ -155,19 +221,19 @@ export function renderProfile() {
 
   header.appendChild(renderLogoutButton("login"));
 
-  header.appendChild(renderVibe(user));
+  header.appendChild(renderVibe(user[0]));
 
   const profile = document.createElement(ELEMENTS.DIV);
   profile.classList.add(ELEMENTS_CLASS.PROFILE);
 
-  profile.appendChild(renderUserInfo(user));
+  profile.appendChild(renderUserInfo(user[0], payments));
 
   const right = document.createElement(ELEMENTS.DIV);
   right.classList.add(ELEMENTS_CLASS.RIGHT);
 
-  right.appendChild(renderUserStats());
+  right.appendChild(renderUserStats(user[0], posts));
 
-  right.appendChild(renderUserPosts());
+  right.appendChild(renderUserPosts(user[0], posts));
   profile.appendChild(right);
 
   formProfile.appendChild(header);

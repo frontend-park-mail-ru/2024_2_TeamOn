@@ -19,6 +19,7 @@ export function renderLogin() {
   const registerLink = document.createElement(ELEMENTS.DIV);
   const registerLinkAnchor = document.createElement(ELEMENTS.A);
   const closeBtn = document.createElement(ELEMENTS.BUTTON);
+  const passwordEye = document.createElement(ELEMENTS.I);
 
   closeBtn.className = ELEMENTS_CLASS.CLOSE_BTN;
   closeBtn.innerHTML = "x";
@@ -39,11 +40,26 @@ export function renderLogin() {
   inputLogin.placeholder = "Введите email или имя пользователя";
   inputLogin.required = true;
   form.appendChild(inputLogin);
+  
+  passwordEye.className = ELEMENTS_CLASS.PASSWORD_EYE;
+  passwordEye.innerHTML = "&#128064;"; 
+  form.appendChild(passwordEye);
 
   inputPassword.type = "password";
   inputPassword.placeholder = "Введите пароль";
   inputPassword.required = true;
   form.appendChild(inputPassword);
+
+
+  passwordEye.addEventListener("click", () => {
+    if (inputPassword.type === "password") {
+      inputPassword.type = "text";
+      passwordEye.innerHTML = "&#128065;"; // change the eye icon to open eye
+    } else {
+      inputPassword.type = "password";
+      passwordEye.innerHTML = "&#128064;"; // change the eye icon to closed eye
+    }
+  });
 
   submitButton.type = "submit";
   submitButton.value = "Войти";

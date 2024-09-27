@@ -1,12 +1,14 @@
-import { state, users } from "../consts.js";
+import { state } from "../consts.js";
 import { goToPage } from "../index.js";
 import { ELEMENTS, ELEMENTS_CLASS } from "../consts.js";
 import { getItemLocalStorage } from "../utils/storages.js";
+import { getCurrentUser } from "./profile.js";
 
 export function renderHome() {
   const savedLogin = getItemLocalStorage("login");
-  if (savedLogin) {
-    state.currentUser = users[savedLogin];
+  const user = getCurrentUser()
+  if (user) {
+    state.currentUser = user;
     goToPage(state.menuElements.profile);
   } else {
     const container = document.createElement(ELEMENTS.DIV);

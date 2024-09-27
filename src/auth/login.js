@@ -1,21 +1,18 @@
-import { state, users, maxAttempts } from "../consts.js";
+import { state, maxAttempts } from "../consts.js";
 import { removeError, showError } from "../utils/errors.js";
 import { fetchAjax } from "../utils/fetchAjax.js";
 import { goToPage } from "../index.js";
 import { attempts } from "./loginView.js";
-DOMPurify = require('dompurify')
+import { getCurrentUser } from "../pages/profile.js";
 
 export function validateLoginForm(inputLogin, inputPassword) {
   let hasError = false;
-  if (
-    !users[DOMPurify.sanitize(inputLogin.value)] ||
-    users[DOMPurify.sanitize(inputLogin.value)].password !=
-      DOMPurify.sanitize(inputPassword.value)
-  ) {
+  const user = getCurrentUser();
+  if (!user) {
     showError(inputLogin, "");
     showError(
       inputPassword,
-      `Неправильный логин или пароль, осталось ${maxAttempts - attempts} попыток`,
+      `Неправильный логин или пароль, осталось попыток: ${maxAttempts - attempts}`,
     );
     if (checkAttempts(attempts)) {
       goToPage(state.menuElements.home);
@@ -57,9 +54,8 @@ export function authLogin(form, inputLogin, inputPassword) {
   ) {
     const password = DOMPurify.sanitize(inputPassword.value);
 
-    fetchAjax("POST", "/login", { password }, (response) => {
+    fetchAjax("POST", "/login", { inputLogin, password }, (response) => {
       if (response.ok) {
-        state.currentUser = users[DOMPurify.sanitize(inputLogin.value)];
         localStorage.setItem("login", DOMPurify.sanitize(inputLogin.value));
         sessionStorage.setItem("login", DOMPurify.sanitize(inputLogin.value));
         goToPage(state.menuElements.profile);

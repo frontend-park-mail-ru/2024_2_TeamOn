@@ -3,7 +3,7 @@ import { removeError, showError } from "../utils/errors.js";
 import { fetchAjax } from "../utils/fetchAjax.js";
 import { goToPage } from "../index.js";
 
-DOMPurify = require('dompurify')
+// DOMPurify = require('dompurify')
 
 export function validateSignupForm(
   form,
@@ -115,11 +115,10 @@ export function authSignup(
   if (
     !validateSignupForm(form, inputUsername, inputPassword, inputRepeatPassword)
   ) {
-    fetchAjax("POST", "/signup", { password }, (response) => {
+    fetchAjax("POST", "/signup", { inputUsername, password }, (response) => {
       if (response.ok) {
         goToPage(state.menuElements.login);
       }
-      alert(response.ok);
     });
   }
 }
