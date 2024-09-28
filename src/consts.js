@@ -58,10 +58,10 @@ export const ELEMENTS = {
 
 export const ELEMENTS_CLASS = {
   CLOSE_BTN: "close-btn",
-  CONTAINER_SIGNUP: "container-signup",
   BACKGROUND_SIGNUP: "background-signup",
   BACKGROUND_LOGIN: "background-login",
   LOGIN_CONTAINER: "login-container",
+  SIGNUP_CONTAINER: "container-signup",
   SIGNUP_LINK: "register-link",
   LOGIN_LINK: "login-link",
   ACTIVE: "active",

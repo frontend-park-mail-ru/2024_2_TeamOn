@@ -228,6 +228,7 @@ form input[type="text"]:focus {
 .login-container .register-link a {
   color: #007bff;
   text-decoration: none;
+  cursor: pointer;
 }
 .login-container .register-link a:hover {
   text-decoration: underline;
@@ -251,14 +252,14 @@ form input[type="text"]:focus {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
   background: rgba(255, 255, 255, 0.8);
-  border: 1px solid #ccc;
   border-radius: 20px;
-  box-sizing: border-box;
   padding: 40px;
   width: 300px;
   text-align: center;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
 }
 .container-signup h2 {
   margin-bottom: 20px;
@@ -296,6 +297,7 @@ form input[type="text"]:focus {
 .container-signup .login-link a {
   color: #007bff;
   text-decoration: none;
+  cursor: pointer;
 }
 .container-signup .login-link a:hover {
   text-decoration: underline;

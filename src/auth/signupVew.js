@@ -7,8 +7,10 @@ export function renderSignup() {
   const backgroundLayer = document.createElement(ELEMENTS.DIV);
   backgroundLayer.className = ELEMENTS_CLASS.BACKGROUND_SIGNUP;
 
+  const signupContainer = document.createElement(ELEMENTS.DIV);
+  signupContainer.className = ELEMENTS_CLASS.SIGNUP_CONTAINER;
+
   const form = document.createElement(ELEMENTS.FORM);
-  form.className = ELEMENTS_CLASS.CONTAINER_SIGNUP;
 
   const closeBtn = document.createElement(ELEMENTS.BUTTON);
 
@@ -17,6 +19,8 @@ export function renderSignup() {
   closeBtn.onclick = () => {
     goToPage(state.menuElements.home);
   };
+
+ 
 
   const h2 = document.createElement(ELEMENTS.H2);
   h2.textContent = "Регистрация";
@@ -46,12 +50,13 @@ export function renderSignup() {
   buttonRegister.value = "Зарегистрироваться";
   buttonRegister.type = "submit";
 
-  form.append(closeBtn);
-  form.appendChild(h2);
+  signupContainer.append(closeBtn);
+  signupContainer.appendChild(h2);
+  signupContainer.appendChild(form);
+  signupContainer.appendChild(loginLink);
   form.appendChild(inputUsername);
   form.appendChild(inputPassword);
   form.appendChild(inputRepeatPassword);
-  form.appendChild(loginLink);
   form.appendChild(buttonRegister);
 
   loginLinkAnchor.addEventListener("click", () => {
@@ -75,6 +80,6 @@ export function renderSignup() {
     validateSignupForm(form, inputUsername, inputPassword, inputRepeatPassword);
   });
 
-  backgroundLayer.appendChild(form);
+  backgroundLayer.appendChild(signupContainer);
   return backgroundLayer;
 }
