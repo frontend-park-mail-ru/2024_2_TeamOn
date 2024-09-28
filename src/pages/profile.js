@@ -74,9 +74,9 @@ export function getCurrentUser() {
     if (response.ok) {
       response.json().then((data) => {
         state.currentUser = data;
-        localStorage.setItem("login", data.username);
-        sessionStorage.setItem("login", data.username);
       });
+    } else if (response.status === 401) {
+      goToPage(state.menuElements.login);
     }
   });
   return state.currentUser;
@@ -211,8 +211,7 @@ export function renderProfile() {
   const formProfile = document.createElement(ELEMENTS.DIV);
   formProfile.classList.add(ELEMENTS_CLASS.FORM_PROFILE);
 
-  //const user = getCurrentUser();
-  const user = state.currentUser;
+  const user = getCurrentUser();
   const payments = getPayments();
   const posts = getPosts();
 
@@ -221,7 +220,7 @@ export function renderProfile() {
 
   header.appendChild(renderNavbar());
 
-  header.appendChild(renderLogoutButton("login"));
+  header.appendChild(renderLogoutButton(user.username));
 
   header.appendChild(renderVibe(user[0]));
 

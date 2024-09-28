@@ -113,15 +113,17 @@ function validationErrorSignupForm(
   showError(inputRepeatPassword, `Пользователь уже существует`);
 }
 export function authSignup(form, username, password, inputRepeatPassword) {
-  const passwordValue = DOMPurify.sanitize(password.value);
   if (!validateSignupForm(form, username, password, inputRepeatPassword)) {
     fetchAjax(
       "POST",
       "/api/auth/register",
       { username: username.value, password: password.value },
       (response) => {
-        if (response.ok && response.status === 200) {
-          goToPage(state.menuElements.login);
+        if (response.ok) {
+          localStorage.setItem(DOMPurify.sanitize(username.value), "1");
+          sessionStorage.setItem(DOMPurify.sanitize(username.value), "1");
+
+          goToPage(state.menuElements.profile);
         } else if (response.status === 400) {
           validationErrorSignupForm(username, password, inputRepeatPassword);
         }

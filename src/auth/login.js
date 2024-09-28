@@ -46,8 +46,8 @@ export function authLogin(form, inputLogin, inputPassword) {
       { username: inputLogin.value, password: inputPassword.value },
       (response) => {
         if (response.ok) {
-          localStorage.setItem("login", DOMPurify.sanitize(inputLogin.value));
-          sessionStorage.setItem("login", DOMPurify.sanitize(inputLogin.value));
+          localStorage.setItem(DOMPurify.sanitize(inputLogin.value), "1");
+          sessionStorage.setItem(DOMPurify.sanitize(inputLogin.value), "1");
           goToPage(state.menuElements.profile);
         } else if (response.status === 400) {
           validateErrorLoginForm(inputLogin, inputPassword);

@@ -63,6 +63,7 @@ export const ELEMENTS_CLASS = {
   BACKGROUND_LOGIN: "background-login",
   LOGIN_CONTAINER: "login-container",
   SIGNUP_LINK: "register-link",
+  LOGIN_LINK: "login-link",
   ACTIVE: "active",
   NOTFOUND: "notfound",
   NOTFOUND_404: "notfound-404",

@@ -2,7 +2,6 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  /* overflow: hidden; */
   scrollbar-width: none;
 }
 
@@ -172,7 +171,6 @@ form input[type="text"]:focus {
   left: 0;
   width: 100%;
   height: 100%;
-  /* background-color: #f0f0f0;  */
   background: url("photos/login.png");
   background-size: cover;
   background-position: center center;
@@ -180,10 +178,10 @@ form input[type="text"]:focus {
 }
 
 .login-container {
-  position: absolute; /* Add this to position the container absolutely */
-  top: 50%; /* Move the container 50% from the top */
-  left: 50%; /* Move the container 50% from the left */
-  transform: translate(-50%, -50%); /* Translate the container to center it */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: rgba(255, 255, 255, 0.8);
   border-radius: 20px;
   padding: 40px;
@@ -243,17 +241,16 @@ form input[type="text"]:focus {
   left: 0;
   width: 100%;
   height: 100%;
-  /* background-color: #f0f0f0;  */
   background: url("photos/signup.png");
   background-size: cover;
   background-position: center center;
   z-index: 1;
 }
 .container-signup {
-  position: absolute; /* Add this to position the container absolutely */
-  top: 50%; /* Move the container 50% from the top */
-  left: 50%; /* Move the container 50% from the left */
-  transform: translate(-50%, -50%); /* Translate the container to center it */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid #ccc;
@@ -289,6 +286,19 @@ form input[type="text"]:focus {
 }
 .container-signup input[type="submit"]:hover {
   background-color: #333;
+}
+.container-signup .login-link {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+}
+.container-signup .login-link a {
+  color: #007bff;
+  text-decoration: none;
+}
+.container-signup .login-link a:hover {
+  text-decoration: underline;
 }
 
 /* ERROR */
@@ -407,25 +417,6 @@ form input[type="text"]:focus {
   text-decoration: none;
 }
 
-/* .header-profile .logout {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background-color: white;
-    color: gray;
-    padding: 10px 20px;
-    border-radius: 25px;
-    border: 1px solid gray;
-    font-size: 14px;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s;
-  }
-  .header-profile .logout:hover {
-    background: gray;
-    color: white;
-  } */
-
 .header-profile .logout {
   position: absolute;
   top: 20px;
@@ -449,36 +440,11 @@ form input[type="text"]:focus {
   color: white;
 }
 
-/* .home-buttons {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    gap: 10px;
-}
-.home-button {
-    padding: 10px 20px;
-    border-radius: 25px;
-    border: 1px solid gray;
-    background: white;
-    color: gray;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s;
-}
-.home-button:hover {
-    background: gray;
-    color: white;
-} */
-
 .image-profile {
   background-image: url("photos/timon.jpg");
-  /* margin-top: -30px; */
 }
 .profile {
   display: flex;
-  /* padding: 20px; */
-
   z-index: 2;
   background-color: rgb(243, 243, 243);
   width: 100%;
@@ -504,7 +470,6 @@ form input[type="text"]:focus {
   border: 3px solid #e0e0e0;
 }
 .profile .left-bar {
-  /* padding: 2%; */
   background-color: white;
   border-radius: 10px;
 }
@@ -559,7 +524,6 @@ form input[type="text"]:focus {
   background-color: white;
   padding: 20px;
   border-radius: 10px;
-  /* margin-right: 170pt; */
 }
 
 .profile .right .posts .post {
@@ -602,7 +566,9 @@ form input[type="text"]:focus {
 
 /* EYE */
 .password-eye {
-  left: 20pt;
+  position: relative;
+  left: 80pt;
+  top: 30pt;
   cursor: pointer;
   font-size: 18px;
   color: #666;

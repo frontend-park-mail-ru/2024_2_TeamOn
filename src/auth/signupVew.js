@@ -33,6 +33,15 @@ export function renderSignup() {
   inputRepeatPassword.type = "password";
   inputRepeatPassword.placeholder = "Повторите пароль";
 
+  const loginLink = document.createElement(ELEMENTS.DIV);
+  loginLink.className = ELEMENTS_CLASS.LOGIN_LINK;
+  loginLink.textContent = "У вас аккаунт? ";
+
+  const loginLinkAnchor = document.createElement(ELEMENTS.A);
+  loginLinkAnchor.textContent = "Войти";
+
+  loginLink.appendChild(loginLinkAnchor);
+
   const buttonRegister = document.createElement(ELEMENTS.INPUT);
   buttonRegister.value = "Зарегистрироваться";
   buttonRegister.type = "submit";
@@ -42,7 +51,12 @@ export function renderSignup() {
   form.appendChild(inputUsername);
   form.appendChild(inputPassword);
   form.appendChild(inputRepeatPassword);
+  form.appendChild(loginLink);
   form.appendChild(buttonRegister);
+
+  loginLinkAnchor.addEventListener("click", () => {
+    goToPage(state.menuElements.login);
+  });
 
   buttonRegister.addEventListener("click", (e) => {
     e.preventDefault();
