@@ -6,7 +6,7 @@ import { getCurrentUser } from "./profile.js";
 
 export function renderHome() {
   const savedLogin = getItemLocalStorage("login");
-  const user = getCurrentUser()
+  const user = getCurrentUser();
   if (user) {
     state.currentUser = user;
     goToPage(state.menuElements.profile);

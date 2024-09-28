@@ -3,26 +3,8 @@ import { removeError, showError } from "../utils/errors.js";
 import { fetchAjax } from "../utils/fetchAjax.js";
 import { goToPage } from "../index.js";
 import { attempts } from "./loginView.js";
-import { getCurrentUser } from "../pages/profile.js";
 
-export function validateLoginForm(inputLogin, inputPassword) {
-  let hasError = false;
-  const user = getCurrentUser();
-  if (!user) {
-    showError(inputLogin, "");
-    showError(
-      inputPassword,
-      `Неправильный логин или пароль, осталось попыток: ${maxAttempts - attempts}`,
-    );
-    if (checkAttempts(attempts)) {
-      goToPage(state.menuElements.home);
-    }
-    hasError = true;
-  }
-  return hasError;
-}
-
-export function validateErrorLoginForm(form, inputLogin, inputPassword) {
+export function validateLoginForm(form, inputLogin, inputPassword) {
   const errors = form.querySelectorAll(".error");
   for (let i = 0; i < errors.length; i++) {
     errors[i].remove();
@@ -46,21 +28,32 @@ export function validateErrorLoginForm(form, inputLogin, inputPassword) {
 
   return hasError;
 }
-
+function validateErrorLoginForm(inputLogin, inputPassword) {
+  showError(inputLogin, "");
+  showError(
+    inputPassword,
+    `Неправильный логин или пароль, осталось попыток: ${maxAttempts - attempts}`,
+  );
+  if (checkAttempts(attempts)) {
+    goToPage(state.menuElements.home);
+  }
+}
 export function authLogin(form, inputLogin, inputPassword) {
-  if (
-    !validateErrorLoginForm(form, inputLogin, inputPassword) &&
-    !validateLoginForm(inputLogin, inputPassword)
-  ) {
-    const password = DOMPurify.sanitize(inputPassword.value);
-
-    fetchAjax("POST", "/login", { inputLogin, password }, (response) => {
-      if (response.ok) {
-        localStorage.setItem("login", DOMPurify.sanitize(inputLogin.value));
-        sessionStorage.setItem("login", DOMPurify.sanitize(inputLogin.value));
-        goToPage(state.menuElements.profile);
-      }
-    });
+  if (!validateLoginForm(form, inputLogin, inputPassword)) {
+    fetchAjax(
+      "POST",
+      "/api/auth/login",
+      { username: inputLogin.value, password: inputPassword.value },
+      (response) => {
+        if (response.ok) {
+          localStorage.setItem("login", DOMPurify.sanitize(inputLogin.value));
+          sessionStorage.setItem("login", DOMPurify.sanitize(inputLogin.value));
+          goToPage(state.menuElements.profile);
+        } else if (response.status === 400) {
+          validateErrorLoginForm(inputLogin, inputPassword);
+        }
+      },
+    );
   }
 }
 

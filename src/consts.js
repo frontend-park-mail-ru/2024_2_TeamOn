@@ -39,11 +39,11 @@ export const LINKS = {
     TEXT: "Домашняя страница",
   },
   LOGIN: {
-    HREF: "/api/auth/login",
+    HREF: "/auth/login",
     TEXT: "Авторизация",
   },
   SIGNUP: {
-    HREF: "/api/auth/register",
+    HREF: "/auth/register",
     TEXT: "Регистрация",
   },
   PROFILE: {
@@ -51,11 +51,11 @@ export const LINKS = {
     TEXT: "Профиль",
   },
   PROFILE_PAYMENTS: {
-    HREF: "/profile",
+    HREF: "/profile/payments",
     TEXT: "Профиль",
   },
   PROFILE_POST: {
-    HREF: "/profile",
+    HREF: "/profile/posts",
     TEXT: "Профиль",
   },
   ERROR: {

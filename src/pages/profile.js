@@ -3,52 +3,51 @@ import { state } from "../consts.js";
 import { ELEMENTS, ELEMENTS_CLASS } from "../consts.js";
 import { fetchAjax } from "../utils/fetchAjax.js";
 
-
 const dataTest = [
   {
     username: "Alexey",
     subscriptions: 33,
     status: "author",
     followers: 90,
-  }
-]
-const payTest = [ 
+  },
+];
+const payTest = [
   {
     amount: 12,
-  }
-]
+  },
+];
 
 const postTest = [
   {
-    title : "Tema",
-    text : "sTESTIKIKI",
+    title: "Tema",
+    text: "sTESTIKIKI",
     media_content_url: "urlik",
     createdAt: "2024-09-27T07:52:34.324Z",
-    updatedAt: "2024-09-27T07:52:34.324Z"
+    updatedAt: "2024-09-27T07:52:34.324Z",
   },
   {
-    title : "Tema",
-    text : "sTESTIKIKI",
+    title: "Tema",
+    text: "sTESTIKIKI",
     media_content_url: "urlik",
     createdAt: "2024-09-27T07:52:34.324Z",
-    updatedAt: "2024-09-27T07:52:34.324Z"
+    updatedAt: "2024-09-27T07:52:34.324Z",
   },
   {
-    title : "Tema",
-    text : "sTESTIKIKI",
+    title: "Tema",
+    text: "sTESTIKIKI",
     media_content_url: "urlik",
     createdAt: "2024-09-27T07:52:34.324Z",
-    updatedAt: "2024-09-27T07:52:34.324Z"
+    updatedAt: "2024-09-27T07:52:34.324Z",
   },
   {
-    title : "Tema",
-    text : "sTESTIKIKI",
+    title: "Tema",
+    text: "sTESTIKIKI",
     media_content_url: "urlik",
     createdAt: "2024-09-27T07:52:34.324Z",
-    updatedAt: "2024-09-27T07:52:34.324Z"
+    updatedAt: "2024-09-27T07:52:34.324Z",
   },
-]
-function getPayments(){
+];
+function getPayments() {
   let result = {};
   fetchAjax("GET", "/profile/payments", {}, (response) => {
     if (response.ok) {
@@ -57,9 +56,9 @@ function getPayments(){
       });
     }
   });
-  return result
+  return result;
 }
-function getPosts(){
+function getPosts() {
   let result = {};
   fetchAjax("GET", "/profile/posts", {}, (response) => {
     if (response.ok) {
@@ -78,9 +77,9 @@ export function getCurrentUser() {
         localStorage.setItem("login", data.username);
         sessionStorage.setItem("login", data.username);
       });
-    } 
+    }
   });
-  return state.currentUser
+  return state.currentUser;
 }
 
 function renderNavbar(conf) {
@@ -147,7 +146,11 @@ function renderUserStats(user, posts) {
   const stats = document.createElement(ELEMENTS.DIV);
   stats.classList.add(ELEMENTS_CLASS.STATS);
 
-  const statsData = [`${posts.length} посты`, `${user.subscriptions} подписчиков`, `${user.followers} подписок`];
+  const statsData = [
+    `${posts.length} посты`,
+    `${user.subscriptions} подписчиков`,
+    `${user.followers} подписок`,
+  ];
 
   statsData.forEach((statText) => {
     const stat = document.createElement(ELEMENTS.DIV);
@@ -207,8 +210,7 @@ function renderLogoutButton(Item) {
 export function renderProfile() {
   const formProfile = document.createElement(ELEMENTS.DIV);
   formProfile.classList.add(ELEMENTS_CLASS.FORM_PROFILE);
-  
-  
+
   //const user = getCurrentUser();
   const user = state.currentUser;
   const payments = getPayments();

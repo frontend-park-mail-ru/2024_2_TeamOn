@@ -3,8 +3,6 @@ import { removeError, showError } from "../utils/errors.js";
 import { fetchAjax } from "../utils/fetchAjax.js";
 import { goToPage } from "../index.js";
 
-// DOMPurify = require('dompurify')
-
 export function validateSignupForm(
   form,
   inputUsername,
@@ -105,20 +103,29 @@ export function validateSignupForm(
 
   return hasError;
 }
-export function authSignup(
-  form,
-  inputUsername,
+function validationErrorSignupForm(
+  inputLogin,
   inputPassword,
   inputRepeatPassword,
 ) {
-  const password = DOMPurify.sanitize(inputPassword.value);
-  if (
-    !validateSignupForm(form, inputUsername, inputPassword, inputRepeatPassword)
-  ) {
-    fetchAjax("POST", "/signup", { inputUsername, password }, (response) => {
-      if (response.ok) {
-        goToPage(state.menuElements.login);
-      }
-    });
+  showError(inputLogin, "");
+  showError(inputPassword, "");
+  showError(inputRepeatPassword, `Пользователь уже существует`);
+}
+export function authSignup(form, username, password, inputRepeatPassword) {
+  const passwordValue = DOMPurify.sanitize(password.value);
+  if (!validateSignupForm(form, username, password, inputRepeatPassword)) {
+    fetchAjax(
+      "POST",
+      "/api/auth/register",
+      { username: username.value, password: password.value },
+      (response) => {
+        if (response.ok && response.status === 200) {
+          goToPage(state.menuElements.login);
+        } else if (response.status === 400) {
+          validationErrorSignupForm(username, password, inputRepeatPassword);
+        }
+      },
+    );
   }
 }

@@ -1,6 +1,6 @@
 import { state } from "../consts.js";
 import { goToPage } from "../index.js";
-import { authLogin, validateErrorLoginForm } from "./login.js";
+import { authLogin, validateLoginForm } from "./login.js";
 import { ELEMENTS, ELEMENTS_CLASS } from "../consts.js";
 
 export const form = document.createElement(ELEMENTS.FORM);
@@ -40,16 +40,15 @@ export function renderLogin() {
   inputLogin.placeholder = "Введите email или имя пользователя";
   inputLogin.required = true;
   form.appendChild(inputLogin);
-  
+
   passwordEye.className = ELEMENTS_CLASS.PASSWORD_EYE;
-  passwordEye.innerHTML = "&#128064;"; 
+  passwordEye.innerHTML = "&#128064;";
   form.appendChild(passwordEye);
 
   inputPassword.type = "password";
   inputPassword.placeholder = "Введите пароль";
   inputPassword.required = true;
   form.appendChild(inputPassword);
-
 
   passwordEye.addEventListener("click", () => {
     if (inputPassword.type === "password") {
@@ -90,7 +89,7 @@ export function renderLogin() {
   });
   form.addEventListener("input", (e) => {
     e.preventDefault();
-    validateErrorLoginForm(form, inputLogin, inputPassword);
+    validateLoginForm(form, inputLogin, inputPassword);
   });
 
   backgroundLayer.appendChild(loginContainer);
