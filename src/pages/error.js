@@ -1,5 +1,9 @@
 import { ELEMENTS, ELEMENTS_CLASS } from "../consts.js";
 
+/**
+ * Обработка ошибок
+ * @param {*} statusErr Статус ошибки
+ */
 export function renderError(statusErr = 404) {
   const notFoundDiv = document.createElement(ELEMENTS.DIV);
   const notFoundContainer = document.createElement(ELEMENTS.DIV);
@@ -19,7 +23,9 @@ export function renderError(statusErr = 404) {
 
   h2.textContent = "Страница не найдена";
 
-  a.href = "/";
+  a.onclick = () => {
+    goToPage(state.menuElements.home);
+  };
   span.className = ELEMENTS_CLASS.ARROW;
   a.appendChild(span);
   a.appendChild(document.createTextNode("Вернуться на главную"));

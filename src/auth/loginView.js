@@ -3,9 +3,12 @@ import { goToPage } from "../index.js";
 import { authLogin, validateLoginForm } from "./login.js";
 import { ELEMENTS, ELEMENTS_CLASS } from "../consts.js";
 
-export const form = document.createElement(ELEMENTS.FORM);
 export let attempts = 0;
 
+/**
+ * Рендерит форму входа на страницу.
+ * @returns
+ */
 export function renderLogin() {
   const backgroundLayer = document.createElement(ELEMENTS.DIV);
   backgroundLayer.className = ELEMENTS_CLASS.BACKGROUND_LOGIN;

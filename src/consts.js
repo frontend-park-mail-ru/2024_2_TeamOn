@@ -1,11 +1,28 @@
+/**
+ * Объект, содержащий состояние приложения.
+ * @param {*} activePageLink Активная ссылка в меню
+ * @param {*} menuElements Элементы меню
+ * @param {*} currentUser Текущий пользователь
+ */
 export const state = {
   activePageLink: null,
   menuElements: {},
   currentUser: null,
 };
 
+/**
+ *Максимальное количество попыток авторизации.
+ */
 export const maxAttempts = 3;
 
+/**
+ * Объект, содержащий ссылки на страницы приложения.
+ * @param {*} HOME Ссылка на домашнюю страницу
+ * @param {*} LOGIN Ссылка на страницу авторизации
+ * @param {*} SIGNUP Ссылка на страницу регистрации
+ * @param {*} PROFILE Ссылка на страницу профиля
+ * @param {*} ERROR Ссылка на страницу ошибки
+ */
 export const LINKS = {
   HOME: {
     HREF: "/",
@@ -23,20 +40,15 @@ export const LINKS = {
     HREF: "/profile",
     TEXT: "Профиль",
   },
-  PROFILE_PAYMENTS: {
-    HREF: "/profile/payments",
-    TEXT: "Профиль",
-  },
-  PROFILE_POST: {
-    HREF: "/profile/posts",
-    TEXT: "Профиль",
-  },
   ERROR: {
     HREF: "/error",
     TEXT: "Ошибка",
   },
 };
 
+/**
+ * Объект, содержащий теги HTML-элементов.
+ */
 export const ELEMENTS = {
   BUTTON: "button",
   INPUT: "input",
@@ -56,6 +68,9 @@ export const ELEMENTS = {
   I: "i",
 };
 
+/**
+ * Объект, содержащий классы HTML-элементов.
+ */
 export const ELEMENTS_CLASS = {
   CLOSE_BTN: "close-btn",
   BACKGROUND_SIGNUP: "background-signup",

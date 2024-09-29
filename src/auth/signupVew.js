@@ -3,6 +3,10 @@ import { goToPage } from "../index.js";
 import { authSignup, validateSignupForm } from "./signup.js";
 import { ELEMENTS, ELEMENTS_CLASS } from "../consts.js";
 
+/**
+ * Функция рендерит форму регистрации.
+ * @returns
+ */
 export function renderSignup() {
   const backgroundLayer = document.createElement(ELEMENTS.DIV);
   backgroundLayer.className = ELEMENTS_CLASS.BACKGROUND_SIGNUP;
@@ -19,8 +23,6 @@ export function renderSignup() {
   closeBtn.onclick = () => {
     goToPage(state.menuElements.home);
   };
-
- 
 
   const h2 = document.createElement(ELEMENTS.H2);
   h2.textContent = "Регистрация";

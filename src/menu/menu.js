@@ -1,5 +1,11 @@
 import { ELEMENTS, ELEMENTS_CLASS } from "../consts.js";
 
+/**
+ * Функция инициализирует приложение.
+ * @param {*} conf Конфигурационный объект
+ * @param {*} state Объект состояния приложения
+ * @returns Корневой элемент приложения
+ */
 export function startA(conf, state) {
   function renderMenu(conf) {
     Object.entries(conf).forEach(([key, { href, text }], index) => {

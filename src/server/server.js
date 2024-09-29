@@ -4,6 +4,13 @@ const express = require("express");
 
 const app = express();
 
+/**
+ * Мiddleware CORS для включения общих ресурсов между источниками
+ * Установка заголовка Access-Control-Allow-Origin для разрешения запросов с http://localhost:8080
+ * Установка заголовка Access-Control-Allow-Methods для разрешения запросов GET, POST и OPTIONS
+ * Установка заголовка Access-Control-Allow-Headers для разрешения заголовков Origin, X-Requested-With, Content-Type, Accept
+ * Установка заголовка Access-Control-Allow-Credentials для разрешения отправки учетных данных
+ */
 app.use((req, res) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:8080");
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
@@ -14,6 +21,9 @@ app.use((req, res) => {
   res.header("Access-Control-Allow-Credentials", "true");
 });
 
+/**
+ * Создание сервера HTTP
+ */
 const server = http.createServer((req, res) => {
   const url = req.url;
   let filePath = `..${url}`;

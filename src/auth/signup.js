@@ -2,7 +2,16 @@ import { state } from "../consts.js";
 import { removeError, showError } from "../utils/errors.js";
 import { fetchAjax } from "../utils/fetchAjax.js";
 import { goToPage } from "../index.js";
+import { addItemLocalStorage } from "../utils/storages.js";
 
+/**
+ * Функция валидации регистрационной формы
+ * @param {*} form Форма регистрации
+ * @param {*} inputUsername Поле ввода логина
+ * @param {*} inputPassword Поле ввода пароля
+ * @param {*} inputRepeatPassword Поле ввода повторного пароля
+ * @returns true, если форма содержит ошибки, false - если форма корректна
+ */
 export function validateSignupForm(
   form,
   inputUsername,
@@ -103,6 +112,12 @@ export function validateSignupForm(
 
   return hasError;
 }
+/**
+ * Выводит ошибку регистрации, если пользователь уже существует.
+ * @param {*} inputLogin Поле ввода логина
+ * @param {*} inputPassword Поле ввода пароля
+ * @param {*} inputRepeatPassword Поле ввода повторного пароля
+ */
 function validationErrorSignupForm(
   inputLogin,
   inputPassword,
@@ -112,6 +127,14 @@ function validationErrorSignupForm(
   showError(inputPassword, "");
   showError(inputRepeatPassword, `Пользователь уже существует`);
 }
+
+/**
+ * Регистрирует нового пользователя, если форма регистрации корректна.
+ * @param {*} form Форма регистрации
+ * @param {*} username Поле ввода логина
+ * @param {*} password Поле ввода пароля
+ * @param {*} inputRepeatPassword Поле ввода повторного пароля
+ */
 export function authSignup(form, username, password, inputRepeatPassword) {
   if (!validateSignupForm(form, username, password, inputRepeatPassword)) {
     fetchAjax(
@@ -120,9 +143,7 @@ export function authSignup(form, username, password, inputRepeatPassword) {
       { username: username.value, password: password.value },
       (response) => {
         if (response.ok) {
-          localStorage.setItem(DOMPurify.sanitize(username.value), "1");
-          sessionStorage.setItem(DOMPurify.sanitize(username.value), "1");
-
+          addItemLocalStorage(DOMPurify.sanitize(username.value));
           goToPage(state.menuElements.profile);
         } else if (response.status === 400) {
           validationErrorSignupForm(username, password, inputRepeatPassword);
