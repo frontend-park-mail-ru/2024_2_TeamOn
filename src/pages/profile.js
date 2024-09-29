@@ -94,7 +94,7 @@ function renderUserInfo(user, payments = null) {
   if (!payments) {
     amount.textContent = `0.0 ₽`;
   } else {
-    amount.textContent = `${payments.amount}`;
+    amount.textContent = `sssd${payments.amount}`;
   }
   earnings.appendChild(amount);
 
@@ -113,8 +113,9 @@ function renderUserStats(user, posts = null) {
   stats.classList.add(ELEMENTS_CLASS.STATS);
 
   const statsData = [
-    `${user.subscriptions} подписчиков`,
-    `${user.followers} подписок`,
+    `посты: ${user.posts_amount}`,
+    `подписчики: ${user.subscriptions}`,
+    `подписки: ${user.followers}`,
   ];
 
   statsData.forEach((statText) => {
@@ -131,7 +132,7 @@ function renderUserStats(user, posts = null) {
  */
 function renderVibe(user) {
   const title = document.createElement(ELEMENTS.H1);
-  title.textContent = `${user.username} о себе: Мы крутышки!`;
+  title.textContent = `${user.username} о себе: ${user.status}`;
   return title;
 }
 
