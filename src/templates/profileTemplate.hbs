@@ -1,0 +1,42 @@
+<div class="{{ELEMENTS_CLASS.FORM_PROFILE}}">
+    <div class="{{ELEMENTS_CLASS.HEADER_PROFILE}}">
+        <nav>
+            {{#each navLinks}}
+                <a href="#" class="{{#if (eq this ../activePage)}}bold{{/if}}">{{this}}</a>
+            {{/each}}
+        </nav>
+        {{{logoutButton}}}
+    </div>
+    <div class="{{ELEMENTS_CLASS.PROFILE}}">
+        <div class="{{ELEMENTS_CLASS.LEFT}}">
+            <div class="{{ELEMENTS_CLASS.LEFT_BAR}}">
+                <img src="{{user.profileImage}}" class="{{ELEMENTS_CLASS.IMAGE_PROFILE}}" alt="Profile Image">
+                <div class="{{ELEMENTS_CLASS.INFO}}">
+                    <h2>{{user.username}}</h2>
+                    <p>{{user.status}}</p>
+                </div>
+                <div class="{{ELEMENTS_CLASS.EARNINGS}}">
+                    <h3>Выплаты:</h3>
+                    <p>За сегодня вы заработали:</p>
+                    <p>{{payments.[0].amount}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="{{ELEMENTS_CLASS.RIGHT}}">
+            <div class="{{ELEMENTS_CLASS.STATS}}">
+                <div>{{posts.length}} постов</div>
+                <div>{{user.subscriptions}} подписчиков</div>
+                <div>{{user.followers}} подписок</div>
+            </div>
+            <div class="posts">
+                {{#each posts}}
+                    <div class="{{ELEMENTS_CLASS.POST}}">
+                        <h4>{{this.title}}</h4>
+                        <p>{{this.text}}</p>
+                        <div class="{{ELEMENTS_CLASS.DATE}}">{{this.createdAt}}</div>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>

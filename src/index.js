@@ -1,6 +1,6 @@
 import { state, ELEMENTS_CLASS } from "./consts.js";
 import { renderLogin } from "./auth/loginView.js";
-import { renderSignup } from "./auth/signupVew.js";
+import { renderSignup } from "./auth/signupView.js";
 import { renderError } from "./pages/error.js";
 import { renderProfile } from "./pages/profile.js";
 import { renderHome } from "./pages/home.js";

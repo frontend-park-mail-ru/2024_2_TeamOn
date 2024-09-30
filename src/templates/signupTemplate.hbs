@@ -1,0 +1,12 @@
+<script id="signup-template" type="text/x-handlebars-template">
+  <div class="{{ELEMENTS_CLASS.BACKGROUND_SIGNUP}}">
+    <form class="{{ELEMENTS_CLASS.CONTAINER_SIGNUP}}" id="signupForm">
+      <button class="{{ELEMENTS_CLASS.CLOSE_BTN}}" onclick="goToPage(state.menuElements.home)">x</button>
+      <h2>Регистрация</h2>
+      <input type="text" id="inputUsername" placeholder="Введите имя пользователя" required>
+      <input type="password" id="inputPassword" placeholder="Придумайте пароль (минимум 8 символов)" required>
+      <input type="password" id="inputRepeatPassword" placeholder="Повторите пароль" required>
+      <input type="submit" value="Зарегистрироваться" id="registerButton">
+    </form>
+  </div>
+</script>
