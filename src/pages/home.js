@@ -1,40 +1,46 @@
-import { state, users } from '../consts.js';
-import {goToPage} from '../index.js'
+import { state } from "../consts.js";
+import { goToPage } from "../index.js";
+import { ELEMENTS, ELEMENTS_CLASS } from "../consts.js";
+import { getItemLocalStorage } from "../utils/storages.js";
 
-export function renderHome(conf=null, id = null) {
+/**
+ * Обработка домашней страницы
+ */
+export function renderHome() {
+  const hasLoggedInUser = Array.from({ length: localStorage.length }).some(
+    (_, i) => getItemLocalStorage(localStorage.key(i)) === "1",
+  );
 
-    const savedLogin = localStorage.getItem("login");
-    if (savedLogin) {
-      state.currentUser = users[savedLogin];
-      goToPage(state.menuElements.profile);
-    } else {
-      const container = document.createElement("div");
-      const overlay = document.createElement("div");
-      const header = document.createElement("div");
-      const buttons = document.createElement("div");
-      const loginButton = document.createElement("a");
-    
-      container.classList.add("home-container");
-    
-      overlay.classList.add("home-overlay");
-    
-      header.classList.add("home-header");
-      header.textContent = "логотипчик";
-    
-      buttons.classList.add("home-buttons");
-    
-      loginButton.classList.add("home-button");
-      loginButton.textContent = "Войти";
-    
-      container.appendChild(overlay);
-      container.appendChild(header);
-      buttons.appendChild(loginButton);
-      container.appendChild(buttons);
-    
-      loginButton.onclick = () => {
-        goToPage(state.menuElements.login);
-      };
-      return container;
-  
-    }
+  if (hasLoggedInUser) {
+    goToPage(state.menuElements.profile);
+  } else {
+    const container = document.createElement(ELEMENTS.DIV);
+    const overlay = document.createElement(ELEMENTS.DIV);
+    const header = document.createElement(ELEMENTS.DIV);
+    const buttons = document.createElement(ELEMENTS.DIV);
+    const loginButton = document.createElement(ELEMENTS.A);
+
+    container.classList.add(ELEMENTS_CLASS.HOME_CONTAINER);
+
+    overlay.classList.add(ELEMENTS_CLASS.HOME_OVERLAY);
+
+    header.classList.add(ELEMENTS_CLASS.HOME_HEADER);
+    header.textContent = "PUSHART";
+
+    buttons.classList.add(ELEMENTS_CLASS.HOME_BUTTONS);
+
+    loginButton.classList.add(ELEMENTS_CLASS.HOME_BUTTON);
+    loginButton.textContent = "Войти";
+
+    container.appendChild(overlay);
+    container.appendChild(header);
+    buttons.appendChild(loginButton);
+    container.appendChild(buttons);
+
+    loginButton.onclick = () => {
+      goToPage(state.menuElements.login);
+    };
+
+    return container;
+  }
 }

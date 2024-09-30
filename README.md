@@ -1,5 +1,7 @@
 # 2024_2_TeamOn
+
 ## Frontend репозиторий команды TeamOn
+
 ![Logotype](https://i.pinimg.com/originals/7e/1b/fe/7e1bfe4493d852515f56a02dfba603b0.png)
 
 <h3> Проект посвящен созданию сервиса на подобии <a href="https://www.patreon.com/">Patreon</a> </h3>
@@ -8,14 +10,21 @@
 любимых артистов, писателей, музыкантов и многих других</p>
 <p>  Для запуска необходимо ввести в терминал следующее: npm install && node ./src/server/server.js <p>
 
+## Деплой
+
+[pushart.online](http://pushart.online)
+
 ## Ссылки
+
 **Участники команды:**
+
 1. [Алексей Нарыжный](https://github.com/AlexeyBMSTU)
 2. [Ольга Ховен](https://github.com/KhovenOlya)
 3. [Данил Злобин](https://github.com/Danil-Zlo)
 4. [Полина Тикунова](https://github.com/PtFux)
-   
+
 **Менторы:**
+
 1. [Илья Мочалов](https://github.com/GodofRussia)
 2. Никита Рыжков
 3. Александра Глазкова

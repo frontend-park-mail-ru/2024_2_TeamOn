@@ -1,33 +1,40 @@
-export function renderError(statusErr) {
-    const notFoundDiv = document.createElement('div');
-    const notFoundContainer = document.createElement('div');
-    const notFound404 = document.createElement('div');
-    const h1 = document.createElement('h1');
-    const h2 = document.createElement('h2');
-    const a = document.createElement('a');
-    const span = document.createElement('span');
+import { ELEMENTS, ELEMENTS_CLASS } from "../consts.js";
 
-    notFoundDiv.id = 'notfound';
+/**
+ * Обработка ошибок
+ * @param {*} statusErr Статус ошибки
+ */
+export function renderError(statusErr = 404) {
+  const notFoundDiv = document.createElement(ELEMENTS.DIV);
+  const notFoundContainer = document.createElement(ELEMENTS.DIV);
+  const notFound404 = document.createElement(ELEMENTS.DIV);
+  const h1 = document.createElement(ELEMENTS.H1);
+  const h2 = document.createElement(ELEMENTS.H2);
+  const a = document.createElement(ELEMENTS.A);
+  const span = document.createElement(ELEMENTS.SPAN);
 
-    notFoundContainer.className = 'notfound';
+  notFoundDiv.id = "notfound";
 
-    notFound404.className = 'notfound-404';
+  notFoundContainer.className = ELEMENTS_CLASS.NOTFOUND;
 
-    h1.textContent = statusErr;
-    if (statusErr === 404) {
-        h2.textContent = 'Страница не найдена'
-    }
+  notFound404.className = ELEMENTS_CLASS.NOTFOUND_404;
 
-    a.href = '/';
-    span.className = 'arrow';
-    a.appendChild(span);
-    a.appendChild(document.createTextNode('Вернуться на главную'));
+  h1.textContent = statusErr;
 
-    notFound404.appendChild(h1);
-    notFoundContainer.appendChild(notFound404);
-    notFoundContainer.appendChild(h2);
-    notFoundContainer.appendChild(a);
-    notFoundDiv.appendChild(notFoundContainer);
+  h2.textContent = "Страница не найдена";
 
-    return notFoundDiv
+  a.onclick = () => {
+    goToPage(state.menuElements.home);
+  };
+  span.className = ELEMENTS_CLASS.ARROW;
+  a.appendChild(span);
+  a.appendChild(document.createTextNode("Вернуться на главную"));
+
+  notFound404.appendChild(h1);
+  notFoundContainer.appendChild(notFound404);
+  notFoundContainer.appendChild(h2);
+  notFoundContainer.appendChild(a);
+  notFoundDiv.appendChild(notFoundContainer);
+
+  return notFoundDiv;
 }

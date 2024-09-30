@@ -1,88 +1,73 @@
-import { users, state } from './consts.js';
-import { renderLogin } from './auth/loginView.js';
-import { renderSignup } from './auth/signupVew.js';
-import { renderError } from './pages/error.js';
-import { renderProfile } from './pages/profile.js';
-import { renderMenu } from './menu/menu.js';
-import { renderHome } from './pages/home.js';
+import { state, ELEMENTS_CLASS } from "./consts.js";
+import { renderLogin } from "./auth/loginView.js";
+import { renderSignup } from "./auth/signupVew.js";
+import { renderError } from "./pages/error.js";
+import { renderProfile } from "./pages/profile.js";
+import { renderHome } from "./pages/home.js";
+import { LINKS } from "./consts.js";
+import { startA } from "./menu/menu.js";
 
-const root = document.getElementById('root');
-export const menuContainer = document.createElement('aside');
-const pageContainer = document.createElement('main');
-root.appendChild(pageContainer);
-
-const localStorage = window.localStorage;
-const sessionStorage = window.sessionStorage;
-
+/**
+ * Объект, содержащий конфигурацию меню приложения.
+ */
 const config = {
-    menu: {
-        home: {
-            href: '/',
-            text: 'Домашняя страница',
-            render: renderHome
-        },
-        login: {
-            href: '/login',
-            text: 'Авторизация',
-            render: renderLogin
-        },
-        signup: {
-            href: '/signup',
-            text: 'Регистрация',
-            render: renderSignup
-        },
-        profile: {
-            href: '/profile',
-            text: 'Профиль',
-            render: renderProfile
-        },/*
-        feed: {
-            href: '/feed',
-            text: 'Лента',
-            render: renderFeed
-        },*/
-        error: {
-            href: '/error',
-            text: 'Ошибка',
-            render: renderError
-        }
-    }
+  menu: {
+    home: {
+      href: LINKS.HOME.HREF,
+      text: LINKS.HOME.TEXT,
+      render: renderHome,
+    },
+    login: {
+      href: LINKS.LOGIN.HREF,
+      text: LINKS.LOGIN.TEXT,
+      render: renderLogin,
+    },
+    signup: {
+      href: LINKS.SIGNUP.HREF,
+      text: LINKS.SIGNUP.TEXT,
+      render: renderSignup,
+    },
+    profile: {
+      href: LINKS.PROFILE.HREF,
+      text: LINKS.PROFILE.TEXT,
+      render: renderProfile,
+    },
+    error: {
+      href: LINKS.ERROR.HREF,
+      text: LINKS.ERROR.TEXT,
+      render: renderError,
+    },
+  },
 };
 
-
-export function addUser(username, email = null, password, imagesrc = null) { // tmp
-    users[username] = {
-        email,
-        password,
-        imagesrc
-    };
-}
-
+/**
+ * Перенаправляет на другую страницу приложения.
+ * @param {*} targetLinkMenu Ссылка на страницу, на которую нужно перенаправить
+ * @param {*} statusErr Статус ошибки (необязательный)
+ */
 export function goToPage(targetLinkMenu, statusErr = null) {
-    pageContainer.innerHTML = "";
-  
-    state.activePageLink.classList.remove("active");
-    targetLinkMenu.classList.add("active");
+  pageContainer.innerHTML = "";
+  state.activePageLink.classList.remove(ELEMENTS_CLASS.ACTIVE);
+  targetLinkMenu.classList.add(ELEMENTS_CLASS.ACTIVE);
+  if (targetLinkMenu == "http://pushart.online/profile") {
     state.activePageLink = targetLinkMenu;
-  
+    config.menu[targetLinkMenu.dataset.section]
+      .render(statusErr)
+      .then((newPageElement) => {
+        pageContainer.appendChild(newPageElement);
+      });
+  } else {
     const newPageElement =
       config.menu[targetLinkMenu.dataset.section].render(statusErr);
-  
-    pageContainer.appendChild(newPageElement);
-  }
-  
-  menuContainer.addEventListener("click", (event) => {
-    const { target } = event;
-    if (
-      target.tagName.toLowerCase() === "a" ||
-      target instanceof HTMLAnchorElement
-    ) {
-      event.preventDefault();
-  
-      goToPage(target);
+    if (newPageElement) {
+      pageContainer.appendChild(newPageElement);
     }
-  });
-  
-  renderMenu(config.menu);
-  goToPage(state.menuElements.home);
- 
+  }
+}
+
+var root = startA(config.menu, state);
+
+const pageContainer = document.createElement("main");
+root.appendChild(pageContainer);
+
+goToPage(state.menuElements.home);

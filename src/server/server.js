@@ -1,9 +1,17 @@
 const http = require("http");
 const fs = require("fs");
 const express = require("express");
+
 const app = express();
 
-app.use((req, res, next) => {
+/**
+ * Мiddleware CORS для включения общих ресурсов между источниками
+ * Установка заголовка Access-Control-Allow-Origin для разрешения запросов с http://localhost:8080
+ * Установка заголовка Access-Control-Allow-Methods для разрешения запросов GET, POST и OPTIONS
+ * Установка заголовка Access-Control-Allow-Headers для разрешения заголовков Origin, X-Requested-With, Content-Type, Accept
+ * Установка заголовка Access-Control-Allow-Credentials для разрешения отправки учетных данных
+ */
+app.use((req, res) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:8080");
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.header(
@@ -13,18 +21,15 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", "true");
 });
 
+/**
+ * Создание сервера HTTP
+ */
 const server = http.createServer((req, res) => {
   const url = req.url;
   let filePath = `..${url}`;
 
-  if (
-    url == "/" ||
-    url == "/login" ||
-    url == "/signup" ||
-    url == "/profile" ||
-    url == "/feed" ||
-    url == "/error"
-  ) {
+  const URLS = ["/", "/login", "/signup", "/profile", "/error"];
+  if (URLS.includes(url)) {
     filePath = "../index.html";
   }
 
@@ -34,7 +39,6 @@ const server = http.createServer((req, res) => {
       res.end(`${err}`);
     } else {
       let headers = {};
-
       if (filePath.endsWith(".js")) {
         headers["Content-Type"] = "application/javascript";
       } else if (filePath.endsWith(".css")) {

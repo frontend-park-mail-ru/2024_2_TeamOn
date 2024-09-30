@@ -2,7 +2,6 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  /* overflow: hidden; */
   scrollbar-width: none;
 }
 
@@ -29,7 +28,7 @@ form {
 }
 
 form button[type="submit"] {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: #fff;
   padding: 15px 25px;
   border: none;
@@ -42,13 +41,17 @@ form button[type="submit"]:hover {
   background-color: #3e8e41;
 }
 
-form input[type="email"], form input[type="password"], form input[type="text"] {
+form input[type="email"],
+form input[type="password"],
+form input[type="text"] {
   padding: 10px;
   margin: 10px;
   border: 1px solid #ccc;
 }
 
-form input[type="email"]:focus, form input[type="password"], form input[type="text"]:focus {
+form input[type="email"]:focus,
+form input[type="password"],
+form input[type="text"]:focus {
   border-color: #aaa;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -62,7 +65,6 @@ form input[type="email"]:focus, form input[type="password"], form input[type="te
   right: 2%;
   top: 3%;
   position: absolute;
-  
 }
 
 .close-btn:hover {
@@ -84,513 +86,494 @@ form input[type="email"]:focus, form input[type="password"], form input[type="te
   box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
 }
 
-  /* home */
-  .home-container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      background: url('photos/home.png');
-      background-size: cover;
-      background-position: center center;
-  }
-  .home-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.3);
-  }
-  .home-header {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: white;
-      font-size: 14px;
-  }
-  .home-search-box {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      display: flex;
-      align-items: center;
-      background: white;
-      border-radius: 25px;
-      padding: 5px 15px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  .home-search-box input {
-      border: none;
-      outline: none;
-      font-size: 14px;
-  }
-  .home-search-box i {
-      margin-right: 10px;
-      color: gray;
-  }
-  .home-buttons {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      display: flex;
-      gap: 10px;
-  }
-  .home-button {
-      padding: 10px 20px;
-      border-radius: 25px;
-      border: 1px solid gray;
-      background: white;
-      color: gray;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background 0.3s, color 0.3s;
-  }
-  .home-button:hover {
-      background: gray;
-      color: white;
-  }
-  .home-button.primary {
-      background: #f8f8f8;
-      color: black;
-      border: none;
-  }
-  .home-button.primary:hover {
-      background: black;
-      color: white;
-  }
-
-  /* LOGIN CONTAINER */
-  .background-login  {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      /* background-color: #f0f0f0;  */
-      background: url('photos/login.png');
-      background-size: cover;
-      background-position: center center;
-      z-index: 1; 
-  }
-
-  .login-container {
-      position: absolute; /* Add this to position the container absolutely */
-      top: 50%; /* Move the container 50% from the top */
-      left: 50%; /* Move the container 50% from the left */
-      transform: translate(-50%, -50%); /* Translate the container to center it */
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 20px;
-      padding: 40px;
-      width: 300px;
-      text-align: center;
-      align-items: center;
-      justify-content: center;
-      background-size: cover;
-      
-  }
-  .login-container h2 {
-      margin: 0 0 20px;
-      font-size: 24px;
-      color: #333;
-  }
-  .login-container input[type="text"], .login-container input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      box-sizing: border-box;
-  }
-  .login-container input[type="submit"] {
-      width: 100%;
-      padding: 10px;
-      margin: 20px 0 0;
-      border: none;
-      border-radius: 20px;
-      background-color: #333;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-  }
-  .login-container input[type="submit"]:hover {
-      background-color: #555;
-  }
-  .login-container .register-link {
-      display: block;
-      margin-top: 10px;
-      font-size: 14px;
-      color: #333;
-  }
-  .login-container .register-link a {
-      color: #007BFF;
-      text-decoration: none;
-  }
-  .login-container .register-link a:hover {
-      text-decoration: underline;
-  }
-
-  /* SIGNUP */
-
-  .background-signup  {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      /* background-color: #f0f0f0;  */
-      background: url('photos/signup.png');
-      background-size: cover;
-      background-position: center center;
-      z-index: 1; 
-  }
-  .container-signup {
-      position: absolute; /* Add this to position the container absolutely */
-      top: 50%; /* Move the container 50% from the top */
-      left: 50%; /* Move the container 50% from the left */
-      transform: translate(-50%, -50%); /* Translate the container to center it */
-
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      box-sizing: border-box;
-      padding: 40px;
-      width: 300px;
-      text-align: center;
-  }
-  .container-signup h2 {
-      margin-bottom: 20px;
-      font-size: 24px;
-  }
-  .container-signup input[type="text"], .container-signup input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    box-sizing: border-box;
+/* home */
+.home-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: url("photos/home.png");
+  background-size: cover;
+  background-position: center center;
 }
-  .container-signup input[type="submit"] {
-      width: 100%;
-      padding: 10px;
-      margin-top: 20px;
-      border: none;
-      border-radius: 20px;
-      background-color: #000;
-      color: #fff;
-      font-size: 16px;
-      cursor: pointer;
-  }
-  .container-signup input[type="submit"]:hover {
-      background-color: #333;
-  }
+.home-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+}
+.home-header {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 14px;
+}
+.home-search-box {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 25px;
+  padding: 5px 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.home-search-box input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+.home-search-box i {
+  margin-right: 10px;
+  color: gray;
+}
+.home-buttons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+}
+.home-button {
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: 1px solid gray;
+  background: white;
+  color: gray;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    background 0.3s,
+    color 0.3s;
+}
+.home-button:hover {
+  background: gray;
+  color: white;
+}
+.home-button.primary {
+  background: #f8f8f8;
+  color: black;
+  border: none;
+}
+.home-button.primary:hover {
+  background: black;
+  color: white;
+}
 
-  /* ERROR */
-  #notfound {
-    position: relative;
-    height: 100vh;
-  }
-  
-  #notfound .notfound {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
-  }
-  
-  .notfound {
-    max-width: 710px;
-    width: 100%;
-    text-align: center;
-    padding: 0px 15px;
-    line-height: 1.4;
-  }
-  
+/* LOGIN CONTAINER */
+.background-login {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("photos/login.png");
+  background-size: cover;
+  background-position: center center;
+  z-index: 1;
+}
+
+.login-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  padding: 40px;
+  width: 300px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+}
+.login-container h2 {
+  margin: 0 0 20px;
+  font-size: 24px;
+  color: #333;
+}
+.login-container input[type="text"],
+.login-container input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+.login-container input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  margin: 20px 0 0;
+  border: none;
+  border-radius: 20px;
+  background-color: #333;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+.login-container input[type="submit"]:hover {
+  background-color: #555;
+}
+.login-container .register-link {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+}
+.login-container .register-link a {
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+.login-container .register-link a:hover {
+  text-decoration: underline;
+}
+
+/* SIGNUP */
+
+.background-signup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("photos/signup.png");
+  background-size: cover;
+  background-position: center center;
+  z-index: 1;
+}
+.container-signup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  padding: 40px;
+  width: 300px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+}
+.container-signup h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+.container-signup input[type="text"],
+.container-signup input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+.container-signup input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: #000;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+.container-signup input[type="submit"]:hover {
+  background-color: #333;
+}
+.container-signup .login-link {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+}
+.container-signup .login-link a {
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+.container-signup .login-link a:hover {
+  text-decoration: underline;
+}
+
+/* ERROR */
+#notfound {
+  position: relative;
+  height: 100vh;
+}
+
+#notfound .notfound {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.notfound {
+  max-width: 710px;
+  width: 100%;
+  text-align: center;
+  padding: 0px 15px;
+  line-height: 1.4;
+}
+
+.notfound .notfound-404 {
+  height: 200px;
+  line-height: 200px;
+}
+
+.notfound .notfound-404 h1 {
+  font-family: "Fredoka One", cursive;
+  font-size: 168px;
+  margin: 0px;
+  color: #39b1cb;
+  text-transform: uppercase;
+}
+
+.notfound h2 {
+  font-family: "Raleway", sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #222;
+  margin: 0;
+}
+
+.notfound-search {
+  position: relative;
+  padding-right: 123px;
+  max-width: 420px;
+  width: 100%;
+  margin: 30px auto 22px;
+}
+
+.notfound a {
+  font-family: "Raleway", sans-serif;
+  display: inline-block;
+  font-weight: 700;
+  border-radius: 15px;
+  text-decoration: none;
+  color: #39b1cb;
+}
+
+.notfound a > .arrow {
+  position: relative;
+  top: -2px;
+  border: solid #39b1cb;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  -webkit-transform: rotate(135deg);
+  -ms-transform: rotate(135deg);
+  transform: rotate(135deg);
+}
+
+@media only screen and (max-width: 767px) {
   .notfound .notfound-404 {
-    height: 200px;
-    line-height: 200px;
+    height: 122px;
+    line-height: 122px;
   }
-  
   .notfound .notfound-404 h1 {
-    font-family: 'Fredoka One', cursive;
-    font-size: 168px;
-    margin: 0px;
-    color: #39b1cb;
-    text-transform: uppercase;
+    font-size: 122px;
   }
-  
-  .notfound h2 {
-    font-family: 'Raleway', sans-serif;
-    font-size: 22px;
-    font-weight: 400;
-    text-transform: uppercase;
-    color: #222;
-    margin: 0;
-  }
-  
-  .notfound-search {
-    position: relative;
-    padding-right: 123px;
-    max-width: 420px;
-    width: 100%;
-    margin: 30px auto 22px;
-  }
-  
-  .notfound a {
-    font-family: 'Raleway', sans-serif;
-    display: inline-block;
-    font-weight: 700;
-    border-radius: 15px;
-    text-decoration: none;
-    color: #39b1cb;
-  }
-  
-  .notfound a>.arrow {
-    position: relative;
-    top: -2px;
-    border: solid #39b1cb;
-    border-width: 0 3px 3px 0;
-    display: inline-block;
-    padding: 3px;
-    -webkit-transform: rotate(135deg);
-        -ms-transform: rotate(135deg);
-            transform: rotate(135deg);
-  }
-  
-  @media only screen and (max-width: 767px) {
-    .notfound .notfound-404 {
-      height: 122px;
-      line-height: 122px;
-    }
-    .notfound .notfound-404 h1 {
-      font-size: 122px;
-    }
-  }
+}
 
-  /* PROFILE */
+/* PROFILE */
 .form-profile {
   width: 100%;
   height: 100%;
 }
 .header-profile {
-    background-image: url('photos/fon.jpg');
-    background-size: cover;
-    color: white;
-    padding: 100px;
-    text-align: center;
-    position: relative;
-    z-index: 1;
-    margin: 0;
-    top: 0;
+  background-image: url("photos/fon.jpg");
+  background-size: cover;
+  color: white;
+  padding: 100px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  top: 0;
 }
 
 .header-profile nav {
-    display: flex;
-    margin-left: 280px;
-    position: absolute;
-    gap: 280px;
-    top: 20px;
-    left: 20px;
+  display: flex;
+  margin-left: 280px;
+  position: absolute;
+  gap: 280px;
+  top: 31px;
+  left: 20px;
 }
 
 .header-profile nav a {
-    color: white;
-    margin: 0 15px;
-    text-decoration: none;
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
 }
 
-/* .header-profile .logout {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background-color: white;
-    color: gray;
-    padding: 10px 20px;
-    border-radius: 25px;
-    border: 1px solid gray;
-    font-size: 14px;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s;
-  }
-  .header-profile .logout:hover {
-    background: gray;
-    color: white;
-  } */
-
-  .header-profile .logout {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    /* display: flex; */
-    gap: 10px;
-    padding: 10px 20px;
-    border-radius: 25px;
-    border: 1px solid gray;
-    background: white;
-    color: gray;
-    font-size: 14px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background 0.3s, color 0.3s;
-  }
-  .header-profile .logout:hover {
-    background: gray;
-    color: white;
-  }
-
-  /* .home-buttons {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    gap: 10px;
+.header-profile .logout {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  /* display: flex; */
+  gap: 10px;
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: 1px solid gray;
+  background: white;
+  color: gray;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background 0.3s,
+    color 0.3s;
 }
-.home-button {
-    padding: 10px 20px;
-    border-radius: 25px;
-    border: 1px solid gray;
-    background: white;
-    color: gray;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s;
+.header-profile .logout:hover {
+  background: gray;
+  color: white;
 }
-.home-button:hover {
-    background: gray;
-    color: white;
-} */
 
 .image-profile {
-  background-image: url('photos/timon.jpg');
-  /* margin-top: -30px; */
+  background-image: url("photos/timon.jpg");
 }
 .profile {
-    display: flex;
-    /* padding: 20px; */
-
-    z-index: 2;
-    background-color: rgb(243, 243, 243);
-    width: 100%;
-    height: 100%;    
+  display: flex;
+  z-index: 2;
+  background-color: rgb(243, 243, 243);
+  width: 100%;
+  height: 100%;
 }
 
-
 .profile .left {
-    width: 20%;
-    padding: 20px;
-    display: flex;
-    height: 60%;
-    right: 10px;
-    margin-left: 170pt;
-    margin-top: 15pt;
+  width: 20%;
+  padding: 20px;
+  display: flex;
+  height: 60%;
+  right: 10px;
+  margin-left: 170pt;
+  margin-top: 15pt;
 }
 
 .profile .left img {
-    width: 90%;
-    height: 43%;
-    margin: auto;
-    margin-top: 3%;
-    display: flex;
-    border: 3px solid #e0e0e0;
+  width: 90%;
+  height: 45%;
+  margin: auto;
+  margin-top: 3%;
+  display: flex;
+  border: 3px solid #e0e0e0;
 }
 .profile .left-bar {
-  /* padding: 2%; */
+ width: 400pt;
   background-color: white;
   border-radius: 10px;
-
 }
 .profile .left .info {
-    text-align: center;
-    margin-top: 10px;
-    background-color: white;
+  text-align: center;
+  margin-top: 10px;
+  background-color: white;
 }
 
 .profile .left .info h2 {
-    margin: 10px 0 5px;
+  margin: 10px 0 5px;
 }
 
 .profile .left .info p {
-    color: gray;
+  color: gray;
 }
 
 .profile .left .earnings {
-    background-color: white;
-    padding: 20pt;
-    margin-top: 20pt;
-    border-radius: 10px;
-    text-align: center;
+  background-color: white;
+  padding: 20pt;
+  margin-top: 20pt;
+  border-radius: 10px;
+  text-align: center;
 }
 
-
 .profile .left .earnings h3 {
-    margin: 0 0 10px;
+  margin: 0 0 10px;
 }
 
 .profile .left .earnings p {
-    font-size: 24px;
-    margin: 0;
+  font-size: 24px;
+  margin: 0;
 }
 
 .profile .right {
-    width: 55%;
-    padding: 20px;
-    margin-right: 170pt;
-    margin-top: 15pt;
+  width: 55%;
+  padding: 20px;
+  margin-right: 170pt;
+  margin-top: 15pt;
 }
 
 .profile .right .stats {
-    display: flex;
-    justify-content: space-between;
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 
 .profile .right .posts {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    /* margin-right: 170pt; */
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
 }
 
 .profile .right .posts .post {
-    padding: 20px;
-    border-bottom: 1px solid #e0e0e0;
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .profile .right .posts .post:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .profile .right .posts .post h4 {
-    margin: 0 0 10px;
+  margin: 0 0 10px;
 }
 
 .profile .right .posts .post p {
-    margin: 0;
+  margin: 0;
 }
 
 .profile .right .posts .post .date {
-    text-align: right;
-    color: gray;
-    margin-top: 10px;
+  text-align: right;
+  color: gray;
+  margin-top: 10px;
 }
 
 .create-button {
-    display: flex;
-    justify-content: flex-end;
-    padding: 20px;
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
 }
 
 .create-button button {
-    background-color: black;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
 }
+
+/* EYE */
+.password-eye {
+  position: relative;
+  left: 80pt;
+  top: 30pt;
+  cursor: pointer;
+  font-size: 18px;
+  color: #666;
+}
+
