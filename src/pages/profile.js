@@ -139,6 +139,30 @@ function renderVibe(user) {
   return me;
 }
 
+function renderUserPosts(user) {
+  const postsContainer = document.createElement(ELEMENTS.DIV);
+  postsContainer.classList.add("posts");
+    const postDiv = document.createElement(ELEMENTS.DIV);
+    postDiv.classList.add(ELEMENTS_CLASS.POST);
+
+    const postTitle = document.createElement(ELEMENTS.H4);
+    postTitle.textContent = user.posts_title;
+    postDiv.appendChild(postTitle);
+
+    const postContent = document.createElement(ELEMENTS.P);
+    postContent.textContent = user.posts_content;
+    postDiv.appendChild(postContent);
+
+    const postDate = document.createElement(ELEMENTS.DIV);
+    postDate.classList.add(ELEMENTS_CLASS.DATE);
+    postDate.textContent = user.posts_date;
+    postDiv.appendChild(postDate);
+
+    postsContainer.appendChild(postDiv);
+
+
+  return postsContainer;
+}
 /**
  * Функция рендерит кнопку выхода из системы.
  * @param {*} Item Ключ, по которому необходимо стереть локальные и сессионные данные
@@ -192,6 +216,7 @@ export async function renderProfile() {
 
     right.appendChild(renderUserStats(user));
 
+	  right.appendChild(renderUserPosts(user));
     profile.appendChild(right);
 
     formProfile.appendChild(header);
