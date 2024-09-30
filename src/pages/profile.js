@@ -86,7 +86,7 @@ function renderUserInfo(user, payments = null) {
   earningsTitle.textContent = "Выплаты";
   earnings.appendChild(earningsTitle);
 
-  const earningsToday = document.createElement(ELEMENTS.P);
+  const earningsToday = document.createElement(ELEMENTS.H4);
   earningsToday.textContent = "За сегодня вы заработали:";
   earnings.appendChild(earningsToday);
 
@@ -132,8 +132,11 @@ function renderUserStats(user, posts = null) {
  */
 function renderVibe(user) {
   const title = document.createElement(ELEMENTS.H1);
-  title.textContent = `${user.username} о себе: ${user.status}`;
-  return title;
+  const me = document.createElement(ELEMENTS.H4);
+  me.textContent = `ОБО МНЕ`;
+  title.textContent = `${user.status}`;
+	me.appendChild(title);
+  return me;
 }
 
 /**

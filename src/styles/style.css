@@ -409,7 +409,7 @@ form input[type="text"]:focus {
   margin-left: 280px;
   position: absolute;
   gap: 280px;
-  top: 20px;
+  top: 31px;
   left: 20px;
 }
 
@@ -465,13 +465,14 @@ form input[type="text"]:focus {
 
 .profile .left img {
   width: 90%;
-  height: 43%;
+  height: 45%;
   margin: auto;
   margin-top: 3%;
   display: flex;
   border: 3px solid #e0e0e0;
 }
 .profile .left-bar {
+ width: 400pt;
   background-color: white;
   border-radius: 10px;
 }
@@ -575,3 +576,4 @@ form input[type="text"]:focus {
   font-size: 18px;
   color: #666;
 }
+
