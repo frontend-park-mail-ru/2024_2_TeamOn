@@ -15,6 +15,16 @@ export const state = {
  */
 export const maxAttempts = 3;
 
+export const validatePassword = {
+  MIN_SYMBOLS: 8,
+  MAX_SYMBOLS: 64,
+};
+
+export const validateUsername = {
+  MIN_SYMBOLS: 4,
+  MAX_SYMBOLS: 10,
+};
+
 /**
  * Объект, содержащий ссылки на страницы приложения.
  * @param {*} HOME Ссылка на домашнюю страницу
@@ -66,6 +76,15 @@ export const ELEMENTS = {
   H6: "h6",
   A: "a",
   I: "i",
+};
+/**
+ * Регулярные выражения для валидации
+ */
+export const REGEXP = {
+  REGEXP_LOGIN: new RegExp("^(?=.*[a-zA-Z])[a-zA-Z0-9-_]+$"),
+  REGEXP_PASSWORD_ONE_NUMBER: new RegExp("[0-9]"),
+  REGEX_SPEC_SYMBOL: new RegExp("[!@#$%^&*]"),
+  REGEXP_UPPER_LOWER_CASE: new RegExp("(?=.*[a-z])(?=.*[A-Z])"),
 };
 
 /**

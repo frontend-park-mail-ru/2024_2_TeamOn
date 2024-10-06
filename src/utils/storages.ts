@@ -2,8 +2,12 @@
  * Возвращает значение элемента из локального хранилища.
  * @param {*} Item Ключ элемента, значение которого нужно получить
  */
-export function getItemLocalStorage(Item) {
-  return localStorage.getItem(Item);
+export function getItemLocalStorage(Item: any) {
+  try {
+    return localStorage.getItem(Item);
+  } catch (error) {
+    console.error("Ошибка просмотра стоража", error);
+  }
 }
 
 /**
@@ -11,8 +15,12 @@ export function getItemLocalStorage(Item) {
  * @param {*} Item Ключ элемента, который нужно удалить
  * @returns
  */
-export function removeItemLocalStorage(Item) {
-  return localStorage.removeItem(Item);
+export function removeItemLocalStorage(Item: any) {
+  try {
+    return localStorage.removeItem(Item);
+  } catch (error) {
+    console.error("Ошибка удаления стоража", error);
+  }
 }
 
 /**
@@ -20,6 +28,10 @@ export function removeItemLocalStorage(Item) {
  * @param {*} Item Ключ элемента, который нужно добавить
  * @returns
  */
-export function addItemLocalStorage(Item) {
-  return localStorage.setItem(Item, "1");
+export function addItemLocalStorage(Item: any) {
+  try {
+    return localStorage.setItem(Item, "1");
+  } catch (error) {
+    console.error("Ошибка добавления стоража", error);
+  }
 }
