@@ -1,8 +1,9 @@
-import { state, REGEXP, validatePassword, validateUsername } from "../consts.js";
-import { removeError, showError } from "../utils/errors.js";
-import { fetchAjax } from "../utils/fetchAjax.js";
-import { goToPage } from "../index.js";
-import { addItemLocalStorage } from "../utils/storages.js";
+import { state, REGEXP, validatePassword, validateUsername } from "../consts";
+import { removeError, showError } from "../utils/errors";
+import { fetchAjax } from "../utils/fetchAjax";
+import { goToPage } from "../index";
+import { addItemLocalStorage } from "../utils/storages";
+import * as DOMPurify from "dompurify";
 
 /**
  * Функция валидации регистрационной формы
@@ -13,13 +14,13 @@ import { addItemLocalStorage } from "../utils/storages.js";
  * @returns true, если форма содержит ошибки, false - если форма корректна
  */
 export function validateSignupForm(
-  form,
-  inputUsername,
-  inputPassword,
-  inputRepeatPassword,
+  form: any,
+  inputUsername: any,
+  inputPassword: any,
+  inputRepeatPassword: any,
 ) {
   var errors = form.querySelectorAll(".error");
-  let passwordErrors = [];
+  let passwordErrors = [] as string[];
 
   for (var i = 0; i < errors.length; i++) {
     errors[i].remove();
@@ -45,10 +46,7 @@ export function validateSignupForm(
     removeError(inputPassword);
   }
 
-  if (
-    inputRepeatPassword.value !=
-    inputPassword.value
-  ) {
+  if (inputRepeatPassword.value != inputPassword.value) {
     showError(inputRepeatPassword, "Пароли должны совпадать");
     hasError = true;
   } else {
@@ -56,9 +54,7 @@ export function validateSignupForm(
   }
 
   if (
-    !REGEXP.REGEXP_LOGIN.test(
-      DOMPurify.sanitize(inputUsername.value),
-    ) &&
+    !REGEXP.REGEXP_LOGIN.test(DOMPurify.sanitize(inputUsername.value)) &&
     !firstLoginError
   ) {
     showError(
@@ -70,8 +66,10 @@ export function validateSignupForm(
     removeError(inputUsername);
   }
   if (
-    (DOMPurify.sanitize(inputUsername.value).length < validateUsername.MIN_SYMBOLS ||
-      DOMPurify.sanitize(inputUsername.value).length > validateUsername.MAX_SYMBOLS ) &&
+    (DOMPurify.sanitize(inputUsername.value).length <
+      validateUsername.MIN_SYMBOLS ||
+      DOMPurify.sanitize(inputUsername.value).length >
+        validateUsername.MAX_SYMBOLS) &&
     !firstLoginError
   ) {
     showError(
@@ -119,9 +117,9 @@ export function validateSignupForm(
  * @param {*} inputRepeatPassword Поле ввода повторного пароля
  */
 function validationErrorSignupForm(
-  inputLogin,
-  inputPassword,
-  inputRepeatPassword,
+  inputLogin: any,
+  inputPassword: any,
+  inputRepeatPassword: any,
 ) {
   showError(inputLogin, "");
   showError(inputPassword, "");
@@ -135,7 +133,12 @@ function validationErrorSignupForm(
  * @param {*} password Поле ввода пароля
  * @param {*} inputRepeatPassword Поле ввода повторного пароля
  */
-export function authSignup(form, username, password, inputRepeatPassword) {
+export function authSignup(
+  form: any,
+  username: any,
+  password: any,
+  inputRepeatPassword: any,
+) {
   if (!validateSignupForm(form, username, password, inputRepeatPassword)) {
     fetchAjax(
       "POST",
@@ -144,7 +147,7 @@ export function authSignup(form, username, password, inputRepeatPassword) {
       (response) => {
         if (response.ok) {
           addItemLocalStorage(DOMPurify.sanitize(username.value));
-          goToPage(state.menuElements.profile);
+          goToPage((state.menuElements as { profile: HTMLElement }).profile);
         } else if (response.status === 400) {
           validationErrorSignupForm(username, password, inputRepeatPassword);
         }

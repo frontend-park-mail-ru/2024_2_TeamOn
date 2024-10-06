@@ -81,10 +81,10 @@ export const ELEMENTS = {
  * Регулярные выражения для валидации
  */
 export const REGEXP = {
-  REGEXP_LOGIN: "/^(?=.*[a-zA-Z])[a-zA-Z0-9-_]+$/",
-  REGEXP_PASSWORD_ONE_NUMBER: "/[0-9]/",
-  REGEX_SPEC_SYMBOL: "/[!@#$%^&*]/",
-  REGEXP_UPPER_LOWER_CASE: "/(?=.*[a-z])(?=.*[A-Z])/",
+  REGEXP_LOGIN: new RegExp("^(?=.*[a-zA-Z])[a-zA-Z0-9-_]+$"),
+  REGEXP_PASSWORD_ONE_NUMBER: new RegExp("[0-9]"),
+  REGEX_SPEC_SYMBOL: new RegExp("[!@#$%^&*]"),
+  REGEXP_UPPER_LOWER_CASE: new RegExp("(?=.*[a-z])(?=.*[A-Z])"),
 };
 
 /**

@@ -1,8 +1,8 @@
-import { goToPage } from "../index.js";
-import { state } from "../consts.js";
-import { ELEMENTS, ELEMENTS_CLASS } from "../consts.js";
-import { fetchAjax } from "../utils/fetchAjax.js";
-import { getItemLocalStorage, removeItemLocalStorage } from "../utils/storages.js";
+import { goToPage } from "../index";
+import { state } from "../consts";
+import { ELEMENTS, ELEMENTS_CLASS } from "../consts";
+import { fetchAjax } from "../utils/fetchAjax";
+import { getItemLocalStorage, removeItemLocalStorage } from "../utils/storages";
 
 /**
  * Получение текущего профиля через объект типа промис
@@ -17,7 +17,7 @@ export function getCurrentUser() {
         });
       } else if (response.status === 401) {
         reject(new Error("Не авторизован"));
-        goToPage(state.menuElements.login);
+        goToPage((state.menuElements as { login: HTMLElement }).login);
       } else {
         reject(new Error("Ответ от фетча с ошибкой"));
       }
@@ -30,7 +30,7 @@ export function getCurrentUser() {
  * @param {string} [conf.activePage="Моя страница"] Активная страница
  * @returns
  */
-function renderNavbar(conf) {
+function renderNavbar(conf?: any) {
   const nav = document.createElement(ELEMENTS.NAV);
   const navLinks = ["Моя страница"];
   const activePage = conf?.activePage || "Моя страница";
@@ -39,7 +39,7 @@ function renderNavbar(conf) {
     const link = document.createElement(ELEMENTS.A);
     link.style.cursor = "pointer";
     link.onclick = () => {
-      goToPage(state.menuElements.profile);
+      goToPage((state.menuElements as { profile: HTMLElement }).profile);
     };
     link.textContent = linkText;
     if (linkText === activePage) {
@@ -55,7 +55,7 @@ function renderNavbar(conf) {
  * @param {*} user Объект пользователя
  * @param {*} payments Объект выплат
  */
-function renderUserInfo(user, payments = null) {
+function renderUserInfo(user: any, payments?: any) {
   const left = document.createElement(ELEMENTS.DIV);
   left.classList.add(ELEMENTS_CLASS.LEFT);
 
@@ -94,7 +94,7 @@ function renderUserInfo(user, payments = null) {
   if (!payments) {
     amount.textContent = `0.0 ₽`;
   } else {
-    amount.textContent = `sssd${payments.amount}`;
+    amount.textContent = `${payments.amount}`;
   }
   earnings.appendChild(amount);
 
@@ -108,7 +108,7 @@ function renderUserInfo(user, payments = null) {
  * @param {*} user Объект пользователя
  * @param {*} posts Объект постов (не используется в функции)
  */
-function renderUserStats(user, posts = null) {
+function renderUserStats(user: any, posts = null) {
   const stats = document.createElement(ELEMENTS.DIV);
   stats.classList.add(ELEMENTS_CLASS.STATS);
 
@@ -130,36 +130,35 @@ function renderUserStats(user, posts = null) {
  * Функция рендерит заголовок настроения пользователя.
  * @param {*} user Объект пользователя
  */
-function renderVibe(user) {
+function renderVibe(user: any) {
   const title = document.createElement(ELEMENTS.H1);
   const me = document.createElement(ELEMENTS.H4);
   me.textContent = `ОБО МНЕ`;
   title.textContent = `${user.status}`;
-	me.appendChild(title);
+  me.appendChild(title);
   return me;
 }
 
-function renderUserPosts(user) {
+function renderUserPosts(user: any) {
   const postsContainer = document.createElement(ELEMENTS.DIV);
   postsContainer.classList.add("posts");
-    const postDiv = document.createElement(ELEMENTS.DIV);
-    postDiv.classList.add(ELEMENTS_CLASS.POST);
+  const postDiv = document.createElement(ELEMENTS.DIV);
+  postDiv.classList.add(ELEMENTS_CLASS.POST);
 
-    const postTitle = document.createElement(ELEMENTS.H4);
-    postTitle.textContent = user.posts_title;
-    postDiv.appendChild(postTitle);
+  const postTitle = document.createElement(ELEMENTS.H4);
+  postTitle.textContent = user.posts_title;
+  postDiv.appendChild(postTitle);
 
-    const postContent = document.createElement(ELEMENTS.P);
-    postContent.textContent = user.posts_content;
-    postDiv.appendChild(postContent);
+  const postContent = document.createElement(ELEMENTS.P);
+  postContent.textContent = user.posts_content;
+  postDiv.appendChild(postContent);
 
-    const postDate = document.createElement(ELEMENTS.DIV);
-    postDate.classList.add(ELEMENTS_CLASS.DATE);
-    postDate.textContent = user.posts_date;
-    postDiv.appendChild(postDate);
+  const postDate = document.createElement(ELEMENTS.DIV);
+  postDate.classList.add(ELEMENTS_CLASS.DATE);
+  postDate.textContent = user.posts_date;
+  postDiv.appendChild(postDate);
 
-    postsContainer.appendChild(postDiv);
-
+  postsContainer.appendChild(postDiv);
 
   return postsContainer;
 }
@@ -168,17 +167,16 @@ function renderUserPosts(user) {
  * @param {*} Item Ключ, по которому необходимо стереть локальные и сессионные данные
  * @returns
  */
-function renderLogoutButton(Item) {
+function renderLogoutButton(Item: any) {
   const logoutLink = document.createElement(ELEMENTS.A);
   logoutLink.classList.add(ELEMENTS_CLASS.LOGOUT);
-  logoutLink.href = "#";
   logoutLink.textContent = "Выйти";
   logoutLink.addEventListener("click", (event) => {
     event.preventDefault();
     while (getItemLocalStorage(Item)) {
       removeItemLocalStorage(Item);
     }
-    goToPage(state.menuElements.home);
+    goToPage((state.menuElements as { home: HTMLElement }).home);
   });
   return logoutLink;
 }
@@ -189,10 +187,9 @@ function renderLogoutButton(Item) {
  */
 export async function renderProfile() {
   try {
-    const user = await getCurrentUser();
+    const user: any | null = await getCurrentUser();
     if (!user) {
-      console.log("Пользователь не найден");
-      return 0;
+      throw new Error("Пользователь не найден");
     }
     state.currentUser = user;
 
@@ -218,7 +215,7 @@ export async function renderProfile() {
 
     right.appendChild(renderUserStats(user));
 
-	  right.appendChild(renderUserPosts(user));
+    right.appendChild(renderUserPosts(user));
     profile.appendChild(right);
 
     formProfile.appendChild(header);
@@ -227,5 +224,6 @@ export async function renderProfile() {
     return formProfile;
   } catch (error) {
     console.log("EROR");
+    throw error;
   }
 }
