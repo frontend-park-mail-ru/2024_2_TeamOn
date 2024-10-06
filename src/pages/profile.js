@@ -2,7 +2,7 @@ import { goToPage } from "../index.js";
 import { state } from "../consts.js";
 import { ELEMENTS, ELEMENTS_CLASS } from "../consts.js";
 import { fetchAjax } from "../utils/fetchAjax.js";
-import { removeItemLocalStorage } from "../utils/storages.js";
+import { getItemLocalStorage, removeItemLocalStorage } from "../utils/storages.js";
 
 /**
  * Получение текущего профиля через объект типа промис
@@ -175,7 +175,9 @@ function renderLogoutButton(Item) {
   logoutLink.textContent = "Выйти";
   logoutLink.addEventListener("click", (event) => {
     event.preventDefault();
-    removeItemLocalStorage(Item);
+    while (getItemLocalStorage(Item)) {
+      removeItemLocalStorage(Item);
+    }
     goToPage(state.menuElements.home);
   });
   return logoutLink;

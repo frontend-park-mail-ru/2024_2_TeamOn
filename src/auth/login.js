@@ -27,7 +27,7 @@ export function validateLoginForm(form, inputLogin, inputPassword) {
     removeError(inputLogin);
   }
 
-  if (!DOMPurify.sanitize(inputPassword.value)) {
+  if (!inputPassword.value) {
     showError(inputPassword, "Пожалуйста, введите пароль");
     hasError = true;
   } else {

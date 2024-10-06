@@ -1,4 +1,4 @@
-import { state } from "../consts.js";
+import { state, REGEXP, validatePassword, validateUsername } from "../consts.js";
 import { removeError, showError } from "../utils/errors.js";
 import { fetchAjax } from "../utils/fetchAjax.js";
 import { goToPage } from "../index.js";
@@ -37,7 +37,7 @@ export function validateSignupForm(
     removeError(inputUsername);
   }
 
-  if (!DOMPurify.sanitize(inputPassword.value)) {
+  if (!inputPassword.value) {
     showError(inputPassword, "Пожалуйста, введите пароль");
     hasError = true;
     firstPasswordError = true;
@@ -46,8 +46,8 @@ export function validateSignupForm(
   }
 
   if (
-    DOMPurify.sanitize(inputRepeatPassword.value) !=
-    DOMPurify.sanitize(inputPassword.value)
+    inputRepeatPassword.value !=
+    inputPassword.value
   ) {
     showError(inputRepeatPassword, "Пароли должны совпадать");
     hasError = true;
@@ -56,7 +56,7 @@ export function validateSignupForm(
   }
 
   if (
-    !/^(?=.*[a-zA-Z])[a-zA-Z0-9-_]+$/.test(
+    !REGEXP.REGEXP_LOGIN.test(
       DOMPurify.sanitize(inputUsername.value),
     ) &&
     !firstLoginError
@@ -70,8 +70,8 @@ export function validateSignupForm(
     removeError(inputUsername);
   }
   if (
-    (DOMPurify.sanitize(inputUsername.value).length < 4 ||
-      DOMPurify.sanitize(inputUsername.value).length > 10) &&
+    (DOMPurify.sanitize(inputUsername.value).length < validateUsername.MIN_SYMBOLS ||
+      DOMPurify.sanitize(inputUsername.value).length > validateUsername.MAX_SYMBOLS ) &&
     !firstLoginError
   ) {
     showError(
@@ -84,20 +84,20 @@ export function validateSignupForm(
   }
 
   if (
-    DOMPurify.sanitize(inputPassword.value).length < 8 ||
-    DOMPurify.sanitize(inputPassword.value).length > 64
+    inputPassword.value.length < validatePassword.MIN_SYMBOLS ||
+    inputPassword.value.length > validatePassword.MAX_SYMBOLS
   ) {
     passwordErrors.push("Пароль должен быть не менее 8 и не более 64 символов");
   }
 
-  if (!/[0-9]/.test(DOMPurify.sanitize(inputPassword.value))) {
+  if (!REGEXP.REGEXP_PASSWORD_ONE_NUMBER.test(inputPassword.value)) {
     passwordErrors.push("Пароль должен содержать хотя бы одну цифру");
   }
-  if (!/[!@#$%^&*]/.test(DOMPurify.sanitize(inputPassword.value))) {
+  if (!REGEXP.REGEX_SPEC_SYMBOL.test(inputPassword.value)) {
     passwordErrors.push("Пароль должен содержать хотя бы один спецсимвол");
   }
 
-  if (!/(?=.*[a-z])(?=.*[A-Z])/.test(DOMPurify.sanitize(inputPassword.value))) {
+  if (!REGEXP.REGEXP_UPPER_LOWER_CASE.test(inputPassword.value)) {
     passwordErrors.push(
       "Пароль должен содержать хотя бы одну латинскую букву в нижнем регистре и одну в верхнем регистре",
     );

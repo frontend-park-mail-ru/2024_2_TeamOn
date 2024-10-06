@@ -56,10 +56,10 @@ export function renderLogin() {
   passwordEye.addEventListener("click", () => {
     if (inputPassword.type === "password") {
       inputPassword.type = "text";
-      passwordEye.innerHTML = "&#128065;"; // change the eye icon to open eye
+      passwordEye.innerHTML = "&#128065;"; 
     } else {
       inputPassword.type = "password";
-      passwordEye.innerHTML = "&#128064;"; // change the eye icon to closed eye
+      passwordEye.innerHTML = "&#128064;"; 
     }
   });
 
