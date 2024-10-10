@@ -31,4 +31,9 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".js"],
   },
+  devServer: {
+    static: path.join(__dirname, "dist"), 
+    open: true,
+    port: 8081, 
+  },
 };
