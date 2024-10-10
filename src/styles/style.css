@@ -472,7 +472,7 @@ form input[type="text"]:focus {
   border: 3px solid #e0e0e0;
 }
 .profile .left-bar {
- width: 400pt;
+  width: 400pt;
   background-color: white;
   border-radius: 10px;
 }
@@ -576,4 +576,3 @@ form input[type="text"]:focus {
   font-size: 18px;
   color: #666;
 }
-
