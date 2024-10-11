@@ -3,13 +3,14 @@ import { goToPage } from "../index";
 import { authLogin, validateLoginForm } from "./login";
 import { ELEMENTS, ELEMENTS_CLASS } from "../consts";
 
-export let attempts = 0;
+export let attempts: any;
 
 /**
  * Рендерит форму входа на страницу.
  * @returns
  */
 export function renderLogin() {
+  attempts = 0;
   const backgroundLayer = document.createElement(
     ELEMENTS.DIV,
   ) as HTMLInputElement;

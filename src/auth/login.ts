@@ -83,6 +83,6 @@ export function authLogin(form: any, inputLogin: any, inputPassword: any) {
   }
 }
 
-function checkAttempts(attempts: any) {
+function checkAttempts(attempts: number) {
   return attempts > maxAttempts;
 }

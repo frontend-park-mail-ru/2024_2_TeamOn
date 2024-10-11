@@ -104,12 +104,18 @@ form input[type="text"]:focus {
   background: rgba(0, 0, 0, 0.3);
 }
 .home-header {
+	padding: 20pt 20pt;
   position: absolute;
-  top: 20px;
+  top: 30%;
   left: 50%;
   transform: translateX(-50%);
   color: white;
-  font-size: 14px;
+  font-size: 200px;
+    font-weight: bold;
+    cursor: default;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.4;
 }
 .home-search-box {
   position: absolute;
@@ -133,18 +139,19 @@ form input[type="text"]:focus {
 }
 .home-buttons {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 10%;
+  right: 10%;
   display: flex;
   gap: 10px;
 }
 .home-button {
+  opacity: 0.85;
   padding: 10px 20px;
   border-radius: 25px;
   border: 1px solid gray;
   background: white;
   color: gray;
-  font-size: 14px;
+  font-size: 28px;
   cursor: pointer;
   transition:
     background 0.3s,
@@ -462,7 +469,9 @@ form input[type="text"]:focus {
   margin-left: 170pt;
   margin-top: 15pt;
 }
-
+.active-nav-links {
+	cursor: pointer;
+}
 .profile .left img {
   width: 90%;
   height: 45%;
@@ -472,7 +481,7 @@ form input[type="text"]:focus {
   border: 3px solid #e0e0e0;
 }
 .profile .left-bar {
-  width: 400pt;
+ width: 400pt;
   background-color: white;
   border-radius: 10px;
 }

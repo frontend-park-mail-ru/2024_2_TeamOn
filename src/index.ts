@@ -56,7 +56,7 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
   pageContainer.innerHTML = "";
   state2.activePageLink?.classList.remove(ELEMENTS_CLASS.ACTIVE);
   targetLinkMenu.classList.add(ELEMENTS_CLASS.ACTIVE);
-  if (targetLinkMenu == "http://pushart.online/profile") {
+  if (targetLinkMenu == "http://localhost:8080/profile") {
     state.activePageLink = targetLinkMenu;
     config.menu[targetLinkMenu.dataset.section]
       .render(statusErr)
