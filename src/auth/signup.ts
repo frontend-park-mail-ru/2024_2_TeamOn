@@ -140,7 +140,7 @@ export function authSignup(
   inputRepeatPassword: any,
 ) {
   if (!validateSignupForm(form, username, password, inputRepeatPassword)) {
-    fetchAjax(
+    /*fetchAjax(
       "POST",
       "/api/auth/register",
       { username: username.value, password: password.value },
@@ -152,6 +152,15 @@ export function authSignup(
           validationErrorSignupForm(username, password, inputRepeatPassword);
         }
       },
-    );
+    );*/
+      const response = { ok: true, status:200 };
+  
+      if (response.ok) {
+        addItemLocalStorage(DOMPurify.sanitize(username.value));
+        goToPage((state.menuElements as { profile: HTMLElement }).profile);
+      } 
+      else if (response.status === 400) {
+        validationErrorSignupForm(username, password, inputRepeatPassword);
+      }
   }
 }

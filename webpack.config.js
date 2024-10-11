@@ -19,6 +19,10 @@ module.exports = {
         use: "ts-loader",
         exclude: /node_modules/,
       },
+      {
+        test: /\.hbs$/,
+        loader: 'handlebars-loader'
+      },
     ],
   },
   plugins: [

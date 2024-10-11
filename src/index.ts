@@ -2,7 +2,7 @@ import { state, ELEMENTS_CLASS } from "./consts";
 import { renderLogin } from "./auth/loginView";
 import { renderSignup } from "./auth/signupView";
 import { renderError } from "./pages/error";
-import { renderProfile } from "./pages/profile";
+import { renderProfile } from "./pages/profileView";
 import { renderHome } from "./pages/home";
 import { LINKS } from "./consts";
 import { startA } from "./menu/menu";
@@ -52,11 +52,12 @@ const state2: State = {
  * @param {*} targetLinkMenu Ссылка на страницу, на которую нужно перенаправить
  * @param {*} statusErr Статус ошибки (необязательный)
  */
+
 export function goToPage(targetLinkMenu: any, statusErr = null) {
   pageContainer.innerHTML = "";
   state2.activePageLink?.classList.remove(ELEMENTS_CLASS.ACTIVE);
   targetLinkMenu.classList.add(ELEMENTS_CLASS.ACTIVE);
-  if (targetLinkMenu == "http://pushart.online/profile") {
+  if (targetLinkMenu.dataset.section === "profile") {
     state.activePageLink = targetLinkMenu;
     config.menu[targetLinkMenu.dataset.section]
       .render(statusErr)
@@ -72,6 +73,25 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
   }
 }
 
+/*
+export function goToPage(targetLinkMenu: any, statusErr = null) { 
+  pageContainer.innerHTML = "";
+  state2.activePageLink?.classList.remove(ELEMENTS_CLASS.ACTIVE);
+  targetLinkMenu.classList.add(ELEMENTS_CLASS.ACTIVE);
+
+  if (targetLinkMenu.dataset.section === "profile") {
+    state.activePageLink = targetLinkMenu;
+
+    const newPageElement = document.createElement('div');
+    newPageElement.textContent = "This is the profile page.";
+    pageContainer.appendChild(newPageElement);
+  } else {
+    const newPageElement = document.createElement('div');
+    newPageElement.textContent = `Rendering section: ${targetLinkMenu.dataset.section || "unknown"}`;
+    pageContainer.appendChild(newPageElement);
+  }
+}
+  */
 var root: HTMLElement | null = startA(config.menu, state);
 
 const pageContainer = document.createElement("main");
