@@ -1,6 +1,7 @@
 import { ELEMENTS_CLASS, RouterLinks, state } from "../consts";
+import { goToPage, pageContainer } from "../index";
 import { route } from "../utils/routing";
-import { getCurrentUser } from "./profile";
+import { getCurrentUser, renderProfile } from "./profile";
 
 export async function renderFeed() {
   try {

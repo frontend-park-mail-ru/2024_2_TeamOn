@@ -47,16 +47,20 @@ export const LINKS = {
     TEXT: "Регистрация",
   },
   PROFILE: {
-    HREF: "/profile",
+    HREF: "/feed/profile",
     TEXT: "Профиль",
   },
   ERROR: {
     HREF: "/error",
     TEXT: "Ошибка",
   },
-  ABOUT: {
-    HREF: "/about",
-    TEXT: "АБОУТ",
+  SETTINGS: {
+    HREF: "/feed/settings",
+    TEXT: "Настройки",
+  },
+  FEED: {
+    HREF: "/feed",
+    TEXT: "Лента",
   },
 };
 export const RouterLinks = {

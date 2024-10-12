@@ -7,6 +7,7 @@ import { renderHome } from "./pages/home";
 import { LINKS } from "./consts";
 import { startA } from "./menu/menu";
 import "./styles/style.css";
+import { renderFeed } from "./pages/feed";
 /**
  * Объект, содержащий конфигурацию меню приложения.
  */
@@ -37,6 +38,16 @@ const config: any = {
       text: LINKS.ERROR.TEXT as string,
       render: renderError as () => HTMLInputElement | undefined,
     },
+    settings: {
+      href: LINKS.ERROR.HREF as string,
+      text: LINKS.ERROR.TEXT as string,
+      render: renderLogin as () => HTMLInputElement | undefined,
+    },
+    feed: {
+      href: LINKS.FEED.HREF as string,
+      text: LINKS.FEED.TEXT as string,
+      render: renderFeed as () => Promise<HTMLElement> | undefined,
+    },
   },
 };
 interface State {
@@ -56,7 +67,10 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
   pageContainer.innerHTML = "";
   state2.activePageLink?.classList.remove(ELEMENTS_CLASS.ACTIVE);
   targetLinkMenu.classList.add(ELEMENTS_CLASS.ACTIVE);
-  if (targetLinkMenu == "http://localhost:8080/profile") {
+  if (
+    targetLinkMenu == "http://localhost:8080/feed/profile" ||
+    targetLinkMenu == "http://localhost:8080/feed"
+  ) {
     state.activePageLink = targetLinkMenu;
     config.menu[targetLinkMenu.dataset.section]
       .render(statusErr)

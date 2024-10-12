@@ -35,20 +35,13 @@ class Routing {
 function updatePageContent(render: string) {
   switch (render) {
     case "/feed":
-      pageContainer.innerHTML = "";
-      renderFeed().then((newPageElement: any) => {
-        pageContainer.appendChild(newPageElement);
-      });
-      break;
-    case "/feed/settings":
-      pageContainer.innerHTML = "";
-      goToPage((state.menuElements as { login: HTMLElement }).login);
+      goToPage((state.menuElements as { feed: HTMLElement }).feed);
       break;
     case "/feed/profile":
-      pageContainer.innerHTML = "";
-      renderProfile().then((newPageElement: any) => {
-        pageContainer.appendChild(newPageElement);
-      });
+      goToPage((state.menuElements as { profile: HTMLElement }).profile);
+      break;
+    case "/feed/settings":
+      goToPage((state.menuElements as { settings: HTMLElement }).settings);
       break;
     case "/":
       goToPage((state.menuElements as { home: HTMLElement }).home);
