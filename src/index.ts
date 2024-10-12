@@ -67,6 +67,7 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
   pageContainer.innerHTML = "";
   state2.activePageLink?.classList.remove(ELEMENTS_CLASS.ACTIVE);
   targetLinkMenu.classList.add(ELEMENTS_CLASS.ACTIVE);
+  
   if (
     targetLinkMenu == "http://localhost:8080/feed/profile" ||
     targetLinkMenu == "http://localhost:8080/feed"
@@ -78,12 +79,13 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
         pageContainer.appendChild(newPageElement);
       });
     initHomePage = false;
-  } else {
-    const newPageElement =
-      config.menu[targetLinkMenu.dataset.section].render(statusErr);
-    if (newPageElement) {
-      pageContainer.appendChild(newPageElement);
-    }
+    return;
+  } 
+
+  const newPageElement =
+    config.menu[targetLinkMenu.dataset.section].render(statusErr);
+  if (newPageElement) {
+    pageContainer.appendChild(newPageElement);
   }
 }
 
