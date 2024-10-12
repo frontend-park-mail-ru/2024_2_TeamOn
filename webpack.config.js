@@ -32,26 +32,35 @@ module.exports = {
     extensions: [".ts", ".js"],
   },
   devServer: {
-    static: path.join(__dirname, "dist"), 
+    static: path.join(__dirname, "dist"),
     open: true,
-    port: 8080, 
+    port: 8080,
+    historyApiFallback: true,
     headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers":
+        "Origin, X-Requested-With, Content-Type, Accept",
     },
     proxy: [
       {
-        context: '/api/auth',
-        target: 'http://localhost:8081',
+        context: "/api/auth",
+        target: "http://localhost:8081",
         changeOrigin: true,
-        pathRewrite: {'^/api/auth' : '/auth'},
+        pathRewrite: { "^/api/auth": "/auth" },
       },
       {
-        context: '/api/profile',
-        target: 'http://localhost:8082',
+        context: "/api/profile",
+        target: "http://localhost:8082",
         changeOrigin: true,
-        pathRewrite: {'^/api/profile' : '/profile'}
+        pathRewrite: { "^/api/profile": "/profile" },
       },
+      // {
+      //   context: '/about',
+      //   target: 'http://localhost:8080',
+      //   changeOrigin: true,
+      //   secure: false,
+      //   //pathRewrite: {'^/api/profile' : '/profile'}
+      // },
     ],
   },
 };

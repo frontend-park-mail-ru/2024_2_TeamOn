@@ -1,8 +1,9 @@
 import { goToPage } from "../index";
-import { state } from "../consts";
+import { RouterLinks, state } from "../consts";
 import { ELEMENTS, ELEMENTS_CLASS } from "../consts";
 import { fetchAjax } from "../utils/fetchAjax";
 import { getItemLocalStorage, removeItemLocalStorage } from "../utils/storages";
+import { route } from "../utils/routing";
 
 /**
  * Получение текущего профиля через объект типа промис
@@ -176,7 +177,8 @@ function renderLogoutButton(Item: any) {
     while (getItemLocalStorage(Item)) {
       removeItemLocalStorage(Item);
     }
-    goToPage((state.menuElements as { home: HTMLElement }).home);
+    route(RouterLinks.HOME);
+    //location.reload();
   });
   return logoutLink;
 }

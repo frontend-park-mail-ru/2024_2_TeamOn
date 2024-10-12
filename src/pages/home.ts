@@ -1,7 +1,9 @@
-import { state } from "../consts";
-import { goToPage } from "../index";
+import { RouterLinks, state } from "../consts";
+import { goToPage, initHomePage } from "../index";
 import { ELEMENTS, ELEMENTS_CLASS } from "../consts";
 import { getItemLocalStorage } from "../utils/storages";
+import { ClearHistoryBrowser } from "../utils/clearHistory";
+import { route } from "../utils/routing";
 
 /**
  * Обработка домашней страницы
@@ -11,9 +13,10 @@ export function renderHome() {
     (_, i) => getItemLocalStorage(localStorage.key(i)) === "1",
   );
 
-  if (hasLoggedInUser) {
-    goToPage((state.menuElements as { profile: HTMLElement }).profile);
+  if (hasLoggedInUser && initHomePage) {
+    route(RouterLinks.FEED);
   } else {
+    ClearHistoryBrowser();
     const container = document.createElement(ELEMENTS.DIV) as HTMLInputElement;
     const overlay = document.createElement(ELEMENTS.DIV) as HTMLInputElement;
     const header = document.createElement(ELEMENTS.DIV) as HTMLInputElement;

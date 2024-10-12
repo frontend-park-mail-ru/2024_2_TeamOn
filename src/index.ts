@@ -63,6 +63,7 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
       .then((newPageElement: any) => {
         pageContainer.appendChild(newPageElement);
       });
+    initHomePage = false;
   } else {
     const newPageElement =
       config.menu[targetLinkMenu.dataset.section].render(statusErr);
@@ -74,7 +75,7 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
 
 var root: HTMLElement | null = startA(config.menu, state);
 
-const pageContainer = document.createElement("main");
+export const pageContainer = document.createElement("main");
 root?.appendChild(pageContainer);
-
+export var initHomePage: any = true;
 goToPage((state.menuElements as { home: HTMLElement }).home);

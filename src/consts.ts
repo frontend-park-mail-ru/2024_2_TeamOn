@@ -54,8 +54,17 @@ export const LINKS = {
     HREF: "/error",
     TEXT: "Ошибка",
   },
+  ABOUT: {
+    HREF: "/about",
+    TEXT: "АБОУТ",
+  },
 };
-
+export const RouterLinks = {
+  HOME: "/",
+  FEED: "/feed",
+  PROFILE: "/feed/profile",
+  SETTINGS: "/feed/settings",
+};
 /**
  * Объект, содержащий теги HTML-элементов.
  */

@@ -1,9 +1,14 @@
-import { state, REGEXP, validatePassword, validateUsername } from "../consts";
+import {
+  REGEXP,
+  validatePassword,
+  validateUsername,
+  RouterLinks,
+} from "../consts";
 import { removeError, showError } from "../utils/errors";
 import { fetchAjax } from "../utils/fetchAjax";
-import { goToPage } from "../index";
 import { addItemLocalStorage } from "../utils/storages";
 import * as DOMPurify from "dompurify";
+import { route } from "../utils/routing";
 
 /**
  * Функция валидации регистрационной формы
@@ -147,7 +152,7 @@ export function authSignup(
       (response) => {
         if (response.ok) {
           addItemLocalStorage(DOMPurify.sanitize(username.value));
-          goToPage((state.menuElements as { profile: HTMLElement }).profile);
+          route(RouterLinks.FEED);
         } else if (response.status === 400) {
           validationErrorSignupForm(username, password, inputRepeatPassword);
         }

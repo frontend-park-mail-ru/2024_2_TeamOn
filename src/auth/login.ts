@@ -1,10 +1,11 @@
-import { state, maxAttempts } from "../consts";
+import { state, maxAttempts, RouterLinks } from "../consts";
 import { removeError, showError } from "../utils/errors";
 import { fetchAjax } from "../utils/fetchAjax";
 import { goToPage } from "../index";
 import { attempts } from "./loginView";
 import { addItemLocalStorage } from "../utils/storages";
 import * as DOMPurify from "dompurify";
+import { route } from "../utils/routing";
 
 /**
  * Валидирует форму входа, проверяя корректность ввода логина и пароля.
@@ -74,7 +75,7 @@ export function authLogin(form: any, inputLogin: any, inputPassword: any) {
       (response) => {
         if (response.ok) {
           addItemLocalStorage(DOMPurify.sanitize(inputLogin.value));
-          goToPage((state.menuElements as { profile: HTMLElement }).profile);
+          route(RouterLinks.FEED);
         } else if (response.status === 400) {
           validateErrorLoginForm(inputLogin, inputPassword);
         }
