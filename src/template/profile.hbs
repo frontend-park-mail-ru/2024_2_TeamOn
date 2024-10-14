@@ -1,0 +1,48 @@
+<div class="{{ELEMENTS_CLASS.FORM_PROFILE}}">
+    <div class="{{ELEMENTS_CLASS.HEADER_PROFILE}}">
+        <nav>
+            {{#each navLinks}}
+                <a href="#" class="{{#if isActive}}active{{/if}}">{{this}}</a>
+            {{/each}}
+            <a href="#" class="{{ELEMENTS_CLASS.LOGOUT}}" id="logout">{{logoutText}}</a>
+        </nav>
+        <h4>ОБО МНЕ</h4>
+        <h1>{{userStatus}}</h1>
+    </div>
+    <div class="{{ELEMENTS_CLASS.PROFILE}}">
+        <div class="{{ELEMENTS_CLASS.LEFT}}">
+            <div class="{{ELEMENTS_CLASS.LEFT_BAR}}">
+                <img src="{{profileImgSrc}}" class="{{ELEMENTS_CLASS.IMAGE_PROFILE}}" alt="Profile Image"/>
+                <div class="{{ELEMENTS_CLASS.INFO}}">
+                    <h2>{{username}}</h2>
+                    <p>{{role}}</p>
+                </div>
+            </div>
+            <div class="{{ELEMENTS_CLASS.EARNINGS}}">
+                <h3>Выплаты</h3>
+                <h4>За сегодня вы заработали:</h4>
+                <p>{{earningsAmount}} ₽</p>
+            </div>
+        </div>
+        <div class="{{ELEMENTS_CLASS.RIGHT}}">
+            <div class="{{ELEMENTS_CLASS.STATS}}">
+                <div>посты: {{postsAmount}}</div>
+                <div>подписчики: {{subscriptions}}</div>
+                <div>подписки: {{followers}}</div>
+            </div>
+            <div class="posts">
+                {{#if posts.length}}
+                    {{#each posts}}
+                        <div class="{{ELEMENTS_CLASS.POST}}">
+                            <h4>{{title}}</h4>
+                            <p>{{content}}</p>
+                            <div class="{{ELEMENTS_CLASS.DATE}}">{{date}}</div>
+                        </div>
+                    {{/each}}
+                {{else}}
+                    <p class="no-posts-message">У вас пока нет постов</p>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</div>

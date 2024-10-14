@@ -1,7 +1,7 @@
-import { state } from "../consts.js";
-import { goToPage } from "../index.js";
-import { ELEMENTS, ELEMENTS_CLASS } from "../consts.js";
-import { getItemLocalStorage } from "../utils/storages.js";
+import { state } from "../consts";
+import { goToPage } from "../index";
+import { ELEMENTS, ELEMENTS_CLASS } from "../consts";
+import { getItemLocalStorage } from "../utils/storages";
 
 /**
  * Обработка домашней страницы
@@ -12,13 +12,13 @@ export function renderHome() {
   );
 
   if (hasLoggedInUser) {
-    goToPage(state.menuElements.profile);
+    goToPage((state.menuElements as { profile: HTMLElement }).profile);
   } else {
-    const container = document.createElement(ELEMENTS.DIV);
-    const overlay = document.createElement(ELEMENTS.DIV);
-    const header = document.createElement(ELEMENTS.DIV);
-    const buttons = document.createElement(ELEMENTS.DIV);
-    const loginButton = document.createElement(ELEMENTS.A);
+    const container = document.createElement(ELEMENTS.DIV) as HTMLInputElement;
+    const overlay = document.createElement(ELEMENTS.DIV) as HTMLInputElement;
+    const header = document.createElement(ELEMENTS.DIV) as HTMLInputElement;
+    const buttons = document.createElement(ELEMENTS.DIV) as HTMLInputElement;
+    const loginButton = document.createElement(ELEMENTS.A) as HTMLInputElement;
 
     container.classList.add(ELEMENTS_CLASS.HOME_CONTAINER);
 
@@ -38,7 +38,7 @@ export function renderHome() {
     container.appendChild(buttons);
 
     loginButton.onclick = () => {
-      goToPage(state.menuElements.login);
+      goToPage((state.menuElements as { login: HTMLElement }).login);
     };
 
     return container;
