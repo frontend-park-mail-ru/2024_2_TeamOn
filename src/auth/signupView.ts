@@ -4,12 +4,10 @@ import { authSignup, validateSignupForm } from "./signup";
 import { ELEMENTS, ELEMENTS_CLASS } from "../consts";
 import signupTemplate from '../template/signup.hbs';
 
-
 /**
  * Функция рендерит форму регистрации.
  * @returns
  */
-
 
 export function renderSignup(): HTMLElement {
   const backgroundLayer = document.createElement('div');
@@ -27,6 +25,28 @@ export function renderSignup(): HTMLElement {
     throw new Error('Не удалось найти один из необходимых элементов формы');
   }
 
+  const errors = {
+    username: '',
+    password: '',
+    repeatPassword: '',
+  };
+
+  const createErrorContainer = () => {
+    const errorContainer = document.createElement('div');
+    errorContainer.className = 'error';
+    errorContainer.style.height = '20px'; 
+    return errorContainer;
+  };
+
+  const usernameErrorContainer = createErrorContainer();
+  const passwordErrorContainer = createErrorContainer();
+  const repeatPasswordErrorContainer = createErrorContainer();
+
+  // Добавляем контейнеры для ошибок в форму
+  form.insertBefore(usernameErrorContainer, inputPassword);
+  form.insertBefore(passwordErrorContainer, inputRepeatPassword);
+  form.insertBefore(repeatPasswordErrorContainer, buttonRegister);
+
   closeBtn.onclick = () => {
     goToPage((state.menuElements as { home: HTMLElement }).home);
   };
@@ -38,20 +58,24 @@ export function renderSignup(): HTMLElement {
 
   buttonRegister.addEventListener("click", (e: MouseEvent) => {
     e.preventDefault();
-    authSignup(form, inputUsername, inputPassword, inputRepeatPassword);
+    authSignup(form, inputUsername, inputPassword, inputRepeatPassword, buttonRegister);
   });
 
   form.addEventListener("keydown", (e: KeyboardEvent) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      authSignup(form, inputUsername, inputPassword, inputRepeatPassword);
+      authSignup(form, inputUsername, inputPassword, inputRepeatPassword, buttonRegister);
     }
   });
 
-
   form.addEventListener("input", (e: Event) => {
     e.preventDefault();
-    validateSignupForm(form, inputUsername, inputPassword, inputRepeatPassword);
+    
+    validateSignupForm(form, inputUsername, inputPassword, inputRepeatPassword, errors);
+
+    usernameErrorContainer.textContent = errors.username;
+    passwordErrorContainer.textContent = errors.password;
+    repeatPasswordErrorContainer.textContent = errors.repeatPassword;
   });
 
   return backgroundLayer;

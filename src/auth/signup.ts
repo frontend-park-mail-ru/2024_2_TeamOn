@@ -5,12 +5,15 @@ import { goToPage } from "../index";
 import { addItemLocalStorage } from "../utils/storages";
 import * as DOMPurify from "dompurify";
 
+
+
 /**
  * Функция валидации регистрационной формы
  * @param {*} form Форма регистрации
  * @param {*} inputUsername Поле ввода логина
  * @param {*} inputPassword Поле ввода пароля
  * @param {*} inputRepeatPassword Поле ввода повторного пароля
+ * @param {*} errors Объект для хранения ошибок
  * @returns true, если форма содержит ошибки, false - если форма корректна
  */
 export function validateSignupForm(
@@ -18,98 +21,116 @@ export function validateSignupForm(
   inputUsername: any,
   inputPassword: any,
   inputRepeatPassword: any,
-) {
-  var errors = form.querySelectorAll(".error");
-  let passwordErrors = [] as string[];
-
-  for (var i = 0; i < errors.length; i++) {
-    errors[i].remove();
+  errors: {
+    username: string;
+    password: string;
+    repeatPassword: string;
   }
+) {
+  removePreviousErrors(form);
 
   let hasError = false;
-  let firstLoginError = false;
-  let firstPasswordError = false;
 
-  if (!DOMPurify.sanitize(inputUsername.value)) {
-    showError(inputUsername, "Пожалуйста, введите логин");
-    hasError = true;
-    firstLoginError = true;
-  } else {
-    removeError(inputUsername);
-  }
-
-  if (!inputPassword.value) {
-    showError(inputPassword, "Пожалуйста, введите пароль");
-    hasError = true;
-    firstPasswordError = true;
-  } else {
-    removeError(inputPassword);
-  }
-
-  if (inputRepeatPassword.value != inputPassword.value) {
-    showError(inputRepeatPassword, "Пароли должны совпадать");
-    hasError = true;
-  } else {
-    removeError(inputRepeatPassword);
-  }
-
-  if (
-    !REGEXP.REGEXP_LOGIN.test(DOMPurify.sanitize(inputUsername.value)) &&
-    !firstLoginError
-  ) {
-    showError(
-      inputUsername,
-      'Логин должен содержать хотя бы одну латинскую букву, и может содержать цифры и знаки "-" "_"',
-    );
-    hasError = true;
-  } else {
-    removeError(inputUsername);
-  }
-  if (
-    (DOMPurify.sanitize(inputUsername.value).length <
-      validateUsername.MIN_SYMBOLS ||
-      DOMPurify.sanitize(inputUsername.value).length >
-        validateUsername.MAX_SYMBOLS) &&
-    !firstLoginError
-  ) {
-    showError(
-      inputUsername,
-      "Логин должен быть не менее 4 и не более 10 символов",
-    );
-    hasError = true;
-  } else {
-    removeError(inputUsername);
-  }
-
-  if (
-    inputPassword.value.length < validatePassword.MIN_SYMBOLS ||
-    inputPassword.value.length > validatePassword.MAX_SYMBOLS
-  ) {
-    passwordErrors.push("Пароль должен быть не менее 8 и не более 64 символов");
-  }
-
-  if (!REGEXP.REGEXP_PASSWORD_ONE_NUMBER.test(inputPassword.value)) {
-    passwordErrors.push("Пароль должен содержать хотя бы одну цифру");
-  }
-  if (!REGEXP.REGEX_SPEC_SYMBOL.test(inputPassword.value)) {
-    passwordErrors.push("Пароль должен содержать хотя бы один спецсимвол");
-  }
-
-  if (!REGEXP.REGEXP_UPPER_LOWER_CASE.test(inputPassword.value)) {
-    passwordErrors.push(
-      "Пароль должен содержать хотя бы одну латинскую букву в нижнем регистре и одну в верхнем регистре",
-    );
-  }
-
-  if (passwordErrors.length > 0 && !firstPasswordError) {
-    showError(inputPassword, passwordErrors.join("<br>"));
-    hasError = true;
-  } else {
-    removeError(inputPassword);
-  }
+  hasError = validateUsernameField(inputUsername, errors, hasError);
+  
+  hasError = validatePasswordField(inputPassword, inputRepeatPassword, errors, hasError);
 
   return hasError;
 }
+
+function removePreviousErrors(form: HTMLFormElement) {
+  const errors = form.querySelectorAll(".error");
+  errors.forEach(error => error.remove());
+}
+
+function validateUsernameField(inputUsername: HTMLInputElement, errors: { username: string }, hasError: boolean) {
+  if (!DOMPurify.sanitize(inputUsername.value)) {
+    errors.username = "Пожалуйста, введите логин";
+    showError(inputUsername, errors.username);
+    return true;
+  }
+
+  if (!REGEXP.REGEXP_LOGIN.test(DOMPurify.sanitize(inputUsername.value))) {
+    errors.username = 'Логин должен содержать хотя бы одну латинскую букву, и может содержать цифры и знаки "-" "_"';
+    showError(inputUsername, errors.username);
+    return true;
+  }
+
+  const usernameLength = DOMPurify.sanitize(inputUsername.value).length;
+  if (usernameLength < validateUsername.MIN_SYMBOLS || usernameLength > validateUsername.MAX_SYMBOLS) {
+    errors.username = "Логин должен быть не менее 4 и не более 10 символов";
+    showError(inputUsername, errors.username);
+    return true;
+  }
+
+  removeError(inputUsername);
+  return hasError;
+}
+
+function validatePasswordField(inputPassword: HTMLInputElement, inputRepeatPassword: HTMLInputElement, errors: { password: string, repeatPassword: string }, hasError: boolean) {
+  let passwordErrors = [];
+
+  if (!inputPassword.value) {
+    errors.password = "Пожалуйста, введите пароль";
+    showError(inputPassword, errors.password);
+    return true;
+  }
+
+  if (inputPassword.value.length < validatePassword.MIN_SYMBOLS) {
+    errors.password = "Пароль должен быть не менее 8 символов";
+    showError(inputPassword, errors.password);
+    hasError = true; 
+  } else {
+    removeError(inputPassword); 
+  }
+
+
+  if (inputPassword.value.length > validatePassword.MAX_SYMBOLS) {
+    errors.password = "Пароль должен быть не более 64 символов";
+    showError(inputPassword, errors.password);
+    hasError = true; 
+  }
+  if (!REGEXP.REGEXP_PASSWORD_ONE_NUMBER.test(inputPassword.value)) {
+    errors.password = "Пароль должен содержать хотя бы одну цифру";
+    showError(inputPassword, errors.password);
+    hasError = true; 
+  } else {
+    removeError(inputPassword); 
+  }
+
+  if (!REGEXP.REGEX_SPEC_SYMBOL.test(inputPassword.value)) {
+    errors.password = "Пароль должен содержать хотя бы один спецсимвол";
+    showError(inputPassword, errors.password);
+    hasError = true; 
+  } else {
+    removeError(inputPassword); 
+  }
+
+
+  if (!REGEXP.REGEXP_UPPER_LOWER_CASE.test(inputPassword.value)) {
+    errors.password = "Пароль должен содержать хотя бы одну латинскую букву в нижнем регистре и одну в верхнем регистре";
+    showError(inputPassword, errors.password);
+    hasError = true; 
+  } else {
+    removeError(inputPassword); 
+  }
+
+  if (inputRepeatPassword.value !== inputPassword.value) {
+    errors.repeatPassword = "Пароли должны совпадать";
+    showError(inputRepeatPassword, errors.repeatPassword);
+    hasError = true; 
+  } else {
+    removeError(inputRepeatPassword); 
+  }
+
+  if (!hasError) {
+    removeError(inputPassword);
+    removeError(inputRepeatPassword);
+  }
+  
+  return hasError;
+}
+
 /**
  * Выводит ошибку регистрации, если пользователь уже существует.
  * @param {*} inputLogin Поле ввода логина
@@ -125,42 +146,51 @@ function validationErrorSignupForm(
   showError(inputPassword, "");
   showError(inputRepeatPassword, `Пользователь уже существует`);
 }
-
 /**
  * Регистрирует нового пользователя, если форма регистрации корректна.
  * @param {*} form Форма регистрации
  * @param {*} username Поле ввода логина
  * @param {*} password Поле ввода пароля
  * @param {*} inputRepeatPassword Поле ввода повторного пароля
+ * @param {*} submitButton Кнопка отправки формы
  */
+
 export function authSignup(
   form: any,
   username: any,
   password: any,
   inputRepeatPassword: any,
+  submitButton: HTMLInputElement
 ) {
-  if (!validateSignupForm(form, username, password, inputRepeatPassword)) {
-    /*fetchAjax(
+  const errors = {
+    username: "",
+    password: "",
+    repeatPassword: ""
+  };
+
+  if (!validateSignupForm(form, username, password, inputRepeatPassword, errors)) {
+    submitButton.disabled = true;
+
+    fetchAjax(
       "POST",
       "/api/auth/register",
-      { username: username.value, password: password.value },
+      { username: DOMPurify.sanitize(username.value), password: password.value },
       (response) => {
         if (response.ok) {
           addItemLocalStorage(DOMPurify.sanitize(username.value));
           goToPage((state.menuElements as { profile: HTMLElement }).profile);
         } else if (response.status === 400) {
           validationErrorSignupForm(username, password, inputRepeatPassword);
+        } else {
+          submitButton.classList.add("error");  // Ставим светло-серый цвет
         }
-      },
-    );*/
-      const response = { ok: true, status:200 };
-  
-      if (response.ok) {
-        addItemLocalStorage(DOMPurify.sanitize(username.value));
-        goToPage((state.menuElements as { profile: HTMLElement }).profile);
-      } 
-      else if (response.status === 400) {
-        validationErrorSignupForm(username, password, inputRepeatPassword);
       }
+    ).catch((error) => {
+      console.error("Ошибка при выполнении запроса:", error);
+      submitButton.classList.add("error"); 
+    }).finally(() => {
+      submitButton.classList.remove("loading");
+      submitButton.disabled = false; 
+    });
   }
 }

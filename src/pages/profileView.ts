@@ -146,7 +146,6 @@ function renderUserPosts(user: any) {
         postsContainer.appendChild(postDiv);
       });
     } else {
-      // Если нет постов, отображаем сообщение "У вас пока нет постов"
       const noPostMessage = document.createElement(ELEMENTS.P);
       noPostMessage.classList.add("no-post-message");
       noPostMessage.textContent = "У вас пока нет постов";
