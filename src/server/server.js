@@ -26,11 +26,11 @@ app.use((req, res) => {
  */
 const server = http.createServer((req, res) => {
   const url = req.url;
-  let filePath = `..${url}`;
+  let filePath = `../../dist/${url}`;
 
   const URLS = ["/", "/login", "/signup", "/profile", "/error"];
   if (URLS.includes(url)) {
-    filePath = "../index.html";
+    filePath = "../../dist/index.html";
   }
 
   fs.readFile(filePath, (err, data) => {
