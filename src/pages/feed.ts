@@ -1,7 +1,6 @@
-import { ELEMENTS_CLASS, RouterLinks, state } from "../consts";
-import { goToPage, pageContainer } from "../index";
+import { RouterLinks, state } from "../consts";
 import { route } from "../utils/routing";
-import { getCurrentUser, renderProfile } from "./profile";
+import { getCurrentUser } from "./profile";
 
 export async function renderFeed() {
   try {
@@ -206,6 +205,11 @@ export async function renderFeed() {
       recentPatreon.appendChild(patreonItem);
     });
     mainContent.appendChild(recentPatreon);
+
+    const sectionTitle4 = document.createElement("div");
+    sectionTitle4.className = "section-title";
+    sectionTitle4.appendChild(document.createTextNode("Посты"));
+    mainContent.appendChild(sectionTitle4);
 
     mainContent.appendChild(sidebar);
     return mainContent;

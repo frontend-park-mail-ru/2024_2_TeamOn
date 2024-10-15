@@ -3,7 +3,7 @@ import { RouterLinks, state } from "../consts";
 import { ELEMENTS, ELEMENTS_CLASS } from "../consts";
 import { fetchAjax } from "../utils/fetchAjax";
 import { getItemLocalStorage, removeItemLocalStorage } from "../utils/storages";
-import { route } from "../utils/routing";
+import { route, routing } from "../utils/routing";
 
 /**
  * Получение текущего профиля через объект типа промис
@@ -17,8 +17,7 @@ export function getCurrentUser() {
           resolve(data);
         });
       } else if (response.status === 401) {
-        reject(new Error("Не авторизован"));
-        goToPage((state.menuElements as { login: HTMLElement }).login);
+        route(RouterLinks.LOGIN);
       } else {
         reject(new Error("Ответ от фетча с ошибкой"));
       }

@@ -1,49 +1,44 @@
-import { RouterLinks, state } from "../consts";
-import { goToPage, initHomePage } from "../index";
+import { RouterLinks } from "../consts";
 import { ELEMENTS, ELEMENTS_CLASS } from "../consts";
-import { getItemLocalStorage } from "../utils/storages";
-import { ClearHistoryBrowser } from "../utils/clearHistory";
 import { route } from "../utils/routing";
+import { hasLogged } from "../utils/hasLogged";
+import { ClearHistoryBrowser } from "../utils/clearHistory";
+import { VirtualDOM } from "../lib/vdom/src/source";
+import { createElement, createText, render } from "../lib/vdom/lib";
+import { JSXParser } from "../lib/jsx/src/source";
+import { createElementJSX } from "../lib/jsx/lib";
 
 /**
  * Обработка домашней страницы
  */
 export function renderHome() {
-  const hasLoggedInUser = Array.from({ length: localStorage.length }).some(
-    (_, i) => getItemLocalStorage(localStorage.key(i)) === "1",
-  );
-
-  if (hasLoggedInUser && initHomePage) {
+  if (hasLogged()) {
     route(RouterLinks.FEED);
   } else {
     ClearHistoryBrowser();
-    const container = document.createElement(ELEMENTS.DIV) as HTMLInputElement;
-    const overlay = document.createElement(ELEMENTS.DIV) as HTMLInputElement;
-    const header = document.createElement(ELEMENTS.DIV) as HTMLInputElement;
-    const buttons = document.createElement(ELEMENTS.DIV) as HTMLInputElement;
-    const loginButton = document.createElement(ELEMENTS.A) as HTMLInputElement;
+    const vdom = new VirtualDOM(
+          //createElement("div", {class: "vdom"}, [
+            createElement("div", { class: "home-overlay" }, []),
+            createElement("div", { class: "home-header" }, [createText("PUSHART")]),
+            createElement("div", { class: "home-buttons" }, [
+              createElement("a", { class: "home-button" }, [createText("Войти")]),
+            ]),
+          //]),
+    );
+    const jsx = "<div class=home-container></div>";
+    const container = createElementJSX(jsx);
+    const html = render(vdom);
 
     container.classList.add(ELEMENTS_CLASS.HOME_CONTAINER);
 
-    overlay.classList.add(ELEMENTS_CLASS.HOME_OVERLAY);
-
-    header.classList.add(ELEMENTS_CLASS.HOME_HEADER);
-    header.textContent = "PUSHART";
-
-    buttons.classList.add(ELEMENTS_CLASS.HOME_BUTTONS);
-
-    loginButton.classList.add(ELEMENTS_CLASS.HOME_BUTTON);
-    loginButton.textContent = "Войти";
-
-    container.appendChild(overlay);
-    container.appendChild(header);
-    buttons.appendChild(loginButton);
-    container.appendChild(buttons);
-
-    loginButton.onclick = () => {
-      goToPage((state.menuElements as { login: HTMLElement }).login);
-    };
+    container.innerHTML = html;
+    const button:any = container.querySelector('.home-buttons')
+    button.addEventListener('click', ()=> {
+      route(RouterLinks.LOGIN);
+    });
 
     return container;
   }
 }
+
+

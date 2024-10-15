@@ -1,13 +1,14 @@
-import { state, ELEMENTS_CLASS } from "./consts";
+import { state, ELEMENTS_CLASS, RouterLinks, REGEXP } from "./consts";
 import { renderLogin } from "./auth/loginView";
 import { renderSignup } from "./auth/signupView";
-import { renderError } from "./pages/error";
 import { renderProfile } from "./pages/profile";
 import { renderHome } from "./pages/home";
 import { LINKS } from "./consts";
 import { startA } from "./menu/menu";
 import "./styles/style.css";
 import { renderFeed } from "./pages/feed";
+import { route } from "./utils/routing";
+
 /**
  * Объект, содержащий конфигурацию меню приложения.
  */
@@ -33,15 +34,10 @@ const config: any = {
       text: LINKS.PROFILE.TEXT as string,
       render: renderProfile as () => Promise<HTMLElement> | undefined,
     },
-    error: {
-      href: LINKS.ERROR.HREF as string,
-      text: LINKS.ERROR.TEXT as string,
-      render: renderError as () => HTMLInputElement | undefined,
-    },
     settings: {
       href: LINKS.ERROR.HREF as string,
       text: LINKS.ERROR.TEXT as string,
-      render: renderLogin as () => HTMLInputElement | undefined,
+      render: renderSignup as () => HTMLInputElement | undefined,
     },
     feed: {
       href: LINKS.FEED.HREF as string,
@@ -67,7 +63,7 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
   pageContainer.innerHTML = "";
   state2.activePageLink?.classList.remove(ELEMENTS_CLASS.ACTIVE);
   targetLinkMenu.classList.add(ELEMENTS_CLASS.ACTIVE);
-  
+
   if (
     targetLinkMenu == "http://localhost:8080/feed/profile" ||
     targetLinkMenu == "http://localhost:8080/feed"
@@ -78,20 +74,20 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
       .then((newPageElement: any) => {
         pageContainer.appendChild(newPageElement);
       });
-    initHomePage = false;
     return;
-  } 
+  }
 
   const newPageElement =
     config.menu[targetLinkMenu.dataset.section].render(statusErr);
+    alert(newPageElement)
   if (newPageElement) {
     pageContainer.appendChild(newPageElement);
+    //pageContainer.innerHTML = newPageElement;
   }
 }
-
 var root: HTMLElement | null = startA(config.menu, state);
 
 export const pageContainer = document.createElement("main");
 root?.appendChild(pageContainer);
-export var initHomePage: any = true;
-goToPage((state.menuElements as { home: HTMLElement }).home);
+
+route(RouterLinks.HOME, window.location.pathname);

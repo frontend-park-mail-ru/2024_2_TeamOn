@@ -1,7 +1,6 @@
-import { RouterLinks, state } from "../consts";
-import { goToPage, pageContainer } from "../index";
-import { renderFeed } from "../pages/feed";
-import { renderProfile } from "../pages/profile";
+import { state } from "../consts";
+import { goToPage } from "../index";
+import { nonauth } from "./nonauth";
 
 class Routing {
   public history: string[] = [];
@@ -32,31 +31,43 @@ class Routing {
   }
 }
 
-function updatePageContent(render: string) {
+function updatePageContent(render: string): void {
   switch (render) {
     case "/feed":
+      nonauth();
       goToPage((state.menuElements as { feed: HTMLElement }).feed);
       break;
     case "/feed/profile":
+      nonauth();
       goToPage((state.menuElements as { profile: HTMLElement }).profile);
       break;
     case "/feed/settings":
+      nonauth();
       goToPage((state.menuElements as { settings: HTMLElement }).settings);
       break;
     case "/":
       goToPage((state.menuElements as { home: HTMLElement }).home);
+      break;
+    case "/login":
+      goToPage((state.menuElements as { login: HTMLElement }).login);
+      break;
+    case "/signup":
+      goToPage((state.menuElements as { signup: HTMLElement }).signup);
       break;
   }
 }
 
 export const routing = new Routing();
 routing.updateHistory();
-
 /**
  * Роутинг без кнопки назад
  * @param fromTo Ссылка, куда нужно редирекаться
  */
-export function route(fromTo: string) {
+export function route(fromTo: string, currentUrl?: any): void {
+  if (currentUrl) {
+    updatePageContent(currentUrl);
+    return;
+  }
   routing.navigate(fromTo);
   console.log(fromTo);
   updatePageContent(fromTo);

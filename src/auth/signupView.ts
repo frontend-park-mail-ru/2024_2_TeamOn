@@ -1,7 +1,8 @@
-import { state } from "../consts";
+import { RouterLinks, state } from "../consts";
 import { goToPage } from "../index";
 import { authSignup, validateSignupForm } from "./signup";
 import { ELEMENTS, ELEMENTS_CLASS } from "../consts";
+import { route } from "../utils/routing";
 
 /**
  * Функция рендерит форму регистрации.
@@ -25,7 +26,8 @@ export function renderSignup() {
   closeBtn.className = ELEMENTS_CLASS.CLOSE_BTN;
   closeBtn.innerHTML = "x";
   closeBtn.onclick = () => {
-    goToPage((state.menuElements as { home: HTMLElement }).home);
+    route(RouterLinks.HOME)
+    //goToPage((state.menuElements as { home: HTMLElement }).home);
   };
 
   const h2 = document.createElement(ELEMENTS.H2) as HTMLInputElement;
@@ -97,5 +99,8 @@ export function renderSignup() {
   });
 
   backgroundLayer.appendChild(signupContainer);
+  // backgroundLayer.onclick = () => {
+  //   route(RouterLinks.HOME)
+  // }
   return backgroundLayer;
 }

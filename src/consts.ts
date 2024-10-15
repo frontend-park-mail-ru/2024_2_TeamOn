@@ -65,6 +65,8 @@ export const LINKS = {
 };
 export const RouterLinks = {
   HOME: "/",
+  LOGIN: "/login",
+  SIGNUP: "/signup",
   FEED: "/feed",
   PROFILE: "/feed/profile",
   SETTINGS: "/feed/settings",
@@ -98,6 +100,7 @@ export const REGEXP = {
   REGEXP_PASSWORD_ONE_NUMBER: new RegExp("[0-9]"),
   REGEX_SPEC_SYMBOL: new RegExp("[!@#$%^&*]"),
   REGEXP_UPPER_LOWER_CASE: new RegExp("(?=.*[a-z])(?=.*[A-Z])"),
+  REGEXT_ERROR_LINK: new RegExp("^/[a-z0-9]+/[a-z0-9]+$"),
 };
 
 /**

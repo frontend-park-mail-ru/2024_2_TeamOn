@@ -1,21 +1,19 @@
-import { ELEMENTS, ELEMENTS_CLASS } from "../consts";
-import { goToPage } from "../index";
-import { state } from "../consts";
+import { ELEMENTS, ELEMENTS_CLASS } from "../src/consts";
+import { goToPage } from "../src/index";
+import { state } from "../src/consts";
 
 /**
  * Обработка ошибок
  * @param {*} statusErr Статус ошибки
  */
 export function renderError(statusErr = 404) {
-  const notFoundDiv = document.createElement(ELEMENTS.DIV) as HTMLInputElement;
-  const notFoundContainer = document.createElement(
-    ELEMENTS.DIV,
-  ) as HTMLInputElement;
-  const notFound404 = document.createElement(ELEMENTS.DIV) as HTMLInputElement;
-  const h1 = document.createElement(ELEMENTS.H1) as HTMLInputElement;
-  const h2 = document.createElement(ELEMENTS.H2) as HTMLInputElement;
-  const a = document.createElement(ELEMENTS.A) as HTMLInputElement;
-  const span = document.createElement(ELEMENTS.SPAN) as HTMLInputElement;
+  const notFoundDiv = document.createElement(ELEMENTS.DIV);
+  const notFoundContainer = document.createElement(ELEMENTS.DIV);
+  const notFound404 = document.createElement(ELEMENTS.DIV);
+  const h1 = document.createElement(ELEMENTS.H1);
+  const h2 = document.createElement(ELEMENTS.H2);
+  const a = document.createElement(ELEMENTS.A);
+  const span = document.createElement(ELEMENTS.SPAN);
 
   notFoundDiv.id = "notfound";
 
@@ -28,7 +26,7 @@ export function renderError(statusErr = 404) {
   h2.textContent = "Страница не найдена";
 
   a.onclick = () => {
-    goToPage((state.menuElements as { home: HTMLElement }).home);
+    goToPage(state.menuElements.home);
   };
   span.className = ELEMENTS_CLASS.ARROW;
   a.appendChild(span);

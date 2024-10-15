@@ -35,11 +35,24 @@ module.exports = {
     static: path.join(__dirname, "dist"),
     open: true,
     port: 8080,
-    historyApiFallback: true,
+    historyApiFallback: {
+      rewrites: [
+        {
+          from: /^\/[a-z0-9]+\/[a-z0-9]+$/,
+          to: () => "/error.html",
+        },
+      ],
+    },
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers":
         "Origin, X-Requested-With, Content-Type, Accept",
+      "/styles/*.css": {
+        "Content-Type": "text/css",
+      },
+      "/scripts/*.js": {
+        "Content-Type": "application/javascript",
+      },
     },
     proxy: [
       {
@@ -54,13 +67,6 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: { "^/api/profile": "/profile" },
       },
-      // {
-      //   context: '/about',
-      //   target: 'http://localhost:8080',
-      //   changeOrigin: true,
-      //   secure: false,
-      //   //pathRewrite: {'^/api/profile' : '/profile'}
-      // },
     ],
   },
 };
