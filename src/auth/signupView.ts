@@ -26,7 +26,7 @@ export function renderSignup() {
   closeBtn.className = ELEMENTS_CLASS.CLOSE_BTN;
   closeBtn.innerHTML = "x";
   closeBtn.onclick = () => {
-    route(RouterLinks.HOME)
+    route(RouterLinks.HOME);
     //goToPage((state.menuElements as { home: HTMLElement }).home);
   };
 

@@ -79,7 +79,7 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
 
   const newPageElement =
     config.menu[targetLinkMenu.dataset.section].render(statusErr);
-    alert(newPageElement)
+  alert(newPageElement);
   if (newPageElement) {
     pageContainer.appendChild(newPageElement);
     //pageContainer.innerHTML = newPageElement;

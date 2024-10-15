@@ -17,13 +17,13 @@ export function renderHome() {
   } else {
     ClearHistoryBrowser();
     const vdom = new VirtualDOM(
-          //createElement("div", {class: "vdom"}, [
-            createElement("div", { class: "home-overlay" }, []),
-            createElement("div", { class: "home-header" }, [createText("PUSHART")]),
-            createElement("div", { class: "home-buttons" }, [
-              createElement("a", { class: "home-button" }, [createText("Войти")]),
-            ]),
-          //]),
+      //createElement("div", {class: "vdom"}, [
+      createElement("div", { class: "home-overlay" }, []),
+      createElement("div", { class: "home-header" }, [createText("PUSHART")]),
+      createElement("div", { class: "home-buttons" }, [
+        createElement("a", { class: "home-button" }, [createText("Войти")]),
+      ]),
+      //]),
     );
     const jsx = "<div class=home-container></div>";
     const container = createElementJSX(jsx);
@@ -32,13 +32,11 @@ export function renderHome() {
     container.classList.add(ELEMENTS_CLASS.HOME_CONTAINER);
 
     container.innerHTML = html;
-    const button:any = container.querySelector('.home-buttons')
-    button.addEventListener('click', ()=> {
+    const button: any = container.querySelector(".home-buttons");
+    button.addEventListener("click", () => {
       route(RouterLinks.LOGIN);
     });
 
     return container;
   }
 }
-
-

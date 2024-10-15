@@ -1,7 +1,7 @@
-import { JSXParser } from "./src/source"
-const parser = new JSXParser;
+import { JSXParser } from "./src/source";
+const parser = new JSXParser();
 function createElementJSX(jsx: string) {
-    return parser.createElementFromJSX(jsx);
+  return parser.createElementFromJSX(jsx);
 }
 
-export {createElementJSX}
+export { createElementJSX };

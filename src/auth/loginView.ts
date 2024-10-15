@@ -12,21 +12,21 @@ export let attempts: any;
  * @returns
  */
 export function renderLogin() {
-   attempts = 0;
+  attempts = 0;
   const backgroundLayer = document.createElement(
     ELEMENTS.DIV,
   ) as HTMLInputElement;
   backgroundLayer.className = ELEMENTS_CLASS.BACKGROUND_LOGIN;
 
   const vdom = new VirtualDOM(
-    createElement("div", {class: "vdom"}, [
+    createElement("div", { class: "vdom" }, [
       createElement("div", { class: "home-overlay" }, []),
       createElement("div", { class: "home-header" }, [createText("PUSHART")]),
       createElement("div", { class: "home-buttons" }, [
         createElement("a", { class: "home-button" }, [createText("Войти")]),
       ]),
     ]),
-);
+  );
   // const loginContainer = document.createElement(
   //   ELEMENTS.DIV,
   // ) as HTMLInputElement;

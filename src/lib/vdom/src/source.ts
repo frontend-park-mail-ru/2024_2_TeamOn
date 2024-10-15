@@ -12,12 +12,12 @@ export class VirtualDOM {
       this.root = args[0];
     } else {
       this.root = {
-        type: 'fragment',
+        type: "fragment",
         props: {},
-        children: args
+        children: args,
       };
     }
-  } 
+  }
 
   public render(): string {
     return this._render(this.root);
@@ -27,8 +27,8 @@ export class VirtualDOM {
     if (node.type === "text") {
       return node.props.text;
     }
-    if (node.type === 'fragment') {
-      let html = '';
+    if (node.type === "fragment") {
+      let html = "";
       node.children.forEach((child) => {
         html += this._render(child);
       });
@@ -52,5 +52,4 @@ export class VirtualDOM {
 
     return html;
   }
-
 }
