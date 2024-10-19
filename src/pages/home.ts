@@ -28,7 +28,7 @@ export function renderHome() {
     const jsx = "<div class=home-container></div>";
     const container = createElementJSX(jsx);
     const html = render(vdom);
-    
+
     container.innerHTML = html;
 
     const button: any = container.querySelector(".home-buttons");

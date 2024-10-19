@@ -17,7 +17,7 @@ export function renderSignup() {
   const vdom = new VirtualDOM(
     createElement("div", { class: ELEMENTS_CLASS.SIGNUP_CONTAINER }, [
       createElement("button", { class: ELEMENTS_CLASS.CLOSE_BTN }, []),
-      createElement("h2", {}, []),
+      createElement("h2", {}, [createText("Регистрация")]),
       createElement("form", { class: "form-signup" }, [
         createElement("input", { class: "input-username" }, []),
         createElement("input", { class: "input-password" }, []),

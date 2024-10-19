@@ -1,9 +1,48 @@
 import { route } from "../../utils/routing";
-import { feedLinks } from "../../consts";
+import { feedLinks, RouterLinks, state } from "../../consts";
+import { renderLogoutButton } from "../profile/profile";
+let previousActiveLink: any = null; // Variable to store the previous active link
 
+function setActiveLink(link: any) {
+  if (previousActiveLink) {
+    previousActiveLink.className = "";
+    previousActiveLink.active = false;
+  }
+
+  link.className = "active";
+  link.active = true;
+  previousActiveLink = link;
+}
+function renderBurger() {
+  const burger = document.createElement("div");
+  burger.className = "burger";
+  const lineFirst = document.createElement("div");
+  lineFirst.className = "line";
+  const lineSecond = document.createElement("div");
+  lineSecond.className = "line";
+  const lineThree = document.createElement("div");
+  lineThree.className = "line";
+  burger.appendChild(lineFirst);
+  burger.appendChild(lineSecond);
+  burger.appendChild(lineThree);
+  return burger;
+}
 function renderSlidebar() {
-    const sidebar = document.createElement("div");
-    sidebar.className = "sidebar";
+  const div: any = document.createElement("div");
+  div.className = "side";
+
+  const sidebar = document.createElement("div");
+  sidebar.className = "sidebar";
+
+  const burger: any = renderBurger();
+
+  div.appendChild(burger);
+  div.appendChild(sidebar);
+  const navMenu: any = document.createElement("div");
+  navMenu.className = "nav-menu";
+  burger.addEventListener("click", () => {
+    sidebar.classList.toggle("active");
+  });
   feedLinks.forEach((link: any) => {
     const a = document.createElement("a");
     if (link.active) {
@@ -12,6 +51,7 @@ function renderSlidebar() {
     if (link.href) {
       a.onclick = () => {
         route(link.href);
+        setActiveLink(link);
       };
     }
     const i = document.createElement("i");
@@ -24,9 +64,12 @@ function renderSlidebar() {
       span.appendChild(document.createTextNode(" НОВОЕ"));
       a.appendChild(span);
     }
-    sidebar.appendChild(a);
+    navMenu.appendChild(a);
   });
-  return sidebar;
+  sidebar.appendChild(navMenu);
+  const user: any = state.currentUser;
+  sidebar.appendChild(renderLogoutButton(user.username));
+  return div;
 }
 function renderSearchbar() {
   const searchBar = document.createElement("div");
@@ -43,7 +86,7 @@ function createContainerPost(post: any) {
   container.classList.add("post-container");
 
   // Создание секции автора
-  const authorSection = document.createElement("div");
+  const authorSection: any = document.createElement("div");
   authorSection.classList.add("author-section");
 
   // Создание аватара автора
@@ -62,6 +105,10 @@ function createContainerPost(post: any) {
   // Добавление аватара и имени автора в секцию автора
   authorSection.appendChild(avatar);
   authorSection.appendChild(authorName);
+  const author_id = 12; // БЕКЕНД ЗАГЛУШКА
+  authorSection.addEventListener("click", () => {
+    route(`/feed/${author_id}`);
+  });
 
   // Создание заголовка
   const title = document.createElement("div");
@@ -122,11 +169,10 @@ function createContainerPost(post: any) {
   container.appendChild(authorSection);
   container.appendChild(title);
   container.appendChild(content);
-  container.appendChild(date);
   container.appendChild(mediaContent);
+  container.appendChild(date);
   container.appendChild(feedbackContainer);
   return container;
 }
 
-export { renderSlidebar, renderSearchbar, createContainerPost}
-
+export { renderSlidebar, renderSearchbar, createContainerPost };

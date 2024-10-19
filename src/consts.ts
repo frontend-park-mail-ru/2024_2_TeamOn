@@ -143,21 +143,24 @@ export const feedLinks = [
   {
     text: " Главная",
     icon: "icon-home",
-    active: true,
+    active: false,
     href: RouterLinks.FEED,
   },
   {
     text: " Уведомления",
     icon: "icon-notification",
+    active: false,
   },
   {
     text: " Настройки",
     icon: "icon-settings",
+    active: false,
     href: RouterLinks.SETTINGS,
   },
   {
     text: " Профиль",
     icon: "icon-profile",
+    active: false,
     href: RouterLinks.PROFILE,
   },
 ];

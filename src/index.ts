@@ -1,7 +1,7 @@
 import { state, ELEMENTS_CLASS, RouterLinks, REGEXP } from "./consts";
 import { renderLogin } from "./auth/loginView";
 import { renderSignup } from "./auth/signupView";
-import { renderProfile } from "./pages/profile";
+import { renderProfile } from "./pages/profile/profile";
 import { renderHome } from "./pages/home";
 import { LINKS } from "./consts";
 import { startA } from "./menu/menu";
@@ -85,7 +85,6 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
   }
 }
 var root: HTMLElement | null = startA(config.menu, state);
-
 
 export const pageContainer = document.createElement("main");
 root?.appendChild(pageContainer);

@@ -32,6 +32,11 @@ class Routing {
 }
 
 function updatePageContent(render: string): void {
+  const feedRegex = /^\/feed\/\d+$/;
+  if (feedRegex.test(render)) {
+    nonauth();
+    goToPage((state.menuElements as { profile: HTMLElement }).profile);
+  }
   switch (render) {
     case "/feed":
       nonauth();

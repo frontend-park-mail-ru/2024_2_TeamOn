@@ -1,6 +1,10 @@
-import {  state } from "../../consts";
-import { getCurrentUser } from "../profile";
-import { renderSearchbar, renderSlidebar, createContainerPost } from "../feed/feedView";
+import { state } from "../../consts";
+import { getCurrentUser } from "../profile/profile";
+import {
+  renderSearchbar,
+  renderSlidebar,
+  createContainerPost,
+} from "../feed/feedView";
 
 async function getPopularPosts() {
   return await [
@@ -11,7 +15,7 @@ async function getPopularPosts() {
       title: "Как прошла предзащита",
       content:
         "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "DATA",
+      date: "19.10.2024",
       likes: 34,
       comments: 34,
     },
@@ -22,7 +26,7 @@ async function getPopularPosts() {
       title: "Как прошла предзащита",
       content:
         "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "DATA",
+      date: "19.10.2024",
       likes: 34,
       comments: 34,
     },
@@ -33,7 +37,7 @@ async function getPopularPosts() {
       title: "Как прошла предзащита",
       content:
         "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "DATA",
+      date: "19.10.2024",
       likes: 34,
       comments: 34,
     },
@@ -44,7 +48,7 @@ async function getPopularPosts() {
       title: "Как прошла предзащита",
       content:
         "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "DATA",
+      date: "19.10.2024",
       likes: 34,
       comments: 34,
     },
@@ -59,7 +63,7 @@ async function getRecentlyPosts() {
       title: "Как прошла предзащита",
       content:
         "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "DATA",
+      date: "19.10.2024",
       likes: 34,
       comments: 34,
     },
@@ -70,7 +74,7 @@ async function getRecentlyPosts() {
       title: "Как прошла предзащита",
       content:
         "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "DATA",
+      date: "19.10.2024",
       likes: 34,
       comments: 34,
     },
@@ -84,7 +88,7 @@ export async function renderFeed() {
     }
     const doc: any = document.body;
     doc.style.height = "100%";
-    
+
     state.currentUser = user;
 
     const sidebar: any = renderSlidebar();
@@ -92,8 +96,11 @@ export async function renderFeed() {
     const mainContent: any = document.createElement("div");
     mainContent.className = "main-content";
 
+    const rightContent: any = document.createElement("div");
+    rightContent.className = "right-content";
+
     const searchBar: any = renderSearchbar();
-    mainContent.appendChild(searchBar);
+    rightContent.appendChild(searchBar);
 
     const sectionTitle = document.createElement("div");
 
@@ -101,15 +108,14 @@ export async function renderFeed() {
     sectionTitle.appendChild(
       document.createTextNode("Популярно на этой неделе"),
     );
-    mainContent.appendChild(sectionTitle);
+    rightContent.appendChild(sectionTitle);
 
     // Создание контейнера для всех постов
     const posts = document.createElement("div");
     posts.classList.add("main-container");
 
     // Использование forEach для создания постов
-    (await
-      getPopularPosts()).forEach((post: any) => {
+    (await getPopularPosts()).forEach((post: any) => {
       // Создание контейнера для поста
       const container: any = createContainerPost(post);
 
@@ -117,19 +123,18 @@ export async function renderFeed() {
       posts.appendChild(container);
     });
 
-    mainContent.appendChild(posts);
+    rightContent.appendChild(posts);
 
     const sectionTitle3 = document.createElement("div");
     sectionTitle3.className = "section-title";
     sectionTitle3.appendChild(document.createTextNode("Недавние"));
-    mainContent.appendChild(sectionTitle3);
+    rightContent.appendChild(sectionTitle3);
 
     const recentlyPosts = document.createElement("div");
     recentlyPosts.classList.add("main-container");
 
     // Использование forEach для создания постов
-    (await
-      getRecentlyPosts()).forEach((post: any) => {
+    (await getRecentlyPosts()).forEach((post: any) => {
       // Создание контейнера для поста
       const container: any = createContainerPost(post);
 
@@ -137,10 +142,11 @@ export async function renderFeed() {
       recentlyPosts.appendChild(container);
     });
 
-    mainContent.appendChild(recentlyPosts);
+    rightContent.appendChild(recentlyPosts);
+    mainContent.appendChild(rightContent);
     mainContent.appendChild(sidebar);
-    return mainContent;
 
+    return mainContent;
   } catch (error) {
     console.log("EROR");
     throw error;

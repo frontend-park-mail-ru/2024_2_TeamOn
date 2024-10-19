@@ -17,12 +17,12 @@ export function getItemLocalStorage(Item: any) {
  */
 export function removeItemLocalStorage(Item: any) {
   try {
-      return localStorage.removeItem(Item);
-    } catch (error) {
-        console.error("Ошибка удаления стоража", error);
-      }
+    return localStorage.removeItem(Item);
+  } catch (error) {
+    console.error("Ошибка удаления стоража", error);
+  }
 }
-    
+
 /**
  * Добавляет элемент в локальное хранилище.
  * @param {*} Item Ключ элемента, который нужно добавить

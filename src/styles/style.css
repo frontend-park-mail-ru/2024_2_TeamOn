@@ -12,6 +12,9 @@ body {
   height: 100%;
   width: 100%;
 }
+.blur {
+  filter: blur(8px); /* Значение размытия */
+}
 
 main {
   flex: 1;
@@ -146,29 +149,63 @@ form input[type="text"]:focus {
   display: flex;
   gap: 10px;
 }
-.home-button {
+.donate-container {
+  position: absolute;
+  left: 50%;
+}
+.home-button,
+.logout,
+.donate-btn,
+.send-tip,
+.cancel {
   opacity: 0.85;
   padding: 10px 20px;
   border-radius: 25px;
   border: 1px solid gray;
   background: white;
   color: gray;
-  font-size: 28px;
   cursor: pointer;
   transition:
     background 0.3s,
     color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.home-button:hover {
+.home-button {
+  font-size: 28px;
+}
+.logout-button {
+  margin-top: auto;
+  width: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.logout {
+  font-size: 18px;
+}
+
+.home-button:hover,
+.logout:hover,
+.donate-btn:hover,
+.send-tip:hover,
+.cancel:hover {
   background: gray;
   color: white;
 }
-.home-button.primary {
+.home-button.primary,
+.logout.primary,
+.donate-btn.primary .send-tip.primary,
+.cancel.primary {
   background: #f8f8f8;
   color: black;
   border: none;
 }
-.home-button.primary:hover {
+.home-button.primary:hover,
+.logout.primary:hover,
+.donate-btn.primary:hover .send-tip.primary:hover,
+.cancel.primary:hover {
   background: black;
   color: white;
 }
@@ -321,7 +358,7 @@ form input[type="text"]:focus {
   background-image: url("photos/fon.jpg");
   background-size: cover;
   color: white;
-  padding: 100px;
+  padding: 120px;
   text-align: center;
   margin-left: 100px;
   top: 0;
@@ -342,31 +379,11 @@ form input[type="text"]:focus {
   text-decoration: none;
 }
 
-.header-profile .logout {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  /* display: flex; */
-  gap: 10px;
-  padding: 10px 20px;
-  border-radius: 25px;
-  border: 1px solid gray;
-  background: white;
-  color: gray;
-  font-size: 14px;
-  cursor: pointer;
-  text-decoration: none;
-  transition:
-    background 0.3s,
-    color 0.3s;
-}
-.header-profile .logout:hover {
-  background: gray;
-  color: white;
-}
-
 .image-profile {
   background-image: url("photos/timon.jpg");
+  background-size: contain; /* Измените на contain */
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 .profile {
   display: flex;
@@ -383,6 +400,8 @@ form input[type="text"]:focus {
   right: 10px;
   margin-left: 170pt;
   margin-top: 15pt;
+  top: -110px;
+  position: relative;
 }
 .active-nav-links {
   cursor: pointer;
@@ -399,6 +418,8 @@ form input[type="text"]:focus {
   width: 400pt;
   background-color: white;
   border-radius: 10px;
+  margin-left: 20%;
+  margin-right: -20%;
 }
 .profile .left .info {
   text-align: center;
@@ -434,8 +455,9 @@ form input[type="text"]:focus {
 .profile .right {
   width: 55%;
   padding: 20px;
-  margin-right: 170pt;
+  margin-right: 10%;
   margin-top: 15pt;
+  margin-left: 50px;
 }
 
 .profile .right .stats {
@@ -508,25 +530,32 @@ form input[type="text"]:focus {
 }
 
 /* FEED */
+
 .sidebar {
+  display: block;
+  flex-direction: column;
   width: 250px;
-  background-color: #e6e6e6;
-  height: 100vh;
+  background-color: #ffffff;
+  height: 100%;
   position: fixed;
   top: 0;
   left: 0;
   border-right: 1px solid #e0e0e0;
   padding-top: 20px;
   z-index: 10;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+.sidebar.active {
+  display: flex;
 }
 .icon-home,
 .icon-notification,
 .icon-settings,
 .icon-profile {
-  display: inline-block; /* Чтобы элемент вёл себя как блок */
-  width: 25px; /* Ширина изображения */
-  height: 25px; /* Высота изображения */
-  background-size: cover; /* Обеспечивает заполнение элемента изображением */
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: contain;
 }
 .icon-home {
   background-image: url("photos/icon_home.png");
@@ -547,16 +576,17 @@ form input[type="text"]:focus {
   min-width: 500px;
   min-height: 500px;
   background-image: url("photos/home.png");
-  background-size: cover; /* Изображение будет масштабироваться */
-  background-position: center; /* Центрирование фонового изображения */
+  background-size: cover;
+  background-position: center;
 }
 .sidebar a,
 .user-info {
   display: block;
   padding: 15px 20px;
-  color: #333;
+  color: #555;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 18px;
+  transition: background-color 0.3s;
 }
 .sidebar a.active {
   background-color: #e0e0e0;
@@ -570,6 +600,13 @@ form input[type="text"]:focus {
 .main-content {
   margin-left: 250px;
   padding: 20px;
+}
+.right-content {
+  margin-right: 10px;
+}
+.main-container {
+  height: 100%;
+  width: 100%;
 }
 .search-bar {
   display: flex;
@@ -588,28 +625,70 @@ form input[type="text"]:focus {
   gap: 10px;
   margin-bottom: 20px;
 }
-.categories button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 20px;
-  background-color: #e0e0e0;
-  font-size: 14px;
+.burger {
+  display: none;
+  position: absolute;
+  top: 20px;
+  left: 5px;
   cursor: pointer;
+  z-index: 20;
+}
+
+.line {
+  width: 30px;
+  height: 4px;
+  background-color: #333;
+  margin: 5px 0;
+}
+/* Адаптивность */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+  .nav-menu {
+    margin-top: 20%;
+  }
+  .main-content {
+    margin-left: 20px;
+  }
+  .burger {
+    display: block;
+  }
+  .media-post {
+    min-width: 150px;
+    min-height: 150px;
+  }
+}
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.categories button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 .categories button.active {
   background-color: #000;
   color: #fff;
 }
 .section-title {
-  font-size: 24px;
-  font-weight: 500;
-  margin-bottom: 10px;
+  font-size: 28px;
+  font-weight: 600;
+  margin: 20px 0;
 }
 .post-container {
-  background-color: white;
+  background-color: #ffffff;
   padding: 20px;
-  margin: 20px;
-  border-radius: 5px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
 }
 .author-section {
   display: flex;
@@ -642,7 +721,6 @@ form input[type="text"]:focus {
   text-align: right;
 }
 .interaction-section {
-  /* position: absolute; */
   bottom: 10px;
   right: 20px;
   display: flex;
@@ -677,6 +755,7 @@ form input[type="text"]:focus {
   background-color: #f0f0f0;
   cursor: pointer;
 }
+
 .like-container,
 .comments-container {
   display: flex;
@@ -685,16 +764,16 @@ form input[type="text"]:focus {
   padding: 5px;
   border-radius: 5px;
   background-color: white;
-  max-width: auto; /* Максимальная ширина контейнера */
-  height: 40px; /* Высота автоматически подстраивается под содержимое */
+  max-width: auto;
+  height: 40px;
 }
 .likes,
 .comments {
   display: inline-block;
   min-width: 30px;
   min-height: 30px;
-  background-size: cover; /* Изображение будет масштабироваться */
-  background-position: center; /* Центрирование фонового изображения */
+  background-size: cover;
+  background-position: center;
 }
 .likes {
   background-image: url("photos/icon_like.png");
@@ -777,4 +856,106 @@ form input[type="text"]:focus {
 }
 .topic-item:nth-child(9) {
   background-color: #d81b60;
+}
+
+/* ДОНАТ */
+.modal {
+  display: none; /* Скрыто по умолчанию */
+  background-color: white;
+  width: 600px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  position: relative;
+  z-index: 20; /* Сверху */
+  position: fixed; /* Фиксированное положение */
+  top: 50%; /* Верхняя позиция 50% */
+  left: 50%; /* Левая позиция 50% */
+  transform: translate(-50%, -50%); /* Сдвиг на 50% влево и вверх */
+}
+.modal-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.modal-header h2 {
+  margin: 0;
+  font-size: 24px;
+  text-align: center;
+}
+.modal-header p {
+  margin: 5px 0 20px;
+  text-align: center;
+  color: #666;
+}
+.modal-header .close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 20px;
+  cursor: pointer;
+}
+.alert {
+  background-color: #ffe6e6;
+  color: #ff6666;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.alert a {
+  color: #ff6666;
+  text-decoration: none;
+  font-weight: bold;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.form-group textarea {
+  height: 100px;
+  resize: none;
+}
+.form-group .optional {
+  float: right;
+  color: #999;
+  font-size: 14px;
+}
+.form-group .char-count {
+  float: right;
+  color: #999;
+  font-size: 14px;
+}
+.form-group .min-tip {
+  color: #999;
+  font-size: 14px;
+  margin-top: 5px;
+}
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+}
+.form-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.form-actions .send {
+  background-color: #ff6600;
+  color: white;
 }
