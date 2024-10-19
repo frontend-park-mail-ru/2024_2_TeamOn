@@ -4,6 +4,7 @@ import { ELEMENTS, ELEMENTS_CLASS } from "../consts";
 import { fetchAjax } from "../utils/fetchAjax";
 import { getItemLocalStorage, removeItemLocalStorage } from "../utils/storages";
 import { route, routing } from "../utils/routing";
+import { renderSlidebar } from "./feed/feedView";
 
 /**
  * Получение текущего профиля через объект типа промис
@@ -173,11 +174,9 @@ function renderLogoutButton(Item: any) {
   logoutLink.textContent = "Выйти";
   logoutLink.addEventListener("click", (event) => {
     event.preventDefault();
-    while (getItemLocalStorage(Item)) {
-      removeItemLocalStorage(Item);
-    }
+    removeItemLocalStorage(Item);
+    
     route(RouterLinks.HOME);
-    //location.reload();
   });
   return logoutLink;
 }
@@ -192,6 +191,7 @@ export async function renderProfile() {
     if (!user) {
       throw new Error("Пользователь не найден");
     }
+    document.body.style.height = "100vh";
     state.currentUser = user;
 
     const formProfile = document.createElement(ELEMENTS.DIV);
@@ -219,9 +219,10 @@ export async function renderProfile() {
     right.appendChild(renderUserPosts(user));
     profile.appendChild(right);
 
+    formProfile.appendChild(renderSlidebar())
     formProfile.appendChild(header);
     formProfile.appendChild(profile);
-
+    console.log(formProfile)
     return formProfile;
   } catch (error) {
     console.log("EROR");

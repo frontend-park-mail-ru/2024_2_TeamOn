@@ -6,7 +6,7 @@ import { renderHome } from "./pages/home";
 import { LINKS } from "./consts";
 import { startA } from "./menu/menu";
 import "./styles/style.css";
-import { renderFeed } from "./pages/feed";
+import { renderFeed } from "./pages/feed/feed";
 import { route } from "./utils/routing";
 
 /**
@@ -79,13 +79,13 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
 
   const newPageElement =
     config.menu[targetLinkMenu.dataset.section].render(statusErr);
-  alert(newPageElement);
   if (newPageElement) {
     pageContainer.appendChild(newPageElement);
     //pageContainer.innerHTML = newPageElement;
   }
 }
 var root: HTMLElement | null = startA(config.menu, state);
+
 
 export const pageContainer = document.createElement("main");
 root?.appendChild(pageContainer);

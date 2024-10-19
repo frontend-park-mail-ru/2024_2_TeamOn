@@ -138,3 +138,26 @@ export const ELEMENTS_CLASS = {
   RIGHT: "right",
   PASSWORD_EYE: "password-eye",
 };
+
+export const feedLinks = [
+  {
+    text: " Главная",
+    icon: "icon-home",
+    active: true,
+    href: RouterLinks.FEED,
+  },
+  {
+    text: " Уведомления",
+    icon: "icon-notification",
+  },
+  {
+    text: " Настройки",
+    icon: "icon-settings",
+    href: RouterLinks.SETTINGS,
+  },
+  {
+    text: " Профиль",
+    icon: "icon-profile",
+    href: RouterLinks.PROFILE,
+  },
+];

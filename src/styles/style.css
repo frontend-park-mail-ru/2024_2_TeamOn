@@ -3,12 +3,13 @@ body {
   margin: 0;
   padding: 0;
   scrollbar-width: none;
+  height: 100vh;
 }
 
 #root {
   display: flex;
   flex-direction: row;
-  height: 100vh;
+  height: 100%;
   width: 100%;
 }
 
@@ -92,7 +93,7 @@ form input[type="text"]:focus {
   position: relative;
   width: 100%;
   height: 100%;
-  background: url("photos/home.png");
+  background-image: url("photos/home.png");
   background-size: cover;
   background-position: center center;
 }
@@ -322,9 +323,7 @@ form input[type="text"]:focus {
   color: white;
   padding: 100px;
   text-align: center;
-  position: relative;
-  z-index: 1;
-  margin: 0;
+  margin-left: 100px;
   top: 0;
 }
 
@@ -371,7 +370,6 @@ form input[type="text"]:focus {
 }
 .profile {
   display: flex;
-  z-index: 2;
   background-color: rgb(243, 243, 243);
   width: 100%;
   height: 100%;
@@ -449,30 +447,36 @@ form input[type="text"]:focus {
   margin-bottom: 20px;
 }
 
-.profile .right .posts {
+.profile .right .posts,
+.posts {
   background-color: white;
   padding: 20px;
   border-radius: 10px;
 }
 
-.profile .right .posts .post {
+.profile .right .posts .post,
+.posts {
   padding: 20px;
   border-bottom: 1px solid #e0e0e0;
 }
 
-.profile .right .posts .post:last-child {
+.profile .right .posts .post:last-child,
+.post {
   border-bottom: none;
 }
 
-.profile .right .posts .post h4 {
+.profile .right .posts .post h4,
+.post {
   margin: 0 0 10px;
 }
 
-.profile .right .posts .post p {
+.profile .right .posts .post p,
+.post {
   margin: 0;
 }
 
-.profile .right .posts .post .date {
+.profile .right .posts .post .date,
+.date {
   text-align: right;
   color: gray;
   margin-top: 10px;
@@ -513,6 +517,38 @@ form input[type="text"]:focus {
   left: 0;
   border-right: 1px solid #e0e0e0;
   padding-top: 20px;
+  z-index: 10;
+}
+.icon-home,
+.icon-notification,
+.icon-settings,
+.icon-profile {
+  display: inline-block; /* Чтобы элемент вёл себя как блок */
+  width: 25px; /* Ширина изображения */
+  height: 25px; /* Высота изображения */
+  background-size: cover; /* Обеспечивает заполнение элемента изображением */
+}
+.icon-home {
+  background-image: url("photos/icon_home.png");
+}
+.icon-notification {
+  background-image: url("photos/icon_notification.png");
+}
+.icon-settings {
+  background-image: url("photos/icon_settings.png");
+}
+.icon-profile {
+  background-image: url("photos/icon_profile.png");
+}
+.media-post {
+  flex: 1 1 calc(33.333% - 10px);
+  max-width: 1000px;
+  max-height: 1000px;
+  min-width: 500px;
+  min-height: 500px;
+  background-image: url("photos/home.png");
+  background-size: cover; /* Изображение будет масштабироваться */
+  background-position: center; /* Центрирование фонового изображения */
 }
 .sidebar a,
 .user-info {
@@ -569,6 +605,59 @@ form input[type="text"]:focus {
   font-weight: 500;
   margin-bottom: 10px;
 }
+.post-container {
+  background-color: white;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 5px;
+}
+.author-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.author-name {
+  font-size: 16px;
+  font-weight: bold;
+}
+.title {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+.content {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 20px;
+}
+.date {
+  font-size: 12px;
+  color: #999;
+  text-align: right;
+}
+.interaction-section {
+  /* position: absolute; */
+  bottom: 10px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+}
+.interaction-section .likes,
+.interaction-section .comments {
+  font-size: 20px;
+  color: #666;
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  height: 30px;
+  margin-right: 5px;
+}
 
 .creator-item,
 .patreon-item {
@@ -579,13 +668,45 @@ form input[type="text"]:focus {
   background-color: #fff;
   padding: 10px;
   border-radius: 10px;
-  width: calc(50% - 10px);
 }
 .patreon-item:hover,
 .creator-item:hover,
 .user-info:hover,
-.sidebar a:hover {
+.sidebar a:hover,
+.post-container:hover {
   background-color: #f0f0f0;
+  cursor: pointer;
+}
+.like-container,
+.comments-container {
+  display: flex;
+  align-items: center;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: white;
+  max-width: auto; /* Максимальная ширина контейнера */
+  height: 40px; /* Высота автоматически подстраивается под содержимое */
+}
+.likes,
+.comments {
+  display: inline-block;
+  min-width: 30px;
+  min-height: 30px;
+  background-size: cover; /* Изображение будет масштабироваться */
+  background-position: center; /* Центрирование фонового изображения */
+}
+.likes {
+  background-image: url("photos/icon_like.png");
+}
+.comments {
+  background-image: url("photos/icon_comment.png");
+}
+.like-container:hover,
+.comments-container:hover,
+.comments:hover,
+.author-section:hover {
+  background-color: #e9e9e9;
   cursor: pointer;
 }
 .creator-item img,
@@ -616,6 +737,7 @@ form input[type="text"]:focus {
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 20px;
+  flex-direction: column;
 }
 .topic-item {
   flex: 1 1 calc(33.333% - 10px);
