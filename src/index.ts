@@ -65,8 +65,8 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
   targetLinkMenu.classList.add(ELEMENTS_CLASS.ACTIVE);
 
   if (
-    targetLinkMenu == "http://localhost:8080/feed/profile" ||
-    targetLinkMenu == "http://localhost:8080/feed"
+    targetLinkMenu == "http://pushart.online/feed/profile" ||
+    targetLinkMenu == "http://pushart.online/feed"
   ) {
     state.activePageLink = targetLinkMenu;
     config.menu[targetLinkMenu.dataset.section]
