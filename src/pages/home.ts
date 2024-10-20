@@ -1,13 +1,10 @@
 import { RouterLinks } from "../consts";
-import { ELEMENTS, ELEMENTS_CLASS } from "../consts";
 import { route } from "../utils/routing";
 import { hasLogged } from "../utils/hasLogged";
 import { ClearHistoryBrowser } from "../utils/clearHistory";
 import { VirtualDOM } from "../lib/vdom/src/source";
 import { createElement, createText, render } from "../lib/vdom/lib";
-import { JSXParser } from "../lib/jsx/src/source";
 import { createElementJSX } from "../lib/jsx/lib";
-import { renderSlidebar } from "./feed/feedView";
 
 /**
  * Обработка домашней страницы

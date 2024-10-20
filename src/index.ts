@@ -65,8 +65,8 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
   targetLinkMenu.classList.add(ELEMENTS_CLASS.ACTIVE);
 
   if (
-    targetLinkMenu == "http://pushart.online/feed/profile" ||
-    targetLinkMenu == "http://pushart.online/feed"
+    targetLinkMenu == "http://localhost:8080/feed/profile" ||
+    targetLinkMenu == "http://localhost:8080/feed"
   ) {
     state.activePageLink = targetLinkMenu;
     config.menu[targetLinkMenu.dataset.section]
@@ -88,5 +88,4 @@ var root: HTMLElement | null = startA(config.menu, state);
 
 export const pageContainer = document.createElement("main");
 root?.appendChild(pageContainer);
-
 route(RouterLinks.HOME, window.location.pathname);

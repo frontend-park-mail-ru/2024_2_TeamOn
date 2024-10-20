@@ -7,6 +7,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -35,14 +36,15 @@ module.exports = {
     static: path.join(__dirname, "dist"),
     open: true,
     port: 8080,
-    historyApiFallback: {
-      rewrites: [
-        {
-          from: /^\/[a-z0-9]+\/[a-z0-9]+$/,
-          to: () => "/error.html",
-        },
-      ],
-    },
+    historyApiFallback: true,
+    // historyApiFallback: {
+    //   rewrites: [
+    //     {
+    //       from: /^\/[a-z0-9]+\/[a-z0-9]+$/,
+    //       to: () => "/error.html",
+    //     },
+    //   ],
+    // },
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers":

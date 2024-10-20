@@ -1,6 +1,7 @@
 import { route } from "../../utils/routing";
 import { feedLinks, RouterLinks, state } from "../../consts";
 import { renderLogoutButton } from "../profile/profile";
+import { findUsername } from "../../utils/hasLogged";
 let previousActiveLink: any = null; // Variable to store the previous active link
 
 function setActiveLink(link: any) {
@@ -27,7 +28,7 @@ function renderBurger() {
   burger.appendChild(lineThree);
   return burger;
 }
-function renderSlidebar() {
+function renderSidebar() {
   const div: any = document.createElement("div");
   div.className = "side";
 
@@ -67,8 +68,13 @@ function renderSlidebar() {
     navMenu.appendChild(a);
   });
   sidebar.appendChild(navMenu);
-  const user: any = state.currentUser;
-  sidebar.appendChild(renderLogoutButton(user.username));
+  const user: any = findUsername();
+
+  if (user) {
+    sidebar.appendChild(renderLogoutButton(user));
+  } else {
+    route(RouterLinks.HOME)
+  }
   return div;
 }
 function renderSearchbar() {
@@ -175,4 +181,4 @@ function createContainerPost(post: any) {
   return container;
 }
 
-export { renderSlidebar, renderSearchbar, createContainerPost };
+export { renderSidebar, renderSearchbar, createContainerPost };

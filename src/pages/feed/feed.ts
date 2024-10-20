@@ -2,7 +2,7 @@ import { state } from "../../consts";
 import { getCurrentUser } from "../profile/profile";
 import {
   renderSearchbar,
-  renderSlidebar,
+  renderSidebar,
   createContainerPost,
 } from "../feed/feedView";
 
@@ -91,7 +91,7 @@ export async function renderFeed() {
 
     state.currentUser = user;
 
-    const sidebar: any = renderSlidebar();
+    const sidebar: any = renderSidebar();
 
     const mainContent: any = document.createElement("div");
     mainContent.className = "main-content";

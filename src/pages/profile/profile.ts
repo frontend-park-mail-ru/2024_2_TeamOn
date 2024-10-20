@@ -3,7 +3,7 @@ import { ELEMENTS, ELEMENTS_CLASS } from "../../consts";
 import { fetchAjax } from "../../utils/fetchAjax";
 import { removeItemLocalStorage } from "../../utils/storages";
 import { route } from "../../utils/routing";
-import { renderSlidebar } from "../feed/feedView";
+import { renderSidebar } from "../feed/feedView";
 import {
   renderUserInfo,
   renderUserPosts,
@@ -111,7 +111,7 @@ export async function renderProfile() {
     right.appendChild(renderUserPosts(user));
     profile.appendChild(right);
 
-    formProfile.appendChild(renderSlidebar());
+    formProfile.appendChild(renderSidebar());
     formProfile.appendChild(header);
     formProfile.appendChild(profile);
     console.log(formProfile);

@@ -39,15 +39,21 @@ function updatePageContent(render: string): void {
   }
   switch (render) {
     case "/feed":
-      nonauth();
+      if (nonauth()) {
+        break;
+      }
       goToPage((state.menuElements as { feed: HTMLElement }).feed);
       break;
     case "/feed/profile":
-      nonauth();
+      if (nonauth()) {
+        break;
+      }
       goToPage((state.menuElements as { profile: HTMLElement }).profile);
       break;
     case "/feed/settings":
-      nonauth();
+      if (nonauth()) {
+        break;
+      }
       goToPage((state.menuElements as { settings: HTMLElement }).settings);
       break;
     case "/":
@@ -59,6 +65,9 @@ function updatePageContent(render: string): void {
     case "/signup":
       goToPage((state.menuElements as { signup: HTMLElement }).signup);
       break;
+    default: {
+      goToPage((state.menuElements as { home: HTMLElement }).home);
+    }
   }
 }
 
