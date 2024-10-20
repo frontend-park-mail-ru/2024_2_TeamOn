@@ -631,6 +631,7 @@ form input[type="text"]:focus {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  position: "";
 }
 .search-bar input {
   width: 100%;
@@ -658,6 +659,13 @@ form input[type="text"]:focus {
   height: 4px;
   background-color: #333;
   margin: 5px 0;
+}
+.side {
+  position: fixed; /* Фиксирует элемент */
+  top: 0; /* Располагает его в верхней части экрана */
+  left: 0; /* Можно изменить на right, если нужно */
+  width: 100%; /* Ширина на весь экран */
+  z-index: 1000; /* Обеспечивает, что элемент будет выше других */
 }
 /* Адаптивность */
 @media (max-width: 768px) {

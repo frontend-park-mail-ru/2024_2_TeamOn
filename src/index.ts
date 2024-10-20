@@ -73,7 +73,10 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
   if (
     targetLinkMenu == "http://pushart.online/feed/profile" ||
     targetLinkMenu == "http://pushart.online/feed" ||
-    targetLinkMenu == "http://pushart.online/feed/notifications"
+    targetLinkMenu == "http://pushart.online/feed/notifications" ||
+    targetLinkMenu == "http://localhost:8080/feed/profile" ||
+    targetLinkMenu == "http://localhost:8080/feed" ||
+    targetLinkMenu == "http://localhost:8080/feed/notifications"
   ) {
     state.activePageLink = targetLinkMenu;
     config.menu[targetLinkMenu.dataset.section]

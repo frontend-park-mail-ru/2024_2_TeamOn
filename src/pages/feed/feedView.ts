@@ -84,6 +84,7 @@ function renderSearchbar() {
   input.type = "text";
   input.placeholder = "Найти креаторов";
   searchBar.appendChild(input);
+
   return searchBar;
 }
 

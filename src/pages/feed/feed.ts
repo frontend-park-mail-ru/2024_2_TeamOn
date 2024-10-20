@@ -103,6 +103,14 @@ export async function renderFeed() {
     const searchBar: any = renderSearchbar();
     rightContent.appendChild(searchBar);
 
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 0) {
+        searchBar.style.position = "fixed";
+        searchBar.style.top = "1.9%";
+      } else {
+        searchBar.style.position = "";
+      }
+    });
     const sectionTitle = document.createElement("div");
 
     sectionTitle.className = "section-title";
