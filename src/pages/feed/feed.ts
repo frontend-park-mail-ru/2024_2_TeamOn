@@ -5,6 +5,7 @@ import {
   renderSidebar,
   createContainerPost,
 } from "../feed/feedView";
+import { routing } from "../../utils/routing";
 
 async function getPopularPosts() {
   return await [

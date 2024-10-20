@@ -32,7 +32,9 @@ export function renderHome() {
     button.addEventListener("click", () => {
       route(RouterLinks.LOGIN);
     });
-
+    if (window.location.pathname !== "/") {
+      route(RouterLinks.HOME, window.location.pathname);
+    }
     return container;
   }
 }
