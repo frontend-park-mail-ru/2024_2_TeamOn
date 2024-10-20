@@ -101,7 +101,7 @@ export async function renderFeed() {
     rightContent.className = "right-content";
 
     const searchBar: any = renderSearchbar();
-    rightContent.appendChild(searchBar);
+    mainContent.appendChild(searchBar);
 
     window.addEventListener("scroll", () => {
       if (window.scrollY > 0) {

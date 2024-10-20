@@ -154,11 +154,11 @@ function renderTip() {
 
   const sendButton = document.createElement("button");
   sendButton.className = "send-tip";
-  sendButton.textContent = "SEND";
+  sendButton.textContent = "Send";
 
   const cancelButton = document.createElement("button");
   cancelButton.className = "cancel";
-  cancelButton.textContent = "CANCEL";
+  cancelButton.textContent = "Cancel";
 
   // Добавляем кнопки в группу действий
   actionsDiv.appendChild(sendButton);
@@ -243,11 +243,11 @@ export function renderCreatePost(right: any) {
 
   const sendButton = document.createElement("button");
   sendButton.className = "send-tip";
-  sendButton.textContent = "Создать";
+  sendButton.textContent = "Post";
 
   const cancelButton = document.createElement("button");
   cancelButton.className = "cancel";
-  cancelButton.textContent = "Закрыть";
+  cancelButton.textContent = "Cancel";
 
   actionsDiv.appendChild(sendButton);
   actionsDiv.appendChild(cancelButton);
