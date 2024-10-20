@@ -366,6 +366,7 @@ form input[type="text"]:focus {
 .form-profile {
   width: 100%;
   height: 100%;
+  margin-right: 10px;
 }
 .header-profile {
   background-image: url("photos/fon.jpg");
@@ -373,23 +374,8 @@ form input[type="text"]:focus {
   color: white;
   padding: 120px;
   text-align: center;
-  margin-left: 100px;
-  top: 0;
-}
-
-.header-profile nav {
-  display: flex;
-  margin-left: 280px;
-  position: absolute;
-  gap: 280px;
-  top: 31px;
-  left: 20px;
-}
-
-.header-profile nav a {
-  color: white;
-  margin: 0 15px;
-  text-decoration: none;
+  box-shadow: 0 2px 5px rgba(255, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 .image-profile {
@@ -411,8 +397,6 @@ form input[type="text"]:focus {
   display: flex;
   height: 60%;
   right: 10px;
-  margin-left: 170pt;
-  margin-top: 15pt;
   top: -110px;
   position: relative;
 }
@@ -420,8 +404,8 @@ form input[type="text"]:focus {
   cursor: pointer;
 }
 .profile .left img {
-  width: 90%;
-  height: 45%;
+  width: 200px;
+  height: 200px;
   margin: auto;
   margin-top: 3%;
   display: flex;
@@ -515,21 +499,6 @@ form input[type="text"]:focus {
   text-align: right;
   color: gray;
   margin-top: 10px;
-}
-
-.create-button {
-  display: flex;
-  justify-content: flex-end;
-  padding: 20px;
-}
-
-.create-button button {
-  background-color: black;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
 }
 
 /* EYE */
@@ -651,7 +620,7 @@ form input[type="text"]:focus {
   top: 20px;
   left: 5px;
   cursor: pointer;
-  z-index: 20;
+  z-index: 21;
 }
 
 .line {
@@ -669,6 +638,34 @@ form input[type="text"]:focus {
 }
 /* Адаптивность */
 @media (max-width: 768px) {
+  .modal {
+    width: 60%;
+    height: auto;
+  }
+  .profile {
+    flex-direction: column;
+  }
+  .profile .left {
+    width: 100%;
+    height: auto;
+  }
+  .profile .right {
+    width: 95%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .header-profile {
+    display: flex;
+    font-size: 10px;
+    padding: 100px;
+  }
+
+  .profile .left-bar {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
   .sidebar {
     display: none;
   }
@@ -681,10 +678,10 @@ form input[type="text"]:focus {
   .burger {
     display: block;
   }
-  .media-post {
+  /* .media-post {
     min-width: 150px;
     min-height: 150px;
-  }
+  } */
 }
 .nav-menu {
   display: flex;
@@ -889,7 +886,7 @@ form input[type="text"]:focus {
 .modal {
   display: none; /* Скрыто по умолчанию */
   background-color: white;
-  width: 600px;
+  max-width: 600px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
