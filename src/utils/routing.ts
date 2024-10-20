@@ -36,6 +36,7 @@ function updatePageContent(render: string): void {
   if (feedRegex.test(render)) {
     nonauth();
     goToPage((state.menuElements as { profile: HTMLElement }).profile);
+    return;
   }
   switch (render) {
     case "/feed":
