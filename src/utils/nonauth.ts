@@ -5,7 +5,7 @@ import { route } from "./routing";
 
 export function nonauth() {
   if (!hasLogged()) {
-    route(RouterLinks.HOME)
+    route(RouterLinks.HOME);
     return true;
   }
 }

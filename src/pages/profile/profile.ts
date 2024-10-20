@@ -5,6 +5,7 @@ import { removeItemLocalStorage } from "../../utils/storages";
 import { route } from "../../utils/routing";
 import { renderSidebar } from "../feed/feedView";
 import {
+  renderCreatePost,
   renderUserInfo,
   renderUserPosts,
   renderUserStats,
@@ -109,6 +110,17 @@ export async function renderProfile() {
     right.appendChild(renderUserStats(user));
 
     right.appendChild(renderUserPosts(user));
+    // if (window.location.pathname == "/feed/profile") {
+    //   const containerCreatePosts: any = document.createElement(ELEMENTS.DIV);
+    //   containerCreatePosts.classList.add("create-posts");
+    //   const createButton: any = document.createElement(ELEMENTS.A);
+    //   createButton.classList.add("create-btn")
+    //   createButton.textContent = "Создать"
+    //   containerCreatePosts.appendChild(createButton)
+
+    //   right.appendChild(containerCreatePosts);
+    // }
+    renderCreatePost(right);
     profile.appendChild(right);
 
     formProfile.appendChild(renderSidebar());

@@ -73,7 +73,7 @@ function renderSidebar() {
   if (user) {
     sidebar.appendChild(renderLogoutButton(user));
   } else {
-    route(RouterLinks.HOME)
+    route(RouterLinks.HOME);
   }
   return div;
 }

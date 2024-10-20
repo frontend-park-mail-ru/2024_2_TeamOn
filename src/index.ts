@@ -8,6 +8,7 @@ import { startA } from "./menu/menu";
 import "./styles/style.css";
 import { renderFeed } from "./pages/feed/feed";
 import { route } from "./utils/routing";
+import { renderNotifications } from "./pages/notifications/notifications";
 
 /**
  * Объект, содержащий конфигурацию меню приложения.
@@ -44,6 +45,11 @@ const config: any = {
       text: LINKS.FEED.TEXT as string,
       render: renderFeed as () => Promise<HTMLElement> | undefined,
     },
+    notifications: {
+      href: LINKS.NOTIFICATIONS.HREF as string,
+      text: LINKS.NOTIFICATIONS.TEXT as string,
+      render: renderNotifications as () => Promise<HTMLElement> | undefined,
+    },
   },
 };
 interface State {
@@ -66,7 +72,8 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
 
   if (
     targetLinkMenu == "http://pushart.online/feed/profile" ||
-    targetLinkMenu == "http://pushart.online/feed"
+    targetLinkMenu == "http://pushart.online/feed" ||
+    targetLinkMenu == "http://pushart.online/feed/notifications"
   ) {
     state.activePageLink = targetLinkMenu;
     config.menu[targetLinkMenu.dataset.section]

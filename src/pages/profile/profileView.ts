@@ -166,6 +166,108 @@ function renderTip() {
   modal.appendChild(actionsDiv);
   return modal;
 }
+function renderButtonCreatePost(right: any) {
+  const containerCreatePosts: any = document.createElement(ELEMENTS.DIV);
+  containerCreatePosts.classList.add("create-posts");
+  const createButton: any = document.createElement(ELEMENTS.A);
+  createButton.classList.add("create-btn");
+  createButton.textContent = "Создать";
+  containerCreatePosts.appendChild(createButton);
+
+  right.appendChild(containerCreatePosts);
+  return createButton;
+}
+export function renderCreatePost(right: any) {
+  if (window.location.pathname !== "/feed/profile") {
+    return 0;
+  }
+  const btn: any = renderButtonCreatePost(right);
+  // Создаем основной элемент модального окна
+  const modal = document.createElement("div");
+  modal.className = "modal";
+
+  // Создаем заголовок модального окна
+  const modalHeader = document.createElement("div");
+  modalHeader.className = "modal-header";
+
+  const h2 = document.createElement("h2");
+  h2.textContent = "Создание поста";
+
+  // Добавляем заголовок в модальное окно
+  modalHeader.appendChild(h2);
+  modal.appendChild(modalHeader);
+
+  // Создаем группу для ввода суммы чаевых
+  const tipGroup = document.createElement("div");
+  tipGroup.className = "form-group";
+
+  const tipLabel = document.createElement("label");
+  tipLabel.setAttribute("for", "tip-amount");
+  tipLabel.textContent = "Заголовок";
+
+  const messageTitlearea = document.createElement("input");
+  messageTitlearea.id = "message";
+  messageTitlearea.placeholder = "Введите заголовок";
+
+  tipGroup.appendChild(tipLabel);
+  tipGroup.appendChild(messageTitlearea);
+  modal.appendChild(tipGroup);
+
+  const messageGroup = document.createElement("div");
+  messageGroup.className = "form-group";
+
+  const messageLabel = document.createElement("label");
+  messageLabel.setAttribute("for", "message");
+  messageLabel.textContent = "Содержание";
+
+  const optionalSpan = document.createElement("span");
+  optionalSpan.className = "optional";
+  optionalSpan.textContent = "Optional";
+  messageLabel.appendChild(optionalSpan);
+
+  const messageTextarea = document.createElement("textarea");
+  messageTextarea.id = "message";
+  messageTextarea.placeholder = "Введите содержание";
+
+  const charCount = document.createElement("div");
+  charCount.className = "char-count";
+  charCount.textContent = "0/200";
+
+  messageGroup.appendChild(messageLabel);
+  messageGroup.appendChild(messageTextarea);
+  messageGroup.appendChild(charCount);
+  modal.appendChild(messageGroup);
+
+  const actionsDiv = document.createElement("div");
+  actionsDiv.className = "form-actions";
+
+  const sendButton = document.createElement("button");
+  sendButton.className = "send-tip";
+  sendButton.textContent = "Создать";
+
+  const cancelButton = document.createElement("button");
+  cancelButton.className = "cancel";
+  cancelButton.textContent = "Закрыть";
+
+  actionsDiv.appendChild(sendButton);
+  actionsDiv.appendChild(cancelButton);
+  modal.appendChild(actionsDiv);
+
+  const root: any = pageContainer;
+
+  document.body.appendChild(modal);
+  const cancel: any = modal.querySelector(".cancel");
+  btn.addEventListener("click", () => {
+    modal.style.display = "block";
+    root.classList.add("blur");
+  });
+  cancel.addEventListener("click", () => {
+    modal.style.display = "none";
+    root.classList.remove("blur");
+  });
+
+  return modal;
+}
 /**
  * Функция рендерит информацию о пользователе.
  * @param {*} user Объект пользователя

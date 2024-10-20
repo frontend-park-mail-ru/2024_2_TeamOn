@@ -62,6 +62,10 @@ export const LINKS = {
     HREF: "/feed",
     TEXT: "Лента",
   },
+  NOTIFICATIONS: {
+    HREF: "/feed/notifications",
+    TEXT: "Уведомления",
+  },
 };
 export const RouterLinks = {
   HOME: "/",
@@ -70,6 +74,7 @@ export const RouterLinks = {
   FEED: "/feed",
   PROFILE: "/feed/profile",
   SETTINGS: "/feed/settings",
+  NOTIFICATIONS: "/feed/notifications",
 };
 /**
  * Объект, содержащий теги HTML-элементов.
@@ -150,6 +155,7 @@ export const feedLinks = [
     text: " Уведомления",
     icon: "icon-notification",
     active: false,
+    href: RouterLinks.NOTIFICATIONS,
   },
   {
     text: " Настройки",

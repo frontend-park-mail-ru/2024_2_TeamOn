@@ -57,6 +57,14 @@ function updatePageContent(render: string): void {
       }
       goToPage((state.menuElements as { settings: HTMLElement }).settings);
       break;
+    case "/feed/notifications":
+      if (nonauth()) {
+        break;
+      }
+      goToPage(
+        (state.menuElements as { notifications: HTMLElement }).notifications,
+      );
+      break;
     case "/":
       goToPage((state.menuElements as { home: HTMLElement }).home);
       break;
