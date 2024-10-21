@@ -1,4 +1,6 @@
-import { ELEMENTS, ELEMENTS_CLASS } from "../consts.js";
+import { ELEMENTS, ELEMENTS_CLASS } from "../src/consts";
+import { goToPage } from "../src/index";
+import { state } from "../src/consts";
 
 /**
  * Обработка ошибок
@@ -19,7 +21,7 @@ export function renderError(statusErr = 404) {
 
   notFound404.className = ELEMENTS_CLASS.NOTFOUND_404;
 
-  h1.textContent = statusErr;
+  h1.textContent = statusErr.toString();
 
   h2.textContent = "Страница не найдена";
 

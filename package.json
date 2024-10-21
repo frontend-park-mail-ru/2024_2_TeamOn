@@ -12,9 +12,29 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.25.8",
+    "@babel/preset-env": "^7.25.8",
     "@eslint/js": "^9.11.1",
+    "@types/dompurify": "^3.0.5",
+    "css-loader": "^7.1.2",
     "eslint": "^9.11.1",
     "eslint-plugin-react": "^7.36.1",
-    "globals": "^15.9.0"
+    "globals": "^15.9.0",
+    "html-webpack-plugin": "^5.6.0",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.6.2",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx eslint . && npx prettier --write ."
+    }
+  },
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "start": "webpack-dev-server --open"
   }
 }

@@ -1,4 +1,4 @@
-import { ELEMENTS, ELEMENTS_CLASS } from "../consts.js";
+import { ELEMENTS, ELEMENTS_CLASS } from "../consts";
 
 /**
  * Функция инициализирует приложение.
@@ -6,10 +6,14 @@ import { ELEMENTS, ELEMENTS_CLASS } from "../consts.js";
  * @param {*} state Объект состояния приложения
  * @returns Корневой элемент приложения
  */
-export function startA(conf, state) {
-  function renderMenu(conf) {
-    Object.entries(conf).forEach(([key, { href, text }], index) => {
-      const menuElement = document.createElement(ELEMENTS.A);
+export function startA(conf: any, state: any) {
+  function renderMenu(conf: any) {
+    (
+      Object.entries(conf) as [string, { href: string; text: string }][]
+    ).forEach(([key, { href, text }], index) => {
+      const menuElement = document.createElement(
+        ELEMENTS.A,
+      ) as HTMLAnchorElement;
       menuElement.href = href;
       menuElement.textContent = text;
       menuElement.dataset.section = key;

@@ -3,10 +3,10 @@
  * @param {*} input Поле ввода, рядом в которым выводится ошибка
  * @param {*} message Текст ошибки
  */
-export function showError(input, message) {
+export function showError(input: any, message: any) {
   const error = document.createElement("div");
   error.className = "error";
-  error.innerHTML = DOMPurify.sanitize(message);
+  error.innerHTML = message;
   input.parentElement.insertBefore(error, input.nextSibling);
   input.classList.add("error-input");
 }
@@ -14,6 +14,6 @@ export function showError(input, message) {
  * Удаляет ошибку из поля ввода.
  * @param {*} inputField Поле ввода, из которого удаляется ошибка
  */
-export function removeError(inputField) {
+export function removeError(inputField: any) {
   inputField.classList.remove("error-input");
 }
