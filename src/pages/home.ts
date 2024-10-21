@@ -5,6 +5,8 @@ import { ClearHistoryBrowser } from "../utils/clearHistory";
 import { VirtualDOM } from "../lib/vdom/src/source";
 import { createElement, createText, render } from "../lib/vdom/lib";
 import { createElementJSX } from "../lib/jsx/lib";
+import { pageContainer } from "../index";
+import { controllerMask, createMask } from "../utils/utilsView/circle";
 
 /**
  * Обработка домашней страницы
@@ -16,6 +18,7 @@ export function renderHome() {
     document.body.style.height = "100vh";
     ClearHistoryBrowser();
     const vdom = new VirtualDOM(
+      createElement("div", { class: "home-container-sec" }, []),
       createElement("div", { class: "home-overlay" }, []),
       createElement("div", { class: "home-header" }, [createText("PUSHART")]),
       createElement("div", { class: "home-buttons" }, [
@@ -32,9 +35,21 @@ export function renderHome() {
     button.addEventListener("click", () => {
       route(RouterLinks.LOGIN);
     });
+
     if (window.location.pathname !== "/") {
       route(RouterLinks.HOME, window.location.pathname);
     }
+
+    const containerSecond: any = container.querySelector(
+      ".home-container-sec",
+    ) as HTMLElement;
+
+    // Создаем маску для выжигания
+    const mask: any = createMask();
+    
+    container.appendChild(mask);
+
+    controllerMask(container, containerSecond, mask);
     return container;
   }
 }

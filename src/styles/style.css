@@ -91,14 +91,39 @@ form input[type="text"]:focus {
   box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
 }
 
-/* home */
-.home-container {
+.home-container,
+.home-container-sec {
   position: relative;
   width: 100%;
   height: 100%;
-  background-image: url("photos/home.png");
   background-size: cover;
   background-position: center center;
+  transition: opacity 0.3s ease;
+  overflow: hidden; /* Добавляем overflow: hidden для предотвращения выхода маски за пределы контейнера */
+}
+
+.home-container {
+  background-image: url("photos/home.png");
+}
+
+.home-container-sec {
+  width: 100%;
+  height: 100%;
+  position: absolute; /* чтобы занимал всю область контейнера */
+  top: 0;
+  left: 0;
+  background-image: url("photos/fon2.jpeg");
+  opacity: 1;
+  mask-size: 200px 200px;
+  -webkit-mask-size: 200px 200px;
+}
+
+.home-container-sec.masked {
+  opacity: 1; /* Показываем внутренний фон при наведении */
+}
+
+.defs {
+  display: block;
 }
 .home-overlay {
   position: absolute;
@@ -376,7 +401,6 @@ form input[type="text"]:focus {
   text-align: center;
   box-shadow: 0 2px 5px rgba(255, 0, 0, 0.1);
   border-radius: 10px;
-  
 }
 
 .image-profile {
@@ -636,40 +660,55 @@ form input[type="text"]:focus {
   margin: 5px 0;
 }
 .side {
-  position: fixed; 
-  top: 0; 
-  left: 0; 
-  width: 100%; 
-  z-index: 1000; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
 }
 /* Адаптивность */
 @media (max-width: 768px) {
-  .modal {
-    max-width: 46%; 
+  .defs {
+    display: none;
   }
-   .profile {
+  .home-container {
+    overflow-x: hidden;
+    background-image: url("photos/fon2.jpeg");
+  }
+  .home-header {
+    font-size: 70px;
+  }
+  .home-button {
+    width: 50%;
+    height: 50%;
+    font-size: 14px;
+  }
+  .modal {
+    max-width: 46%;
+  }
+  .profile {
     flex-direction: column;
-   }
+  }
   .profile .left {
-    width: 100%; 
-    height: auto; 
+    width: 100%;
+    height: auto;
   }
   .profile .right {
-    width: 95%; 
-    margin-left: 0; 
-    margin-right: 0; 
+    width: 95%;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .header-profile {
     display: flex;
     font-size: 10px;
-    padding: 100px; 
+    padding: 100px;
   }
 
   .profile .left-bar {
-    width: 100%; 
-    margin-left: 0; 
-    margin-right: 0; 
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
   }
   .sidebar {
     display: none;
@@ -897,17 +936,17 @@ form input[type="text"]:focus {
 
 /* ДОНАТ */
 .modal {
-  display: none; 
+  display: none;
   background-color: white;
   width: 800px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   position: relative;
-  z-index: 20; 
-  position: fixed; 
-  top: 50%; 
-  left: 50%; 
+  z-index: 20;
+  position: fixed;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
 }
 .modal-header {
