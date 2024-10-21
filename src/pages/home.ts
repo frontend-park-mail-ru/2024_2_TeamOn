@@ -43,13 +43,22 @@ export function renderHome() {
     const containerSecond: any = container.querySelector(
       ".home-container-sec",
     ) as HTMLElement;
-
-    // Создаем маску для выжигания
-    const mask: any = createMask();
+    if (window.location.pathname == "/") {
+      // Создаем маску для выжигания
+      const mask = createMask();
+      
+      container.appendChild(mask);
     
-    container.appendChild(mask);
-
-    controllerMask(container, containerSecond, mask);
+      // Запускаем анимацию с помощью requestAnimationFrame
+      function animate() {
+        controllerMask(container, containerSecond, mask);
+        // Запланировать следующий кадр анимации
+        requestAnimationFrame(animate);
+      }
+    
+      // Начинаем анимацию
+      requestAnimationFrame(animate);
+    }
     return container;
   }
 }

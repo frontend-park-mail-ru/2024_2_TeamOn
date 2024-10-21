@@ -37,14 +37,6 @@ module.exports = {
     open: true,
     port: 8080,
     historyApiFallback: true,
-    // historyApiFallback: {
-    //   rewrites: [
-    //     {
-    //       from: /^\/[a-z0-9]+\/[a-z0-9]+$/,
-    //       to: () => "/error.html",
-    //     },
-    //   ],
-    // },
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers":

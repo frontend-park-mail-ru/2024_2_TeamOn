@@ -112,7 +112,7 @@ form input[type="text"]:focus {
   position: absolute; /* чтобы занимал всю область контейнера */
   top: 0;
   left: 0;
-  background-image: url("photos/fon2.jpeg");
+  background-image: url("photos/human.jpg");
   opacity: 1;
   mask-size: 200px 200px;
   -webkit-mask-size: 200px 200px;
