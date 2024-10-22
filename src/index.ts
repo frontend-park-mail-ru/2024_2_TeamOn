@@ -9,6 +9,7 @@ import "./styles/style.css";
 import { renderFeed } from "./pages/feed/feed";
 import { route } from "./utils/routing";
 import { renderNotifications } from "./pages/notifications/notifications";
+import { renderSettings } from "./pages/settings/settingsView";
 
 /**
  * Объект, содержащий конфигурацию меню приложения.
@@ -38,7 +39,7 @@ const config: any = {
     settings: {
       href: LINKS.ERROR.HREF as string,
       text: LINKS.ERROR.TEXT as string,
-      render: renderSignup as () => HTMLInputElement | undefined,
+      render: renderSettings as () => HTMLInputElement | undefined,
     },
     feed: {
       href: LINKS.FEED.HREF as string,
@@ -71,9 +72,10 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
   targetLinkMenu.classList.add(ELEMENTS_CLASS.ACTIVE);
 
   if (
-    targetLinkMenu == "http://pushart.online/feed/profile" ||
-    targetLinkMenu == "http://pushart.online/feed" ||
-    targetLinkMenu == "http://pushart.online/feed/notifications"
+    targetLinkMenu == "http://localhost:8088/feed/profile" ||
+    targetLinkMenu == "http://localhost:8088/feed" ||
+    targetLinkMenu == "http://localhost:8088/feed/notifications" ||
+    targetLinkMenu == "http://localhost:8088/feed/settings"
   ) {
     state.activePageLink = targetLinkMenu;
     config.menu[targetLinkMenu.dataset.section]
