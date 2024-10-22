@@ -12,20 +12,17 @@ export function validateSettings(
 ): string[] {
     const errors: string[] = [];
 
-    // Проверка имени пользователя
     if (!username) {
         errors.push('Имя пользователя не должно быть пустым.');
     } else if (username.length < 3) {
         errors.push('Имя пользователя должно содержать не менее 3 символов.');
     }
 
-    // Проверка электронной почты
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !emailPattern.test(email)) {
         errors.push('Введите корректный адрес электронной почты.');
     }
 
-    // Проверка паролей
     if (!oldPassword) {
         errors.push('Старый пароль не должен быть пустым.');
     }

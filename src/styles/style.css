@@ -1014,23 +1014,23 @@ form input[type="text"]:focus {
     margin-bottom: 20px;
 }
 
-/* Стили для контейнера вкладок */
-/* Стили для контейнера вкладок */
+
+
 .tabs {
   display: flex;
-  gap: 15px; /* Отступы между вкладками */
+  gap: 15px; 
   padding: 10px;
   border-bottom: 2px solid #ccc;
 }
 
 .tabs a {
-  text-decoration: none; /* Убираем подчеркивание */
+  text-decoration: none; 
   padding: 10px 20px;
-  color: #333; /* Цвет текста */
+  color: #333; 
   font-size: 16px;
   font-weight: bold;
-  position: relative; /* Для работы псевдоэлемента */
-  transition: color 0.3s ease; /* Плавное изменение цвета текста */
+  position: relative; 
+  transition: color 0.3s ease; 
 }
 
 .tabs a::after {
@@ -1040,21 +1040,21 @@ form input[type="text"]:focus {
   bottom: 0;
   width: 0;
   height: 2px;
-  background-color: #000; /* Цвет подчеркивания */
-  transition: width 0.3s ease, left 0.3s ease; /* Плавный переход для подчеркивания */
+  background-color: #000; 
+  transition: width 0.3s ease, left 0.3s ease; 
 }
 
 .tabs a.active::after {
-  width: 50%; /* Длина подчеркивания — 50% ширины текста */
-  left: 25%; /* Центрируем подчеркивание */
+  width: 50%; 
+  left: 25%;
 }
 
 .tabs a:hover {
-  color: #666; /* Цвет текста при наведении */
+  color: #666; 
 }
 
 .tabs a.active {
-  color: #000; /* Цвет текста для активной вкладки */
+  color: #000; 
 }
 
 
@@ -1073,6 +1073,8 @@ form input[type="text"]:focus {
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    max-width: 1000px; /* Установите максимальную ширину контейнера */
+    margin: 0 auto;
 }
 
 .form-container h2 {
@@ -1101,7 +1103,7 @@ input, select {
 .form-container input[type="text"],
 .form-container input[type="email"],
 .form-container input[type="password"] {
-  width: 50%;
+  width: 20%;
   padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #000;
@@ -1136,4 +1138,12 @@ input, select {
     font-size: 15px;
     float: right;
 }
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: -10px;
+  text-align: center;
+}
+
 

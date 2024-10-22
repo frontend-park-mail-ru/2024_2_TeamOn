@@ -74,7 +74,7 @@ function updateContent(contentContainer: HTMLDivElement, index: number) {
         contentContainer.appendChild(createSecurityForm());
     }
 }
-
+/*
 function createProfileForm(): HTMLDivElement {
     const formContainer = document.createElement('div');
     formContainer.className = 'form-container';
@@ -109,7 +109,7 @@ function createProfileForm(): HTMLDivElement {
   
     saveButton.addEventListener('click', (event) => {
         event.preventDefault();
-        validationMainInfo(usernameInput, emailInput, usernameError, emailError);
+        validationMainInfoSave(usernameInput, emailInput, usernameError, emailError);
     });
 
     formContainer.append(
@@ -148,7 +148,7 @@ function createSecurityForm(): HTMLDivElement {
   
     saveButton.addEventListener('click', (event) => {
         event.preventDefault();
-        handleSecuritySave(oldPasswordInput, newPasswordInput, confirmPasswordInput, oldPasswordError, newPasswordError, confirmPasswordError);
+        validationSecuritySave(oldPasswordInput, newPasswordInput, confirmPasswordInput, oldPasswordError, newPasswordError, confirmPasswordError);
     });
 
     formContainer.append(
@@ -167,26 +167,110 @@ function createSecurityForm(): HTMLDivElement {
 
     return formContainer;
 }
+*/
 
-function validationMainInfo(usernameInput: HTMLInputElement, emailInput: HTMLInputElement, usernameError: HTMLDivElement, emailError: HTMLDivElement): void {
-    usernameError.textContent = '';
-    emailError.textContent = '';
+function createProfileForm(): HTMLDivElement {
+  const formContainer = document.createElement('div');
+  formContainer.className = 'form-container';
 
-    const username = usernameInput.value;
-    const email = emailInput.value;
+  const formTitle = document.createElement('h2');
+  formTitle.textContent = 'Персонализируйте свою страницу';
 
-    const errors = validateSettings(username, email, '', '', '');
-    if (errors.length > 0) {
-        errors.forEach(error => {
-            if (error.includes('Имя пользователя')) {
-                usernameError.textContent = error;
-            } else if (error.includes('адрес электронной почты')) {
-                emailError.textContent = error;
-            }
-        });
-    } else {
-        alert('Настройки успешно сохранены!');
-    }
+  formContainer.appendChild(formTitle);
+
+  const usernameRow = document.createElement('div');
+  usernameRow.className = 'form-row';
+  const usernameLabel = createLabel('Имя пользователя', 'username');
+  const usernameInput = createInput('text', 'username');
+  const usernameError = createErrorMessage(); 
+  usernameRow.append(usernameLabel, usernameInput); 
+  formContainer.append(usernameRow, usernameError);
+
+  const emailRow = document.createElement('div');
+  emailRow.className = 'form-row';
+  const emailLabel = createLabel('Электронная почта', 'email');
+  const emailInput = createInput('email', 'email');
+  const emailError = createErrorMessage(); 
+  emailRow.append(emailLabel, emailInput);
+  formContainer.append(emailRow, emailError);
+
+  const roleRow = document.createElement('div');
+  roleRow.className = 'form-row';
+  const roleLabel = createLabel('Роль', 'role');
+  const roleSelect = createRoleSelect();
+  roleRow.append(roleLabel, roleSelect);
+
+  const profilePicRow = createPhoto();
+
+  const saveButton = document.createElement('button');
+  saveButton.textContent = 'Сохранить';
+
+  saveButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      validationMainInfoSave(usernameInput, emailInput, usernameError, emailError);
+  });
+
+  formContainer.append(
+      roleRow,
+      profilePicRow,
+      saveButton
+  );
+
+  return formContainer;
+}
+
+
+function createSecurityForm(): HTMLDivElement {
+  const formContainer = document.createElement('div'); 
+  formContainer.className = 'form-container';
+
+  const formTitle = document.createElement('h2');
+  formTitle.textContent = 'Измените данные вашей страницы';
+  formContainer.appendChild(formTitle);
+
+  const oldPasswordRow = document.createElement('div');
+  oldPasswordRow.className = 'form-row';
+  const oldPasswordLabel = createLabel('Введите старый пароль', 'old-password');
+  const oldPasswordInput = createInput('password', 'old-password');
+  const oldPasswordError = createErrorMessage();
+  oldPasswordRow.append(oldPasswordLabel, oldPasswordInput); 
+  formContainer.append(oldPasswordRow, oldPasswordError);
+
+  const newPasswordRow = document.createElement('div');
+  newPasswordRow.className = 'form-row';
+  const newPasswordLabel = createLabel('Введите новый пароль', 'new-password');
+  const newPasswordInput = createInput('password', 'new-password');
+  const newPasswordError = createErrorMessage();
+  newPasswordRow.append(newPasswordLabel, newPasswordInput); 
+  formContainer.append(newPasswordRow, newPasswordError);
+
+  const confirmPasswordRow = document.createElement('div');
+  confirmPasswordRow.className = 'form-row';
+  const confirmPasswordLabel = createLabel('Повторите пароль', 'confirm-password');
+  const confirmPasswordInput = createInput('password', 'confirm-password');
+  const confirmPasswordError = createErrorMessage();
+  confirmPasswordRow.append(confirmPasswordLabel, confirmPasswordInput); 
+  formContainer.append(confirmPasswordRow, confirmPasswordError);
+
+  const saveButton = document.createElement('button');
+  saveButton.textContent = 'Сохранить';
+
+  saveButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      validationSecuritySave(oldPasswordInput, newPasswordInput, confirmPasswordInput, oldPasswordError, newPasswordError, confirmPasswordError);
+  });
+
+  formContainer.append(
+      oldPasswordRow,
+      oldPasswordError,
+      newPasswordRow,
+      newPasswordError,
+      confirmPasswordRow,
+      confirmPasswordError,
+      saveButton
+  );
+
+  return formContainer;
 }
 
 function createLabel(text: string, htmlFor: string): HTMLLabelElement {
@@ -201,13 +285,6 @@ function createInput(type: string, id: string): HTMLInputElement {
     input.type = type;
     input.id = id;
     return input;
-}
-
-function createErrorMessage(): HTMLDivElement {
-    const errorMessage = document.createElement('div');
-    errorMessage.className = 'error-message';
-    errorMessage.style.color = 'red';
-    return errorMessage;
 }
 
 function createRoleSelect(): HTMLSelectElement {
@@ -269,7 +346,35 @@ function createPhoto(): HTMLDivElement {
     return container;
 }
 
-function handleSecuritySave(
+function createErrorMessage(): HTMLDivElement {
+  const errorMessage = document.createElement('div');
+  errorMessage.className = 'error-message';
+  errorMessage.style.color = 'red';
+  return errorMessage;
+}
+
+function validationMainInfoSave(usernameInput: HTMLInputElement, emailInput: HTMLInputElement, usernameError: HTMLDivElement, emailError: HTMLDivElement): void {
+  usernameError.textContent = '';
+  emailError.textContent = '';
+
+  const username = usernameInput.value;
+  const email = emailInput.value;
+
+  const errors = validateSettings(username, email, '', '', '');
+  if (errors.length > 0) {
+      errors.forEach(error => {
+          if (error.includes('Имя пользователя')) {
+              usernameError.textContent = error;
+          } else if (error.includes('адрес электронной почты')) {
+              emailError.textContent = error;
+          }
+      });
+  } else {
+      alert('Настройки успешно сохранены!');
+  }
+}
+
+function validationSecuritySave(
   oldPasswordInput: HTMLInputElement,
   newPasswordInput: HTMLInputElement,
   confirmPasswordInput: HTMLInputElement,
