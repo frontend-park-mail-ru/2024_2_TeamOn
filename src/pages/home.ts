@@ -1,4 +1,4 @@
-import { RouterLinks } from "../consts";
+import { LINKS } from "../consts";
 import { route } from "../utils/routing";
 import { hasLogged } from "../utils/hasLogged";
 import { ClearHistoryBrowser } from "../utils/clearHistory";
@@ -13,7 +13,7 @@ import { controllerMask, createMask } from "../utils/utilsView/circle";
  */
 export function renderHome() {
   if (hasLogged()) {
-    route(RouterLinks.FEED);
+    route(LINKS.FEED.HREF);
   } else {
     document.body.style.height = "100vh";
     ClearHistoryBrowser();
@@ -33,29 +33,29 @@ export function renderHome() {
 
     const button: any = container.querySelector(".home-buttons");
     button.addEventListener("click", () => {
-      route(RouterLinks.LOGIN);
+      route(LINKS.LOGIN.HREF);
     });
 
-    if (window.location.pathname !== "/") {
-      route(RouterLinks.HOME, window.location.pathname);
+    if (window.location.pathname !== LINKS.HOME.HREF) {
+      route(LINKS.HOME.HREF, window.location.pathname);
     }
 
     const containerSecond: any = container.querySelector(
       ".home-container-sec",
     ) as HTMLElement;
-    if (window.location.pathname == "/") {
+    if (window.location.pathname == LINKS.HOME.HREF) {
       // Создаем маску для выжигания
       const mask = createMask();
-      
+
       container.appendChild(mask);
-    
+
       // Запускаем анимацию с помощью requestAnimationFrame
       function animate() {
         controllerMask(container, containerSecond, mask);
         // Запланировать следующий кадр анимации
         requestAnimationFrame(animate);
       }
-    
+
       // Начинаем анимацию
       requestAnimationFrame(animate);
     }

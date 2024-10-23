@@ -1,7 +1,6 @@
-import { RouterLinks, state } from "../consts";
-import { goToPage } from "../index";
+import { LINKS } from "../consts";
 import { authLogin, validateLoginForm } from "./login";
-import { ELEMENTS, ELEMENTS_CLASS } from "../consts";
+import { ELEMENTS_CLASS } from "../consts";
 import { route } from "../utils/routing";
 import { createElement, createText, render, VirtualDOM } from "../lib/vdom/lib";
 import { createElementJSX } from "../lib/jsx/lib";
@@ -37,7 +36,7 @@ export function renderLogin() {
   backgroundLayer.innerHTML = html;
   const closeBtn: any = backgroundLayer.querySelector(".close-btn");
   closeBtn.addEventListener("click", () => {
-    route(RouterLinks.HOME);
+    route(LINKS.HOME.HREF);
   });
   closeBtn.innerHTML = "x";
 
@@ -72,7 +71,7 @@ export function renderLogin() {
     `.${ELEMENTS_CLASS.SIGNUP_LINK}`,
   );
   registerLinkAnchor.addEventListener("click", () => {
-    route(RouterLinks.SIGNUP);
+    route(LINKS.SIGNUP.HREF);
   });
   submitButton.addEventListener("click", (e: any) => {
     e.preventDefault();

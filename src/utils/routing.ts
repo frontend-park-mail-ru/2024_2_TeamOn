@@ -1,4 +1,4 @@
-import { state } from "../consts";
+import { LINKS, state } from "../consts";
 import { goToPage } from "../index";
 import { nonauth } from "./nonauth";
 
@@ -34,30 +34,32 @@ class Routing {
 function updatePageContent(render: string): void {
   const feedRegex = /^\/feed\/\d+$/;
   if (feedRegex.test(render)) {
-    nonauth();
+    if (nonauth()) {
+      return;
+    }
     goToPage((state.menuElements as { profile: HTMLElement }).profile);
     return;
   }
   switch (render) {
-    case "/feed":
+    case LINKS.FEED.HREF:
       if (nonauth()) {
         break;
       }
       goToPage((state.menuElements as { feed: HTMLElement }).feed);
       break;
-    case "/feed/profile":
+    case LINKS.PROFILE.HREF:
       if (nonauth()) {
         break;
       }
       goToPage((state.menuElements as { profile: HTMLElement }).profile);
       break;
-    case "/feed/settings":
+    case LINKS.SETTINGS.HREF:
       if (nonauth()) {
         break;
       }
       goToPage((state.menuElements as { settings: HTMLElement }).settings);
       break;
-    case "/feed/notifications":
+    case LINKS.NOTIFICATIONS.HREF:
       if (nonauth()) {
         break;
       }
@@ -65,13 +67,13 @@ function updatePageContent(render: string): void {
         (state.menuElements as { notifications: HTMLElement }).notifications,
       );
       break;
-    case "/":
+    case LINKS.HOME.HREF:
       goToPage((state.menuElements as { home: HTMLElement }).home);
       break;
-    case "/login":
+    case LINKS.LOGIN.HREF:
       goToPage((state.menuElements as { login: HTMLElement }).login);
       break;
-    case "/signup":
+    case LINKS.SIGNUP.HREF:
       goToPage((state.menuElements as { signup: HTMLElement }).signup);
       break;
     default: {

@@ -1,4 +1,4 @@
-import { RouterLinks, state } from "../consts";
+import { LINKS, state } from "../consts";
 import { goToPage } from "../index";
 import { authSignup, validateSignupForm } from "./signup";
 import { ELEMENTS, ELEMENTS_CLASS } from "../consts";
@@ -22,6 +22,7 @@ export function renderSignup() {
         createElement("input", { class: "input-username" }, []),
         createElement("input", { class: "input-password" }, []),
         createElement("input", { class: "input-repeatPassword" }, []),
+        createElement("div", { class: "password-strength" }, []),
         createElement("input", { class: "button-signup" }, []),
       ]),
       createElement("div", { class: ELEMENTS_CLASS.LOGIN_LINK }, [
@@ -52,7 +53,7 @@ export function renderSignup() {
   const closeBtn: any = container.querySelector(`.${ELEMENTS_CLASS.CLOSE_BTN}`);
   closeBtn.innerHTML = "x";
   closeBtn.onclick = () => {
-    route(RouterLinks.HOME);
+    route(LINKS.HOME.HREF);
   };
 
   const loginLinkAnchor: any = container.querySelector(

@@ -39,11 +39,11 @@ export const LINKS = {
     TEXT: "Домашняя страница",
   },
   LOGIN: {
-    HREF: "/auth/login",
+    HREF: "/login",
     TEXT: "Авторизация",
   },
   SIGNUP: {
-    HREF: "/auth/register",
+    HREF: "/signup",
     TEXT: "Регистрация",
   },
   PROFILE: {
@@ -67,14 +67,20 @@ export const LINKS = {
     TEXT: "Уведомления",
   },
 };
-export const RouterLinks = {
-  HOME: "/",
-  LOGIN: "/login",
-  SIGNUP: "/signup",
-  FEED: "/feed",
-  PROFILE: "/feed/profile",
-  SETTINGS: "/feed/settings",
-  NOTIFICATIONS: "/feed/notifications",
+
+export const LOCATIONS = {
+  LOGIN: {
+    METHOD: "POST",
+    HREF: "/api/auth/login",
+  },
+  SIGNUP: {
+    METHOD: "POST",
+    HREF: "/api/auth/register",
+  },
+  PROFILE: {
+    METHOD: "GET",
+    HREF: "/api/profile",
+  },
 };
 /**
  * Объект, содержащий теги HTML-элементов.
@@ -144,29 +150,29 @@ export const ELEMENTS_CLASS = {
   PASSWORD_EYE: "password-eye",
 };
 
-export const feedLinks = [
+export const sidebarLinks = [
   {
     text: " Главная",
     icon: "icon-home",
     active: false,
-    href: RouterLinks.FEED,
+    href: LINKS.FEED.HREF,
   },
   {
     text: " Уведомления",
     icon: "icon-notification",
     active: false,
-    href: RouterLinks.NOTIFICATIONS,
+    href: LINKS.NOTIFICATIONS.HREF,
   },
   {
     text: " Настройки",
     icon: "icon-settings",
     active: false,
-    href: RouterLinks.SETTINGS,
+    href: LINKS.SETTINGS.HREF,
   },
   {
     text: " Профиль",
     icon: "icon-profile",
     active: false,
-    href: RouterLinks.PROFILE,
+    href: LINKS.PROFILE.HREF,
   },
 ];

@@ -80,6 +80,8 @@ form input[type="text"]:focus {
   color: red;
   font-size: 12px;
   margin-bottom: 10px;
+  height: 20px;
+  overflow: hidden;
 }
 
 .error-input ~ input[type="password"] {
@@ -212,7 +214,7 @@ form input[type="text"]:focus {
   font-size: 28px;
 }
 .logout-button {
-  margin-top: auto;
+  margin-top: 10%;
   width: 250px;
   display: flex;
   justify-content: center;
@@ -319,7 +321,27 @@ form input[type="text"]:focus {
 }
 
 /* SIGNUP */
-
+.password-strength {
+  display: block;
+  height: 2px; /* Высота полосы */
+  width: 0; /* Начальная ширина */
+  transition: width 0.3s ease; /* Плавный переход при изменении ширины */
+  position: relative; /* Относительное позиционирование */
+  left: 0; /* Закрепление левого края */
+}
+.password-strength::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: repeating-linear-gradient(
+    to right,
+    #fff 2px,
+    transparent 2px
+  );
+}
 .background-signup {
   position: fixed;
   top: 0;
@@ -673,7 +695,7 @@ form input[type="text"]:focus {
   }
   .home-container {
     overflow-x: hidden;
-    background-image: url("photos/fon2.jpeg");
+    background-image: url("photos/human.jpg");
   }
   .home-header {
     font-size: 70px;

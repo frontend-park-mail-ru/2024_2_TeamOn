@@ -1,5 +1,4 @@
-import { RouterLinks, state } from "../../consts";
-import { ELEMENTS, ELEMENTS_CLASS } from "../../consts";
+import { ELEMENTS, ELEMENTS_CLASS, LINKS, LOCATIONS } from "../../consts";
 import { fetchAjax } from "../../utils/fetchAjax";
 import { removeItemLocalStorage } from "../../utils/storages";
 import { route } from "../../utils/routing";
@@ -18,17 +17,22 @@ import {
  */
 export function getCurrentUser() {
   return new Promise((resolve, reject) => {
-    fetchAjax("GET", "/api/profile", null, (response) => {
-      if (response.ok) {
-        response.json().then((data) => {
-          resolve(data);
-        });
-      } else if (response.status === 401) {
-        route(RouterLinks.LOGIN);
-      } else {
-        reject(new Error("Ответ от фетча с ошибкой"));
-      }
-    });
+    fetchAjax(
+      LOCATIONS.PROFILE.METHOD,
+      LOCATIONS.PROFILE.HREF,
+      null,
+      (response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            resolve(data);
+          });
+        } else if (response.status === 401) {
+          route(LINKS.LOGIN.HREF);
+        } else {
+          reject(new Error("Ответ от фетча с ошибкой"));
+        }
+      },
+    );
   });
 }
 
@@ -38,17 +42,22 @@ export function getCurrentUser() {
  */
 export function getUser() {
   return new Promise((resolve, reject) => {
-    fetchAjax("GET", "/api/profile", null, (response) => {
-      if (response.ok) {
-        response.json().then((data) => {
-          resolve(data);
-        });
-      } else if (response.status === 401) {
-        route(RouterLinks.LOGIN);
-      } else {
-        reject(new Error("Ответ от фетча с ошибкой"));
-      }
-    });
+    fetchAjax(
+      LOCATIONS.PROFILE.METHOD,
+      LOCATIONS.PROFILE.HREF,
+      null,
+      (response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            resolve(data);
+          });
+        } else if (response.status === 401) {
+          route(LINKS.LOGIN.HREF);
+        } else {
+          reject(new Error("Ответ от фетча с ошибкой"));
+        }
+      },
+    );
   });
 }
 
@@ -67,7 +76,7 @@ export function renderLogoutButton(Item: any) {
     event.preventDefault();
     removeItemLocalStorage(Item);
 
-    route(RouterLinks.HOME);
+    route(LINKS.HOME.HREF);
   });
   logout.appendChild(logoutLink);
   return logout;
@@ -80,7 +89,7 @@ export function renderLogoutButton(Item: any) {
 export async function renderProfile() {
   try {
     var user: any = null;
-    if (window.location.pathname == "/feed/profile") {
+    if (window.location.pathname == LINKS.PROFILE.HREF) {
       user = await getCurrentUser();
     } else {
       user = await getUser();

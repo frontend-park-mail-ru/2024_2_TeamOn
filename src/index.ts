@@ -1,4 +1,4 @@
-import { state, ELEMENTS_CLASS, RouterLinks, REGEXP } from "./consts";
+import { state, ELEMENTS_CLASS } from "./consts";
 import { renderLogin } from "./auth/loginView";
 import { renderSignup } from "./auth/signupView";
 import { renderProfile } from "./pages/profile/profile";
@@ -98,4 +98,4 @@ var root: HTMLElement | null = startA(config.menu, state);
 
 export const pageContainer = document.createElement("main");
 root?.appendChild(pageContainer);
-route(RouterLinks.HOME, window.location.pathname);
+route(LINKS.HOME.HREF, window.location.pathname);

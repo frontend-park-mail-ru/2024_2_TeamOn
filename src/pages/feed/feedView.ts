@@ -1,5 +1,5 @@
 import { route } from "../../utils/routing";
-import { feedLinks, RouterLinks, state } from "../../consts";
+import { sidebarLinks, LINKS } from "../../consts";
 import { renderLogoutButton } from "../profile/profile";
 import { findUsername } from "../../utils/hasLogged";
 let previousActiveLink: any = null; // Variable to store the previous active link
@@ -44,7 +44,7 @@ function renderSidebar() {
   burger.addEventListener("click", () => {
     sidebar.classList.toggle("active");
   });
-  feedLinks.forEach((link: any) => {
+  sidebarLinks.forEach((link: any) => {
     const a = document.createElement("a");
     if (link.active) {
       a.className = "active";
@@ -73,7 +73,7 @@ function renderSidebar() {
   if (user) {
     sidebar.appendChild(renderLogoutButton(user));
   } else {
-    route(RouterLinks.HOME);
+    route(LINKS.HOME.HREF);
   }
   return div;
 }

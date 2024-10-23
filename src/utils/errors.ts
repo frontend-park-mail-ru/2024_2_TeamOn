@@ -14,6 +14,6 @@ export function showError(input: any, message: any) {
  * Удаляет ошибку из поля ввода.
  * @param {*} inputField Поле ввода, из которого удаляется ошибка
  */
-export function removeError(inputField: any) {
-  inputField.classList.remove("error-input");
+export function removeError(input: any) {
+  input.classList.remove("error-input");
 }
