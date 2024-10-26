@@ -3,12 +3,13 @@ body {
   margin: 0;
   padding: 0;
   scrollbar-width: none;
+  height: 100vh;
 }
 
 #root {
   display: flex;
   flex-direction: row;
-  /*height: 100%;*/
+  height: 100%;
   width: 100%;
 }
 .blur {
@@ -71,7 +72,7 @@ form input[type="text"]:focus {
   position: absolute;
 }
 
-.close-btn:hover {
+.close-btn--hover:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
 /* Стили для обработки ошибок */
@@ -90,14 +91,28 @@ form input[type="text"]:focus {
   box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
 }
 
-/* home */
-.home-container {
-  position: relative;
+.home-container,
+.home-container-sec {
   width: 100%;
   height: 100%;
-  background-image: url("photos/home.png");
   background-size: cover;
   background-position: center center;
+  transition: opacity 0.3s ease;
+  overflow: hidden;
+}
+
+.home-container {
+  background-image: url("photos/home.png");
+  position: relative;
+}
+
+.home-container-sec {
+  background-image: url("photos/human.jpg");
+  position: absolute;
+}
+
+.defs {
+  display: block;
 }
 .home-overlay {
   position: absolute;
@@ -121,26 +136,7 @@ form input[type="text"]:focus {
   user-select: none;
   opacity: 0.4;
 }
-.home-search-box {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  display: flex;
-  align-items: center;
-  background: white;
-  border-radius: 25px;
-  padding: 5px 15px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.home-search-box input {
-  border: none;
-  outline: none;
-  font-size: 14px;
-}
-.home-search-box i {
-  margin-right: 10px;
-  color: gray;
-}
+
 .home-buttons {
   position: absolute;
   top: 10%;
@@ -155,19 +151,12 @@ form input[type="text"]:focus {
 .create-posts {
   position: relative;
 }
-.create-btn {
-  position: absolute;
-  height: 30px;
-  width: 50px;
-  right: 0;
-  margin-top: 50px;
-}
 .home-button,
-.logout,
-.donate-btn,
-.send-tip,
-.cancel,
-.create-btn {
+.logout-button,
+.donate-button,
+.send-tip-button,
+.cancel-button,
+.create-button {
   opacity: 0.85;
   padding: 10px 20px;
   border-radius: 25px;
@@ -182,42 +171,52 @@ form input[type="text"]:focus {
   justify-content: center;
   align-items: center;
 }
-.home-button {
+.create-button--element {
+  position: absolute;
+  height: 30px;
+  width: 50px;
+  right: 0;
+  margin-top: 50px;
+}
+.home-button--element {
   font-size: 28px;
 }
-.logout-button {
-  margin-top: auto;
+.logout {
+  margin-top: 10%;
   width: 250px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.logout {
+.logout-button--element {
   font-size: 18px;
 }
 
-.home-button:hover,
-.logout:hover,
-.donate-btn:hover,
-.send-tip:hover,
-.cancel:hover,
-.create-btn:hover {
+.home-button--modifier:hover,
+.logout-button--modifier:hover,
+.donate-button--modifier:hover,
+.send-tip-button--modifier:hover,
+.cancel-button--modifier:hover,
+.create-button--modifier:hover {
   background: gray;
   color: white;
 }
-.home-button.primary,
-.logout.primary,
-.donate-btn.primary .send-tip.primary,
-.cancel.primary,
-.create-btn.primary {
+.home-button--modifier.primary,
+.logout-button--modifier.primary,
+.donate-button--modifier.primary,
+.send-tip-button--modifier.primary,
+.cancel-button--modifier.primary,
+.create-button--modifier.primary {
   background: #f8f8f8;
   color: black;
   border: none;
 }
-.home-button.primary:hover,
-.logout.primary:hover,
-.donate-btn.primary:hover .send-tip.primary:hover,
-.cancel.primary:hover .create-btn.primary:hover {
+.home-button--modifier.primary:hover,
+.logout-button--modifier.primary:hover,
+.donate-button--modifier.primary:hover,
+.send-tip-button--modifier.primary:hover,
+.cancel-button--modifier.primary:hover,
+.create-button--modifier.primary:hover {
   background: black;
   color: white;
 }
@@ -293,7 +292,28 @@ form input[type="text"]:focus {
 }
 
 /* SIGNUP */
-
+.password-strength {
+  display: block;
+  height: 3px; /* Высота полосы */
+  width: 0; /* Начальная ширина */
+  transition: width 0.3s ease; /* Плавный переход при изменении ширины */
+  position: relative; /* Относительное позиционирование */
+  left: 0; /* Закрепление левого края */
+  margin-bottom: 10%;
+}
+.password-strength::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: repeating-linear-gradient(
+    to right,
+    #fff 2px,
+    transparent 2px
+  );
+}
 .background-signup {
   position: fixed;
   top: 0;
@@ -365,6 +385,7 @@ form input[type="text"]:focus {
 .form-profile {
   width: 100%;
   height: 100%;
+  margin-right: 10px;
 }
 .header-profile {
   background-image: url("photos/fon.jpg");
@@ -372,23 +393,8 @@ form input[type="text"]:focus {
   color: white;
   padding: 120px;
   text-align: center;
-  margin-left: 100px;
-  top: 0;
-}
-
-.header-profile nav {
-  display: flex;
-  margin-left: 280px;
-  position: absolute;
-  gap: 280px;
-  top: 31px;
-  left: 20px;
-}
-
-.header-profile nav a {
-  color: white;
-  margin: 0 15px;
-  text-decoration: none;
+  box-shadow: 0 2px 5px rgba(255, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 .image-profile {
@@ -410,8 +416,6 @@ form input[type="text"]:focus {
   display: flex;
   height: 60%;
   right: 10px;
-  margin-left: 170pt;
-  margin-top: 15pt;
   top: -110px;
   position: relative;
 }
@@ -420,7 +424,7 @@ form input[type="text"]:focus {
 }
 .profile .left img {
   width: 90%;
-  height: 45%;
+  height: 200px;
   margin: auto;
   margin-top: 3%;
   display: flex;
@@ -516,21 +520,6 @@ form input[type="text"]:focus {
   margin-top: 10px;
 }
 
-.create-button {
-  display: flex;
-  justify-content: flex-end;
-  padding: 20px;
-}
-
-.create-button button {
-  background-color: black;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
 /* EYE */
 .password-eye {
   position: relative;
@@ -621,6 +610,9 @@ form input[type="text"]:focus {
 }
 .right-content {
   margin-right: 10px;
+  margin-left: 300px;
+  width: 700px;
+  margin-top: 5%;
 }
 .main-container {
   height: 100%;
@@ -630,6 +622,9 @@ form input[type="text"]:focus {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  position: fixed;
+  right: 0;
+  width: 400px;
 }
 .search-bar input {
   width: 100%;
@@ -649,7 +644,7 @@ form input[type="text"]:focus {
   top: 20px;
   left: 5px;
   cursor: pointer;
-  z-index: 20;
+  z-index: 21;
 }
 
 .line {
@@ -658,25 +653,14 @@ form input[type="text"]:focus {
   background-color: #333;
   margin: 5px 0;
 }
-/* Адаптивность */
-@media (max-width: 768px) {
-  .sidebar {
-    display: none;
-  }
-  .nav-menu {
-    margin-top: 20%;
-  }
-  .main-content {
-    margin-left: 20px;
-  }
-  .burger {
-    display: block;
-  }
-  .media-post {
-    min-width: 150px;
-    min-height: 150px;
-  }
+.side {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
 }
+
 .nav-menu {
   display: flex;
   flex-direction: column;
@@ -755,18 +739,6 @@ form input[type="text"]:focus {
   margin-right: 5px;
 }
 
-.creator-item,
-.patreon-item {
-  flex: 1 1 calc(33.333% - 10px);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: #fff;
-  padding: 10px;
-  border-radius: 10px;
-}
-.patreon-item:hover,
-.creator-item:hover,
 .user-info:hover,
 .sidebar a:hover,
 .post-container:hover {
@@ -774,7 +746,7 @@ form input[type="text"]:focus {
   cursor: pointer;
 }
 
-.like-container,
+.likes-container,
 .comments-container {
   display: flex;
   align-items: center;
@@ -799,97 +771,28 @@ form input[type="text"]:focus {
 .comments {
   background-image: url("photos/icon_comment.png");
 }
-.like-container:hover,
+.likes-container:hover,
 .comments-container:hover,
 .comments:hover,
 .author-section:hover {
   background-color: #e9e9e9;
   cursor: pointer;
 }
-.creator-item img,
-.patreon-item img {
-  border-radius: 10px;
-  width: 50px;
-  height: 50px;
-}
-.creator-item .creator-info,
-.patreon-item .patreon-info {
-  display: flex;
-  flex-direction: column;
-}
-.creator-item .creator-info .creator-name,
-.patreon-item .patreon-info .patreon-name {
-  font-size: 16px;
-  font-weight: 500;
-}
-.creator-item .creator-info .creator-description,
-.patreon-item .patreon-info .patreon-description {
-  font-size: 14px;
-  color: #666;
-}
-.topics,
-.creators-list,
-.recent-patreon {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
-  flex-direction: column;
-}
-.topic-item {
-  flex: 1 1 calc(33.333% - 10px);
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: 500;
-  color: #fff;
-}
-.topic-item:nth-child(1) {
-  background-color: #e53935;
-}
-.topic-item:nth-child(2) {
-  background-color: #1e88e5;
-}
-.topic-item:nth-child(3) {
-  background-color: #fbc02d;
-}
-.topic-item:nth-child(4) {
-  background-color: #8e24aa;
-}
-.topic-item:nth-child(5) {
-  background-color: #3949ab;
-}
-.topic-item:nth-child(6) {
-  background-color: #039be5;
-}
-.topic-item:nth-child(7) {
-  background-color: #43a047;
-}
-.topic-item:nth-child(8) {
-  background-color: #fb8c00;
-}
-.topic-item:nth-child(9) {
-  background-color: #d81b60;
-}
 
 /* ДОНАТ */
 .modal {
-  display: none; /* Скрыто по умолчанию */
+  display: none;
   background-color: white;
-  width: 600px;
+  width: 800px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   position: relative;
-  z-index: 20; /* Сверху */
-  position: fixed; /* Фиксированное положение */
-  top: 50%; /* Верхняя позиция 50% */
-  left: 50%; /* Левая позиция 50% */
-  transform: translate(-50%, -50%); /* Сдвиг на 50% влево и вверх */
+  z-index: 20;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .modal-header {
   display: flex;
@@ -907,26 +810,7 @@ form input[type="text"]:focus {
   text-align: center;
   color: #666;
 }
-.modal-header .close {
-  position: absolute;
-  right: 0;
-  top: 0;
-  font-size: 20px;
-  cursor: pointer;
-}
-.alert {
-  background-color: #ffe6e6;
-  color: #ff6666;
-  padding: 10px;
-  border-radius: 5px;
-  text-align: center;
-  margin-bottom: 20px;
-}
-.alert a {
-  color: #ff6666;
-  text-decoration: none;
-  font-weight: bold;
-}
+
 .form-group {
   margin-bottom: 20px;
 }
@@ -937,7 +821,7 @@ form input[type="text"]:focus {
 }
 .form-group input,
 .form-group textarea {
-  width: 100%;
+  width: 97%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -973,16 +857,12 @@ form input[type="text"]:focus {
   font-size: 16px;
   cursor: pointer;
 }
-.form-actions .send {
-  background-color: #ff6600;
-  color: white;
-}
 
 .container-notification {
   flex-grow: 1;
   padding: 50px;
   text-align: center;
-  margin-left: 20%;
+  /* margin-left: 20%; */
   height: 100%;
 }
 .container-notification h1 {
@@ -1005,81 +885,108 @@ form input[type="text"]:focus {
 /*SETTING*/
 
 .main-content {
-    flex-grow: 1;
-    padding: 40px;
+  flex-grow: 1;
+  padding: 40px;
 }
 
 .main-content h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
+  font-size: 24px;
+  margin-bottom: 20px;
 }
-
-
 
 .tabs {
   display: flex;
-  gap: 15px; 
+  gap: 15px;
   padding: 10px;
   border-bottom: 2px solid #ccc;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+}
+
+.tabs {
+  display: flex;
+  gap: 15px;
+  padding: 10px;
+  border-bottom: 2px solid #ccc;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tabs:hover::-webkit-scrollbar {
+  display: block;
 }
 
 .tabs a {
-  text-decoration: none; 
+  text-decoration: none;
   padding: 10px 20px;
-  color: #333; 
+  color: #333;
   font-size: 16px;
   font-weight: bold;
-  position: relative; 
-  transition: color 0.3s ease; 
+  position: relative;
+  transition: color 0.3s ease;
 }
 
 .tabs a::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   bottom: 0;
   width: 0;
   height: 2px;
-  background-color: #000; 
-  transition: width 0.3s ease, left 0.3s ease; 
+  background-color: #000;
+  transition:
+    width 0.3s ease,
+    left 0.3s ease;
 }
 
 .tabs a.active::after {
-  width: 50%; 
+  width: 50%;
   left: 25%;
 }
 
 .tabs a:hover {
-  color: #666; 
+  color: #666;
 }
 
 .tabs a.active {
-  color: #000; 
+  color: #000;
 }
 
+.tabs::-webkit-scrollbar {
+  height: 0px;
+}
+
+.tabs::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
+}
 
 .tabs div {
-    margin-right: 20px;
-    font-size: 18px;
-    cursor: pointer;
+  margin-right: 20px;
+  font-size: 18px;
+  cursor: pointer;
 }
 
 .tabs div.active {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .form-container {
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    max-width: 1000px; /* Установите максимальную ширину контейнера */
-    margin: 0 auto;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .form-container h2 {
-    font-size: 20px;
-    margin-bottom: 20px;
+  font-size: 20px;
+  margin-bottom: 20px;
 }
 
 .form-row {
@@ -1088,15 +995,15 @@ form input[type="text"]:focus {
   gap: 10px;
 }
 
-
 .form-container label {
-    display: block;
-    margin-left: 0;
-    margin-bottom: 10px;
-    font-size: 16px;
-    width: 150px;
+  display: block;
+  margin-left: 0;
+  margin-bottom: 10px;
+  font-size: 16px;
+  width: 150px;
 }
-input, select {
+input,
+select {
   flex-grow: 1;
 }
 
@@ -1107,36 +1014,36 @@ input, select {
   padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #000;
-  border-radius: 20px; 
+  border-radius: 20px;
 }
-.form-container select  {
-    width: 51.5%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #000;
-    border-radius: 20px;
-    appearance: none;  
+.form-container select {
+  width: 51.5%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #000;
+  border-radius: 20px;
+  appearance: none;
 }
-
 
 .form-container .profile-pic {
-    display: block;
-    width: 100px;
-    height: 100px;
-    border: 1px solid #000;
-    border-radius: 50%;
-    margin-bottom: 20px;
+  display: block;
+  width: 100px;
+  height: 100px;
+  border: 1px solid #000;
+  border-radius: 50%;
+  margin-bottom: 20px;
 }
 
 .form-container button {
-    background-color: #000;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 15px;
-    float: right;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 15px;
+  float: right;
+  cursor: pointer;
 }
 
 .error-message {
@@ -1146,4 +1053,83 @@ input, select {
   text-align: center;
 }
 
+/* Адаптивность */
+@media (max-width: 768px) {
+  main {
+    width: 90%;
+  }
+  .defs {
+    display: none;
+  }
+  .home-container {
+    overflow-x: hidden;
+    background-image: url("photos/human.jpg");
+  }
+  .home-header {
+    font-size: 70px;
+  }
+  .home-button {
+    width: 50%;
+    height: 50%;
+    font-size: 14px;
+  }
+  .modal {
+    max-width: 46%;
+  }
+  .profile {
+    flex-direction: column;
+  }
+  .profile .left {
+    width: 100%;
+    height: auto;
+  }
+  .profile .right {
+    width: 95%;
+    margin-left: 0;
+    margin-right: 0;
+  }
 
+  .header-profile {
+    display: flex;
+    font-size: 10px;
+    padding: 100px;
+  }
+
+  .profile .left-bar {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .sidebar {
+    display: none;
+  }
+  .nav-menu {
+    margin-top: 20%;
+  }
+  .main-content {
+    margin-left: 20px;
+  }
+  .burger {
+    display: block;
+  }
+  .media-post {
+    min-width: 150px;
+    min-height: 150px;
+  }
+  .right-content {
+    margin-left: 0;
+    width: 100%;
+    margin-top: 20%;
+  }
+  .search-bar {
+    width: 320px;
+  }
+  .container {
+    overflow: hidden;
+    margin-left: -5%;
+  }
+  .tabs {
+    margin-left: -10%;
+    border-bottom: none;
+  }
+}

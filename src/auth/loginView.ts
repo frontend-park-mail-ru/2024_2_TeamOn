@@ -42,6 +42,7 @@ export function renderLogin() {
   closeBtn.innerHTML = "x";
 
   const passwordEye: any = backgroundLayer.querySelector(".password-eye");
+  const inputPassword: any = backgroundLayer.querySelector(".input-password");
   passwordEye.innerHTML = "&#128064;";
   passwordEye.addEventListener("click", () => {
     if (inputPassword.type === "password") {
@@ -58,7 +59,6 @@ export function renderLogin() {
   inputLogin.placeholder = "Введите email или имя пользователя";
   inputLogin.required = true;
 
-  const inputPassword: any = backgroundLayer.querySelector(".input-password");
   inputPassword.type = "password";
   inputPassword.placeholder = "Введите пароль";
   inputPassword.required = true;

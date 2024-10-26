@@ -61,7 +61,7 @@ export function renderLogoutButton(Item: any) {
   const logout = document.createElement(ELEMENTS.DIV);
   logout.classList.add("logout-button");
   const logoutLink = document.createElement(ELEMENTS.DIV);
-  logoutLink.classList.add(ELEMENTS_CLASS.LOGOUT);
+  //logoutLink.classList.add(...ELEMENTS_CLASS.LOGOUT.BEM.split(' '));
   logoutLink.textContent = "Выйти";
   logoutLink.addEventListener("click", (event) => {
     event.preventDefault();

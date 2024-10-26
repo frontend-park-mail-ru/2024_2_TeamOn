@@ -1,9 +1,8 @@
-import { state, ELEMENTS_CLASS, RouterLinks, REGEXP } from "./consts";
+import { state, ELEMENTS_CLASS, LINKS, REGEXP } from "./consts";
 import { renderLogin } from "./auth/loginView";
 import { renderSignup } from "./auth/signupView";
 import { renderProfile } from "./pages/profile/profile";
 import { renderHome } from "./pages/home";
-import { LINKS } from "./consts";
 import { startA } from "./menu/menu";
 import "./styles/style.css";
 import { renderFeed } from "./pages/feed/feed";
@@ -14,7 +13,7 @@ import { renderSettings } from "./pages/settings/settingsView";
 /**
  * Объект, содержащий конфигурацию меню приложения.
  */
-const config: any = {
+/*const config: any = {
   menu: {
     home: {
       href: LINKS.HOME.HREF as string,
@@ -39,7 +38,7 @@ const config: any = {
     settings: {
       href: LINKS.ERROR.HREF as string,
       text: LINKS.ERROR.TEXT as string,
-      render: renderSettings as () => HTMLInputElement | undefined,
+      render: renderSettings as () => Promise<HTMLElement> | undefined,
     },
     feed: {
       href: LINKS.FEED.HREF as string,
@@ -52,7 +51,73 @@ const config: any = {
       render: renderNotifications as () => Promise<HTMLElement> | undefined,
     },
   },
+};*/
+interface SyncLinkConfig {
+  href: string;
+  text: string;
+  render: () => Element | undefined;
+}
+
+interface AsyncLinkConfig {
+  href: string;
+  text: string;
+  render: () => Promise<HTMLElement> | undefined;
+}
+
+interface MenuConfig {
+  home: SyncLinkConfig;
+  login: SyncLinkConfig;
+  signup: SyncLinkConfig;
+  profile: AsyncLinkConfig;
+  settings: AsyncLinkConfig;
+  feed: AsyncLinkConfig;
+  notifications: AsyncLinkConfig;
+}
+
+interface Config {
+  menu: MenuConfig;
+}
+
+const config: Config = {
+  menu: {
+    home: {
+      href: LINKS.HOME.HREF,
+      text: LINKS.HOME.TEXT,
+      render: renderHome,
+    },
+    login: {
+      href: LINKS.LOGIN.HREF,
+      text: LINKS.LOGIN.TEXT,
+      render: renderLogin,
+    },
+    signup: {
+      href: LINKS.SIGNUP.HREF,
+      text: LINKS.SIGNUP.TEXT,
+      render: renderSignup,
+    },
+    profile: {
+      href: LINKS.PROFILE.HREF,
+      text: LINKS.PROFILE.TEXT,
+      render: renderProfile,
+    },
+    settings: {
+      href: LINKS.ERROR.HREF,
+      text: LINKS.ERROR.TEXT,
+      render: renderSettings,
+    },
+    feed: {
+      href: LINKS.FEED.HREF,
+      text: LINKS.FEED.TEXT,
+      render: renderFeed,
+    },
+    notifications: {
+      href: LINKS.NOTIFICATIONS.HREF,
+      text: LINKS.NOTIFICATIONS.TEXT,
+      render: renderNotifications,
+    },
+  },
 };
+
 interface State {
   activePageLink: HTMLElement | null;
 }
@@ -66,6 +131,7 @@ const state2: State = {
  * @param {*} targetLinkMenu Ссылка на страницу, на которую нужно перенаправить
  * @param {*} statusErr Статус ошибки (необязательный)
  */
+/*
 export function goToPage(targetLinkMenu: any, statusErr = null) {
   pageContainer.innerHTML = "";
   state2.activePageLink?.classList.remove(ELEMENTS_CLASS.ACTIVE);
@@ -93,8 +159,30 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
     //pageContainer.innerHTML = newPageElement;
   }
 }
+*/
+
+export function goToPage(targetLinkMenu: any, statusErr = null) {
+  pageContainer.innerHTML = ""; 
+  state2.activePageLink?.classList.remove(ELEMENTS_CLASS.ACTIVE);
+  targetLinkMenu.classList.add(ELEMENTS_CLASS.ACTIVE);
+
+  const sectionKey = targetLinkMenu.dataset.section as keyof MenuConfig;
+  const routeConfig = config.menu[sectionKey];
+
+  const renderPromise = Promise.resolve(routeConfig.render());
+  renderPromise
+    .then((newPageElement) => {
+      if (newPageElement) {
+        pageContainer.appendChild(newPageElement);
+      }
+    })
+    .catch((error) => {
+      console.error("ERROR:", error);
+    });
+}
+
 var root: HTMLElement | null = startA(config.menu, state);
 
 export const pageContainer = document.createElement("main");
 root?.appendChild(pageContainer);
-route(RouterLinks.HOME, window.location.pathname);
+route(LINKS.HOME.HREF, window.location.pathname);

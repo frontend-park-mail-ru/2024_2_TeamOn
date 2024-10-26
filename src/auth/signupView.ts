@@ -49,7 +49,7 @@ export function renderSignup() {
   inputRepeatPassword.type = "password";
   inputRepeatPassword.placeholder = "Повторите пароль";
 
-  const closeBtn: any = container.querySelector(`.${ELEMENTS_CLASS.CLOSE_BTN}`);
+  const closeBtn: any = container.querySelector(`.close-btn`);
   closeBtn.innerHTML = "x";
   closeBtn.onclick = () => {
     route(RouterLinks.HOME);
@@ -83,4 +83,23 @@ export function renderSignup() {
   });
 
   return container;
+}
+
+export function updatePasswordStrengthBar(strength: number) {
+  const strengthBar: any = document.querySelector(".password-strength");
+  const strengthPercentage = (strength / 5) * 100; // 5 - максимальное количество критериев
+
+  // Установка ширины и цвета в зависимости от силы пароля
+  strengthBar.style.width = strengthPercentage + "%";
+  if (strengthPercentage == 0) {
+    strengthBar.style.width = "10%";
+  }
+  // Изменение цвета в зависимости от силы пароля
+  if (strengthPercentage <= 40) {
+    strengthBar.style.backgroundColor = "red";
+  } else if (strengthPercentage < 80) {
+    strengthBar.style.backgroundColor = "yellow";
+  } else {
+    strengthBar.style.backgroundColor = "green";
+  }
 }

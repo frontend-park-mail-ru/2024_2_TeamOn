@@ -106,6 +106,7 @@ export const REGEXP = {
   REGEX_SPEC_SYMBOL: new RegExp("[!@#$%^&*]"),
   REGEXP_UPPER_LOWER_CASE: new RegExp("(?=.*[a-z])(?=.*[A-Z])"),
   REGEXT_ERROR_LINK: new RegExp("^/[a-z0-9]+/[a-z0-9]+$"),
+  REGEXP_EMAIL: new RegExp("^[^s@]+@[^s@]+.[^s@]+$"),
 };
 
 /**
@@ -126,8 +127,8 @@ export const ELEMENTS_CLASS = {
   HOME_CONTAINER: "home-container",
   HOME_OVERLAY: "home-overlay",
   HOME_HEADER: "home-header",
-  HOME_BUTTONS: "home-buttons",
-  HOME_BUTTON: "home-button",
+  HOME_BUTTONS: "home-buttons home-buttons--hover",
+  HOME_BUTTON: "home-button home-button--element home-button--modifier",
   LEFT: "left",
   LEFT_BAR: "left-bar",
   IMAGE_PROFILE: "image-profile",
@@ -136,13 +137,18 @@ export const ELEMENTS_CLASS = {
   STATS: "stats",
   POST: "post",
   DATE: "date",
-  LOGOUT: "logout",
+  LOGOUT: "logout-button logout-button--element logout-button--modifier",
+  DONATE: "donate-button donate-button--element donate-button--modifier",
+  SEND_TIP: "send-tip-button send-tip-button--element send-tip-button--modifier",
+  CANCEL: "cancel-button cancel-button--element cancel-button--modifier",
+  CREATE: "create-button create-button--element create-button--modifier",
   FORM_PROFILE: "form-profile",
   HEADER_PROFILE: "header-profile",
   PROFILE: "profile",
   RIGHT: "right",
   PASSWORD_EYE: "password-eye",
 };
+
 
 export const feedLinks = [
   {

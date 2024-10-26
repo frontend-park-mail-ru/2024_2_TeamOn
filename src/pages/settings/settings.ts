@@ -1,38 +1,68 @@
-//TODO имя пользователя и почту в поле изменения
 //TODO добавить в поле роль связь с бд
-
+//TODO добавить проверку существует ли такое имя пользователя и почта 
 //TODO добавить обработку старого пароля
 
-export function validateSettings(
-    username: string,
-    email: string,
-    oldPassword: string,
-    newPassword: string,
-    confirmPassword: string
-): string[] {
-    const errors: string[] = [];
+import { updatePasswordStrengthBar } from "../../auth/signup";
+import { REGEXP, validatePassword } from "../../consts";
 
-    if (!username) {
-        errors.push('Имя пользователя не должно быть пустым.');
-    } else if (username.length < 3) {
-        errors.push('Имя пользователя должно содержать не менее 3 символов.');
-    }
+export function validateSettingsPassword(
+  inputPassword: any,
+  inputRepeatPassword: any,
+  passwordStrength: any,
+  newPasswordError: any,
+  confirmPasswordError: any,
+) {
+  passwordStrength = 0;
 
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailPattern.test(email)) {
-        errors.push('Введите корректный адрес электронной почты.');
-    }
+  newPasswordError.innerHTML = !inputPassword.value
+    ? "Пожалуйста, введите пароль"
+    : inputPassword.value.length < validatePassword.MIN_SYMBOLS
+      ? `Пароль должен быть минимум ${validatePassword.MIN_SYMBOLS} символов`
+      : inputPassword.value.length > validatePassword.MAX_SYMBOLS
+        ? `Пароль должен быть максимум ${validatePassword.MAX_SYMBOLS} символов`
+        : !REGEXP.REGEXP_PASSWORD_ONE_NUMBER.test(inputPassword.value)
+          ? `В пароле должна быть одна цифра`
+          : !REGEXP.REGEX_SPEC_SYMBOL.test(inputPassword.value)
+            ? `В пароле должен содержаться спец символ`
+            : !REGEXP.REGEXP_UPPER_LOWER_CASE.test(inputPassword.value)
+              ? `Не хватает: большой и маленькой буквы`
+              : "";
 
-    if (!oldPassword) {
-        errors.push('Старый пароль не должен быть пустым.');
-    }
-    if (!newPassword || !confirmPassword) {
-        errors.push('Новый пароль и подтверждение пароля не должны быть пустыми.');
-    } else if (newPassword.length < 6) {
-        errors.push('Новый пароль должен содержать не менее 6 символов.');
-    } else if (newPassword !== confirmPassword) {
-        errors.push('Новый пароль и подтверждение пароля не совпадают.');
-    }
+  passwordStrength +=
+    (inputPassword.value.length >= validatePassword.MIN_SYMBOLS ? 1 : 0) +
+    (inputPassword.value.length <= validatePassword.MAX_SYMBOLS ? 1 : 0) +
+    (REGEXP.REGEXP_PASSWORD_ONE_NUMBER.test(inputPassword.value) ? 1 : 0) +
+    (REGEXP.REGEX_SPEC_SYMBOL.test(inputPassword.value) ? 1 : 0) +
+    (REGEXP.REGEXP_UPPER_LOWER_CASE.test(inputPassword.value) ? 1 : 0);
 
-    return errors;
+  updatePasswordStrengthBar(passwordStrength);
+
+  confirmPasswordError.innerHTML = inputRepeatPassword.value !== inputPassword.value
+    ? "Пароли должны совпадать"
+    : "";
+
+  if (!newPasswordError.innerHTML) {
+    newPasswordError.innerHTML = "";
+  }
 }
+
+
+
+export function validateMainInfo(
+  username: string,
+  email: string,
+): { usernameError: string; emailError: string } {
+  const errors = { usernameError: "", emailError: "" };
+
+  if (!username) {
+    errors.usernameError = "Имя пользователя не может быть пустым.";
+  }
+
+  if (!email || !REGEXP.REGEXP_EMAIL.test(email)) {
+    errors.emailError = "Введите корректную электронную почту.";
+  }
+
+  return errors;
+}
+
+
