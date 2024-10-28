@@ -1,17 +1,23 @@
-import { state } from "../../consts";
-import { getCurrentUser } from "../profile/profile";
+import { ELEMENTS_CLASS, LINKS, sidebarLinks, state } from "../../consts";
+import { getCurrentUser, renderLogoutButton } from "../profile/profile";
 import {
   renderSearchbar,
   renderSidebar,
   createContainerPost,
+  setActiveLink,
 } from "../feed/feedView";
+import { VNode } from "../../lib/vdom/src/source";
+import { createElement, createText, update } from "../../lib/vdom/lib";
+import { pageContainer } from "../../index";
+import { route } from "../../utils/routing";
+import { findUsername } from "../../utils/hasLogged";
 
-async function getPopularPosts() {
-  return await [
+function getPopularPosts() {
+  return [
     {
       avatarSrc:
         "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
-      authorName: "Polkovnik",
+      authorName: "Alolo",
       title: "Как прошла предзащита",
       content:
         "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
@@ -54,8 +60,8 @@ async function getPopularPosts() {
     },
   ];
 }
-async function getRecentlyPosts() {
-  return await [
+function getRecentlyPosts() {
+  return [
     {
       avatarSrc:
         "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
@@ -79,28 +85,155 @@ async function getRecentlyPosts() {
       comments: 34,
     },
   ];
+}
+
+function renderPosts(containerPopularPosts: any, containerRecentlyPosts: any) {
+  const popularPosts = getPopularPosts();
+  
+  containerPopularPosts.innerHTML = ""; 
+
+  popularPosts.forEach((post: any) => {
+    const container: VNode = createContainerPost(post);
+    const newdiv = document.createElement("div");
+    
+    update(newdiv, container);
+    
+    customizePost(newdiv, post);
+    
+    containerPopularPosts.appendChild(newdiv);
+  });
+
+  const recentlyPosts = getRecentlyPosts();
+  
+  containerRecentlyPosts.innerHTML = ""; 
+  
+  recentlyPosts.forEach((post: any) => {
+    const container: VNode = createContainerPost(post);
+    const div = document.createElement("div");
+    
+    update(div, container);
+    
+    customizePost(div, post);
+    
+    containerRecentlyPosts.appendChild(div);
+  });
+}
+
+export function customizeSidebar(sidebar: any) {
+  const burger: any = document.querySelector(`.${ELEMENTS_CLASS.BURGER.BLOCK}`);
+  const navMenu = document.createElement("div");
+  navMenu.className = "nav-menu";
+
+  burger.addEventListener("click", () => {
+    sidebar.classList.toggle(ELEMENTS_CLASS.ACTIVE);
+  });
+  sidebarLinks.forEach((link: any) => {
+    // const a: VNode = createElement("a")
+    const a = document.createElement("a");
+    a.addEventListener("click", (event) => {
+      event.preventDefault(); // Предотвращаем стандартное поведение ссылки
+      route(link.href);
+      setActiveLink(link); // Передаем элемент ссылки в функцию
+    });
+    if (link.active) {
+      a.className = ELEMENTS_CLASS.ACTIVE;
+    }
+    const i = document.createElement("i");
+    i.className = link.icon;
+    a.appendChild(i);
+    a.appendChild(document.createTextNode(link.text));
+    if (link.new) {
+      const span = document.createElement("span");
+      span.style.color = "red";
+      span.appendChild(document.createTextNode("НОВОЕ"));
+      a.appendChild(span);
+    }
+    navMenu.appendChild(a);
+  });
+
+  return navMenu;
+}
+function customizePost(container: any, post: any = null) {
+  const authorSection: any = container.querySelector(
+    `.${ELEMENTS_CLASS.POST.AUTHOR.BLOCK}`,
+  );
+
+  const avatar: any = container.querySelector(
+    `.${ELEMENTS_CLASS.POST.AUTHOR.AVATAR}`,
+  );
+  if(avatar){
+    avatar.alt = "Аватар автора";
+    avatar.height = 50;
+    avatar.src = post.avatarSrc;
+    avatar.width = 50;
+  }
+  const authorName: any = container.querySelector(
+    `.${ELEMENTS_CLASS.POST.AUTHOR.NAME}`,
+  );
+  authorName.textContent = post.authorName;
+  const author_id = 12; // БЕКЕНД ЗАГЛУШКА
+  authorSection.addEventListener("click", () => {
+    route(`/profile/${author_id}`);
+  });
+
+
+  const title: any = container.querySelector(`.${ELEMENTS_CLASS.POST.TITLE}`);
+  title.textContent = post.title;
+
+  const content: any = container.querySelector(
+    `.${ELEMENTS_CLASS.POST.CONTENT}`,
+  );
+  content.textContent = post.content;
+
+  const mediaContent: any = container.querySelector(
+    `.${ELEMENTS_CLASS.POST.MEDIA}`,
+  );
+  // mediaContent.src = "../styles/photos/home.png"
+  // mediaContent.alt = "Описание"
+
+  const date: any = container.querySelector(`.${ELEMENTS_CLASS.POST.DATE}`);
+  date.textContent = post.date;
+
+  const amountLike: any = container.querySelector(
+    `.${ELEMENTS_CLASS.POST.LIKES.AMOUNT}`,
+  );
+  amountLike.innerHTML = `${post.likes}`;
+
+  const amountComment: any = container.querySelector(
+    `.${ELEMENTS_CLASS.POST.COMMENTS.AMOUNT}`,
+  );
+  amountComment.innerHTML = `${post.likes}`;
 }
 export async function renderFeed() {
   try {
-    const user: any | null = await getCurrentUser();
+    const user: any | null = await getCurrentUser(window.location.pathname);
     if (!user) {
       throw new Error("Пользователь не найден");
     }
     const doc: any = document.body;
     doc.style.height = "100%";
-
+    const vdom: VNode = createElement("div", { class: "main-content" }, [
+      renderSearchbar(),
+      renderSidebar(),
+      createElement("div", { class: "right-content" }, [
+        createElement("div", { class: "section-title" }, [
+          createText("Популярное"),
+        ]),
+        createElement("div", { class: "main-container-popular" }, []),
+        createElement("div", { class: "section-title" }, [
+          createText("Недавние"),
+        ]),
+        createElement("div", { class: "main-container-recently" }, []),
+      ]),
+    ]);
+    const container = update(pageContainer, vdom);
     state.currentUser = user;
-
-    const sidebar: any = renderSidebar();
-
-    const mainContent: any = document.createElement("div");
-    mainContent.className = "main-content";
-
-    const rightContent: any = document.createElement("div");
-    rightContent.className = "right-content";
-
-    const searchBar: any = renderSearchbar();
-    mainContent.appendChild(searchBar);
+    const sidebar: any = container.querySelector(
+      `.${ELEMENTS_CLASS.SIDEBAR.ELEMENT}`,
+    );
+    const searchBar: any = container.querySelector(
+      `.${ELEMENTS_CLASS.SEARCH.BLOCK}`,
+    );
 
     window.addEventListener("scroll", () => {
       if (window.scrollY > 0) {
@@ -110,51 +243,31 @@ export async function renderFeed() {
         searchBar.style.position = "";
       }
     });
-    const sectionTitle = document.createElement("div");
+     sidebar.appendChild(customizeSidebar(sidebar));
+    const userF: any = findUsername();
 
-    sectionTitle.className = "section-title";
-    sectionTitle.appendChild(
-      document.createTextNode("Популярно на этой неделе"),
+    if (userF) {
+      sidebar.appendChild(renderLogoutButton(userF));
+    } else {
+      route(LINKS.HOME.HREF);
+    }
+
+    const containerPopularPosts = container.querySelector(
+      ".main-container-popular",
     );
-    rightContent.appendChild(sectionTitle);
+    const containerRecentlyPosts = container.querySelector(
+      ".main-container-recently",
+    );
 
-    // Создание контейнера для всех постов
-    const posts = document.createElement("div");
-    posts.classList.add("main-container");
+    renderPosts(containerPopularPosts, containerRecentlyPosts);
 
-    // Использование forEach для создания постов
-    (await getPopularPosts()).forEach((post: any) => {
-      // Создание контейнера для поста
-      const container: any = createContainerPost(post);
+    const side: any = container.querySelector(
+      `.${ELEMENTS_CLASS.SEARCH.ELEMENT}`,
+    );
+    side.type = "text";
+    side.placeholder = "Найти креаторов";
 
-      // Добавление контейнера поста в основной контейнер
-      posts.appendChild(container);
-    });
-
-    rightContent.appendChild(posts);
-
-    const sectionTitle3 = document.createElement("div");
-    sectionTitle3.className = "section-title";
-    sectionTitle3.appendChild(document.createTextNode("Недавние"));
-    rightContent.appendChild(sectionTitle3);
-
-    const recentlyPosts = document.createElement("div");
-    recentlyPosts.classList.add("main-container");
-
-    // Использование forEach для создания постов
-    (await getRecentlyPosts()).forEach((post: any) => {
-      // Создание контейнера для поста
-      const container: any = createContainerPost(post);
-
-      // Добавление контейнера поста в основной контейнер
-      recentlyPosts.appendChild(container);
-    });
-
-    rightContent.appendChild(recentlyPosts);
-    mainContent.appendChild(rightContent);
-    mainContent.appendChild(sidebar);
-
-    return mainContent;
+    return container;
   } catch (error) {
     console.log("EROR");
     throw error;

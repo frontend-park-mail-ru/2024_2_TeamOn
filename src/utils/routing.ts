@@ -32,7 +32,7 @@ class Routing {
 }
 
 function updatePageContent(render: string): void {
-  const feedRegex = /^\/feed\/\d+$/;
+  const feedRegex = /^\/profile\/\d+$/;
   if (feedRegex.test(render)) {
     if (nonauth()) {
       return;

@@ -1,22 +1,22 @@
 import { LINKS, state } from "../consts";
-import { goToPage } from "../index";
+import { goToPage, pageContainer } from "../index";
 import { authSignup, validateSignupForm } from "./signup";
 import { ELEMENTS, ELEMENTS_CLASS } from "../consts";
 import { route } from "../utils/routing";
-import { createElement, createText, render, VirtualDOM } from "../lib/vdom/lib";
+import { createElement, createText, render, update } from "../lib/vdom/lib";
+import { Virtual } from "../index";
 import { createElementJSX } from "../lib/jsx/lib";
+import { renderSidebar } from "../pages/feed/feedView";
+import { VNode } from "../lib/vdom/src/source";
 
 /**
  * Функция рендерит форму регистрации.
  * @returns
  */
 export function renderSignup() {
-  const jsx = "<div class=background-signup></div>";
-  const container = createElementJSX(jsx);
-
-  const vdom = new VirtualDOM(
-    createElement("div", { class: ELEMENTS_CLASS.SIGNUP_CONTAINER }, [
-      createElement("button", { class: ELEMENTS_CLASS.CLOSE_BTN }, []),
+  const vdom: VNode = createElement("div", { class: "signup" }, [
+    createElement("div", { class: ELEMENTS_CLASS.SIGNUP.ELEMENT }, [
+      createElement("button", { class: ELEMENTS_CLASS.CLOSE_BTN.COMBINE }, []),
       createElement("h2", {}, [createText("Регистрация")]),
       createElement("form", { class: "form-signup" }, [
         createElement("input", { class: "input-username" }, []),
@@ -25,14 +25,15 @@ export function renderSignup() {
         createElement("div", { class: "password-strength" }, []),
         createElement("input", { class: "button-signup" }, []),
       ]),
-      createElement("div", { class: ELEMENTS_CLASS.LOGIN_LINK }, [
+      createElement("div", { class: ELEMENTS_CLASS.LOGIN_LINK.BLOCK }, [
         createText("У вас уже есть аккаунт? "),
-        createElement("a", {}, [createText("Войти")]),
+        createElement("a", { class: ELEMENTS_CLASS.LOGIN_LINK.COMBINE }, [
+          createText("Войти"),
+        ]),
       ]),
     ]),
-  );
-  const html = render(vdom);
-  container.innerHTML = html;
+  ]);
+  const container = update(pageContainer, vdom);
 
   const form: any = container.querySelector(`.form-signup`);
   const inputUsername: any = container.querySelector(`.input-username`);
@@ -50,17 +51,20 @@ export function renderSignup() {
   inputRepeatPassword.type = "password";
   inputRepeatPassword.placeholder = "Повторите пароль";
 
-  const closeBtn: any = container.querySelector(`.${ELEMENTS_CLASS.CLOSE_BTN}`);
+  const closeBtn: any = container.querySelector(
+    `.${ELEMENTS_CLASS.CLOSE_BTN.ELEMENT}`,
+  );
   closeBtn.innerHTML = "x";
+
   closeBtn.onclick = () => {
     route(LINKS.HOME.HREF);
   };
 
   const loginLinkAnchor: any = container.querySelector(
-    `.${ELEMENTS_CLASS.LOGIN_LINK}`,
+    `.${ELEMENTS_CLASS.LOGIN_LINK.ELEMENT}`,
   );
   loginLinkAnchor.addEventListener("click", () => {
-    goToPage((state.menuElements as { login: HTMLElement }).login);
+    goToPage((state.menuElements as { login: any }).login);
   });
 
   const buttonRegister: any = container.querySelector(".button-signup");
@@ -82,6 +86,4 @@ export function renderSignup() {
     e.preventDefault();
     validateSignupForm(form, inputUsername, inputPassword, inputRepeatPassword);
   });
-
-  return container;
 }

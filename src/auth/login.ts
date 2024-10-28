@@ -1,4 +1,4 @@
-import { state, maxAttempts, LINKS, LOCATIONS } from "../consts";
+import { state, maxAttempts, LINKS, LOCATIONS, sidebarLinks } from "../consts";
 import { removeError, showError } from "../utils/errors";
 import { fetchAjax } from "../utils/fetchAjax";
 import { goToPage } from "../index";
@@ -55,7 +55,7 @@ function validateErrorLoginForm(inputLogin: string, inputPassword: string) {
     `Неправильный логин или пароль, осталось попыток: ${maxAttempts - attempts}`,
   );
   if (checkAttempts(attempts)) {
-    goToPage((state.menuElements as { home: HTMLElement }).home);
+    goToPage((state.menuElements as { home: any }).home);
   }
 }
 
@@ -74,6 +74,7 @@ export function authLogin(form: any, inputLogin: any, inputPassword: any) {
       { username: inputLogin.value, password: inputPassword.value },
       (response) => {
         if (response.ok) {
+          sidebarLinks[0].active = true;
           addItemLocalStorage(DOMPurify.sanitize(inputLogin.value));
           route(LINKS.FEED.HREF);
         } else if (response.status === 400) {

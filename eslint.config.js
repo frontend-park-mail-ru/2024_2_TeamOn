@@ -1,6 +1,6 @@
 module.exports = [
   {
-    files: ["*.js"],
+    files: ["*.js", "*.ts"],
     languageOptions: {
       globals: {
         require: true,

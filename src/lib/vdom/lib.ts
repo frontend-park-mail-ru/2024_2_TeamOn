@@ -1,3 +1,4 @@
+import { Virtual } from "../../index";
 import { VirtualDOM } from "./src/source";
 import { VNode } from "./src/source";
 
@@ -17,4 +18,8 @@ function render(vdom: VirtualDOM): any {
   return vdom.render();
 }
 
-export { createElement, createText, VirtualDOM, render };
+function update(parent: any, content: VNode, vdom: VirtualDOM = Virtual): any {
+  return vdom.update(parent, content);
+}
+
+export { createElement, createText, render, update };

@@ -12,6 +12,9 @@ function createMask() {
 }
 function controllerMask(container: any, containerSecond: any, mask: any) {
   // Добавляем обработчик события для движения мыши
+  if (container == undefined) {
+    return 0;
+  }
   container.addEventListener("mousemove", (e: any) => {
     containerSecond.style.mask = "url(#circle-mask)";
     containerSecond.style.webkitmask = "url(#circle-mask)";

@@ -1,12 +1,13 @@
-import { LINKS } from "../consts";
+import { ELEMENTS_CLASS, LINKS } from "../consts";
 import { route } from "../utils/routing";
 import { hasLogged } from "../utils/hasLogged";
 import { ClearHistoryBrowser } from "../utils/clearHistory";
-import { VirtualDOM } from "../lib/vdom/src/source";
-import { createElement, createText, render } from "../lib/vdom/lib";
+import { pageContainer, Virtual } from "../index";
+import { createElement, createText, render, update } from "../lib/vdom/lib";
 import { createElementJSX } from "../lib/jsx/lib";
-import { pageContainer } from "../index";
 import { controllerMask, createMask } from "../utils/utilsView/circle";
+import { VirtualDOM, VNode } from "../lib/vdom/src/source";
+import { Container } from "../../node_modules/postcss/lib/postcss";
 
 /**
  * Обработка домашней страницы
@@ -17,21 +18,34 @@ export function renderHome() {
   } else {
     document.body.style.height = "100vh";
     ClearHistoryBrowser();
-    const vdom = new VirtualDOM(
-      createElement("div", { class: "home-container-sec" }, []),
-      createElement("div", { class: "home-overlay" }, []),
-      createElement("div", { class: "home-header" }, [createText("PUSHART")]),
-      createElement("div", { class: "home-buttons" }, [
-        createElement("a", { class: "home-button" }, [createText("Войти")]),
-      ]),
+
+    const vdom: VNode = createElement(
+      "div",
+      { class: ELEMENTS_CLASS.HOME.HOME_CONTAINER },
+      [
+        createElement(
+          "div",
+          { class: ELEMENTS_CLASS.HOME.HOME_CONTAINER_SEC },
+          [],
+        ),
+        createElement("div", { class: ELEMENTS_CLASS.HOME.HOME_OVERLAY }, []),
+        createElement("div", { class: ELEMENTS_CLASS.HOME.HOME_HEADER }, [
+          createText("PUSHART"),
+        ]),
+        createElement("div", { class: ELEMENTS_CLASS.HOME_BUTTONS.BLOCK }, [
+          createElement("a", { class: ELEMENTS_CLASS.HOME_BUTTONS.COMBINE }, [
+            createText("Войти"),
+          ]),
+        ]),
+      ],
     );
-    const jsx = "<div class=home-container></div>";
-    const container = createElementJSX(jsx);
-    const html = render(vdom);
 
-    container.innerHTML = html;
+    const container = update(pageContainer, vdom);
 
-    const button: any = container.querySelector(".home-buttons");
+    const button: any = container.querySelector(
+      `.${ELEMENTS_CLASS.HOME_BUTTONS.BLOCK}`,
+    );
+    console.log(button);
     button.addEventListener("click", () => {
       route(LINKS.LOGIN.HREF);
     });
@@ -41,17 +55,22 @@ export function renderHome() {
     }
 
     const containerSecond: any = container.querySelector(
-      ".home-container-sec",
+      `.${ELEMENTS_CLASS.HOME.HOME_CONTAINER_SEC}`,
     ) as HTMLElement;
+
+    const homeContainer: any = container.querySelector(
+      `.${ELEMENTS_CLASS.HOME.HOME_CONTAINER}`,
+    ) as HTMLElement;
+
     if (window.location.pathname == LINKS.HOME.HREF) {
       // Создаем маску для выжигания
       const mask = createMask();
 
-      container.appendChild(mask);
+      homeContainer.appendChild(mask);
 
       // Запускаем анимацию с помощью requestAnimationFrame
       function animate() {
-        controllerMask(container, containerSecond, mask);
+        controllerMask(homeContainer, containerSecond, mask);
         // Запланировать следующий кадр анимации
         requestAnimationFrame(animate);
       }
@@ -59,6 +78,5 @@ export function renderHome() {
       // Начинаем анимацию
       requestAnimationFrame(animate);
     }
-    return container;
   }
 }

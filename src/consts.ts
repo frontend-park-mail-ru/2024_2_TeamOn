@@ -81,6 +81,10 @@ export const LOCATIONS = {
     METHOD: "GET",
     HREF: "/api/profile",
   },
+  OTHER_PAGE: {
+    METHOD: "GET",
+    HREF: "/api/profile",
+  },
 };
 /**
  * Объект, содержащий теги HTML-элементов.
@@ -112,42 +116,145 @@ export const REGEXP = {
   REGEX_SPEC_SYMBOL: new RegExp("[!@#$%^&*]"),
   REGEXP_UPPER_LOWER_CASE: new RegExp("(?=.*[a-z])(?=.*[A-Z])"),
   REGEXT_ERROR_LINK: new RegExp("^/[a-z0-9]+/[a-z0-9]+$"),
+  REGEXP_EMAIL: new RegExp("^[^s@]+@[^s@]+.[^s@]+$"),
 };
 
 /**
  * Объект, содержащий классы HTML-элементов.
  */
 export const ELEMENTS_CLASS = {
-  CLOSE_BTN: "close-btn",
-  BACKGROUND_SIGNUP: "background-signup",
-  BACKGROUND_LOGIN: "background-login",
-  LOGIN_CONTAINER: "login-container",
-  SIGNUP_CONTAINER: "container-signup",
-  SIGNUP_LINK: "register-link",
-  LOGIN_LINK: "login-link",
+  CLOSE_BTN: {
+    ELEMENT: "close__button",
+    MODIFIER: "close__hover",
+    COMBINE: "close__button close__hover",
+  },
+  SIGNUP: {
+    BLOCK: "signup",
+    ELEMENT: "signup__container",
+  },
+  LOGIN: {
+    BLOCK: "login",
+    ELEMENT: "login__container",
+  },
+  SIGNUP_LINK: {
+    BLOCK: "signup-link",
+    ELEMENT: "signup-link__a",
+    MODIFIER: "signup-link__a__hover",
+    COMBINE: "signup-link__a signup-link__a__hover",
+  },
+  LOGIN_LINK: {
+    BLOCK: "login-link",
+    ELEMENT: "login-link__a",
+    MODIFIER: "login-link__a__hover",
+    COMBINE: "login-link__a login-link__a__hover",
+  },
+  HOME: {
+    HOME_CONTAINER: "home-container",
+    HOME_CONTAINER_SEC: "home-container-sec",
+    HOME_OVERLAY: "home-overlay",
+    HOME_HEADER: "home-header",
+  },
+  HOME_BUTTONS: {
+    BLOCK: "home-buttons",
+    ELEMENT: "home-buttons__button",
+    MODIFIER: "home-buttons__button__effects",
+    COMBINE: "home-buttons home-buttons__button home-buttons__button__effects",
+  },
+  LOGOUT: {
+    BLOCK: "logout",
+    ELEMENT: "logout__button",
+    MODIFIER: "logout__button__effects",
+    COMBINE: "logout__button logout__button__effects",
+  },
+  DONATE: {
+    BLOCK: "donate",
+    ELEMENT: "donate__button",
+    MODIFIER: "donate__button__effects",
+    COMBINE: "donate donate__button donate__button__effects",
+  },
+  SEND_TIP: {
+    BLOCK: "send-tip",
+    ELEMENT: "send-tip__button",
+    MODIFIER: "send-tip__button__effects",
+    COMBINE: "send-tip send-tip__button send-tip__button__effects",
+  },
+  CANCEL: {
+    BLOCK: "cancel",
+    ELEMENT: "cancel__button",
+    MODIFIER: "cancel__button__effects",
+    COMBINE: "cancel cancel__button cancel__button__effects",
+  },
+  CREATE: {
+    BLOCK: "create",
+    ELEMENT: "create__button",
+    MODIFIER: "create__button__effects",
+    COMBINE: "create create__button create__button__effects",
+  },
+  PROFILE: {
+    BLOCK: "profile",
+    FORM: "form-profile",
+    HEADER: "header-profile",
+    RIGHT: "right",
+    LEFT: "left",
+    LEFT_BAR: "left-bar",
+    IMAGE_PROFILE: "image-profile",
+    INFO: "info",
+    EARNINGS: "earnings",
+    STATS: "stats",
+  },
+  POST: {
+    TITLE: "title",
+    CONTENT: "content",
+    MEDIA: "media-post",
+    DATE: "date",
+    LIKES: {
+      BLOCK: "likes-container",
+      ELEMENT: "likes",
+      AMOUNT: "amount-likes",
+    },
+    COMMENTS: {
+      BLOCK: "comments-container",
+      ELEMENT: "comments",
+      AMOUNT: "amount-comments",
+    },
+    AUTHOR: {
+      BLOCK: "author-section",
+      AVATAR: "author-avatar",
+      NAME: "author-name",
+    },
+    FEED: {
+      BLOCK: "post-container",
+    },
+    PROFILE: {
+      BLOCK: "post",
+    },
+  },
+  NOTIFICATION: {
+    BLOCK: "container-notification",
+    ELEMENT: "notification-icon",
+    MODIFIER: {
+      bigICON: "icon-notification-big",
+      noNOTIFICATIONS: "no-notifications",
+      TEXT: "notification-text",
+    },
+  },
+  BURGER: {
+    BLOCK: "burger",
+    ELEMENT: "line",
+  },
+  SIDEBAR: {
+    BLOCK: "side",
+    ELEMENT: "sidebar",
+  },
+  SEARCH: {
+    BLOCK: "search-bar",
+    ELEMENT: "search-input",
+  },
+  PASSWORD_EYE: "password-eye",
   ACTIVE: "active",
   NOTFOUND: "notfound",
   NOTFOUND_404: "notfound-404",
   ARROW: "arrow",
-  HOME_CONTAINER: "home-container",
-  HOME_OVERLAY: "home-overlay",
-  HOME_HEADER: "home-header",
-  HOME_BUTTONS: "home-buttons",
-  HOME_BUTTON: "home-button",
-  LEFT: "left",
-  LEFT_BAR: "left-bar",
-  IMAGE_PROFILE: "image-profile",
-  INFO: "info",
-  EARNINGS: "earnings",
-  STATS: "stats",
-  POST: "post",
-  DATE: "date",
-  LOGOUT: "logout",
-  FORM_PROFILE: "form-profile",
-  HEADER_PROFILE: "header-profile",
-  PROFILE: "profile",
-  RIGHT: "right",
-  PASSWORD_EYE: "password-eye",
 };
 
 export const sidebarLinks = [
@@ -161,6 +268,7 @@ export const sidebarLinks = [
     text: " Уведомления",
     icon: "icon-notification",
     active: false,
+    new: true,
     href: LINKS.NOTIFICATIONS.HREF,
   },
   {

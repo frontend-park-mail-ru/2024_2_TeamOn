@@ -9,6 +9,9 @@ import "./styles/style.css";
 import { renderFeed } from "./pages/feed/feed";
 import { route } from "./utils/routing";
 import { renderNotifications } from "./pages/notifications/notifications";
+import { renderSettings } from "./pages/settings/settingsView";
+import { VirtualDOM } from "./lib/vdom/src/source";
+import { createElement, render } from "./lib/vdom/lib";
 
 /**
  * Объект, содержащий конфигурацию меню приложения.
@@ -36,9 +39,9 @@ const config: any = {
       render: renderProfile as () => Promise<HTMLElement> | undefined,
     },
     settings: {
-      href: LINKS.ERROR.HREF as string,
-      text: LINKS.ERROR.TEXT as string,
-      render: renderSignup as () => HTMLInputElement | undefined,
+      href: LINKS.SETTINGS.HREF as string,
+      text: LINKS.SETTINGS.TEXT as string,
+      render: renderSettings as () => Promise<HTMLElement> | undefined,
     },
     feed: {
       href: LINKS.FEED.HREF as string,
@@ -65,7 +68,7 @@ const state2: State = {
  * @param {*} targetLinkMenu Ссылка на страницу, на которую нужно перенаправить
  * @param {*} statusErr Статус ошибки (необязательный)
  */
-export function goToPage(targetLinkMenu: any, statusErr = null) {
+export function goToPage(targetLinkMenu: any) {
   pageContainer.innerHTML = "";
   state2.activePageLink?.classList.remove(ELEMENTS_CLASS.ACTIVE);
   targetLinkMenu.classList.add(ELEMENTS_CLASS.ACTIVE);
@@ -74,28 +77,30 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
     targetLinkMenu == "http://pushart.online/feed/profile" ||
     targetLinkMenu == "http://pushart.online/feed" ||
     targetLinkMenu == "http://pushart.online/feed/notifications" ||
+    targetLinkMenu == "http://pushart.online/feed/settings" ||
     targetLinkMenu == "http://localhost:8080/feed/profile" ||
     targetLinkMenu == "http://localhost:8080/feed" ||
-    targetLinkMenu == "http://localhost:8080/feed/notifications"
+    targetLinkMenu == "http://localhost:8080/feed/notifications" ||
+    targetLinkMenu == "http://localhost:8080/feed/settings"
   ) {
     state.activePageLink = targetLinkMenu;
     config.menu[targetLinkMenu.dataset.section]
-      .render(statusErr)
+      .render()
       .then((newPageElement: any) => {
-        pageContainer.appendChild(newPageElement);
+        //pageContainer.appendChild(newPageElement);
       });
     return;
   }
 
-  const newPageElement =
-    config.menu[targetLinkMenu.dataset.section].render(statusErr);
+  const newPageElement = config.menu[targetLinkMenu.dataset.section].render();
   if (newPageElement) {
-    pageContainer.appendChild(newPageElement);
+    //pageContainer.appendChild(newPageElement);
     //pageContainer.innerHTML = newPageElement;
   }
 }
 var root: HTMLElement | null = startA(config.menu, state);
-
+export const Virtual: any = new VirtualDOM();
+render(Virtual);
 export const pageContainer = document.createElement("main");
 root?.appendChild(pageContainer);
 route(LINKS.HOME.HREF, window.location.pathname);

@@ -1,3 +1,4 @@
+import { pageContainer } from "../../../index";
 export interface VNode {
   type: string;
   props: { [key: string]: any };
@@ -22,7 +23,6 @@ export class VirtualDOM {
   public render(): string {
     return this._render(this.root);
   }
-
   private _render(node: VNode): string {
     if (node.type === "text") {
       return node.props.text;
@@ -34,10 +34,17 @@ export class VirtualDOM {
       });
       return html;
     }
-    var html: any = `<${node.type}`;
+    let html: string = `<${node.type}`;
     if (node.props) {
+      // Обработка классов
+      if (node.props.class) {
+        html += ` class="${node.props.class}"`; // Добавляем классы
+      }
       Object.keys(node.props).forEach((key) => {
-        html += ` ${key}="${node.props[key]}"`;
+        if (key !== "class") {
+          // Исключаем класс из других свойств
+          html += ` ${key}="${node.props[key]}"`;
+        }
       });
     }
     html += ">";
@@ -52,4 +59,15 @@ export class VirtualDOM {
 
     return html;
   }
+
+  public update(parent: any, newVNode: VNode) {
+    this.root = newVNode; // или другой механизм обновления
+    const html = this.render(); // Получаем HTML
+    const container = parent; // Предположим, что у вас есть элемент с id="app"
+    if (container) {
+      container.innerHTML = html; // Обновляем содержимое контейнера
+    }
+    return container;
+  }
+
 }

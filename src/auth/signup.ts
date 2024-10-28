@@ -1,62 +1,96 @@
-import {
-  REGEXP,
-  validatePassword,
-  LINKS,
-  LOCATIONS,
-} from "../consts";
+import { REGEXP, validatePassword, LINKS, LOCATIONS, sidebarLinks } from "../consts";
 import { removeError, showError } from "../utils/errors";
 import { fetchAjax } from "../utils/fetchAjax";
 import { addItemLocalStorage } from "../utils/storages";
 import * as DOMPurify from "dompurify";
 import { route } from "../utils/routing";
 
-/**
- * Функция валидации регистрационной формы
- * @param {*} form Форма регистрации
- * @param {*} inputUsername Поле ввода логина
- * @param {*} inputPassword Поле ввода пароля
- * @param {*} inputRepeatPassword Поле ввода повторного пароля
- * @returns true, если форма содержит ошибки, false - если форма корректна
- */
-
-export function validateSignupForm(
-  form: any,
-  inputUsername: any,
+export function validateSettings(
   inputPassword: any,
   inputRepeatPassword: any,
+  passwordStrength: any,
+  newPasswordError: any,
+  confirmPasswordError: any,
 ) {
-  var errors = form.querySelectorAll(".error");
-  let passwordErrors = [] as string[];
-
-  // Удаляем все предыдущие ошибки
-  for (var i = 0; i < errors.length; i++) {
-    errors[i].remove();
-  }
-
-  let hasError = false;
-  let passwordStrength = 0; // Переменная для хранения силы пароля
-
-  // Проверка логина
-  if (!DOMPurify.sanitize(inputUsername.value)) {
-    showError(inputUsername, "Пожалуйста, введите логин");
-    hasError = true;
+  if (!inputPassword.value) {
+    newPasswordError.innerHTML = "Пожалуйста, введите пароль";
+    updatePasswordStrengthBar(passwordStrength);
   } else {
-    removeError(inputUsername);
+    // Проверка длины пароля
+    if (inputPassword.value.length >= validatePassword.MIN_SYMBOLS) {
+      passwordStrength++;
+      // Изменение цвета шкалы
+      newPasswordError.innerHTML = "";
+      updatePasswordStrengthBar(passwordStrength);
+    } else {
+      newPasswordError.innerHTML = `Пароль должен быть минимум ${validatePassword.MIN_SYMBOLS} символов`;
+      updatePasswordStrengthBar(passwordStrength);
+      return;
+    }
+    if (inputPassword.value.length <= validatePassword.MAX_SYMBOLS) {
+      newPasswordError.innerHTML = "";
+      updatePasswordStrengthBar(passwordStrength);
+    } else {
+      passwordStrength--;
+      newPasswordError.innerHTML = `Пароль должен быть максимум ${validatePassword.MAX_SYMBOLS} символов`;
+      updatePasswordStrengthBar(passwordStrength);
+      return;
+    }
+    if (REGEXP.REGEXP_PASSWORD_ONE_NUMBER.test(inputPassword.value)) {
+      passwordStrength++;
+      newPasswordError.innerHTML = "";
+      updatePasswordStrengthBar(passwordStrength);
+    } else {
+      newPasswordError.innerHTML = `В пароле должна быть одна цифра`;
+      updatePasswordStrengthBar(passwordStrength);
+      return;
+    }
+    if (REGEXP.REGEX_SPEC_SYMBOL.test(inputPassword.value)) {
+      passwordStrength++;
+      newPasswordError.innerHTML = "";
+      updatePasswordStrengthBar(passwordStrength);
+    } else {
+      newPasswordError.innerHTML = `В пароле должен содержаться спец символ`;
+      updatePasswordStrengthBar(passwordStrength);
+      return;
+    }
+    if (REGEXP.REGEXP_UPPER_LOWER_CASE.test(inputPassword.value)) {
+      passwordStrength++;
+      newPasswordError.innerHTML = "";
+      updatePasswordStrengthBar(passwordStrength);
+    } else {
+      newPasswordError.innerHTML = `Не хватает: большой и маленькой буквы`;
+      updatePasswordStrengthBar(passwordStrength);
+      return;
+    }
   }
-  var check = true;
-  // Проверка пароля
+
+  // Проверка совпадения паролей
+
+  if (inputRepeatPassword.value !== inputPassword.value) {
+    newPasswordError.innerHTML = `Пароли должны совпадать`;
+  } else {
+    confirmPasswordError.innerHTML = "";
+  }
+}
+
+export function validatePasswords(
+  inputPassword: any,
+  inputRepeatPassword: any,
+  passwordStrength: any,
+  hasError: any,
+  check: any,
+) {
   if (!inputPassword.value) {
     showError(inputPassword, "Пожалуйста, введите пароль");
     hasError = true;
     updatePasswordStrengthBar(passwordStrength);
   } else {
     // Проверка длины пароля
-    if (inputPassword.value.length >= validatePassword.MIN_SYMBOLS && check) {
+    if (inputPassword.value.length >= validatePassword.MIN_SYMBOLS) {
       passwordStrength++;
-      // Изменение цвета шкалы
       updatePasswordStrengthBar(passwordStrength);
       removeError(inputPassword);
-      check = false;
     } else {
       updatePasswordStrengthBar(passwordStrength);
       showError(
@@ -113,19 +147,55 @@ export function validateSignupForm(
   } else {
     removeError(inputRepeatPassword);
   }
+}
+/**
+ * Функция валидации регистрационной формы
+ * @param {*} form Форма регистрации
+ * @param {*} inputUsername Поле ввода логина
+ * @param {*} inputPassword Поле ввода пароля
+ * @param {*} inputRepeatPassword Поле ввода повторного пароля
+ * @returns true, если форма содержит ошибки, false - если форма корректна
+ */
 
-  // Отображение ошибок пароля
-  if (passwordErrors.length > 0) {
-    showError(inputRepeatPassword, passwordErrors.join("<br>"));
-    hasError = true;
+export function validateSignupForm(
+  form: any,
+  inputUsername: any,
+  inputPassword: any,
+  inputRepeatPassword: any,
+) {
+  var errors = form.querySelectorAll(".error");
+  let passwordErrors = [] as string[];
+
+  // Удаляем все предыдущие ошибки
+  for (var i = 0; i < errors.length; i++) {
+    errors[i].remove();
   }
+
+  let hasError = false;
+  let passwordStrength = 0; // Переменная для хранения силы пароля
+
+  // Проверка логина
+  if (!DOMPurify.sanitize(inputUsername.value)) {
+    showError(inputUsername, "Пожалуйста, введите логин");
+    hasError = true;
+  } else {
+    removeError(inputUsername);
+  }
+  var check = true;
+  validatePasswords(
+    inputPassword,
+    inputRepeatPassword,
+    passwordStrength,
+    hasError,
+    check,
+  );
 
   return hasError;
 }
 
 // Функция для обновления шкалы силы пароля
 
-function updatePasswordStrengthBar(strength: number) {
+export function updatePasswordStrengthBar(strength: number) {
   const strengthBar: any = document.querySelector(".password-strength");
   const strengthPercentage = (strength / 5) * 100; // 5 - максимальное количество критериев
 
@@ -178,10 +248,11 @@ export function authSignup(
       { username: username.value, password: password.value },
       (response) => {
         if (response.ok) {
+          sidebarLinks[0].active = true;
           addItemLocalStorage(DOMPurify.sanitize(username.value));
           route(LINKS.FEED.HREF);
         } else if (response.status === 400) {
-          response.json().then((data) => {
+          response.json().then((data: any) => {
             validationErrorSignupForm(
               username,
               password,
