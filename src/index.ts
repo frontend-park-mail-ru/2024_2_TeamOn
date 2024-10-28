@@ -1,4 +1,4 @@
-import { state, ELEMENTS_CLASS } from "./consts";
+import { state, ELEMENTS_CLASS, sidebarLinks } from "./consts";
 import { renderLogin } from "./auth/loginView";
 import { renderSignup } from "./auth/signupView";
 import { renderProfile } from "./pages/profile/profile";
@@ -103,4 +103,10 @@ export const Virtual: any = new VirtualDOM();
 render(Virtual);
 export const pageContainer = document.createElement("main");
 root?.appendChild(pageContainer);
+
+  sidebarLinks.forEach((link) => {
+    if (window.location.pathname == link.href) {
+      link.active = true;
+    }
+  })
 route(LINKS.HOME.HREF, window.location.pathname);

@@ -1,4 +1,4 @@
-import { ELEMENTS_CLASS, LINKS, state } from "../../consts";
+import { ELEMENTS_CLASS, LINKS, sidebarLinks, state } from "../../consts";
 import { pageContainer } from "../../index";
 import { createElement, createText, update } from "../../lib/vdom/lib";
 import { VNode } from "../../lib/vdom/src/source";
@@ -60,7 +60,11 @@ export async function renderNotifications() {
     } else {
       route(LINKS.HOME.HREF);
     }
-
+    sidebarLinks.forEach((link) => {
+      if (window.location.pathname == link.href) {
+        link.active = true;
+      }
+    })
     return container;
   } catch (error) {
     console.log("EROR");

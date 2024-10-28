@@ -87,36 +87,40 @@ function getRecentlyPosts() {
   ];
 }
 
-function renderPosts(containerPopularPosts: any, containerRecentlyPosts: any) {
+function modifirePosts(containerPopularPosts: any, containerRecentlyPosts: any) {
+  const popularPosts = getPopularPosts();
+  const containersPopularPosts = containerPopularPosts.querySelectorAll('.post-container')
+  containersPopularPosts.forEach((container: any, index: any) => {
+    customizePost(container, popularPosts[index])
+  })
+
+  const recentlyPosts = getPopularPosts();
+  const containersRecentlyPosts = containerRecentlyPosts.querySelectorAll('.post-container')
+  containersRecentlyPosts.forEach((container: any, index: any) => {
+    customizePost(container, recentlyPosts[index])
+  })
+}
+
+function renderPopularPosts(){
   const popularPosts = getPopularPosts();
   
-  containerPopularPosts.innerHTML = ""; 
-
+  var arr: any = [];
   popularPosts.forEach((post: any) => {
     const container: VNode = createContainerPost(post);
-    const newdiv = document.createElement("div");
-    
-    update(newdiv, container);
-    
-    customizePost(newdiv, post);
-    
-    containerPopularPosts.appendChild(newdiv);
+    arr.push(container);
   });
+  return arr;
+}
 
+function renderRecentlyPosts(){
   const recentlyPosts = getRecentlyPosts();
   
-  containerRecentlyPosts.innerHTML = ""; 
-  
+  var arr: any = [];
   recentlyPosts.forEach((post: any) => {
     const container: VNode = createContainerPost(post);
-    const div = document.createElement("div");
-    
-    update(div, container);
-    
-    customizePost(div, post);
-    
-    containerRecentlyPosts.appendChild(div);
+    arr.push(container);
   });
+  return arr;
 }
 
 export function customizeSidebar(sidebar: any) {
@@ -153,6 +157,7 @@ export function customizeSidebar(sidebar: any) {
 
   return navMenu;
 }
+
 function customizePost(container: any, post: any = null) {
   const authorSection: any = container.querySelector(
     `.${ELEMENTS_CLASS.POST.AUTHOR.BLOCK}`,
@@ -219,11 +224,15 @@ export async function renderFeed() {
         createElement("div", { class: "section-title" }, [
           createText("Популярное"),
         ]),
-        createElement("div", { class: "main-container-popular" }, []),
+        createElement("div", { class: "main-container-popular" }, [
+          ...renderPopularPosts()
+        ]),
         createElement("div", { class: "section-title" }, [
           createText("Недавние"),
         ]),
-        createElement("div", { class: "main-container-recently" }, []),
+        createElement("div", { class: "main-container-recently" }, [
+          ...renderRecentlyPosts()
+        ]),
       ]),
     ]);
     const container = update(pageContainer, vdom);
@@ -259,13 +268,19 @@ export async function renderFeed() {
       ".main-container-recently",
     );
 
-    renderPosts(containerPopularPosts, containerRecentlyPosts);
-
+   // renderPosts(containerPopularPosts, containerRecentlyPosts);
+    modifirePosts(containerPopularPosts, containerRecentlyPosts);
     const side: any = container.querySelector(
       `.${ELEMENTS_CLASS.SEARCH.ELEMENT}`,
     );
     side.type = "text";
     side.placeholder = "Найти креаторов";
+
+    sidebarLinks.forEach((link) => {
+      if (window.location.pathname == link.href) {
+        link.active = true;
+      }
+    })
 
     return container;
   } catch (error) {

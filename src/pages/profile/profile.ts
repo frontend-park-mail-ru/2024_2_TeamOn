@@ -338,6 +338,13 @@ export async function renderProfile() {
     renderCreatePost(
       container.querySelector(`.${ELEMENTS_CLASS.PROFILE.RIGHT}`),
     );
+
+    sidebarLinks.forEach((link) => {
+      if (window.location.pathname == link.href) {
+        link.active = true;
+      }
+    })
+    
     return container;
   } catch (error) {
     console.log("EROR");
