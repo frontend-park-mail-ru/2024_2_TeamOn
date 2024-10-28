@@ -86,48 +86,64 @@ function getRecentlyPosts() {
     },
   ];
 }
-
+/**
+ * Берет каждый пост и наполняет его
+ * @param containerPopularPosts Контейнер популярных постов
+ * @param containerRecentlyPosts Контейнер недавних постов
+ */
 function modifirePosts(
   containerPopularPosts: any,
   containerRecentlyPosts: any,
 ) {
   const popularPosts = getPopularPosts();
-  const containersPopularPosts =
-    containerPopularPosts.querySelectorAll(".post-container");
+  const containersPopularPosts = containerPopularPosts.querySelectorAll(
+    `.${ELEMENTS_CLASS.POST.FEED.BLOCK}`,
+  );
   containersPopularPosts.forEach((container: any, index: any) => {
     customizePost(container, popularPosts[index]);
   });
 
   const recentlyPosts = getPopularPosts();
-  const containersRecentlyPosts =
-    containerRecentlyPosts.querySelectorAll(".post-container");
+  const containersRecentlyPosts = containerRecentlyPosts.querySelectorAll(
+    `.${ELEMENTS_CLASS.POST.FEED.BLOCK}`,
+  );
   containersRecentlyPosts.forEach((container: any, index: any) => {
     customizePost(container, recentlyPosts[index]);
   });
 }
-
+/**
+ * Рендерит скелет популярных постов
+ * @returns
+ */
 function renderPopularPosts() {
   const popularPosts = getPopularPosts();
 
-  var arr: any = [];
+  var posts: any = [];
   popularPosts.forEach((post: any) => {
     const container: VNode = createContainerPost(post);
-    arr.push(container);
+    posts.push(container);
   });
-  return arr;
+  return posts;
 }
-
+/**
+ * Рендерит скелет популярных постов
+ * @returns
+ */
 function renderRecentlyPosts() {
   const recentlyPosts = getRecentlyPosts();
 
-  var arr: any = [];
+  var posts: any = [];
   recentlyPosts.forEach((post: any) => {
     const container: VNode = createContainerPost(post);
-    arr.push(container);
+    posts.push(container);
   });
-  return arr;
+  return posts;
 }
-
+/**
+ * Кастомизирует сайдраб
+ * @param sidebar
+ * @returns
+ */
 export function customizeSidebar(sidebar: any) {
   const burger: any = document.querySelector(`.${ELEMENTS_CLASS.BURGER.BLOCK}`);
   const navMenu = document.createElement("div");
@@ -162,7 +178,11 @@ export function customizeSidebar(sidebar: any) {
 
   return navMenu;
 }
-
+/**
+ * Кастомизирует каждый пост, который к нему пришел
+ * @param container Контейнер ( популярных | недавних постов )
+ * @param post Пост
+ */
 function customizePost(container: any, post: any = null) {
   const authorSection: any = container.querySelector(
     `.${ELEMENTS_CLASS.POST.AUTHOR.BLOCK}`,
