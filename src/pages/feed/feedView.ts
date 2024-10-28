@@ -19,20 +19,28 @@ export function setActiveLink(link: any) {
   return link.active;
 }
 function renderBurger() {
-  const vdom: VNode = createElement("div", { class: ELEMENTS_CLASS.BURGER.BLOCK }, [
-    createElement("div", { class: ELEMENTS_CLASS.BURGER.ELEMENT }, []),
-    createElement("div", { class: ELEMENTS_CLASS.BURGER.ELEMENT }, []),
-    createElement("div", { class: ELEMENTS_CLASS.BURGER.ELEMENT }, []),
-  ]);
+  const vdom: VNode = createElement(
+    "div",
+    { class: ELEMENTS_CLASS.BURGER.BLOCK },
+    [
+      createElement("div", { class: ELEMENTS_CLASS.BURGER.ELEMENT }, []),
+      createElement("div", { class: ELEMENTS_CLASS.BURGER.ELEMENT }, []),
+      createElement("div", { class: ELEMENTS_CLASS.BURGER.ELEMENT }, []),
+    ],
+  );
 
   return vdom;
 }
 
 function renderSidebar() {
-  const vdom: VNode = createElement("div", { class: ELEMENTS_CLASS.SIDEBAR.BLOCK }, [
-    renderBurger(),
-    createElement("div", { class: ELEMENTS_CLASS.SIDEBAR.ELEMENT }, []),
-  ]);
+  const vdom: VNode = createElement(
+    "div",
+    { class: ELEMENTS_CLASS.SIDEBAR.BLOCK },
+    [
+      renderBurger(),
+      createElement("div", { class: ELEMENTS_CLASS.SIDEBAR.ELEMENT }, []),
+    ],
+  );
   return vdom;
 }
 function renderSearchbar() {
@@ -46,9 +54,16 @@ function renderSearchbar() {
 }
 
 function createContainerPost(post: any) {
-  const vdom: VNode = createElement("div", { class: ELEMENTS_CLASS.POST.FEED.BLOCK }, [
+  const vdom: VNode = createElement(
+    "div",
+    { class: ELEMENTS_CLASS.POST.FEED.BLOCK },
+    [
       createElement("div", { class: ELEMENTS_CLASS.POST.AUTHOR.BLOCK }, [
-        createElement("img", { class: `${ELEMENTS_CLASS.POST.AUTHOR.AVATAR} avatar` }, []),
+        createElement(
+          "img",
+          { class: `${ELEMENTS_CLASS.POST.AUTHOR.AVATAR} avatar` },
+          [],
+        ),
         createElement("div", { class: ELEMENTS_CLASS.POST.AUTHOR.NAME }, [
           createText(post.authorName),
         ]),
@@ -65,7 +80,11 @@ function createContainerPost(post: any) {
       ]),
       createElement("div", { class: "interaction-section" }, [
         createElement("div", { class: ELEMENTS_CLASS.POST.LIKES.BLOCK }, [
-          createElement("div", { class: ELEMENTS_CLASS.POST.LIKES.ELEMENT }, []),
+          createElement(
+            "div",
+            { class: ELEMENTS_CLASS.POST.LIKES.ELEMENT },
+            [],
+          ),
           createElement("h3", { class: ELEMENTS_CLASS.POST.LIKES.AMOUNT }, [
             createText(post.likes),
           ]),
@@ -81,7 +100,8 @@ function createContainerPost(post: any) {
           ]),
         ]),
       ]),
-  ]);
+    ],
+  );
   return vdom;
 }
 export { renderSidebar, renderSearchbar, createContainerPost };

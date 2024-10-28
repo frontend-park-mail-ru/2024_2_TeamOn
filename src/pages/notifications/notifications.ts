@@ -64,7 +64,7 @@ export async function renderNotifications() {
       if (window.location.pathname == link.href) {
         link.active = true;
       }
-    })
+    });
     return container;
   } catch (error) {
     console.log("EROR");

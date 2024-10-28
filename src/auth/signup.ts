@@ -1,4 +1,10 @@
-import { REGEXP, validatePassword, LINKS, LOCATIONS, sidebarLinks } from "../consts";
+import {
+  REGEXP,
+  validatePassword,
+  LINKS,
+  LOCATIONS,
+  sidebarLinks,
+} from "../consts";
 import { removeError, showError } from "../utils/errors";
 import { fetchAjax } from "../utils/fetchAjax";
 import { addItemLocalStorage } from "../utils/storages";

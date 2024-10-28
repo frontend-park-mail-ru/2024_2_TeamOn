@@ -87,23 +87,28 @@ function getRecentlyPosts() {
   ];
 }
 
-function modifirePosts(containerPopularPosts: any, containerRecentlyPosts: any) {
+function modifirePosts(
+  containerPopularPosts: any,
+  containerRecentlyPosts: any,
+) {
   const popularPosts = getPopularPosts();
-  const containersPopularPosts = containerPopularPosts.querySelectorAll('.post-container')
+  const containersPopularPosts =
+    containerPopularPosts.querySelectorAll(".post-container");
   containersPopularPosts.forEach((container: any, index: any) => {
-    customizePost(container, popularPosts[index])
-  })
+    customizePost(container, popularPosts[index]);
+  });
 
   const recentlyPosts = getPopularPosts();
-  const containersRecentlyPosts = containerRecentlyPosts.querySelectorAll('.post-container')
+  const containersRecentlyPosts =
+    containerRecentlyPosts.querySelectorAll(".post-container");
   containersRecentlyPosts.forEach((container: any, index: any) => {
-    customizePost(container, recentlyPosts[index])
-  })
+    customizePost(container, recentlyPosts[index]);
+  });
 }
 
-function renderPopularPosts(){
+function renderPopularPosts() {
   const popularPosts = getPopularPosts();
-  
+
   var arr: any = [];
   popularPosts.forEach((post: any) => {
     const container: VNode = createContainerPost(post);
@@ -112,9 +117,9 @@ function renderPopularPosts(){
   return arr;
 }
 
-function renderRecentlyPosts(){
+function renderRecentlyPosts() {
   const recentlyPosts = getRecentlyPosts();
-  
+
   var arr: any = [];
   recentlyPosts.forEach((post: any) => {
     const container: VNode = createContainerPost(post);
@@ -166,7 +171,7 @@ function customizePost(container: any, post: any = null) {
   const avatar: any = container.querySelector(
     `.${ELEMENTS_CLASS.POST.AUTHOR.AVATAR}`,
   );
-  if(avatar){
+  if (avatar) {
     avatar.alt = "Аватар автора";
     avatar.height = 50;
     avatar.src = post.avatarSrc;
@@ -180,7 +185,6 @@ function customizePost(container: any, post: any = null) {
   authorSection.addEventListener("click", () => {
     route(`/profile/${author_id}`);
   });
-
 
   const title: any = container.querySelector(`.${ELEMENTS_CLASS.POST.TITLE}`);
   title.textContent = post.title;
@@ -225,13 +229,13 @@ export async function renderFeed() {
           createText("Популярное"),
         ]),
         createElement("div", { class: "main-container-popular" }, [
-          ...renderPopularPosts()
+          ...renderPopularPosts(),
         ]),
         createElement("div", { class: "section-title" }, [
           createText("Недавние"),
         ]),
         createElement("div", { class: "main-container-recently" }, [
-          ...renderRecentlyPosts()
+          ...renderRecentlyPosts(),
         ]),
       ]),
     ]);
@@ -252,7 +256,7 @@ export async function renderFeed() {
         searchBar.style.position = "";
       }
     });
-     sidebar.appendChild(customizeSidebar(sidebar));
+    sidebar.appendChild(customizeSidebar(sidebar));
     const userF: any = findUsername();
 
     if (userF) {
@@ -268,7 +272,7 @@ export async function renderFeed() {
       ".main-container-recently",
     );
 
-   // renderPosts(containerPopularPosts, containerRecentlyPosts);
+    // renderPosts(containerPopularPosts, containerRecentlyPosts);
     modifirePosts(containerPopularPosts, containerRecentlyPosts);
     const side: any = container.querySelector(
       `.${ELEMENTS_CLASS.SEARCH.ELEMENT}`,
@@ -280,7 +284,7 @@ export async function renderFeed() {
       if (window.location.pathname == link.href) {
         link.active = true;
       }
-    })
+    });
 
     return container;
   } catch (error) {

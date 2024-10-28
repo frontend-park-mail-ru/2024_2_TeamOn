@@ -162,7 +162,13 @@
 //   }
 // }
 
-import { ELEMENTS, ELEMENTS_CLASS, LINKS, LOCATIONS, sidebarLinks } from "../../consts";
+import {
+  ELEMENTS,
+  ELEMENTS_CLASS,
+  LINKS,
+  LOCATIONS,
+  sidebarLinks,
+} from "../../consts";
 import { fetchAjax } from "../../utils/fetchAjax";
 import { removeItemLocalStorage } from "../../utils/storages";
 import { route } from "../../utils/routing";
@@ -225,9 +231,9 @@ export function renderLogoutButton(Item: any) {
     removeItemLocalStorage(Item);
     route(LINKS.HOME.HREF);
   });
-  sidebarLinks.forEach((link: any) => { 
+  sidebarLinks.forEach((link: any) => {
     link.active = false;
-  })
+  });
   const logout: any = document.createElement("div");
   logout.className = ELEMENTS_CLASS.LOGOUT.BLOCK;
   logout.appendChild(logoutLink);
@@ -343,8 +349,8 @@ export async function renderProfile() {
       if (window.location.pathname == link.href) {
         link.active = true;
       }
-    })
-    
+    });
+
     return container;
   } catch (error) {
     console.log("EROR");

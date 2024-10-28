@@ -69,5 +69,4 @@ export class VirtualDOM {
     }
     return container;
   }
-
 }

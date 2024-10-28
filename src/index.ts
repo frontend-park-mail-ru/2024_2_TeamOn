@@ -104,9 +104,9 @@ render(Virtual);
 export const pageContainer = document.createElement("main");
 root?.appendChild(pageContainer);
 
-  sidebarLinks.forEach((link) => {
-    if (window.location.pathname == link.href) {
-      link.active = true;
-    }
-  })
+sidebarLinks.forEach((link) => {
+  if (window.location.pathname == link.href) {
+    link.active = true;
+  }
+});
 route(LINKS.HOME.HREF, window.location.pathname);
