@@ -15,6 +15,7 @@ import { removeItemLocalStorage } from "../../utils/storages";
 function getPopularPosts() {
   return [
     {
+      id: 1,
       avatarSrc:
         "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
       authorName: "Alolo",
@@ -26,6 +27,7 @@ function getPopularPosts() {
       comments: 34,
     },
     {
+      id: 2,
       avatarSrc:
         "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
       authorName: "Anatolich",
@@ -37,6 +39,7 @@ function getPopularPosts() {
       comments: 34,
     },
     {
+      id: 3,
       avatarSrc:
         "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
       authorName: "Anatolich",
@@ -48,6 +51,7 @@ function getPopularPosts() {
       comments: 34,
     },
     {
+      id: 4,
       avatarSrc:
         "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
       authorName: "Anatolich",
@@ -60,9 +64,28 @@ function getPopularPosts() {
     },
   ];
 }
+function getmedia() {
+  return [
+    {
+      postId: 1,
+      mediaContent: [
+        {
+          file: "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
+        },
+        {
+          file: "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
+        },
+        {
+          file: "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
+        },
+      ],
+    },
+  ];
+}
 function getRecentlyPosts() {
   return [
     {
+      id: 1,
       avatarSrc:
         "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
       authorName: "Anatolich",
@@ -74,6 +97,7 @@ function getRecentlyPosts() {
       comments: 34,
     },
     {
+      id: 2,
       avatarSrc:
         "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
       authorName: "Anatolich",
@@ -96,11 +120,13 @@ function modifirePosts(
   containerRecentlyPosts: any,
 ) {
   const popularPosts = getPopularPosts();
+  const mediacontent = getmedia();
+
   const containersPopularPosts = containerPopularPosts.querySelectorAll(
     `.${ELEMENTS_CLASS.POST.FEED.BLOCK}`,
   );
   containersPopularPosts.forEach((container: any, index: any) => {
-    customizePost(container, popularPosts[index]);
+    customizePost(container, popularPosts[index], mediacontent);
   });
 
   const recentlyPosts = getPopularPosts();
@@ -108,7 +134,7 @@ function modifirePosts(
     `.${ELEMENTS_CLASS.POST.FEED.BLOCK}`,
   );
   containersRecentlyPosts.forEach((container: any, index: any) => {
-    customizePost(container, recentlyPosts[index]);
+    customizePost(container, recentlyPosts[index], mediacontent);
   });
 }
 /**
@@ -117,10 +143,14 @@ function modifirePosts(
  */
 function renderPopularPosts() {
   const popularPosts = getPopularPosts();
+  const media = getmedia();
 
   var posts: any = [];
   popularPosts.forEach((post: any) => {
-    const container: VNode = createContainerPost(post);
+    const mediaContent =
+      media.find((m) => m.postId === post.postId)?.mediaContent || [];
+
+    const container: VNode = createContainerPost(post, mediaContent);
     posts.push(container);
   });
   return posts;
@@ -131,10 +161,18 @@ function renderPopularPosts() {
  */
 function renderRecentlyPosts() {
   const recentlyPosts = getRecentlyPosts();
+  const media = getmedia();
+  var arrayMedia: any = [];
 
   var posts: any = [];
   recentlyPosts.forEach((post: any) => {
-    const container: VNode = createContainerPost(post);
+    media.forEach((oneMedia: any) => {
+      if (oneMedia.postId == post.id) {
+        arrayMedia.push(oneMedia);
+      }
+    });
+    console.log(arrayMedia);
+    const container: VNode = createContainerPost(post, arrayMedia);
     posts.push(container);
   });
   return posts;
@@ -156,8 +194,8 @@ export function modifierSidebar(mainContainer: any) {
   sidebarLinks.forEach((link: any, index: any) => {
     sidebarReferenses[index]?.addEventListener("click", (event: any) => {
       event.preventDefault();
-      route(link.href);
       setActiveLink(link);
+      route(link.href);
     });
     if (window.location.pathname === link.href) {
       setActiveLink(link);
@@ -167,6 +205,16 @@ export function modifierSidebar(mainContainer: any) {
     }
     const span: any = mainContainer.querySelector(".new");
     span.style.color = "red";
+
+    window.addEventListener("popstate", () => {
+      sidebarLinks.forEach((link: any, index: any) => {
+        if (window.location.pathname === link.href) {
+          setActiveLink(link);
+        } else {
+          sidebarReferenses[index].classList.remove(ELEMENTS_CLASS.ACTIVE);
+        }
+      });
+    });
   });
 }
 /**
@@ -174,9 +222,9 @@ export function modifierSidebar(mainContainer: any) {
  * @param container Контейнер ( популярных | недавних постов )
  * @param post Пост
  */
-function customizePost(container: any, post: any = null) {
+function customizePost(container: any, post: any = null, mediaContents: any[]) {
   const authorSection: any = container.querySelector(
-    `.${ELEMENTS_CLASS.POST.AUTHOR.BLOCK}`,
+    `.${ELEMENTS_CLASS.POST.AUTHOR.NAME}`,
   );
 
   const avatar: any = container.querySelector(
@@ -205,10 +253,10 @@ function customizePost(container: any, post: any = null) {
   );
   content.textContent = post.content;
 
-  const mediaContent: any = container.querySelector(
+  const mediaConten: any = container.querySelector(
     `.${ELEMENTS_CLASS.POST.MEDIA}`,
   );
-  // mediaContent.src = "../styles/photos/home.png"
+  mediaConten.src = mediaContents[1].mediaContent[1].file;
   // mediaContent.alt = "Описание"
 
   const date: any = container.querySelector(`.${ELEMENTS_CLASS.POST.DATE}`);
@@ -261,6 +309,7 @@ export async function renderFeed() {
         ]),
       ]),
     ]);
+
     const container = update(pageContainer, vdom);
     state.currentUser = user;
 
@@ -302,7 +351,6 @@ export async function renderFeed() {
       removeItemLocalStorage(user.username);
       route(LINKS.HOME.HREF);
     });
-
     return container;
   } catch (error) {
     console.log("EROR");

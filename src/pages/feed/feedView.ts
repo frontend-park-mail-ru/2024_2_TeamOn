@@ -1,18 +1,16 @@
-import { ELEMENTS_CLASS, state } from "../../consts";
+import { ELEMENTS_CLASS, sidebarLinks, state } from "../../consts";
 import { renderLogoutButton } from "../profile/profile";
 import { createElement, createText } from "../../lib/vdom/lib";
 import { VNode } from "../../lib/vdom/src/source";
-let previousActiveLink: any = null; // Variable to store the previous active link
 
 export function setActiveLink(link: any) {
-  if (previousActiveLink) {
-    previousActiveLink.className = "";
-    previousActiveLink.active = false;
-  }
-  link.className = ELEMENTS_CLASS.ACTIVE;
+  sidebarLinks.forEach((sidebarLink: any) => {
+    if (link != sidebarLink) {
+      sidebarLink.className = "";
+      sidebarLink.active = false;
+    }
+  });
   link.active = true;
-  previousActiveLink = link;
-  return link.active;
 }
 function renderBurger() {
   const vdom: VNode = createElement(
@@ -71,8 +69,19 @@ function renderSearchbar() {
 
   return vdom;
 }
-
-function createContainerPost(post: any) {
+function rendermediaContent(mediaContent: any[]) {
+  var result: any = [];
+  mediaContent.forEach((media: any) => {
+    const container: any = createElement(
+      "img",
+      { class: ELEMENTS_CLASS.POST.MEDIA },
+      [],
+    );
+    result.push(container);
+  });
+  return result;
+}
+function createContainerPost(post: any, mediaContent: any[]) {
   const vdom: VNode = createElement(
     "div",
     { class: ELEMENTS_CLASS.POST.FEED.BLOCK },
@@ -93,7 +102,7 @@ function createContainerPost(post: any) {
       createElement("div", { class: ELEMENTS_CLASS.POST.CONTENT }, [
         createText(post.content),
       ]),
-      createElement("img", { class: ELEMENTS_CLASS.POST.MEDIA }, []),
+      ...rendermediaContent(mediaContent),
       createElement("div", { class: ELEMENTS_CLASS.POST.DATE }, [
         createText(post.date),
       ]),

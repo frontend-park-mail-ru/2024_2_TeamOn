@@ -3,9 +3,43 @@ import { createElement, createText } from "../../lib/vdom/lib";
 import { calculateAmountPosts } from "../../utils/calculateAmountPosts";
 import { VNode } from "../../lib/vdom/src/source";
 
+// function renderUserPosts(user: any) {
+//   const container: VNode = createElement("div", { class: "posts" }, [
+//     createElement("div", { class: ELEMENTS_CLASS.POST.PROFILE.BLOCK }, [
+//       createElement("h4", { class: ELEMENTS_CLASS.POST.TITLE }, [
+//         createText(user.posts_title),
+//       ]),
+//       createElement("p", { class: ELEMENTS_CLASS.POST.CONTENT }, [
+//         createText(user.posts_content),
+//       ]),
+//       createElement("div", { class: ELEMENTS_CLASS.POST.DATE }, [
+//         createText(user.posts_date),
+//       ]),
+//     ]),
+//   ]);
+//   return container;
+// }
 function renderUserPosts(user: any) {
   const container: VNode = createElement("div", { class: "posts" }, [
     createElement("div", { class: ELEMENTS_CLASS.POST.PROFILE.BLOCK }, [
+      // Добавляем три точки
+      createElement("div", { class: "menu-icon" }, [
+        createText("⋮"), // Символ для трех точек
+
+        // Выдвижное меню
+        createElement("div", { class: "dropdown-menu" }, [
+          createElement("div", { class: "interaction-post" }, [
+            createElement("div", { class: "button-edit-post" }, [
+              createText("Редактировать"),
+            ]),
+          ]),
+          createElement("div", { class: "interaction-post" }, [
+            createElement("div", { class: "button-delete-post" }, [
+              createText("Удалить"),
+            ]),
+          ]),
+        ]),
+      ]),
       createElement("h4", { class: ELEMENTS_CLASS.POST.TITLE }, [
         createText(user.posts_title),
       ]),

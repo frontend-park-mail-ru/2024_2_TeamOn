@@ -44,6 +44,7 @@ export async function renderNotifications() {
         ),
       ]),
     ]);
+
     const container = update(pageContainer, vdom);
 
     const mainContent = container.querySelector(".main-content");
@@ -59,7 +60,6 @@ export async function renderNotifications() {
       removeItemLocalStorage(user.username);
       route(LINKS.HOME.HREF);
     });
-
     return container;
   } catch (error) {
     console.log("EROR");
