@@ -95,7 +95,9 @@ export function route(fromTo: string, currentUrl?: any): void {
   }
   routing.navigate(fromTo);
   console.log(fromTo);
+
   updatePageContent(fromTo);
+  return;
 }
 
 window.addEventListener("popstate", () => {

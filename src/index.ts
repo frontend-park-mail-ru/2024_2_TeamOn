@@ -62,7 +62,68 @@ interface State {
 const state2: State = {
   activePageLink: null,
 };
+// export function setupScrollPositionHandlers() {
+//   const cords: Array<'scrollX' | 'scrollY'> = ['scrollX', 'scrollY'];
 
+//   // Сохраняем текущую позицию прокрутки в localStorage при закрытии страницы
+//   window.addEventListener('beforeunload', () => {
+//     cords.forEach(cord => {
+//       localStorage.setItem(cord, window[cord].toString());
+//     });
+//   });
+
+//   // Восстанавливаем позицию прокрутки из localStorage при загрузке страницы
+//   document.addEventListener('DOMContentLoaded', () => {
+//     const savedScrollX = localStorage.getItem('scrollX') || '0';
+//     const savedScrollY = localStorage.getItem('scrollY') || '0';
+//     window.scroll(parseInt(savedScrollX, 10), parseInt(savedScrollY, 10));
+//   });
+
+//   // Сохраняем координаты прокрутки при изменении истории
+//   window.addEventListener('popstate', () => {
+//     cords.forEach(cord => {
+//       localStorage.setItem(cord, window[cord].toString());
+//       alert(window[cord].toString())
+//     });
+//   });
+// }
+
+// setupScrollPositionHandlers();
+export function setupScrollPositionHandlers() {
+  document.addEventListener("DOMContentLoaded", () => {
+    const saveScrollPosition = () => {
+      const scrollPosition: any = window.scrollY;
+      sessionStorage.setItem("scrollPosition", scrollPosition);
+    };
+
+    // Сохраняем позицию прокрутки при прокрутке
+    window.addEventListener("scroll", saveScrollPosition);
+
+    // Восстанавливаем позицию прокрутки при загрузке страницы
+    window.addEventListener("load", () => {
+      const savedScrollPosition = sessionStorage.getItem("scrollPosition");
+      if (savedScrollPosition) {
+        window.scrollTo(0, parseInt(savedScrollPosition, 10));
+      }
+    });
+
+    // Сохраняем позицию прокрутки перед выгрузкой страницы
+    window.addEventListener("beforeunload", saveScrollPosition);
+
+    // Обработка события popstate для навигации
+    window.addEventListener("popstate", () => {
+      const savedScrollPosition = sessionStorage.getItem("scrollPosition");
+      if (savedScrollPosition) {
+        window.scrollTo(0, parseInt(savedScrollPosition, 10));
+      }
+    });
+  });
+  return true;
+}
+const flag: any = setupScrollPositionHandlers();
+
+// Вызовите эту функцию один раз в начале вашего приложения
+// setupScrollPositionHandlers();
 /**
  * Перенаправляет на другую страницу приложения.
  * @param {*} targetLinkMenu Ссылка на страницу, на которую нужно перенаправить
@@ -90,12 +151,14 @@ export function goToPage(targetLinkMenu: any) {
 
   config.menu[targetLinkMenu.dataset.section].render();
 }
-var root: HTMLElement | null = startA(config.menu, state);
-
-export const Virtual: any = new VirtualDOM();
-render(Virtual);
-
 export const pageContainer = document.createElement("main");
-root?.appendChild(pageContainer);
+export const Virtual: any = new VirtualDOM();
+if (flag) {
+  var root: HTMLElement | null = startA(config.menu, state);
 
-route(LINKS.HOME.HREF, window.location.pathname);
+  render(Virtual);
+
+  root?.appendChild(pageContainer);
+
+  route(LINKS.HOME.HREF, window.location.pathname);
+}

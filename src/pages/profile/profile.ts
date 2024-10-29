@@ -111,11 +111,32 @@ function renderPosts() {
   });
   return posts;
 }
-function modifirePosts(containerPosts: any) {
+function modifirePosts(containers: any) {
   const posts: any = getUserPosts();
-  containerPosts = containerPosts.querySelectorAll(".post");
-  containerPosts.forEach((container: any, index: any) => {
+  const containersPost = containers.querySelectorAll(".post");
+  containersPost.forEach((container: any, index: any) => {
     customizePost(container, posts[index]);
+  });
+  const menu = containers.querySelectorAll(`.menu-icon`);
+  const dropdownMenu = containers.querySelectorAll(`.dropdown-menu`);
+  document.body.addEventListener("click", () => {
+    dropdownMenu.forEach((dropdown: any, dropdownIndex: number) => {
+      dropdown.classList.remove(ELEMENTS_CLASS.ACTIVE);
+    });
+  });
+  menu.forEach((menuElement: any, index: number) => {
+    menuElement.addEventListener("click", (event: any) => {
+      event.stopPropagation();
+      // Сначала скрываем все dropdown-меню
+      dropdownMenu.forEach((dropdown: any, dropdownIndex: number) => {
+        if (dropdownIndex !== index) {
+          dropdown.classList.remove(ELEMENTS_CLASS.ACTIVE);
+        }
+      });
+
+      // Затем переключаем активное состояние для текущего меню
+      dropdownMenu[index].classList.toggle(ELEMENTS_CLASS.ACTIVE);
+    });
   });
 }
 
@@ -214,7 +235,6 @@ export async function renderProfile() {
       removeItemLocalStorage(user.username);
       route(LINKS.HOME.HREF);
     });
-
     return container;
   } catch (error) {
     console.log("EROR");
