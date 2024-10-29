@@ -1,11 +1,7 @@
-import { route } from "../../utils/routing";
-import { sidebarLinks, LINKS, ELEMENTS_CLASS } from "../../consts";
+import { ELEMENTS_CLASS, state } from "../../consts";
 import { renderLogoutButton } from "../profile/profile";
-import { findUsername } from "../../utils/hasLogged";
-import { createElement, createText, render, update } from "../../lib/vdom/lib";
-import { Virtual } from "../../index";
-import { createElementJSX } from "../../lib/jsx/lib";
-import { VirtualDOM, VNode } from "../../lib/vdom/src/source";
+import { createElement, createText } from "../../lib/vdom/lib";
+import { VNode } from "../../lib/vdom/src/source";
 let previousActiveLink: any = null; // Variable to store the previous active link
 
 export function setActiveLink(link: any) {
@@ -38,7 +34,30 @@ function renderSidebar() {
     { class: ELEMENTS_CLASS.SIDEBAR.BLOCK },
     [
       renderBurger(),
-      createElement("div", { class: ELEMENTS_CLASS.SIDEBAR.ELEMENT }, []),
+      createElement("div", { class: ELEMENTS_CLASS.SIDEBAR.ELEMENT }, [
+        createElement("div", { class: "nav-menu" }, [
+          createElement("a", { class: "referens" }, [
+            createElement("i", { class: "icon-home" }, []),
+            createText(" Главная"),
+          ]),
+          createElement("a", { class: "referens" }, [
+            createElement("i", { class: "icon-notification" }, []),
+            createText(" Уведомления"),
+            createElement("span", { class: "new" }, [createText("НОВОЕ")]),
+          ]),
+          createElement("a", { class: "referens" }, [
+            createElement("i", { class: "icon-settings" }, []),
+            createText(" Настройки"),
+          ]),
+          // state.currentUser.author
+          createElement("a", { class: "referens" }, [
+            createElement("i", { class: "icon-profile" }, []),
+            createText(" Профиль"),
+          ]),
+          // : createText(""),
+        ]),
+        renderLogoutButton(),
+      ]),
     ],
   );
   return vdom;

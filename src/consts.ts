@@ -7,7 +7,10 @@
 export const state = {
   activePageLink: null,
   menuElements: {},
-  currentUser: null,
+  currentUser: {
+    author: null,
+    reader: null,
+  },
 };
 
 /**

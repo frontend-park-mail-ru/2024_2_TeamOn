@@ -172,11 +172,12 @@ form input[type="text"]:focus {
   align-items: center;
 }
 .create__button {
-  position: absolute;
+  position: relative;
   height: 30px;
   width: 50px;
   right: 0;
-  margin-top: 50px;
+  margin-left: 80%;
+  margin-bottom: 5%;
 }
 .home-buttons__button {
   font-size: 28px;
@@ -491,6 +492,7 @@ form input[type="text"]:focus {
   background-color: white;
   padding: 20px;
   border-radius: 10px;
+  margin-bottom: 2%;
 }
 
 .profile .right .posts .post,
@@ -779,7 +781,8 @@ form input[type="text"]:focus {
 }
 
 /* ДОНАТ */
-.modal {
+.modal__createpost,
+.modal__tip {
   display: none;
   background-color: white;
   width: 800px;
@@ -787,7 +790,7 @@ form input[type="text"]:focus {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   position: relative;
-  z-index: 20;
+  z-index: 2000;
   position: fixed;
   top: 50%;
   left: 50%;

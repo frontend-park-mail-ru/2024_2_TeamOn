@@ -1,12 +1,9 @@
 import { LINKS, state } from "../consts";
 import { goToPage, pageContainer } from "../index";
 import { authSignup, validateSignupForm } from "./signup";
-import { ELEMENTS, ELEMENTS_CLASS } from "../consts";
+import { ELEMENTS_CLASS } from "../consts";
 import { route } from "../utils/routing";
-import { createElement, createText, render, update } from "../lib/vdom/lib";
-import { Virtual } from "../index";
-import { createElementJSX } from "../lib/jsx/lib";
-import { renderSidebar } from "../pages/feed/feedView";
+import { createElement, createText, update } from "../lib/vdom/lib";
 import { VNode } from "../lib/vdom/src/source";
 
 /**

@@ -1,4 +1,4 @@
-import { state, ELEMENTS_CLASS, sidebarLinks } from "./consts";
+import { state, ELEMENTS_CLASS } from "./consts";
 import { renderLogin } from "./auth/loginView";
 import { renderSignup } from "./auth/signupView";
 import { renderProfile } from "./pages/profile/profile";
@@ -11,7 +11,7 @@ import { route } from "./utils/routing";
 import { renderNotifications } from "./pages/notifications/notifications";
 import { renderSettings } from "./pages/settings/settingsView";
 import { VirtualDOM } from "./lib/vdom/src/source";
-import { createElement, render } from "./lib/vdom/lib";
+import { render } from "./lib/vdom/lib";
 
 /**
  * Объект, содержащий конфигурацию меню приложения.
@@ -84,29 +84,18 @@ export function goToPage(targetLinkMenu: any) {
     targetLinkMenu == "http://localhost:8080/feed/settings"
   ) {
     state.activePageLink = targetLinkMenu;
-    config.menu[targetLinkMenu.dataset.section]
-      .render()
-      .then((newPageElement: any) => {
-        //pageContainer.appendChild(newPageElement);
-      });
+    config.menu[targetLinkMenu.dataset.section].render();
     return;
   }
 
-  const newPageElement = config.menu[targetLinkMenu.dataset.section].render();
-  if (newPageElement) {
-    //pageContainer.appendChild(newPageElement);
-    //pageContainer.innerHTML = newPageElement;
-  }
+  config.menu[targetLinkMenu.dataset.section].render();
 }
 var root: HTMLElement | null = startA(config.menu, state);
+
 export const Virtual: any = new VirtualDOM();
 render(Virtual);
+
 export const pageContainer = document.createElement("main");
 root?.appendChild(pageContainer);
 
-sidebarLinks.forEach((link) => {
-  if (window.location.pathname == link.href) {
-    link.active = true;
-  }
-});
 route(LINKS.HOME.HREF, window.location.pathname);

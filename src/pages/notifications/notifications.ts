@@ -1,12 +1,12 @@
-import { ELEMENTS_CLASS, LINKS, sidebarLinks, state } from "../../consts";
+import { ELEMENTS_CLASS, LINKS } from "../../consts";
 import { pageContainer } from "../../index";
 import { createElement, createText, update } from "../../lib/vdom/lib";
 import { VNode } from "../../lib/vdom/src/source";
-import { findUsername } from "../../utils/hasLogged";
 import { route } from "../../utils/routing";
-import { customizeSidebar } from "../feed/feed";
+import { removeItemLocalStorage } from "../../utils/storages";
+import { modifierSidebar } from "../feed/feed";
 import { renderSidebar } from "../feed/feedView";
-import { getCurrentUser, renderLogoutButton } from "../profile/profile";
+import { getCurrentUser } from "../profile/profile";
 
 export async function renderNotifications() {
   try {
@@ -17,9 +17,7 @@ export async function renderNotifications() {
     const doc: any = document.body;
     doc.style.height = "100%";
 
-    state.currentUser = user;
-
-    const vdom: VNode = createElement("div", {}, [
+    const vdom: VNode = createElement("div", { class: "main-content" }, [
       renderSidebar(),
       createElement("div", { class: ELEMENTS_CLASS.NOTIFICATION.BLOCK }, [
         createElement("h1", {}, [createText("Уведомления")]),
@@ -48,23 +46,20 @@ export async function renderNotifications() {
     ]);
     const container = update(pageContainer, vdom);
 
-    const sidebar: any = container.querySelector(
-      `.${ELEMENTS_CLASS.SIDEBAR.ELEMENT}`,
+    const mainContent = container.querySelector(".main-content");
+
+    modifierSidebar(mainContent);
+
+    const logoutbutton = container.querySelector(
+      `.${ELEMENTS_CLASS.LOGOUT.BLOCK}`,
     );
-    sidebar.appendChild(customizeSidebar(sidebar));
 
-    const userF: any = findUsername();
-
-    if (userF) {
-      sidebar.appendChild(renderLogoutButton(userF));
-    } else {
+    logoutbutton.addEventListener("click", (event: any) => {
+      event.preventDefault();
+      removeItemLocalStorage(user.username);
       route(LINKS.HOME.HREF);
-    }
-    sidebarLinks.forEach((link) => {
-      if (window.location.pathname == link.href) {
-        link.active = true;
-      }
     });
+
     return container;
   } catch (error) {
     console.log("EROR");

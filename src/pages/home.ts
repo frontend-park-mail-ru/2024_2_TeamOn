@@ -2,12 +2,10 @@ import { ELEMENTS_CLASS, LINKS } from "../consts";
 import { route } from "../utils/routing";
 import { hasLogged } from "../utils/hasLogged";
 import { ClearHistoryBrowser } from "../utils/clearHistory";
-import { pageContainer, Virtual } from "../index";
-import { createElement, createText, render, update } from "../lib/vdom/lib";
-import { createElementJSX } from "../lib/jsx/lib";
+import { pageContainer } from "../index";
+import { createElement, createText, update } from "../lib/vdom/lib";
 import { controllerMask, createMask } from "../utils/utilsView/circle";
-import { VirtualDOM, VNode } from "../lib/vdom/src/source";
-import { Container } from "../../node_modules/postcss/lib/postcss";
+import { VNode } from "../lib/vdom/src/source";
 
 /**
  * Обработка домашней страницы

@@ -1,180 +1,10 @@
-// import { ELEMENTS, ELEMENTS_CLASS, LINKS, LOCATIONS } from "../../consts";
-// import { fetchAjax } from "../../utils/fetchAjax";
-// import { removeItemLocalStorage } from "../../utils/storages";
-// import { route } from "../../utils/routing";
-// import { renderSidebar } from "../feed/feedView";
-// import {
-//   getEarnings,
-//   renderCreatePost,
-//   renderTip,
-//   renderUserInfo,
-//   renderUserPosts,
-//   renderUserStats,
-//   renderVibe,
-// } from "./profileView";
-// import { VNode } from "../../lib/vdom/src/source";
-// import { createElement, createText, update } from "../../lib/vdom/lib";
-// import { pageContainer } from "../../index";
-// import { customizeSidebar } from "../feed/feed";
-// import { findUsername } from "../../utils/hasLogged";
-
-// /**
-//  * Получение текущего профиля через объект типа промис
-//  * @returns Информация о пользователе
-//  */
-// export function getCurrentUser(link: string) {
-//   return new Promise((resolve, reject) => {
-//     fetchAjax(
-//       link == LINKS.PROFILE.HREF
-//         ? LOCATIONS.PROFILE.METHOD
-//         : LOCATIONS.OTHER_PAGE.METHOD,
-//       link == LINKS.PROFILE.HREF
-//         ? LOCATIONS.PROFILE.HREF
-//         : LOCATIONS.OTHER_PAGE.HREF,
-//       null,
-//       (response) => {
-//         if (response.ok) {
-//           response.json().then((data) => {
-//             resolve(data);
-//           });
-//         } else if (response.status === 401) {
-//           route(LINKS.LOGIN.HREF);
-//         } else {
-//           reject(new Error("Ответ от фетча с ошибкой"));
-//         }
-//       },
-//     );
-//   });
-// }
-
-// /**
-//  * Функция рендерит кнопку выхода из системы.
-//  * @param {*} Item Ключ, по которому необходимо стереть локальные и сессионные данные
-//  * @returns
-//  */
-// export function renderLogoutButton(Item: any) {
-//   const logout = document.createElement(ELEMENTS.DIV);
-//   logout.className = ELEMENTS_CLASS.LOGOUT.BLOCK;
-//   const logoutLink = document.createElement(ELEMENTS.DIV);
-//   logoutLink.className = ELEMENTS_CLASS.LOGOUT.COMBINE;
-//   logoutLink.textContent = "Выйти";
-//   logoutLink.addEventListener("click", (event) => {
-//     event.preventDefault();
-//     removeItemLocalStorage(Item);
-//     route(LINKS.HOME.HREF);
-//   });
-//   logout.appendChild(logoutLink);
-//   return logout;
-// }
-// function customizeInfo(container: any, payments: any){
-//  const leftbar: any = container.querySelector(
-//     `.${ELEMENTS_CLASS.PROFILE.LEFT_BAR}`,
-//   );
-
-//   if (window.location.pathname == "/feed/profile") {
-//     const earnings: any = getEarnings(payments);
-//      leftbar.appendChild(earnings);
-//     return earnings;
-//   }
-//   const vdomDonate: VNode = createElement("div", {class: "donate-container"}, [
-//     createElement("button", { class: ELEMENTS_CLASS.DONATE.COMBINE }, [
-//       createText("Пожертвовать"),
-//     ])
-//   ]);
-//   const containerDonate: any = update(document.createElement("div"), vdomDonate)
-
-//   leftbar.appendChild(containerDonate);
-//   const modal: any = renderTip();
-//   const root: any = pageContainer;
-//   document.body.appendChild(modal);
-//   const cancel: any = modal.querySelector(`.${ELEMENTS_CLASS.CANCEL.BLOCK}`);
-
-//   // Когда пользователь нажимает на кнопку, открываем модальное окно
-//   containerDonate.addEventListener("click", () => {
-//     modal.style.display = "block";
-//     root.classList.add("blur");
-//   });
-//   cancel.addEventListener("click", () => {
-//     modal.style.display = "none";
-//     root.classList.remove("blur");
-//   });
-
-// }
-// /**
-//  * Асинхронная функция рендеринга профиля пользователя.
-//  * @returns созданный элемент профиля пользователя или 0,
-//  * если пользователь не найден
-//  */
-// export async function renderProfile() {
-//   try {
-//     var user: any = null;
-//     user = await getCurrentUser(window.location.pathname);
-
-//     if (!user) {
-//       throw new Error("Пользователь не найден");
-//     }
-//     const doc: any = document.body;
-//     doc.style.height = "100%";
-
-//     const vdom: VNode = createElement("div", { class: "main-content" }, [
-//       createElement("div", { class: ELEMENTS_CLASS.PROFILE.FORM }, [
-//         createElement("div", { class: ELEMENTS_CLASS.PROFILE.HEADER }, [
-//           renderVibe(user)
-//         ]),
-
-//       createElement("div", { class: ELEMENTS_CLASS.PROFILE.BLOCK }, [
-//         renderUserInfo(user, null),
-//         createElement("div", { class: ELEMENTS_CLASS.PROFILE.RIGHT }, [
-//           renderUserStats(user, user)
-//         ])
-//       ])
-//     ]),
-//     createElement("div", { class: ELEMENTS_CLASS.SIDEBAR.BLOCK }, [
-//       createElement("div", { class: ELEMENTS_CLASS.BURGER.BLOCK }, [
-//         createElement("div", { class: ELEMENTS_CLASS.BURGER.ELEMENT }, []),
-//         createElement("div", { class: ELEMENTS_CLASS.BURGER.ELEMENT }, []),
-//         createElement("div", { class: ELEMENTS_CLASS.BURGER.ELEMENT }, []),
-//       ]),
-//       createElement("div", { class: ELEMENTS_CLASS.SIDEBAR.ELEMENT }, [])
-//     ]),
-//     ])
-//     const container = update(pageContainer, vdom);
-//     const sidebar: any = container.querySelector(`.${ELEMENTS_CLASS.SIDEBAR.ELEMENT}`);
-//     sidebar.appendChild(customizeSidebar(sidebar))
-//     const userF: any = findUsername();
-
-//     if (userF) {
-//       sidebar.appendChild(renderLogoutButton(userF));
-//     } else {
-//       route(LINKS.HOME.HREF);
-//     }
-
-//     customizeInfo(container, user.payments)
-
-//     const post: any = container.querySelector(`.${ELEMENTS_CLASS.PROFILE.RIGHT}`);
-//     post.appendChild(renderUserPosts(user))
-//     renderCreatePost(container.querySelector(`.${ELEMENTS_CLASS.PROFILE.RIGHT}`))
-//     return container;
-
-//   } catch (error) {
-//     console.log("EROR");
-//     throw error;
-//   }
-// }
-
-import {
-  ELEMENTS,
-  ELEMENTS_CLASS,
-  LINKS,
-  LOCATIONS,
-  sidebarLinks,
-} from "../../consts";
+import { ELEMENTS_CLASS, LINKS, LOCATIONS } from "../../consts";
 import { fetchAjax } from "../../utils/fetchAjax";
 import { removeItemLocalStorage } from "../../utils/storages";
 import { route } from "../../utils/routing";
 import { renderSidebar } from "../feed/feedView";
 import {
-  getEarnings,
+  renderButtonCreatePost,
   renderCreatePost,
   renderTip,
   renderUserInfo,
@@ -183,11 +13,47 @@ import {
   renderVibe,
 } from "./profileView";
 import { VNode } from "../../lib/vdom/src/source";
-import { createElement, createText, render, update } from "../../lib/vdom/lib";
+import { createElement, createText, update } from "../../lib/vdom/lib";
 import { pageContainer } from "../../index";
-import { customizeSidebar } from "../feed/feed";
 import { findUsername } from "../../utils/hasLogged";
+import { modifierSidebar } from "../feed/feed";
 
+function getUserPosts() {
+  return [
+    {
+      title: "Как прошла предзащита",
+      content:
+        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
+      date: "19.10.2024",
+      likes: 34,
+      comments: 34,
+    },
+    {
+      title: "Как прошла предзащита",
+      content:
+        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
+      date: "19.10.2024",
+      likes: 34,
+      comments: 34,
+    },
+    {
+      title: "Как прошла предзащита",
+      content:
+        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
+      date: "19.10.2024",
+      likes: 34,
+      comments: 34,
+    },
+    {
+      title: "Как прошла предзащита",
+      content:
+        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
+      date: "19.10.2024",
+      likes: 34,
+      comments: 34,
+    },
+  ];
+}
 /**
  * Получение текущего профиля через объект типа промис
  * @returns Информация о пользователе
@@ -222,67 +88,45 @@ export function getCurrentUser(link: string) {
  * @param {*} Item Ключ, по которому необходимо стереть локальные и сессионные данные
  * @returns
  */
-export function renderLogoutButton(Item: any) {
-  const logoutLink = document.createElement("div");
-  logoutLink.className = ELEMENTS_CLASS.LOGOUT.COMBINE;
-  logoutLink.textContent = "Выйти";
-  logoutLink.addEventListener("click", (event: any) => {
-    event.preventDefault();
-    removeItemLocalStorage(Item);
-    route(LINKS.HOME.HREF);
-  });
-  sidebarLinks.forEach((link: any) => {
-    link.active = false;
-  });
-  const logout: any = document.createElement("div");
-  logout.className = ELEMENTS_CLASS.LOGOUT.BLOCK;
-  logout.appendChild(logoutLink);
-  return logout;
-}
-
-function customizeInfo(container: any, payments: any) {
-  const leftbar: any = container.querySelector(
-    `.${ELEMENTS_CLASS.PROFILE.LEFT_BAR}`,
-  );
-
-  if (window.location.pathname === "/feed/profile") {
-    const earnings: any = getEarnings(payments);
-    leftbar.appendChild(earnings);
-    return earnings;
-  }
-
-  const vdomDonate: VNode = createElement(
+export function renderLogoutButton() {
+  const logout: VNode = createElement(
     "div",
-    { class: "donate-container" },
+    { class: ELEMENTS_CLASS.LOGOUT.BLOCK },
     [
-      createElement("button", { class: ELEMENTS_CLASS.DONATE.COMBINE }, [
-        createText("Пожертвовать"),
+      createElement("div", { class: ELEMENTS_CLASS.LOGOUT.COMBINE }, [
+        createText("Выйти"),
       ]),
     ],
   );
+  return logout;
+}
 
-  const containerDonate: any = update(
-    document.createElement("div"),
-    vdomDonate,
-  );
-  leftbar.appendChild(containerDonate);
+function renderPosts() {
+  const userPosts = getUserPosts();
 
-  const modal: any = renderTip();
-  const root: any = pageContainer;
-  document.body.appendChild(modal);
-  const cancel: any = modal.querySelector(`.${ELEMENTS_CLASS.CANCEL.BLOCK}`);
-
-  // Когда пользователь нажимает на кнопку, открываем модальное окно
-  containerDonate.addEventListener("click", () => {
-    modal.style.display = "block";
-    root.classList.add("blur");
+  var posts: any = [];
+  userPosts.forEach((post: any) => {
+    const container: VNode = renderUserPosts(post);
+    posts.push(container);
   });
-  cancel.addEventListener("click", () => {
-    modal.style.display = "none";
-    root.classList.remove("blur");
+  return posts;
+}
+function modifirePosts(containerPosts: any) {
+  const posts: any = getUserPosts();
+  containerPosts = containerPosts.querySelectorAll(".post");
+  containerPosts.forEach((container: any, index: any) => {
+    customizePost(container, posts[index]);
   });
 }
 
+function customizePost(container: any, post: any) {
+  const title = container.querySelector(".title");
+  title.innerHTML = post.title;
+  const content = container.querySelector(".content");
+  content.innerHTML = post.content;
+  const date = container.querySelector(".date");
+  date.innerHTML = post.date;
+}
 /**
  * Асинхронная функция рендеринга профиля пользователя.
  * @returns созданный элемент профиля пользователя или 0,
@@ -308,47 +152,67 @@ export async function renderProfile() {
           renderUserInfo(user, null),
           createElement("div", { class: ELEMENTS_CLASS.PROFILE.RIGHT }, [
             renderUserStats(user, user),
+            renderButtonCreatePost(),
+            ...renderPosts(),
           ]),
         ]),
       ]),
-      createElement("div", { class: ELEMENTS_CLASS.SIDEBAR.BLOCK }, [
-        createElement("div", { class: ELEMENTS_CLASS.BURGER.BLOCK }, [
-          createElement("div", { class: ELEMENTS_CLASS.BURGER.ELEMENT }, []),
-          createElement("div", { class: ELEMENTS_CLASS.BURGER.ELEMENT }, []),
-          createElement("div", { class: ELEMENTS_CLASS.BURGER.ELEMENT }, []),
-        ]),
-        createElement("div", { class: ELEMENTS_CLASS.SIDEBAR.ELEMENT }, []),
-      ]),
+      renderSidebar(),
+      renderCreatePost(),
+      renderTip(),
     ]);
 
     const container = update(pageContainer, vdom);
-    const sidebar: any = container.querySelector(
-      `.${ELEMENTS_CLASS.SIDEBAR.ELEMENT}`,
+
+    const mainContent = container.querySelector(".main-content");
+    modifierSidebar(mainContent);
+
+    const containerPosts: any = container.querySelector(
+      `.${ELEMENTS_CLASS.PROFILE.FORM}`,
     );
-    sidebar.appendChild(customizeSidebar(sidebar));
+    const buttonCancel: any = container.querySelector(
+      `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
+    );
 
-    const userF: any = findUsername();
+    if (window.location.pathname === "/feed/profile") {
+      const containerCreatePost = container.querySelector(".modal__createpost");
+      const buttonCreatePost: any = container.querySelector(".create-posts");
 
-    if (userF) {
-      sidebar.appendChild(renderLogoutButton(userF));
-    } else {
-      route(LINKS.HOME.HREF);
+      buttonCreatePost?.addEventListener("click", () => {
+        containerCreatePost.style.display = "block";
+        containerPosts.classList.add("blur");
+      });
+      buttonCancel?.addEventListener("click", () => {
+        containerCreatePost.style.display = "none";
+        containerPosts.classList.remove("blur");
+      });
+    }
+    if (window.location.pathname !== "/feed/profile") {
+      const containerTip = container.querySelector(".modal__tip");
+      const buttonTip = container.querySelector(
+        `.${ELEMENTS_CLASS.DONATE.BLOCK}`,
+      );
+
+      buttonTip?.addEventListener("click", () => {
+        containerTip.style.display = "block";
+        containerPosts.classList.add("blur");
+      });
+      buttonCancel?.addEventListener("click", () => {
+        containerTip.style.display = "none";
+        containerPosts.classList.remove("blur");
+      });
     }
 
-    customizeInfo(container, user.payments);
+    modifirePosts(containerPosts);
 
-    const post: any = container.querySelector(
-      `.${ELEMENTS_CLASS.PROFILE.RIGHT}`,
-    );
-    post.appendChild(renderUserPosts(user));
-    renderCreatePost(
-      container.querySelector(`.${ELEMENTS_CLASS.PROFILE.RIGHT}`),
+    const logoutbutton = container.querySelector(
+      `.${ELEMENTS_CLASS.LOGOUT.BLOCK}`,
     );
 
-    sidebarLinks.forEach((link) => {
-      if (window.location.pathname == link.href) {
-        link.active = true;
-      }
+    logoutbutton.addEventListener("click", (event: any) => {
+      event.preventDefault();
+      removeItemLocalStorage(user.username);
+      route(LINKS.HOME.HREF);
     });
 
     return container;

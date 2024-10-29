@@ -1,5 +1,5 @@
 import { ELEMENTS_CLASS, LINKS, sidebarLinks, state } from "../../consts";
-import { getCurrentUser, renderLogoutButton } from "../profile/profile";
+import { getCurrentUser } from "../profile/profile";
 import {
   renderSearchbar,
   renderSidebar,
@@ -10,7 +10,7 @@ import { VNode } from "../../lib/vdom/src/source";
 import { createElement, createText, update } from "../../lib/vdom/lib";
 import { pageContainer } from "../../index";
 import { route } from "../../utils/routing";
-import { findUsername } from "../../utils/hasLogged";
+import { removeItemLocalStorage } from "../../utils/storages";
 
 function getPopularPosts() {
   return [
@@ -144,39 +144,30 @@ function renderRecentlyPosts() {
  * @param sidebar
  * @returns
  */
-export function customizeSidebar(sidebar: any) {
-  const burger: any = document.querySelector(`.${ELEMENTS_CLASS.BURGER.BLOCK}`);
-  const navMenu = document.createElement("div");
-  navMenu.className = "nav-menu";
-
+export function modifierSidebar(mainContainer: any) {
+  const burger: any = mainContainer.querySelector(
+    `.${ELEMENTS_CLASS.BURGER.BLOCK}`,
+  );
+  const sidebar = mainContainer.querySelector(".sidebar");
   burger.addEventListener("click", () => {
     sidebar.classList.toggle(ELEMENTS_CLASS.ACTIVE);
   });
-  sidebarLinks.forEach((link: any) => {
-    // const a: VNode = createElement("a")
-    const a = document.createElement("a");
-    a.addEventListener("click", (event) => {
-      event.preventDefault(); // Предотвращаем стандартное поведение ссылки
+  const sidebarReferenses = sidebar.querySelectorAll(".referens");
+  sidebarLinks.forEach((link: any, index: any) => {
+    sidebarReferenses[index]?.addEventListener("click", (event: any) => {
+      event.preventDefault();
       route(link.href);
-      setActiveLink(link); // Передаем элемент ссылки в функцию
+      setActiveLink(link);
     });
+    if (window.location.pathname === link.href) {
+      setActiveLink(link);
+    }
     if (link.active) {
-      a.className = ELEMENTS_CLASS.ACTIVE;
+      sidebarReferenses[index].className = ELEMENTS_CLASS.ACTIVE;
     }
-    const i = document.createElement("i");
-    i.className = link.icon;
-    a.appendChild(i);
-    a.appendChild(document.createTextNode(link.text));
-    if (link.new) {
-      const span = document.createElement("span");
-      span.style.color = "red";
-      span.appendChild(document.createTextNode("НОВОЕ"));
-      a.appendChild(span);
-    }
-    navMenu.appendChild(a);
+    const span: any = mainContainer.querySelector(".new");
+    span.style.color = "red";
   });
-
-  return navMenu;
 }
 /**
  * Кастомизирует каждый пост, который к нему пришел
@@ -235,10 +226,21 @@ function customizePost(container: any, post: any = null) {
 }
 export async function renderFeed() {
   try {
+    sidebarLinks.forEach((link) => {
+      if (window.location.pathname == link.href) {
+        link.active = true;
+      } else {
+        link.active = false;
+      }
+    });
     const user: any | null = await getCurrentUser(window.location.pathname);
     if (!user) {
       throw new Error("Пользователь не найден");
     }
+    user.role === "Reader"
+      ? (state.currentUser.reader = user)
+      : (state.currentUser.author = user);
+
     const doc: any = document.body;
     doc.style.height = "100%";
     const vdom: VNode = createElement("div", { class: "main-content" }, [
@@ -261,9 +263,7 @@ export async function renderFeed() {
     ]);
     const container = update(pageContainer, vdom);
     state.currentUser = user;
-    const sidebar: any = container.querySelector(
-      `.${ELEMENTS_CLASS.SIDEBAR.ELEMENT}`,
-    );
+
     const searchBar: any = container.querySelector(
       `.${ELEMENTS_CLASS.SEARCH.BLOCK}`,
     );
@@ -271,19 +271,12 @@ export async function renderFeed() {
     window.addEventListener("scroll", () => {
       if (window.scrollY > 0) {
         searchBar.style.position = "fixed";
-        searchBar.style.top = "1.9%";
       } else {
         searchBar.style.position = "";
       }
     });
-    sidebar.appendChild(customizeSidebar(sidebar));
-    const userF: any = findUsername();
-
-    if (userF) {
-      sidebar.appendChild(renderLogoutButton(userF));
-    } else {
-      route(LINKS.HOME.HREF);
-    }
+    const mainContent = container.querySelector(".main-content");
+    modifierSidebar(mainContent);
 
     const containerPopularPosts = container.querySelector(
       ".main-container-popular",
@@ -292,18 +285,22 @@ export async function renderFeed() {
       ".main-container-recently",
     );
 
-    // renderPosts(containerPopularPosts, containerRecentlyPosts);
     modifirePosts(containerPopularPosts, containerRecentlyPosts);
+
     const side: any = container.querySelector(
       `.${ELEMENTS_CLASS.SEARCH.ELEMENT}`,
     );
     side.type = "text";
     side.placeholder = "Найти креаторов";
 
-    sidebarLinks.forEach((link) => {
-      if (window.location.pathname == link.href) {
-        link.active = true;
-      }
+    const logoutbutton = container.querySelector(
+      `.${ELEMENTS_CLASS.LOGOUT.BLOCK}`,
+    );
+
+    logoutbutton.addEventListener("click", (event: any) => {
+      event.preventDefault();
+      removeItemLocalStorage(user.username);
+      route(LINKS.HOME.HREF);
     });
 
     return container;
