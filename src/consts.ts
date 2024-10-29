@@ -258,39 +258,8 @@ export const ELEMENTS_CLASS = {
   NOTFOUND: "notfound",
   NOTFOUND_404: "notfound-404",
   ARROW: "arrow",
-<<<<<<< HEAD
-  HOME_CONTAINER: "home-container",
-  HOME_OVERLAY: "home-overlay",
-  HOME_HEADER: "home-header",
-  HOME_BUTTONS: "home-buttons home-buttons--hover",
-  HOME_BUTTON: "home-button home-button--element home-button--modifier",
-  LEFT: "left",
-  LEFT_BAR: "left-bar",
-  IMAGE_PROFILE: "image-profile",
-  INFO: "info",
-  EARNINGS: "earnings",
-  STATS: "stats",
-  POST: "post",
-  DATE: "date",
-  LOGOUT: "logout-button logout-button--element logout-button--modifier",
-  DONATE: "donate-button donate-button--element donate-button--modifier",
-  SEND_TIP: "send-tip-button send-tip-button--element send-tip-button--modifier",
-  CANCEL: "cancel-button cancel-button--element cancel-button--modifier",
-  CREATE: "create-button create-button--element create-button--modifier",
-  FORM_PROFILE: "form-profile",
-  HEADER_PROFILE: "header-profile",
-  PROFILE: "profile",
-  RIGHT: "right",
-  PASSWORD_EYE: "password-eye",
 };
-
-
-export const feedLinks = [
-=======
-};
-
 export const sidebarLinks = [
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   {
     text: " Главная",
     icon: "icon-home",

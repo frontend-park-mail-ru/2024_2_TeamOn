@@ -88,21 +88,7 @@ export function getCurrentUser(link: string) {
  * @param {*} Item Ключ, по которому необходимо стереть локальные и сессионные данные
  * @returns
  */
-<<<<<<< HEAD
-export function renderLogoutButton(Item: any) {
-  const logout = document.createElement(ELEMENTS.DIV);
-  logout.classList.add("logout-button");
-  const logoutLink = document.createElement(ELEMENTS.DIV);
-  //logoutLink.classList.add(...ELEMENTS_CLASS.LOGOUT.BEM.split(' '));
-  logoutLink.textContent = "Выйти";
-  logoutLink.addEventListener("click", (event) => {
-    event.preventDefault();
-    removeItemLocalStorage(Item);
 
-    route(RouterLinks.HOME);
-  });
-  logout.appendChild(logoutLink);
-=======
 export function renderLogoutButton() {
   const logout: VNode = createElement(
     "div",
@@ -113,7 +99,6 @@ export function renderLogoutButton() {
       ]),
     ],
   );
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   return logout;
 }
 

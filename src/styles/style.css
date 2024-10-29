@@ -34,7 +34,7 @@ form {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-form button[type="submit"] {
+form button[type=submit] {
   background-color: #4caf50;
   color: #fff;
   padding: 15px 25px;
@@ -44,21 +44,21 @@ form button[type="submit"] {
   font-size: 16px;
 }
 
-form button[type="submit"]:hover {
+form button[type=submit]:hover {
   background-color: #3e8e41;
 }
 
-form input[type="email"],
-form input[type="password"],
-form input[type="text"] {
+form input[type=email],
+form input[type=password],
+form input[type=text] {
   padding: 10px;
   margin: 10px;
   border: 1px solid #ccc;
 }
 
-form input[type="email"]:focus,
-form input[type="password"],
-form input[type="text"]:focus {
+form input[type=email]:focus,
+form input[type=password],
+form input[type=text]:focus {
   border-color: #aaa;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -85,7 +85,7 @@ form input[type="text"]:focus {
   margin-bottom: 10px;
 }
 
-.error-input ~ input[type="password"] {
+.error-input ~ input[type=password] {
   border-color: red;
   box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
 }
@@ -140,8 +140,8 @@ form input[type="text"]:focus {
   cursor: default;
   pointer-events: none;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   opacity: 0.4;
 }
 
@@ -175,9 +175,7 @@ form input[type="text"]:focus {
   background: white;
   color: gray;
   cursor: pointer;
-  transition:
-    background 0.3s,
-    color 0.3s;
+  transition: background 0.3s, color 0.3s;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -195,6 +193,7 @@ form input[type="text"]:focus {
 .home-buttons__button {
   font-size: 28px;
 }
+
 .logout {
   margin-top: 10%;
   width: 250px;
@@ -272,8 +271,8 @@ form input[type="text"]:focus {
   color: #333;
 }
 
-.login__container input[type="text"],
-.login__container input[type="password"] {
+.login__container input[type=text],
+.login__container input[type=password] {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -282,7 +281,7 @@ form input[type="text"]:focus {
   box-sizing: border-box;
 }
 
-.login__container input[type="submit"] {
+.login__container input[type=submit] {
   width: 100%;
   padding: 10px;
   margin: 20px 0 0;
@@ -294,7 +293,7 @@ form input[type="text"]:focus {
   cursor: pointer;
 }
 
-.login__container input[type="submit"]:hover {
+.login__container input[type=submit]:hover {
   background-color: #555;
 }
 
@@ -325,6 +324,7 @@ form input[type="text"]:focus {
   left: 0; /* Закрепление левого края */
   margin-bottom: 10%;
 }
+
 .password-strength::before {
   content: "";
   position: absolute;
@@ -332,11 +332,7 @@ form input[type="text"]:focus {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: repeating-linear-gradient(
-    to right,
-    #fff 2px,
-    transparent 2px
-  );
+  background-image: repeating-linear-gradient(to right, #fff 2px, transparent 2px);
 }
 
 .signup {
@@ -371,8 +367,8 @@ form input[type="text"]:focus {
   font-size: 24px;
 }
 
-.signup__container input[type="text"],
-.signup__container input[type="password"] {
+.signup__container input[type=text],
+.signup__container input[type=password] {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -381,7 +377,7 @@ form input[type="text"]:focus {
   box-sizing: border-box;
 }
 
-.signup__container input[type="submit"] {
+.signup__container input[type=submit] {
   width: 100%;
   padding: 10px;
   margin-top: 20px;
@@ -393,7 +389,7 @@ form input[type="text"]:focus {
   cursor: pointer;
 }
 
-.signup__container input[type="submit"]:hover {
+.signup__container input[type=submit]:hover {
   background-color: #333;
 }
 
@@ -879,13 +875,11 @@ form input[type="text"]:focus {
 .comments-container:hover .comments,
 .author-name:hover {
   cursor: pointer;
-  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%)
-    hue-rotate(0deg) brightness(100%) contrast(100%);
+  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(100%) contrast(100%);
   transition: filter 0.3s ease; /* Плавный переход */
 }
 
 /* ДОНАТ */
-
 .modal__createpost,
 .modal__tip {
   display: none;
@@ -1009,7 +1003,6 @@ span {
 }
 
 /*SETTING*/
-
 .main-content {
   flex-grow: 1;
   padding: 40px;
@@ -1064,9 +1057,7 @@ span {
   width: 0;
   height: 2px;
   background-color: #000;
-  transition:
-    width 0.3s ease,
-    left 0.3s ease;
+  transition: width 0.3s ease, left 0.3s ease;
 }
 
 .tabs a.active::after {
@@ -1134,9 +1125,9 @@ select {
   flex-grow: 1;
 }
 
-.form-container input[type="text"],
-.form-container input[type="email"],
-.form-container input[type="password"] {
+.form-container input[type=text],
+.form-container input[type=email],
+.form-container input[type=password] {
   width: 20%;
   padding: 10px;
   margin-bottom: 20px;
@@ -1150,10 +1141,9 @@ select {
   margin-bottom: 20px;
   border: 1px solid #000;
   border-radius: 20px;
-  appearance: none;
   -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+     -moz-appearance: none;
+          appearance: none;
 }
 
 .form-container .profile-pic {
@@ -1219,7 +1209,6 @@ select {
     margin-left: 0;
     margin-right: 0;
   }
-
   .header-profile {
     display: flex;
     font-size: 10px;

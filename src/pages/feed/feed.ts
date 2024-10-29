@@ -256,7 +256,7 @@ function customizePost(container: any, post: any = null, mediaContents: any[]) {
   const mediaConten: any = container.querySelector(
     `.${ELEMENTS_CLASS.POST.MEDIA}`,
   );
-  mediaConten.src = mediaContents[1].mediaContent[1].file;
+  // mediaConten.src = mediaContents[1].mediaContent[1].file;
   // mediaContent.alt = "Описание"
 
   const date: any = container.querySelector(`.${ELEMENTS_CLASS.POST.DATE}`);

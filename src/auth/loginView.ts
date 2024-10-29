@@ -45,12 +45,7 @@ export function renderLogin() {
   });
   closeBtn.innerHTML = "x";
 
-<<<<<<< HEAD
-  const passwordEye: any = backgroundLayer.querySelector(".password-eye");
-  const inputPassword: any = backgroundLayer.querySelector(".input-password");
-=======
   const passwordEye: any = container.querySelector(".password-eye");
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   passwordEye.innerHTML = "&#128064;";
   passwordEye.addEventListener("click", () => {
     if (inputPassword.type === "password") {
@@ -67,10 +62,7 @@ export function renderLogin() {
   inputLogin.placeholder = "Введите email или имя пользователя";
   inputLogin.required = true;
 
-<<<<<<< HEAD
-=======
   const inputPassword: any = container.querySelector(".input-password");
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   inputPassword.type = "password";
   inputPassword.placeholder = "Введите пароль";
   inputPassword.required = true;
@@ -104,10 +96,6 @@ export function renderLogin() {
     validateLoginForm(form, inputLogin, inputPassword);
   });
 
-<<<<<<< HEAD
-  return backgroundLayer;
-}
-=======
   removeItemLocalStorage(findUsername());
+  return container;
 }
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773

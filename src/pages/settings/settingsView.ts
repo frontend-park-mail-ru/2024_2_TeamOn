@@ -1,21 +1,10 @@
 import { ELEMENTS_CLASS, state } from "../../consts";
 import { renderSidebar } from "../feed/feedView";
 import { getCurrentUser } from "../profile/profile";
-import {
-  validateSettingsPassword,
-<<<<<<< HEAD
-  validateMainInfo
-} from "./settings";
-export  async function renderSettings() {
-  try {
-    const user: any | null = await getCurrentUser();
-=======
-  validateSettingsPersonalize,
-} from "./settings";
+import { validateSettingsPassword, validateMainInfo } from "./settings";
 export async function renderSettings() {
   try {
     const user: any | null = await getCurrentUser(window.location.pathname);
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
     if (!user) {
       throw new Error("Пользователь не найден");
     }
@@ -76,64 +65,38 @@ function createContentContainer(): HTMLDivElement {
 }
 
 function setupTabs(tabs: HTMLDivElement, contentContainer: HTMLDivElement) {
-<<<<<<< HEAD
-  ["Основная информация", "Безопасность", "Получение дохода"].forEach((tabName, index) => {
-    const tabLink = document.createElement("a");
-    tabLink.href = "#";
-    tabLink.textContent = tabName;
-    tabLink.className = index === 0 ? "active" : ""; 
+  ["Основная информация", "Безопасность", "Получение дохода"].forEach(
+    (tabName, index) => {
+      const tabLink = document.createElement("a");
+      tabLink.href = "#";
+      tabLink.textContent = tabName;
+      tabLink.className = index === 0 ? "active" : "";
 
-    // Обработчик события клика
-    tabLink.addEventListener("click", (event) => {
-      event.preventDefault(); 
-      tabs.querySelectorAll("a").forEach((link) => link.classList.remove("active"));
-      tabLink.classList.add("active"); 
-      updateContent(contentContainer, index); 
-    });
-    tabs.appendChild(tabLink); 
-  });
-}
-
-
-function updateContent(contentContainer: HTMLDivElement, index: number) {
-  contentContainer.innerHTML = "";
-  switch(index) {
-  case 0:
-    contentContainer.appendChild(createProfileForm());
-    break;
-  case 1: 
-    contentContainer.appendChild(createSecurityForm());
-    break
-  default:
-    console.error("Страница не найдена", index);
-=======
-  const tabNames = ["Основная информация", "Безопасность", "Получение дохода"];
-  tabNames.forEach((tabName, index) => {
-    const tabLink = document.createElement("a");
-    tabLink.href = "#";
-    tabLink.textContent = tabName;
-    tabLink.className = index === 0 ? "active" : "";
-
-    tabLink.addEventListener("click", (event) => {
-      event.preventDefault();
-      tabs
-        .querySelectorAll("a")
-        .forEach((link) => link.classList.remove("active"));
-      tabLink.classList.add("active");
-      updateContent(contentContainer, index);
-    });
-
-    tabs.appendChild(tabLink);
-  });
+      // Обработчик события клика
+      tabLink.addEventListener("click", (event) => {
+        event.preventDefault();
+        tabs
+          .querySelectorAll("a")
+          .forEach((link) => link.classList.remove("active"));
+        tabLink.classList.add("active");
+        updateContent(contentContainer, index);
+      });
+      tabs.appendChild(tabLink);
+    },
+  );
 }
 
 function updateContent(contentContainer: HTMLDivElement, index: number) {
   contentContainer.innerHTML = "";
-  if (index === 0) {
-    contentContainer.appendChild(createProfileForm());
-  } else if (index === 1) {
-    contentContainer.appendChild(createSecurityForm());
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
+  switch (index) {
+    case 0:
+      contentContainer.appendChild(createProfileForm());
+      break;
+    case 1:
+      contentContainer.appendChild(createSecurityForm());
+      break;
+    default:
+      console.error("Страница не найдена", index);
   }
 }
 
@@ -143,10 +106,6 @@ function createProfileForm(): HTMLDivElement {
 
   const formTitle = document.createElement("h2");
   formTitle.textContent = "Персонализируйте свою страницу";
-<<<<<<< HEAD
-=======
-
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   formContainer.appendChild(formTitle);
 
   const usernameRow = document.createElement("div");
@@ -174,55 +133,31 @@ function createProfileForm(): HTMLDivElement {
   const profilePicRow = createPhoto();
 
   const saveButton = document.createElement("button");
-<<<<<<< HEAD
-  saveButton.className = ELEMENTS_CLASS.SEND_TIP;
+  saveButton.className = ELEMENTS_CLASS.SEND_TIP.COMBINE;
   saveButton.textContent = "Сохранить";
 
   formContainer.addEventListener("input", (event) => {
     event.preventDefault();
 
-    const { usernameError: usernameErrorMsg, emailError: emailErrorMsg } = validationMainInfoSave(
-      usernameInput.value,
-      emailInput.value
-    );
+    const { usernameError: usernameErrorMsg, emailError: emailErrorMsg } =
+      validationMainInfoSave(usernameInput.value, emailInput.value);
     usernameError.textContent = usernameErrorMsg || "";
     emailError.textContent = emailErrorMsg || "";
   });
 
-=======
-  saveButton.className = ELEMENTS_CLASS.SEND_TIP.COMBINE;
-  saveButton.textContent = "Сохранить";
-
-  //   saveButton.addEventListener('click', (event) => {
-  //       event.preventDefault();
-  //       validationMainInfoSave(usernameInput, emailInput, usernameError, emailError);
-  //   });
-  formContainer.addEventListener("input", (event) => {
-    event.preventDefault();
-    validationMainInfoSave(
-      usernameInput,
-      emailInput,
-      usernameError,
-      emailError,
-    );
-  });
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   formContainer.append(roleRow, profilePicRow, saveButton);
 
   return formContainer;
 }
 
-<<<<<<< HEAD
 export function validationMainInfoSave(
   username: string,
-  email: string
+  email: string,
 ): { usernameError: string; emailError: string } {
   const { usernameError, emailError } = validateMainInfo(username, email);
   return { usernameError, emailError };
 }
 
-=======
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
 function createSecurityForm(): HTMLDivElement {
   const formContainer = document.createElement("div");
   formContainer.className = "form-container";
@@ -261,19 +196,9 @@ function createSecurityForm(): HTMLDivElement {
   formContainer.append(confirmPasswordRow, confirmPasswordError);
 
   const saveButton = document.createElement("button");
-<<<<<<< HEAD
-  saveButton.className = ELEMENTS_CLASS.SEND_TIP;
-  saveButton.textContent = "Сохранить";
-
-=======
   saveButton.className = ELEMENTS_CLASS.SEND_TIP.COMBINE;
   saveButton.textContent = "Сохранить";
 
-  //   saveButton.addEventListener('click', (event) => {
-  //       event.preventDefault();
-  //       validationSecuritySave(oldPasswordInput, newPasswordInput, confirmPasswordInput, oldPasswordError, newPasswordError, confirmPasswordError);
-  //   });
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   formContainer.addEventListener("input", (event) => {
     event.preventDefault();
     validationSecuritySave(
@@ -299,7 +224,6 @@ function createSecurityForm(): HTMLDivElement {
   return formContainer;
 }
 
-<<<<<<< HEAD
 function validationSecuritySave(
   oldPasswordInput: HTMLInputElement,
   newPasswordInput: HTMLInputElement,
@@ -322,8 +246,6 @@ function validationSecuritySave(
   );
 }
 
-=======
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
 function createLabel(text: string, htmlFor: string): HTMLLabelElement {
   const label = document.createElement("label");
   label.setAttribute("for", htmlFor);
@@ -408,54 +330,3 @@ function createErrorMessageStrength(): HTMLDivElement {
   errorMessage.className = "password-strength";
   return errorMessage;
 }
-<<<<<<< HEAD
-=======
-
-function validationMainInfoSave(
-  usernameInput: HTMLInputElement,
-  emailInput: HTMLInputElement,
-  usernameError: HTMLDivElement,
-  emailError: HTMLDivElement,
-): void {
-  usernameError.textContent = "";
-  emailError.textContent = "";
-
-  const username = usernameInput.value;
-  const email = emailInput.value;
-  validateSettingsPersonalize(email, emailError, username, usernameError);
-  //   const errors = validateSettings(username, email, '', '', '');
-  //   if (errors.length > 0) {
-  //       errors.forEach(error => {
-  //           if (error.includes('Имя пользователя')) {
-  //               usernameError.textContent = error;
-  //           } else if (error.includes('адрес электронной почты')) {
-  //               emailError.textContent = error;
-  //           }
-  //       });
-  //   } else {
-  //       alert('Настройки успешно сохранены!');
-  //   }
-}
-
-function validationSecuritySave(
-  oldPasswordInput: HTMLInputElement,
-  newPasswordInput: HTMLInputElement,
-  confirmPasswordInput: HTMLInputElement,
-  oldPasswordError: HTMLDivElement,
-  newPasswordError: HTMLDivElement,
-  confirmPasswordError: HTMLDivElement,
-): void {
-  oldPasswordError.textContent = "";
-  newPasswordError.textContent = "";
-  confirmPasswordError.textContent = "";
-
-  let passwordStrength = 0; // Переменная для хранения силы пароля
-  validateSettingsPassword(
-    newPasswordInput,
-    confirmPasswordInput,
-    passwordStrength,
-    newPasswordError,
-    confirmPasswordError,
-  );
-}
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
