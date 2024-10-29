@@ -123,8 +123,6 @@ export function setupScrollPositionHandlers() {
 }
 const flag: any = setupScrollPositionHandlers();
 
-// Вызовите эту функцию один раз в начале вашего приложения
-// setupScrollPositionHandlers();
 /**
  * Перенаправляет на другую страницу приложения.
  * @param {*} targetLinkMenu Ссылка на страницу, на которую нужно перенаправить
@@ -141,9 +139,9 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
   const renderPromise = Promise.resolve(routeConfig.render());
   renderPromise
     .then((newPageElement) => {
-      if (newPageElement) {
-        pageContainer.appendChild(newPageElement);
-      }
+      // if (newPageElement) {
+      //   pageContainer.appendChild(newPageElement);
+      // }
     })
     .catch((error) => {
       console.error("ERROR:", error);

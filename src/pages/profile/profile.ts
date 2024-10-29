@@ -6,6 +6,8 @@ import { renderSidebar } from "../feed/feedView";
 import {
   renderButtonCreatePost,
   renderCreatePost,
+  renderDeletePost,
+  renderEditPost,
   renderTip,
   renderUserInfo,
   renderUserPosts,
@@ -37,7 +39,7 @@ function getUserPosts() {
       comments: 34,
     },
     {
-      title: "Как прошла предзащита",
+      title: "Как прошла предзащита/DADA",
       content:
         "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
       date: "19.10.2024",
@@ -128,15 +130,67 @@ function modifirePosts(containers: any) {
   menu.forEach((menuElement: any, index: number) => {
     menuElement.addEventListener("click", (event: any) => {
       event.stopPropagation();
-      // Сначала скрываем все dropdown-меню
       dropdownMenu.forEach((dropdown: any, dropdownIndex: number) => {
         if (dropdownIndex !== index) {
           dropdown.classList.remove(ELEMENTS_CLASS.ACTIVE);
         }
       });
 
-      // Затем переключаем активное состояние для текущего меню
       dropdownMenu[index].classList.toggle(ELEMENTS_CLASS.ACTIVE);
+      const buttonCancel: any = document.querySelectorAll(
+        `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
+      );
+      const buttonDeleteConfirm: any = document.querySelector(
+        `.${ELEMENTS_CLASS.DELETE.BLOCK}`,
+      );
+      const buttonEditConfirm: any = document.querySelector(
+        `.${ELEMENTS_CLASS.SAVE.BLOCK}`,
+      );
+      const buttonsEditpost = containers.querySelectorAll(".button-edit-post");
+      const buttonsDeletepost = containers.querySelectorAll(
+        ".button-delete-post",
+      );
+
+      const modalsEdit: any = document.querySelector(".modal__editpost");
+      const modalsDelete: any = document.querySelector(".modal__deletepost");
+
+      const title: any = modalsEdit.querySelector(`.input-group`);
+      const content: any = modalsEdit.querySelector(`.textarea-group`);
+
+      const titleDelete: any = modalsDelete.querySelector(`.input-group`);
+      const contentDelete: any = modalsDelete.querySelector(`.textarea-group`);
+
+      buttonsEditpost[index].addEventListener("click", () => {
+        modalsEdit.style.display = "block";
+        title.textContent = posts[index].title;
+        content.textContent = posts[index].content;
+        containers.classList.add("blur");
+      });
+
+      console.log(buttonCancel);
+      buttonCancel[1]?.addEventListener("click", () => {
+        modalsEdit.style.display = "none";
+        containers.classList.remove("blur");
+      });
+      buttonEditConfirm.addEventListener("click", () => {
+        modalsEdit.style.display = "none";
+        containers.classList.remove("blur");
+      });
+
+      buttonsDeletepost[index].addEventListener("click", () => {
+        modalsDelete.style.display = "block";
+        titleDelete.textContent = posts[index].title;
+        contentDelete.textContent = posts[index].content;
+        containers.classList.add("blur");
+      });
+      buttonCancel[2]?.addEventListener("click", () => {
+        modalsDelete.style.display = "none";
+        containers.classList.remove("blur");
+      });
+      buttonDeleteConfirm.addEventListener("click", () => {
+        modalsDelete.style.display = "none";
+        containers.classList.remove("blur");
+      });
     });
   });
 }
@@ -157,7 +211,7 @@ function customizePost(container: any, post: any) {
 export async function renderProfile() {
   try {
     const user: any = await getCurrentUser(window.location.pathname);
-
+    const posts: any = getUserPosts();
     if (!user) {
       throw new Error("Пользователь не найден");
     }
@@ -182,6 +236,9 @@ export async function renderProfile() {
       renderSidebar(),
       renderCreatePost(),
       renderTip(),
+      // createElement("div", { class: "edit" }, []),
+      renderEditPost(posts),
+      renderDeletePost(posts),
     ]);
 
     const container = update(pageContainer, vdom);
@@ -192,7 +249,7 @@ export async function renderProfile() {
     const containerPosts: any = container.querySelector(
       `.${ELEMENTS_CLASS.PROFILE.FORM}`,
     );
-    const buttonCancel: any = container.querySelector(
+    const buttonCancel: any = container.querySelectorAll(
       `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
     );
 
@@ -204,7 +261,7 @@ export async function renderProfile() {
         containerCreatePost.style.display = "block";
         containerPosts.classList.add("blur");
       });
-      buttonCancel?.addEventListener("click", () => {
+      buttonCancel[0]?.addEventListener("click", () => {
         containerCreatePost.style.display = "none";
         containerPosts.classList.remove("blur");
       });
@@ -219,7 +276,7 @@ export async function renderProfile() {
         containerTip.style.display = "block";
         containerPosts.classList.add("blur");
       });
-      buttonCancel?.addEventListener("click", () => {
+      buttonCancel[0]?.addEventListener("click", () => {
         containerTip.style.display = "none";
         containerPosts.classList.remove("blur");
       });

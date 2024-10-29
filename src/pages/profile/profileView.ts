@@ -3,43 +3,26 @@ import { createElement, createText } from "../../lib/vdom/lib";
 import { calculateAmountPosts } from "../../utils/calculateAmountPosts";
 import { VNode } from "../../lib/vdom/src/source";
 
-// function renderUserPosts(user: any) {
-//   const container: VNode = createElement("div", { class: "posts" }, [
-//     createElement("div", { class: ELEMENTS_CLASS.POST.PROFILE.BLOCK }, [
-//       createElement("h4", { class: ELEMENTS_CLASS.POST.TITLE }, [
-//         createText(user.posts_title),
-//       ]),
-//       createElement("p", { class: ELEMENTS_CLASS.POST.CONTENT }, [
-//         createText(user.posts_content),
-//       ]),
-//       createElement("div", { class: ELEMENTS_CLASS.POST.DATE }, [
-//         createText(user.posts_date),
-//       ]),
-//     ]),
-//   ]);
-//   return container;
-// }
 function renderUserPosts(user: any) {
   const container: VNode = createElement("div", { class: "posts" }, [
     createElement("div", { class: ELEMENTS_CLASS.POST.PROFILE.BLOCK }, [
-      // Добавляем три точки
-      createElement("div", { class: "menu-icon" }, [
-        createText("⋮"), // Символ для трех точек
-
-        // Выдвижное меню
-        createElement("div", { class: "dropdown-menu" }, [
-          createElement("div", { class: "interaction-post" }, [
-            createElement("div", { class: "button-edit-post" }, [
-              createText("Редактировать"),
+      window.location.pathname === "/feed/profile"
+        ? createElement("div", { class: "menu-icon" }, [
+            createText("⋮"),
+            createElement("div", { class: "dropdown-menu" }, [
+              createElement("div", { class: "interaction-post" }, [
+                createElement("div", { class: "button-edit-post" }, [
+                  createText("Редактировать"),
+                ]),
+              ]),
+              createElement("div", { class: "interaction-post" }, [
+                createElement("div", { class: "button-delete-post" }, [
+                  createText("Удалить"),
+                ]),
+              ]),
             ]),
-          ]),
-          createElement("div", { class: "interaction-post" }, [
-            createElement("div", { class: "button-delete-post" }, [
-              createText("Удалить"),
-            ]),
-          ]),
-        ]),
-      ]),
+          ])
+        : createElement("div", {}, []),
       createElement("h4", { class: ELEMENTS_CLASS.POST.TITLE }, [
         createText(user.posts_title),
       ]),
@@ -101,6 +84,68 @@ export function getEarnings(payments: any) {
   return vdom;
 }
 
+export function renderEditPost(post: any) {
+  const container: VNode = createElement("div", { class: "modal__editpost" }, [
+    createElement("div", { class: "modal-header" }, [
+      createElement("h2", {}, [createText("Редактирование")]),
+    ]),
+    createElement("div", { class: "form-group " }, [
+      createElement("label", { class: "label-tip" }, [createText("Заголовок")]),
+      createElement("textarea", { class: "input-group" }, [
+        createText(post.title),
+      ]),
+    ]),
+    createElement("div", { class: "form-group " }, [
+      createElement("label", { class: "label-group" }, [
+        createText("Содержание"),
+      ]),
+      createElement("textarea", { class: "textarea-group" }, [
+        createText(post.content),
+      ]),
+      createElement("div", { class: "char-count" }, []),
+    ]),
+    createElement("div", { class: "form-actions " }, [
+      createElement("button", { class: ELEMENTS_CLASS.CANCEL.COMBINE }, [
+        createText("Закрыть"),
+      ]),
+      createElement("button", { class: ELEMENTS_CLASS.SAVE.COMBINE }, [
+        createText("Сохранить"),
+      ]),
+    ]),
+  ]);
+  return container;
+}
+export function renderDeletePost(post: any) {
+  const container: VNode = createElement(
+    "div",
+    { class: "modal__deletepost" },
+    [
+      createElement("div", { class: "modal-header" }, [
+        createElement("h2", {}, [createText("Удаление")]),
+      ]),
+      createElement("div", { class: "form-group " }, [
+        createElement("div", { class: "input-group" }, [
+          createText(post.title),
+        ]),
+      ]),
+      createElement("div", { class: "form-group " }, [
+        createElement("div", { class: "textarea-group" }, [
+          createText(post.content),
+        ]),
+        createElement("div", { class: "char-count" }, []),
+      ]),
+      createElement("div", { class: "form-actions " }, [
+        createElement("button", { class: ELEMENTS_CLASS.CANCEL.COMBINE }, [
+          createText("Закрыть"),
+        ]),
+        createElement("button", { class: ELEMENTS_CLASS.DELETE.COMBINE }, [
+          createText("Удалить"),
+        ]),
+      ]),
+    ],
+  );
+  return container;
+}
 export function renderTip() {
   const feedRegex = /^\/profile\/\d+$/;
   if (!feedRegex.test(window.location.pathname)) {
@@ -113,7 +158,7 @@ export function renderTip() {
     ]),
     createElement("div", { class: "form-group " }, [
       createElement("label", { class: "label-tip" }, [createText("Заголовок")]),
-      createElement("input", { class: "input-group" }, []),
+      createElement("textarea", { class: "input-group" }, []),
     ]),
     createElement("div", { class: "form-group " }, [
       createElement("label", { class: "label-group" }, [
@@ -158,7 +203,7 @@ export function renderCreatePost() {
         createElement("label", { class: "label-tip" }, [
           createText("Заголовок"),
         ]),
-        createElement("input", { class: "input-group" }, []),
+        createElement("textarea", { class: "input-group" }, []),
       ]),
       createElement("div", { class: "form-group " }, [
         createElement("label", { class: "label-group" }, [

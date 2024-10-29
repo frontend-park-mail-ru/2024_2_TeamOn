@@ -181,6 +181,18 @@ export const ELEMENTS_CLASS = {
     MODIFIER: "send-tip__button__effects",
     COMBINE: "send-tip send-tip__button send-tip__button__effects",
   },
+  DELETE: {
+    BLOCK: "delete",
+    ELEMENT: "delete__button",
+    MODIFIER: "delete__button__effects",
+    COMBINE: "delete delete__button delete__button__effects",
+  },
+  SAVE: {
+    BLOCK: "save",
+    ELEMENT: "save__button",
+    MODIFIER: "save__button__effects",
+    COMBINE: "save save__button save__button__effects",
+  },
   CANCEL: {
     BLOCK: "cancel",
     ELEMENT: "cancel__button",

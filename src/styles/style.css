@@ -166,6 +166,8 @@ form input[type=text]:focus {
 .logout__button,
 .donate__button,
 .send-tip__button,
+.save__button,
+.delete__button,
 .cancel__button,
 .create {
   opacity: 0.85;
@@ -216,10 +218,22 @@ form input[type=text]:focus {
   color: white;
 }
 
+.delete__button__effects:hover {
+  background: red;
+  color: white;
+}
+
+.save__button__effects:hover {
+  background: green;
+  color: white;
+}
+
 .home-buttons__button__effects.primary,
 .logout__button__effects.primary,
 .donate__button__effects.primary,
 .send-tip__button__effects.primary,
+.save__button__effects.primary,
+.delete__button__effects.primary,
 .cancel__button__effects.primary,
 .create__button__effects.primary {
   background: #f8f8f8;
@@ -231,6 +245,8 @@ form input[type=text]:focus {
 .logout__button__effects.primary:hover,
 .donate__button__effects.primary:hover,
 .send-tip__button__effects.primary:hover,
+.save__button__effects.primary:hover,
+.delete__button__effects.primary:hover,
 .cancel__button__effects.primary:hover,
 .create__button__effects.primary:hover {
   background: black;
@@ -560,6 +576,9 @@ form input[type=text]:focus {
   top: 0;
   left: 100%;
   position: relative;
+  font-size: 24px;
+  cursor: pointer;
+  display: inline-block;
 }
 
 .dropdown-menu {
@@ -582,6 +601,7 @@ form input[type=text]:focus {
 .dropdown-menu .interaction-post {
   padding: 8px 12px; /* Отступы для элементов меню */
   cursor: pointer; /* Курсор при наведении */
+  font-size: 14px;
 }
 
 .dropdown-menu .interaction-post:hover {
@@ -881,7 +901,9 @@ form input[type=text]:focus {
 
 /* ДОНАТ */
 .modal__createpost,
-.modal__tip {
+.modal__tip,
+.modal__editpost,
+.modal__deletepost {
   display: none;
   background-color: white;
   width: 800px;
@@ -894,6 +916,10 @@ form input[type=text]:focus {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.edit {
+  display: none;
 }
 
 .modal-header {
@@ -934,8 +960,13 @@ form input[type=text]:focus {
   font-size: 16px;
 }
 
-.form-group textarea {
+.textarea-group {
   height: 100px;
+  resize: none;
+}
+
+.input-group {
+  height: 30px;
   resize: none;
 }
 
