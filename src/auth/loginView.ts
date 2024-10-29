@@ -1,10 +1,12 @@
-import { RouterLinks, state } from "../consts";
-import { goToPage } from "../index";
+import { LINKS } from "../consts";
 import { authLogin, validateLoginForm } from "./login";
-import { ELEMENTS, ELEMENTS_CLASS } from "../consts";
+import { ELEMENTS_CLASS } from "../consts";
 import { route } from "../utils/routing";
-import { createElement, createText, render, VirtualDOM } from "../lib/vdom/lib";
-import { createElementJSX } from "../lib/jsx/lib";
+import { createElement, createText, update } from "../lib/vdom/lib";
+import { pageContainer } from "../index";
+import { findUsername } from "../utils/hasLogged";
+import { removeItemLocalStorage } from "../utils/storages";
+import { VNode } from "../lib/vdom/src/source";
 
 export let attempts: any;
 
@@ -14,12 +16,10 @@ export let attempts: any;
  */
 export function renderLogin() {
   attempts = 0;
-  const jsx = "<div class=background-login></div>";
-  const backgroundLayer = createElementJSX(jsx);
 
-  const vdom = new VirtualDOM(
-    createElement("div", { class: ELEMENTS_CLASS.LOGIN_CONTAINER }, [
-      createElement("button", { class: ELEMENTS_CLASS.CLOSE_BTN }, []),
+  const vdom: VNode = createElement("div", { class: "login" }, [
+    createElement("div", { class: ELEMENTS_CLASS.LOGIN.ELEMENT }, [
+      createElement("button", { class: ELEMENTS_CLASS.CLOSE_BTN.COMBINE }, []),
       createElement("h2", {}, [createText("Вход")]),
       createElement("form", { class: "form-login" }, [
         createElement("input", { class: "input-login" }, []),
@@ -27,22 +27,30 @@ export function renderLogin() {
         createElement("input", { class: "input-password" }, []),
         createElement("input", { class: "submit-btn" }, []),
       ]),
-      createElement("div", { class: ELEMENTS_CLASS.SIGNUP_LINK }, [
+      createElement("div", { class: ELEMENTS_CLASS.SIGNUP_LINK.BLOCK }, [
         createText("У вас нет аккаунта? "),
-        createElement("a", {}, [createText("Зарегистрируйтесь")]),
+        createElement("a", { class: ELEMENTS_CLASS.SIGNUP_LINK.COMBINE }, [
+          createText("Зарегистрируйтесь"),
+        ]),
       ]),
     ]),
+  ]);
+  const container = update(pageContainer, vdom);
+
+  const closeBtn: any = container.querySelector(
+    `.${ELEMENTS_CLASS.CLOSE_BTN.ELEMENT}`,
   );
-  const html = render(vdom);
-  backgroundLayer.innerHTML = html;
-  const closeBtn: any = backgroundLayer.querySelector(".close-btn");
   closeBtn.addEventListener("click", () => {
-    route(RouterLinks.HOME);
+    route(LINKS.HOME.HREF);
   });
   closeBtn.innerHTML = "x";
 
+<<<<<<< HEAD
   const passwordEye: any = backgroundLayer.querySelector(".password-eye");
   const inputPassword: any = backgroundLayer.querySelector(".input-password");
+=======
+  const passwordEye: any = container.querySelector(".password-eye");
+>>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   passwordEye.innerHTML = "&#128064;";
   passwordEye.addEventListener("click", () => {
     if (inputPassword.type === "password") {
@@ -54,25 +62,29 @@ export function renderLogin() {
     }
   });
 
-  const inputLogin: any = backgroundLayer.querySelector(".input-login");
+  const inputLogin: any = container.querySelector(".input-login");
   inputLogin.type = "text";
   inputLogin.placeholder = "Введите email или имя пользователя";
   inputLogin.required = true;
 
+<<<<<<< HEAD
+=======
+  const inputPassword: any = container.querySelector(".input-password");
+>>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   inputPassword.type = "password";
   inputPassword.placeholder = "Введите пароль";
   inputPassword.required = true;
 
-  const submitButton: any = backgroundLayer.querySelector(".submit-btn");
+  const submitButton: any = container.querySelector(".submit-btn");
   submitButton.type = "submit";
   submitButton.value = "Войти";
 
-  const form: any = backgroundLayer.querySelector(".form-login");
-  const registerLinkAnchor: any = backgroundLayer.querySelector(
-    `.${ELEMENTS_CLASS.SIGNUP_LINK}`,
+  const form: any = container.querySelector(".form-login");
+  const registerLinkAnchor: any = container.querySelector(
+    `.${ELEMENTS_CLASS.SIGNUP_LINK.ELEMENT}`,
   );
   registerLinkAnchor.addEventListener("click", () => {
-    route(RouterLinks.SIGNUP);
+    route(LINKS.SIGNUP.HREF);
   });
   submitButton.addEventListener("click", (e: any) => {
     e.preventDefault();
@@ -92,5 +104,10 @@ export function renderLogin() {
     validateLoginForm(form, inputLogin, inputPassword);
   });
 
+<<<<<<< HEAD
   return backgroundLayer;
 }
+=======
+  removeItemLocalStorage(findUsername());
+}
+>>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773

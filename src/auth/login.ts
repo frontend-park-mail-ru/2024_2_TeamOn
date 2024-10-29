@@ -1,4 +1,4 @@
-import { state, maxAttempts, RouterLinks } from "../consts";
+import { state, maxAttempts, LINKS, LOCATIONS, sidebarLinks } from "../consts";
 import { removeError, showError } from "../utils/errors";
 import { fetchAjax } from "../utils/fetchAjax";
 import { goToPage } from "../index";
@@ -48,14 +48,14 @@ export function validateLoginForm(
  * @param {*} inputLogin Поле ввода логина
  * @param {*} inputPassword Поле ввода пароля
  */
-function validateErrorLoginForm(inputLogin: any, inputPassword: any) {
+function validateErrorLoginForm(inputLogin: string, inputPassword: string) {
   showError(inputLogin, "");
   showError(
     inputPassword,
     `Неправильный логин или пароль, осталось попыток: ${maxAttempts - attempts}`,
   );
   if (checkAttempts(attempts)) {
-    goToPage((state.menuElements as { home: HTMLElement }).home);
+    goToPage((state.menuElements as { home: any }).home);
   }
 }
 
@@ -69,13 +69,14 @@ function validateErrorLoginForm(inputLogin: any, inputPassword: any) {
 export function authLogin(form: any, inputLogin: any, inputPassword: any) {
   if (!validateLoginForm(form, inputLogin, inputPassword)) {
     fetchAjax(
-      "POST",
-      "/api/auth/login",
+      LOCATIONS.LOGIN.METHOD,
+      LOCATIONS.LOGIN.HREF,
       { username: inputLogin.value, password: inputPassword.value },
       (response) => {
         if (response.ok) {
+          sidebarLinks[0].active = true;
           addItemLocalStorage(DOMPurify.sanitize(inputLogin.value));
-          route(RouterLinks.FEED);
+          route(LINKS.FEED.HREF);
         } else if (response.status === 400) {
           validateErrorLoginForm(inputLogin, inputPassword);
         }

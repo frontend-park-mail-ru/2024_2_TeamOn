@@ -1,4 +1,3 @@
-@charset "UTF-8";
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -13,7 +12,6 @@ body {
   height: 100%;
   width: 100%;
 }
-
 .blur {
   filter: blur(8px); /* Значение размытия */
 }
@@ -34,7 +32,7 @@ form {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-form button[type=submit] {
+form button[type="submit"] {
   background-color: #4caf50;
   color: #fff;
   padding: 15px 25px;
@@ -44,21 +42,21 @@ form button[type=submit] {
   font-size: 16px;
 }
 
-form button[type=submit]:hover {
+form button[type="submit"]:hover {
   background-color: #3e8e41;
 }
 
-form input[type=email],
-form input[type=password],
-form input[type=text] {
+form input[type="email"],
+form input[type="password"],
+form input[type="text"] {
   padding: 10px;
   margin: 10px;
   border: 1px solid #ccc;
 }
 
-form input[type=email]:focus,
-form input[type=password],
-form input[type=text]:focus {
+form input[type="email"]:focus,
+form input[type="password"],
+form input[type="text"]:focus {
   border-color: #aaa;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -74,14 +72,9 @@ form input[type=text]:focus {
   position: absolute;
 }
 
-<<<<<<< HEAD
-.close-btn--hover:hover {
-=======
 .close__hover:hover {
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   background-color: rgba(255, 255, 255, 0.2);
 }
-
 /* Стили для обработки ошибок */
 .error {
   color: red;
@@ -89,11 +82,10 @@ form input[type=text]:focus {
   margin-bottom: 10px;
 }
 
-.error-input ~ input[type=password] {
+.error-input ~ input[type="password"] {
   border-color: red;
   box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
 }
-
 .error-input {
   border-color: red;
   box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
@@ -122,7 +114,6 @@ form input[type=text]:focus {
 .defs {
   display: block;
 }
-
 .home-overlay {
   position: absolute;
   top: 0;
@@ -131,7 +122,6 @@ form input[type=text]:focus {
   height: 100%;
   background: rgba(0, 0, 0, 0.3);
 }
-
 .home-header {
   padding: 20pt 20pt;
   position: absolute;
@@ -143,9 +133,7 @@ form input[type=text]:focus {
   font-weight: bold;
   cursor: default;
   pointer-events: none;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  user-select: none;
   opacity: 0.4;
 }
 
@@ -156,31 +144,19 @@ form input[type=text]:focus {
   display: flex;
   gap: 10px;
 }
-
 .donate-container {
   position: absolute;
   left: 50%;
 }
-
 .create-posts {
   position: relative;
 }
-<<<<<<< HEAD
-.home-button,
-.logout-button,
-.donate-button,
-.send-tip-button,
-.cancel-button,
-.create-button {
-=======
-
 .home-buttons__button,
 .logout__button,
 .donate__button,
 .send-tip__button,
 .cancel__button,
 .create {
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   opacity: 0.85;
   padding: 10px 20px;
   border-radius: 25px;
@@ -188,24 +164,13 @@ form input[type=text]:focus {
   background: white;
   color: gray;
   cursor: pointer;
-  transition: background 0.3s, color 0.3s;
+  transition:
+    background 0.3s,
+    color 0.3s;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-<<<<<<< HEAD
-.create-button--element {
-  position: absolute;
-  height: 30px;
-  width: 50px;
-  right: 0;
-  margin-top: 50px;
-}
-.home-button--element {
-  font-size: 28px;
-}
-=======
-
 .create__button {
   position: relative;
   height: 30px;
@@ -214,12 +179,9 @@ form input[type=text]:focus {
   margin-left: 80%;
   margin-bottom: 5%;
 }
-
 .home-buttons__button {
   font-size: 28px;
 }
-
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
 .logout {
   margin-top: 10%;
   width: 250px;
@@ -227,28 +189,6 @@ form input[type=text]:focus {
   justify-content: center;
   align-items: center;
 }
-<<<<<<< HEAD
-.logout-button--element {
-  font-size: 18px;
-}
-
-.home-button--modifier:hover,
-.logout-button--modifier:hover,
-.donate-button--modifier:hover,
-.send-tip-button--modifier:hover,
-.cancel-button--modifier:hover,
-.create-button--modifier:hover {
-  background: gray;
-  color: white;
-}
-.home-button--modifier.primary,
-.logout-button--modifier.primary,
-.donate-button--modifier.primary,
-.send-tip-button--modifier.primary,
-.cancel-button--modifier.primary,
-.create-button--modifier.primary {
-=======
-
 .logout__button {
   font-size: 18px;
 }
@@ -262,34 +202,22 @@ form input[type=text]:focus {
   background: gray;
   color: white;
 }
-
 .home-buttons__button__effects.primary,
 .logout__button__effects.primary,
 .donate__button__effects.primary,
 .send-tip__button__effects.primary,
 .cancel__button__effects.primary,
 .create__button__effects.primary {
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   background: #f8f8f8;
   color: black;
   border: none;
 }
-<<<<<<< HEAD
-.home-button--modifier.primary:hover,
-.logout-button--modifier.primary:hover,
-.donate-button--modifier.primary:hover,
-.send-tip-button--modifier.primary:hover,
-.cancel-button--modifier.primary:hover,
-.create-button--modifier.primary:hover {
-=======
-
 .home-buttons__button__effects.primary:hover,
 .logout__button__effects.primary:hover,
 .donate__button__effects.primary:hover,
 .send-tip__button__effects.primary:hover,
 .cancel__button__effects.primary:hover,
 .create__button__effects.primary:hover {
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   background: black;
   color: white;
 }
@@ -327,9 +255,8 @@ form input[type=text]:focus {
   font-size: 24px;
   color: #333;
 }
-
-.login__container input[type=text],
-.login__container input[type=password] {
+.login__container input[type="text"],
+.login__container input[type="password"] {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -337,8 +264,7 @@ form input[type=text]:focus {
   border-radius: 20px;
   box-sizing: border-box;
 }
-
-.login__container input[type=submit] {
+.login__container input[type="submit"] {
   width: 100%;
   padding: 10px;
   margin: 20px 0 0;
@@ -349,24 +275,20 @@ form input[type=text]:focus {
   font-size: 16px;
   cursor: pointer;
 }
-
-.login__container input[type=submit]:hover {
+.login__container input[type="submit"]:hover {
   background-color: #555;
 }
-
 .login__container .signup-link {
   display: block;
   margin-top: 10px;
   font-size: 14px;
   color: #333;
 }
-
 .login__container .signup-link__a {
   color: #007bff;
   text-decoration: none;
   cursor: pointer;
 }
-
 .login__container .signup-link__a__hover:hover {
   text-decoration: underline;
 }
@@ -381,10 +303,6 @@ form input[type=text]:focus {
   left: 0; /* Закрепление левого края */
   margin-bottom: 10%;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
 .password-strength::before {
   content: "";
   position: absolute;
@@ -392,20 +310,13 @@ form input[type=text]:focus {
   left: 0;
   width: 100%;
   height: 100%;
-<<<<<<< HEAD
   background-image: repeating-linear-gradient(
     to right,
     #fff 2px,
     transparent 2px
   );
 }
-.background-signup {
-=======
-  background-image: repeating-linear-gradient(to right, #fff 2px, transparent 2px);
-}
-
 .signup {
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   position: fixed;
   top: 0;
   left: 0;
@@ -416,7 +327,6 @@ form input[type=text]:focus {
   background-position: center center;
   z-index: 10;
 }
-
 .signup__container {
   position: absolute;
   top: 50%;
@@ -431,14 +341,12 @@ form input[type=text]:focus {
   justify-content: center;
   background-size: cover;
 }
-
 .signup__container h2 {
   margin-bottom: 20px;
   font-size: 24px;
 }
-
-.signup__container input[type=text],
-.signup__container input[type=password] {
+.signup__container input[type="text"],
+.signup__container input[type="password"] {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -446,8 +354,7 @@ form input[type=text]:focus {
   border-radius: 20px;
   box-sizing: border-box;
 }
-
-.signup__container input[type=submit] {
+.signup__container input[type="submit"] {
   width: 100%;
   padding: 10px;
   margin-top: 20px;
@@ -458,24 +365,20 @@ form input[type=text]:focus {
   font-size: 16px;
   cursor: pointer;
 }
-
-.signup__container input[type=submit]:hover {
+.signup__container input[type="submit"]:hover {
   background-color: #333;
 }
-
 .signup__container .login-link {
   display: block;
   margin-top: 10px;
   font-size: 14px;
   color: #333;
 }
-
 .signup__container .login-link__a {
   color: #007bff;
   text-decoration: none;
   cursor: pointer;
 }
-
 .signup__container .login-link__a__hover:hover {
   text-decoration: underline;
 }
@@ -486,7 +389,6 @@ form input[type=text]:focus {
   height: 100%;
   margin-right: 10px;
 }
-
 .header-profile {
   background-image: url("photos/fon.jpg");
   background-size: cover;
@@ -503,7 +405,6 @@ form input[type=text]:focus {
   background-position: center center;
   background-repeat: no-repeat;
 }
-
 .profile {
   display: flex;
   background-color: rgb(243, 243, 243);
@@ -520,11 +421,9 @@ form input[type=text]:focus {
   top: -110px;
   position: relative;
 }
-
 .active-nav-links {
   cursor: pointer;
 }
-
 .profile .left img {
   width: 90%;
   height: 200px;
@@ -533,7 +432,6 @@ form input[type=text]:focus {
   display: flex;
   border: 3px solid #e0e0e0;
 }
-
 .profile .left-bar {
   width: 400pt;
   background-color: white;
@@ -541,7 +439,6 @@ form input[type=text]:focus {
   margin-left: 20%;
   margin-right: -20%;
 }
-
 .profile .left .info {
   text-align: center;
   margin-top: 10px;
@@ -637,6 +534,7 @@ form input[type=text]:focus {
 }
 
 /* FEED */
+
 .sidebar {
   display: block;
   flex-direction: column;
@@ -651,11 +549,9 @@ form input[type=text]:focus {
   z-index: 10;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
-
 .sidebar.active {
   display: flex;
 }
-
 .icon-home,
 .icon-notification,
 .icon-settings,
@@ -666,29 +562,23 @@ form input[type=text]:focus {
   height: 30px;
   background-size: contain;
 }
-
 .icon-notification-big {
   width: 60px;
   height: 60px;
 }
-
 .icon-home {
   background-image: url("photos/icon_home.png");
 }
-
 .icon-notification,
 .icon-notification-big {
   background-image: url("photos/icon_notification.png");
 }
-
 .icon-settings {
   background-image: url("photos/icon_settings.png");
 }
-
 .icon-profile {
   background-image: url("photos/icon_profile.png");
 }
-
 .media-post {
   flex: 1 1 calc(33.333% - 10px);
   max-width: 1000px;
@@ -699,7 +589,6 @@ form input[type=text]:focus {
   background-size: cover;
   background-position: center;
 }
-
 .sidebar a {
   display: block;
   padding: 15px 20px;
@@ -707,7 +596,6 @@ form input[type=text]:focus {
   text-decoration: none;
   transition: background-color 0.3s;
 }
-
 .sidebar a.active {
   background-color: #e0e0e0;
   font-weight: bold;
@@ -717,24 +605,20 @@ form input[type=text]:focus {
   font-size: 16px;
   font-weight: 500;
 }
-
 .main-content {
   margin-left: 250px;
   padding: 20px;
 }
-
 .right-content {
   margin-right: 10px;
   margin-left: 300px;
   width: 700px;
   margin-top: 5%;
 }
-
 .main-container {
   height: 100%;
   width: 100%;
 }
-
 .search-bar {
   display: flex;
   align-items: center;
@@ -743,7 +627,6 @@ form input[type=text]:focus {
   right: 0;
   width: 400px;
 }
-
 .search-bar input {
   width: 100%;
   padding: 10px;
@@ -751,13 +634,11 @@ form input[type=text]:focus {
   border-radius: 5px;
   font-size: 16px;
 }
-
 .categories {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
 }
-
 .burger {
   display: none;
   position: absolute;
@@ -773,10 +654,6 @@ form input[type=text]:focus {
   background-color: #333;
   margin: 5px 0;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
 .side {
   position: fixed;
   top: 0;
@@ -800,18 +677,15 @@ form input[type=text]:focus {
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
 .categories button.active {
   background-color: #000;
   color: #fff;
 }
-
 .section-title {
   font-size: 28px;
   font-weight: 600;
   margin: 20px 0;
 }
-
 .post-container {
   background-color: #ffffff;
   padding: 20px;
@@ -819,50 +693,42 @@ form input[type=text]:focus {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin-bottom: 25px;
 }
-
 .author-section {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
 }
-
 .avatar {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   margin-right: 10px;
 }
-
 .author-name {
   font-size: 16px;
   font-weight: bold;
 }
-
 .title {
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 10px;
 }
-
 .content {
   font-size: 14px;
   color: #333;
   margin-bottom: 20px;
 }
-
 .date {
   font-size: 12px;
   color: #999;
   text-align: right;
 }
-
 .interaction-section {
   bottom: 10px;
   right: 20px;
   display: flex;
   align-items: center;
 }
-
 .interaction-section .likes,
 .interaction-section .comments {
   font-size: 20px;
@@ -892,7 +758,6 @@ form input[type=text]:focus {
   max-width: auto;
   height: 40px;
 }
-
 .likes,
 .comments {
   display: inline-block;
@@ -901,18 +766,12 @@ form input[type=text]:focus {
   background-size: cover;
   background-position: center;
 }
-
 .likes {
   background-image: url("photos/icon_like.png");
 }
-
 .comments {
   background-image: url("photos/icon_comment.png");
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
 .likes-container:hover,
 .comments-container:hover,
 .comments:hover,
@@ -922,12 +781,8 @@ form input[type=text]:focus {
 }
 
 /* ДОНАТ */
-<<<<<<< HEAD
-.modal {
-=======
 .modal__createpost,
 .modal__tip {
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   display: none;
   background-color: white;
   width: 800px;
@@ -935,30 +790,23 @@ form input[type=text]:focus {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   position: relative;
-<<<<<<< HEAD
-  z-index: 20;
-=======
   z-index: 2000;
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
 .modal-header {
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
 }
-
 .modal-header h2 {
   margin: 0;
   font-size: 24px;
   text-align: center;
 }
-
 .modal-header p {
   margin: 5px 0 20px;
   text-align: center;
@@ -968,13 +816,11 @@ form input[type=text]:focus {
 .form-group {
   margin-bottom: 20px;
 }
-
 .form-group label {
   display: block;
   margin-bottom: 5px;
   color: #333;
 }
-
 .form-group input,
 .form-group textarea {
   width: 97%;
@@ -983,35 +829,29 @@ form input[type=text]:focus {
   border-radius: 5px;
   font-size: 16px;
 }
-
 .form-group textarea {
   height: 100px;
   resize: none;
 }
-
 .form-group .optional {
   float: right;
   color: #999;
   font-size: 14px;
 }
-
 .form-group .char-count {
   float: right;
   color: #999;
   font-size: 14px;
 }
-
 .form-group .min-tip {
   color: #999;
   font-size: 14px;
   margin-top: 5px;
 }
-
 .form-actions {
   display: flex;
   justify-content: space-between;
 }
-
 .form-actions button {
   padding: 10px 20px;
   border: none;
@@ -1019,14 +859,9 @@ form input[type=text]:focus {
   font-size: 16px;
   cursor: pointer;
 }
-<<<<<<< HEAD
-=======
-
 span {
   vertical-align: top;
 }
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
-
 .container-notification {
   flex-grow: 1;
   padding: 50px;
@@ -1034,32 +869,25 @@ span {
   /* margin-left: 20%; */
   height: 100%;
 }
-
 .container-notification h1 {
   font-size: 24px;
   margin-bottom: 20px;
 }
-
 .container-notification .notification-icon {
   font-size: 50px;
   margin-bottom: 20px;
 }
-
 .container-notification .no-notifications {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 10px;
 }
-
 .container-notification .notification-text {
   color: #666;
 }
 
 /*SETTING*/
-<<<<<<< HEAD
 
-=======
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
 .main-content {
   flex-grow: 1;
   padding: 40px;
@@ -1114,13 +942,9 @@ span {
   width: 0;
   height: 2px;
   background-color: #000;
-<<<<<<< HEAD
   transition:
     width 0.3s ease,
     left 0.3s ease;
-=======
-  transition: width 0.3s ease, left 0.3s ease;
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
 }
 
 .tabs a.active::after {
@@ -1182,47 +1006,27 @@ span {
   font-size: 16px;
   width: 150px;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
 input,
 select {
   flex-grow: 1;
 }
 
-<<<<<<< HEAD
 .form-container input[type="text"],
 .form-container input[type="email"],
 .form-container input[type="password"] {
-=======
-.form-container input[type=text],
-.form-container input[type=email],
-.form-container input[type=password] {
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   width: 20%;
   padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #000;
   border-radius: 20px;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
 .form-container select {
   width: 51.5%;
   padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #000;
   border-radius: 20px;
-<<<<<<< HEAD
   appearance: none;
-=======
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
 }
 
 .form-container .profile-pic {
@@ -1288,19 +1092,13 @@ select {
     margin-left: 0;
     margin-right: 0;
   }
-<<<<<<< HEAD
 
-=======
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   .header-profile {
     display: flex;
     font-size: 10px;
     padding: 100px;
   }
-<<<<<<< HEAD
 
-=======
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   .profile .left-bar {
     width: 100%;
     margin-left: 0;
@@ -1339,8 +1137,3 @@ select {
     border-bottom: none;
   }
 }
-<<<<<<< HEAD
-=======
-
-/*# sourceMappingURL=style.css.map */
->>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773

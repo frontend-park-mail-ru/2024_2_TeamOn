@@ -1,125 +1,66 @@
-import { state } from "../../consts";
-import {
-  createContainerPost,
-  renderSearchbar,
-  renderSidebar,
-} from "../feed/feedView";
+import { ELEMENTS_CLASS, LINKS } from "../../consts";
+import { pageContainer } from "../../index";
+import { createElement, createText, update } from "../../lib/vdom/lib";
+import { VNode } from "../../lib/vdom/src/source";
+import { route } from "../../utils/routing";
+import { removeItemLocalStorage } from "../../utils/storages";
+import { modifierSidebar } from "../feed/feed";
+import { renderSidebar } from "../feed/feedView";
 import { getCurrentUser } from "../profile/profile";
-async function getPopularPosts() {
-  return await [
-    {
-      avatarSrc:
-        "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
-      authorName: "Polkovnik",
-      title: "Как прошла предзащита",
-      content:
-        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "19.10.2024",
-      likes: 34,
-      comments: 34,
-    },
-    {
-      avatarSrc:
-        "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
-      authorName: "Anatolich",
-      title: "Как прошла предзащита",
-      content:
-        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "19.10.2024",
-      likes: 34,
-      comments: 34,
-    },
-    {
-      avatarSrc:
-        "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
-      authorName: "Anatolich",
-      title: "Как прошла предзащита",
-      content:
-        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "19.10.2024",
-      likes: 34,
-      comments: 34,
-    },
-    {
-      avatarSrc:
-        "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
-      authorName: "Anatolich",
-      title: "Как прошла предзащита",
-      content:
-        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "19.10.2024",
-      likes: 34,
-      comments: 34,
-    },
-  ];
-}
-async function getRecentlyPosts() {
-  return await [
-    {
-      avatarSrc:
-        "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
-      authorName: "Anatolich",
-      title: "Как прошла предзащита",
-      content:
-        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "19.10.2024",
-      likes: 34,
-      comments: 34,
-    },
-    {
-      avatarSrc:
-        "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
-      authorName: "Anatolich",
-      title: "Как прошла предзащита",
-      content:
-        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "19.10.2024",
-      likes: 34,
-      comments: 34,
-    },
-  ];
-}
+
 export async function renderNotifications() {
   try {
-    const user: any | null = await getCurrentUser();
+    const user: any | null = await getCurrentUser(window.location.pathname);
     if (!user) {
       throw new Error("Пользователь не найден");
     }
     const doc: any = document.body;
     doc.style.height = "100%";
 
-    state.currentUser = user;
+    const vdom: VNode = createElement("div", { class: "main-content" }, [
+      renderSidebar(),
+      createElement("div", { class: ELEMENTS_CLASS.NOTIFICATION.BLOCK }, [
+        createElement("h1", {}, [createText("Уведомления")]),
+        createElement("div", { class: ELEMENTS_CLASS.NOTIFICATION.ELEMENT }, [
+          createElement(
+            "i",
+            { class: ELEMENTS_CLASS.NOTIFICATION.MODIFIER.bigICON },
+            [],
+          ),
+        ]),
+        createElement(
+          "div",
+          { class: ELEMENTS_CLASS.NOTIFICATION.MODIFIER.noNOTIFICATIONS },
+          [createText("Уведомлений пока нет")],
+        ),
+        createElement(
+          "div",
+          { class: ELEMENTS_CLASS.NOTIFICATION.MODIFIER.TEXT },
+          [
+            createText(
+              "Вы будете получать уведомления о новых участниках сообщества, действиях с вашими публикациями и других событиях.",
+            ),
+          ],
+        ),
+      ]),
+    ]);
+    const container = update(pageContainer, vdom);
 
-    const sidebar: any = renderSidebar();
-    const main: any = document.createElement("div");
-    const mainContent: any = document.createElement("div");
-    mainContent.className = "container-notification";
-    const h1: any = document.createElement("h1");
-    h1.textContent = "Уведомления";
-    const containerIcon: any = document.createElement("div");
-    containerIcon.className = "notification-icon";
+    const mainContent = container.querySelector(".main-content");
 
-    const i: any = document.createElement("i");
-    i.className = "icon-notification-big";
+    modifierSidebar(mainContent);
 
-    const containerSec: any = document.createElement("div");
-    containerSec.className = "no-notifications";
-    containerSec.textContent = "Уведомлений пока нет";
+    const logoutbutton = container.querySelector(
+      `.${ELEMENTS_CLASS.LOGOUT.BLOCK}`,
+    );
 
-    const containerText: any = document.createElement("div");
-    containerText.className = "notification-text";
-    containerText.textContent =
-      "Вы будете получать уведомления о новых участниках сообщества, действиях с вашими публикациями и других событиях.";
+    logoutbutton.addEventListener("click", (event: any) => {
+      event.preventDefault();
+      removeItemLocalStorage(user.username);
+      route(LINKS.HOME.HREF);
+    });
 
-    main.appendChild(sidebar);
-    mainContent.appendChild(h1);
-    mainContent.appendChild(containerIcon);
-    containerIcon.appendChild(i);
-    mainContent.appendChild(containerSec);
-    mainContent.appendChild(containerText);
-    main.appendChild(mainContent);
-
-    return main;
+    return container;
   } catch (error) {
     console.log("EROR");
     throw error;

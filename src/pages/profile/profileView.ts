@@ -1,28 +1,23 @@
-import { ELEMENTS, ELEMENTS_CLASS } from "../../consts";
-import { pageContainer } from "../../index";
+import { ELEMENTS_CLASS } from "../../consts";
+import { createElement, createText } from "../../lib/vdom/lib";
+import { calculateAmountPosts } from "../../utils/calculateAmountPosts";
+import { VNode } from "../../lib/vdom/src/source";
 
 function renderUserPosts(user: any) {
-  const postsContainer = document.createElement(ELEMENTS.DIV);
-  postsContainer.classList.add("posts");
-  const postDiv = document.createElement(ELEMENTS.DIV);
-  postDiv.classList.add(ELEMENTS_CLASS.POST);
-
-  const postTitle = document.createElement(ELEMENTS.H4);
-  postTitle.textContent = user.posts_title;
-  postDiv.appendChild(postTitle);
-
-  const postContent = document.createElement(ELEMENTS.P);
-  postContent.textContent = user.posts_content;
-  postDiv.appendChild(postContent);
-
-  const postDate = document.createElement(ELEMENTS.DIV);
-  postDate.classList.add(ELEMENTS_CLASS.DATE);
-  postDate.textContent = user.posts_date;
-  postDiv.appendChild(postDate);
-
-  postsContainer.appendChild(postDiv);
-
-  return postsContainer;
+  const container: VNode = createElement("div", { class: "posts" }, [
+    createElement("div", { class: ELEMENTS_CLASS.POST.PROFILE.BLOCK }, [
+      createElement("h4", { class: ELEMENTS_CLASS.POST.TITLE }, [
+        createText(user.posts_title),
+      ]),
+      createElement("p", { class: ELEMENTS_CLASS.POST.CONTENT }, [
+        createText(user.posts_content),
+      ]),
+      createElement("div", { class: ELEMENTS_CLASS.POST.DATE }, [
+        createText(user.posts_date),
+      ]),
+    ]),
+  ]);
+  return container;
 }
 
 /**
@@ -30,12 +25,8 @@ function renderUserPosts(user: any) {
  * @param {*} user Объект пользователя
  */
 function renderVibe(user: any) {
-  const title = document.createElement(ELEMENTS.H1);
-  const me = document.createElement(ELEMENTS.H4);
-  me.textContent = `ОБО МНЕ`;
-  title.textContent = `${user.status}`;
-  me.appendChild(title);
-  return me;
+  const vdom: VNode = createElement("h1", {}, [createText(user.status)]);
+  return vdom;
 }
 
 /**
@@ -43,285 +34,144 @@ function renderVibe(user: any) {
  * @param {*} user Объект пользователя
  * @param {*} posts Объект постов (не используется в функции)
  */
-function renderUserStats(user: any, posts = null) {
-  const stats = document.createElement(ELEMENTS.DIV);
-  stats.classList.add(ELEMENTS_CLASS.STATS);
-
-  const statsData = [
-    `посты: ${user.posts_amount}`,
+function renderUserStats(user: any, posts: any[]) {
+  const statsData: string[] = [
+    `посты: ${calculateAmountPosts(posts)}`,
     `подписчики: ${user.subscriptions}`,
     `подписки: ${user.followers}`,
   ];
 
-  statsData.forEach((statText) => {
-    const stat = document.createElement(ELEMENTS.DIV);
-    stat.textContent = statText;
-    stats.appendChild(stat);
-  });
-  return stats;
+  const vdom: VNode = createElement(
+    "div",
+    { class: ELEMENTS_CLASS.PROFILE.STATS },
+    [
+      createElement("div", {}, [createText(statsData[0])]),
+      createElement("div", {}, [createText(statsData[1])]),
+      createElement("div", {}, [createText(statsData[2])]),
+    ],
+  );
+  return vdom;
+}
+export function getEarnings(payments: any) {
+  const vdom: VNode = createElement(
+    "div",
+    { class: ELEMENTS_CLASS.PROFILE.EARNINGS },
+    [
+      createElement("h3", {}, [createText("Выплаты")]),
+      createElement("h4", {}, [createText("За сегодня вы заработали")]),
+      createElement("p", {}, [
+        createText(payments ? `${payments.amount}` : `0.0 ₽`),
+      ]),
+    ],
+  );
+  return vdom;
 }
 
-function getEarnings(payments: any) {
-  const earnings = document.createElement(ELEMENTS.DIV);
-  earnings.classList.add(ELEMENTS_CLASS.EARNINGS);
-
-  const earningsTitle = document.createElement(ELEMENTS.H3);
-  earningsTitle.textContent = "Выплаты";
-  earnings.appendChild(earningsTitle);
-
-  const earningsToday = document.createElement(ELEMENTS.H4);
-  earningsToday.textContent = "За сегодня вы заработали:";
-  earnings.appendChild(earningsToday);
-
-  const amount = document.createElement(ELEMENTS.P);
-  if (!payments) {
-    amount.textContent = `0.0 ₽`;
-  } else {
-    amount.textContent = `${payments.amount}`;
+export function renderTip() {
+  const feedRegex = /^\/profile\/\d+$/;
+  if (!feedRegex.test(window.location.pathname)) {
+    return createElement("div", {}, []);
   }
-  earnings.appendChild(amount);
-  return earnings;
+
+  const container: VNode = createElement("div", { class: "modal__tip" }, [
+    createElement("div", { class: "modal-header" }, [
+      createElement("h2", {}, [createText("Пожертвование")]),
+    ]),
+    createElement("div", { class: "form-group " }, [
+      createElement("label", { class: "label-tip" }, [createText("Заголовок")]),
+      createElement("input", { class: "input-group" }, []),
+    ]),
+    createElement("div", { class: "form-group " }, [
+      createElement("label", { class: "label-group" }, [
+        createText("Содержание"),
+      ]),
+      createElement("textarea", { class: "textarea-group" }, []),
+      createElement("div", { class: "char-count" }, [createText("0/200")]),
+    ]),
+    createElement("div", { class: "form-actions " }, [
+      createElement("button", { class: ELEMENTS_CLASS.CANCEL.COMBINE }, [
+        createText("Закрыть"),
+      ]),
+      createElement("button", { class: ELEMENTS_CLASS.SEND_TIP.COMBINE }, [
+        createText("Пост"),
+      ]),
+    ]),
+  ]);
+  return container;
 }
-function renderTip() {
-  // Создаем основной элемент модального окна
-  const modal = document.createElement("div");
-  modal.className = "modal";
-
-  // Создаем заголовок модального окна
-  const modalHeader = document.createElement("div");
-  modalHeader.className = "modal-header";
-
-  const h2 = document.createElement("h2");
-  h2.textContent = "Пожертвование";
-
-  // Добавляем заголовок в модальное окно
-  modalHeader.appendChild(h2);
-  modal.appendChild(modalHeader);
-
-  // Создаем группу для ввода суммы чаевых
-  const tipGroup = document.createElement("div");
-  tipGroup.className = "form-group";
-
-  const tipLabel = document.createElement("label");
-  tipLabel.setAttribute("for", "tip-amount");
-  tipLabel.textContent = "Сумма";
-
-  const tipInput = document.createElement("input");
-  tipInput.id = "tip-amount";
-  tipInput.type = "text";
-  tipInput.value = "10";
-
-  const minTip = document.createElement("div");
-  minTip.className = "min-tip";
-  minTip.textContent = "Минимальная сумма 10 ₽";
-
-  // Добавляем элементы в группу для ввода суммы чаевых
-  tipGroup.appendChild(tipLabel);
-  tipGroup.appendChild(tipInput);
-  tipGroup.appendChild(minTip);
-  modal.appendChild(tipGroup);
-
-  // Создаем группу для ввода сообщения
-  const messageGroup = document.createElement("div");
-  messageGroup.className = "form-group";
-
-  const messageLabel = document.createElement("label");
-  messageLabel.setAttribute("for", "message");
-  messageLabel.textContent = "Сообщение";
-
-  const optionalSpan = document.createElement("span");
-  optionalSpan.className = "optional";
-  optionalSpan.textContent = "Optional";
-  messageLabel.appendChild(optionalSpan);
-
-  const messageTextarea = document.createElement("textarea");
-  messageTextarea.id = "message";
-  messageTextarea.placeholder = "Ваше сообщение";
-
-  const charCount = document.createElement("div");
-  charCount.className = "char-count";
-  charCount.textContent = "0/200";
-
-  // Добавляем элементы в группу для ввода сообщения
-  messageGroup.appendChild(messageLabel);
-  messageGroup.appendChild(messageTextarea);
-  messageGroup.appendChild(charCount);
-  modal.appendChild(messageGroup);
-
-  // Создаем группу для кнопок действий
-  const actionsDiv = document.createElement("div");
-  actionsDiv.className = "form-actions";
-
-  const sendButton = document.createElement("button");
-  sendButton.className = "send-tip";
-  sendButton.textContent = "SEND";
-
-  const cancelButton = document.createElement("button");
-  cancelButton.className = "cancel";
-  cancelButton.textContent = "CANCEL";
-
-  // Добавляем кнопки в группу действий
-  actionsDiv.appendChild(sendButton);
-  actionsDiv.appendChild(cancelButton);
-  modal.appendChild(actionsDiv);
-  return modal;
+export function renderButtonCreatePost() {
+  const container: VNode = createElement("div", { class: "create-posts" }, [
+    createElement("div", { class: ELEMENTS_CLASS.CREATE.COMBINE }, [
+      createText("Создать"),
+    ]),
+  ]);
+  return window.location.pathname === "/feed/profile" ? container : 0;
 }
-function renderButtonCreatePost(right: any) {
-  const containerCreatePosts: any = document.createElement(ELEMENTS.DIV);
-  containerCreatePosts.classList.add("create-posts");
-  const createButton: any = document.createElement(ELEMENTS.A);
-  createButton.classList.add("create-btn");
-  createButton.textContent = "Создать";
-  containerCreatePosts.appendChild(createButton);
 
-  right.appendChild(containerCreatePosts);
-  return createButton;
-}
-export function renderCreatePost(right: any) {
+export function renderCreatePost() {
   if (window.location.pathname !== "/feed/profile") {
-    return 0;
+    return createElement("div", {}, []);
   }
-  const btn: any = renderButtonCreatePost(right);
-  // Создаем основной элемент модального окна
-  const modal = document.createElement("div");
-  modal.className = "modal";
 
-  // Создаем заголовок модального окна
-  const modalHeader = document.createElement("div");
-  modalHeader.className = "modal-header";
-
-  const h2 = document.createElement("h2");
-  h2.textContent = "Создание поста";
-
-  // Добавляем заголовок в модальное окно
-  modalHeader.appendChild(h2);
-  modal.appendChild(modalHeader);
-
-  // Создаем группу для ввода суммы чаевых
-  const tipGroup = document.createElement("div");
-  tipGroup.className = "form-group";
-
-  const tipLabel = document.createElement("label");
-  tipLabel.setAttribute("for", "tip-amount");
-  tipLabel.textContent = "Заголовок";
-
-  const messageTitlearea = document.createElement("input");
-  messageTitlearea.id = "message";
-  messageTitlearea.placeholder = "Введите заголовок";
-
-  tipGroup.appendChild(tipLabel);
-  tipGroup.appendChild(messageTitlearea);
-  modal.appendChild(tipGroup);
-
-  const messageGroup = document.createElement("div");
-  messageGroup.className = "form-group";
-
-  const messageLabel = document.createElement("label");
-  messageLabel.setAttribute("for", "message");
-  messageLabel.textContent = "Содержание";
-
-  const optionalSpan = document.createElement("span");
-  optionalSpan.className = "optional";
-  optionalSpan.textContent = "Optional";
-  messageLabel.appendChild(optionalSpan);
-
-  const messageTextarea = document.createElement("textarea");
-  messageTextarea.id = "message";
-  messageTextarea.placeholder = "Введите содержание";
-
-  const charCount = document.createElement("div");
-  charCount.className = "char-count";
-  charCount.textContent = "0/200";
-
-  messageGroup.appendChild(messageLabel);
-  messageGroup.appendChild(messageTextarea);
-  messageGroup.appendChild(charCount);
-  modal.appendChild(messageGroup);
-
-  const actionsDiv = document.createElement("div");
-  actionsDiv.className = "form-actions";
-
-  const sendButton = document.createElement("button");
-  sendButton.className = "send-tip";
-  sendButton.textContent = "Создать";
-
-  const cancelButton = document.createElement("button");
-  cancelButton.className = "cancel";
-  cancelButton.textContent = "Закрыть";
-
-  actionsDiv.appendChild(sendButton);
-  actionsDiv.appendChild(cancelButton);
-  modal.appendChild(actionsDiv);
-
-  const root: any = pageContainer;
-
-  document.body.appendChild(modal);
-  const cancel: any = modal.querySelector(".cancel");
-  btn.addEventListener("click", () => {
-    modal.style.display = "block";
-    root.classList.add("blur");
-  });
-  cancel.addEventListener("click", () => {
-    modal.style.display = "none";
-    root.classList.remove("blur");
-  });
-
-  return modal;
+  const container: VNode = createElement(
+    "div",
+    { class: "modal__createpost" },
+    [
+      createElement("div", { class: "modal-header" }, [
+        createElement("h2", {}, [createText("Создание поста")]),
+      ]),
+      createElement("div", { class: "form-group " }, [
+        createElement("label", { class: "label-tip" }, [
+          createText("Заголовок"),
+        ]),
+        createElement("input", { class: "input-group" }, []),
+      ]),
+      createElement("div", { class: "form-group " }, [
+        createElement("label", { class: "label-group" }, [
+          createText("Содержание"),
+        ]),
+        createElement("textarea", { class: "textarea-group" }, []),
+        createElement("div", { class: "char-count" }, [createText("0/200")]),
+      ]),
+      createElement("div", { class: "form-actions " }, [
+        createElement("button", { class: ELEMENTS_CLASS.CANCEL.COMBINE }, [
+          createText("Закрыть"),
+        ]),
+        createElement("button", { class: ELEMENTS_CLASS.SEND_TIP.COMBINE }, [
+          createText("Пост"),
+        ]),
+      ]),
+    ],
+  );
+  return container;
 }
+
 /**
  * Функция рендерит информацию о пользователе.
  * @param {*} user Объект пользователя
  * @param {*} payments Объект выплат
  */
 function renderUserInfo(user: any, payments: any, formProfile?: any) {
-  const left = document.createElement(ELEMENTS.DIV);
-  left.classList.add(ELEMENTS_CLASS.LEFT);
+  const earnings: VNode =
+    window.location.pathname === "/feed/profile"
+      ? getEarnings(payments)
+      : createElement("div", { class: "donate-container" }, [
+          createElement("button", { class: ELEMENTS_CLASS.DONATE.COMBINE }, [
+            createText("Пожертвовать"),
+          ]),
+        ]);
 
-  const leftbar = document.createElement(ELEMENTS.DIV);
-  leftbar.classList.add(ELEMENTS_CLASS.LEFT_BAR);
+  const vdom = createElement("div", { class: ELEMENTS_CLASS.PROFILE.LEFT }, [
+    createElement("div", { class: ELEMENTS_CLASS.PROFILE.LEFT_BAR }, [
+      createElement("img", { class: ELEMENTS_CLASS.PROFILE.IMAGE_PROFILE }, []),
+      createElement("div", { class: ELEMENTS_CLASS.PROFILE.INFO }, [
+        createElement("h2", {}, [createText(user.username)]),
+        createElement("p", {}, [createText(user.role)]),
+        earnings,
+      ]),
+    ]),
+  ]);
 
-  const profileImg = document.createElement(ELEMENTS.IMG);
-  profileImg.classList.add(ELEMENTS_CLASS.IMAGE_PROFILE);
-  leftbar.appendChild(profileImg);
-
-  const info = document.createElement(ELEMENTS.DIV);
-  info.classList.add(ELEMENTS_CLASS.INFO);
-
-  const name = document.createElement(ELEMENTS.H2);
-  name.textContent = `${user.username}`;
-  info.appendChild(name);
-
-  const desc = document.createElement(ELEMENTS.P);
-  desc.textContent = `${user.role}`;
-  info.appendChild(desc);
-
-  leftbar.appendChild(info);
-  if (window.location.pathname == "/feed/profile") {
-    const earnings: any = getEarnings(payments);
-    leftbar.appendChild(earnings);
-  } else {
-    const donateContainer: any = document.createElement("div");
-    donateContainer.className = "donate-container";
-    const donate: any = document.createElement("button");
-    donate.textContent = "Пожертвовать";
-    donate.className = "donate-btn";
-    donateContainer.appendChild(donate);
-    leftbar.appendChild(donateContainer);
-    const modal: any = renderTip();
-    const root: any = pageContainer;
-    document.body.appendChild(modal);
-    const cancel: any = modal.querySelector(".cancel");
-    // Когда пользователь нажимает на кнопку, открываем модальное окно
-    donate.addEventListener("click", () => {
-      modal.style.display = "block";
-      root.classList.add("blur");
-    });
-    cancel.addEventListener("click", () => {
-      modal.style.display = "none";
-      root.classList.remove("blur");
-    });
-  }
-  left.appendChild(leftbar);
-  return left;
+  return vdom;
 }
 export { renderUserPosts, renderVibe, renderUserStats, renderUserInfo };

@@ -1,4 +1,4 @@
-import { RouterLinks } from "../consts";
+import { LINKS } from "../consts";
 import { routing } from "./routing";
 import { getItemLocalStorage } from "./storages";
 
@@ -11,7 +11,7 @@ export function ClearHistoryBrowser(): void {
     routing.history = [];
     routing.currentIndex = -1;
 
-    const homepage = RouterLinks.HOME;
+    const homepage = LINKS.HOME.HREF;
     routing.navigate(homepage);
   }
 }

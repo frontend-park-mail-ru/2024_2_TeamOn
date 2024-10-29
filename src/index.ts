@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { state, ELEMENTS_CLASS, LINKS, REGEXP } from "./consts";
+=======
+import { state, ELEMENTS_CLASS } from "./consts";
+>>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
 import { renderLogin } from "./auth/loginView";
 import { renderSignup } from "./auth/signupView";
 import { renderProfile } from "./pages/profile/profile";
@@ -9,6 +13,11 @@ import { renderFeed } from "./pages/feed/feed";
 import { route } from "./utils/routing";
 import { renderNotifications } from "./pages/notifications/notifications";
 import { renderSettings } from "./pages/settings/settingsView";
+<<<<<<< HEAD
+=======
+import { VirtualDOM } from "./lib/vdom/src/source";
+import { render } from "./lib/vdom/lib";
+>>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
 
 /**
  * Объект, содержащий конфигурацию меню приложения.
@@ -36,8 +45,13 @@ import { renderSettings } from "./pages/settings/settingsView";
       render: renderProfile as () => Promise<HTMLElement> | undefined,
     },
     settings: {
+<<<<<<< HEAD
       href: LINKS.ERROR.HREF as string,
       text: LINKS.ERROR.TEXT as string,
+=======
+      href: LINKS.SETTINGS.HREF as string,
+      text: LINKS.SETTINGS.TEXT as string,
+>>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
       render: renderSettings as () => Promise<HTMLElement> | undefined,
     },
     feed: {
@@ -131,33 +145,39 @@ const state2: State = {
  * @param {*} targetLinkMenu Ссылка на страницу, на которую нужно перенаправить
  * @param {*} statusErr Статус ошибки (необязательный)
  */
+<<<<<<< HEAD
 /*
 export function goToPage(targetLinkMenu: any, statusErr = null) {
+=======
+export function goToPage(targetLinkMenu: any) {
+>>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   pageContainer.innerHTML = "";
   state2.activePageLink?.classList.remove(ELEMENTS_CLASS.ACTIVE);
   targetLinkMenu.classList.add(ELEMENTS_CLASS.ACTIVE);
 
   if (
+<<<<<<< HEAD
     targetLinkMenu == "http://localhost:8088/feed/profile" ||
     targetLinkMenu == "http://localhost:8088/feed" ||
     targetLinkMenu == "http://localhost:8088/feed/notifications" ||
     targetLinkMenu == "http://localhost:8088/feed/settings"
+=======
+    targetLinkMenu == "http://pushart.online/feed/profile" ||
+    targetLinkMenu == "http://pushart.online/feed" ||
+    targetLinkMenu == "http://pushart.online/feed/notifications" ||
+    targetLinkMenu == "http://pushart.online/feed/settings" ||
+    targetLinkMenu == "http://localhost:8080/feed/profile" ||
+    targetLinkMenu == "http://localhost:8080/feed" ||
+    targetLinkMenu == "http://localhost:8080/feed/notifications" ||
+    targetLinkMenu == "http://localhost:8080/feed/settings"
+>>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
   ) {
     state.activePageLink = targetLinkMenu;
-    config.menu[targetLinkMenu.dataset.section]
-      .render(statusErr)
-      .then((newPageElement: any) => {
-        pageContainer.appendChild(newPageElement);
-      });
+    config.menu[targetLinkMenu.dataset.section].render();
     return;
   }
 
-  const newPageElement =
-    config.menu[targetLinkMenu.dataset.section].render(statusErr);
-  if (newPageElement) {
-    pageContainer.appendChild(newPageElement);
-    //pageContainer.innerHTML = newPageElement;
-  }
+  config.menu[targetLinkMenu.dataset.section].render();
 }
 */
 
@@ -183,6 +203,13 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
 
 var root: HTMLElement | null = startA(config.menu, state);
 
+export const Virtual: any = new VirtualDOM();
+render(Virtual);
+
 export const pageContainer = document.createElement("main");
 root?.appendChild(pageContainer);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9d42475ac93784d07320ccdb38ff5a0f802b4773
 route(LINKS.HOME.HREF, window.location.pathname);

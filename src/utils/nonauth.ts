@@ -1,11 +1,10 @@
-import { RouterLinks, state } from "../consts";
-import { goToPage } from "../index";
+import { LINKS } from "../consts";
 import { hasLogged } from "./hasLogged";
 import { route } from "./routing";
 
 export function nonauth() {
   if (!hasLogged()) {
-    route(RouterLinks.HOME);
+    route(LINKS.HOME.HREF);
     return true;
   }
 }
