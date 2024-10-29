@@ -76,5 +76,6 @@ export function renderHome() {
       // Начинаем анимацию
       requestAnimationFrame(animate);
     }
+    return container;
   }
 }

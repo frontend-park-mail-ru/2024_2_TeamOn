@@ -83,4 +83,5 @@ export function renderSignup() {
     e.preventDefault();
     validateSignupForm(form, inputUsername, inputPassword, inputRepeatPassword);
   });
+  return container;
 }

@@ -1,10 +1,7 @@
 import { ELEMENTS_CLASS, state } from "../../consts";
 import { renderSidebar } from "../feed/feedView";
 import { getCurrentUser } from "../profile/profile";
-import {
-  validateSettingsPassword,
-  validateSettingsPersonalize,
-} from "./settings";
+import { validateSettingsPassword, validateMainInfo } from "./settings";
 export async function renderSettings() {
   try {
     const user: any | null = await getCurrentUser(window.location.pathname);
@@ -68,32 +65,38 @@ function createContentContainer(): HTMLDivElement {
 }
 
 function setupTabs(tabs: HTMLDivElement, contentContainer: HTMLDivElement) {
-  const tabNames = ["Основная информация", "Безопасность", "Получение дохода"];
-  tabNames.forEach((tabName, index) => {
-    const tabLink = document.createElement("a");
-    tabLink.href = "#";
-    tabLink.textContent = tabName;
-    tabLink.className = index === 0 ? "active" : "";
+  ["Основная информация", "Безопасность", "Получение дохода"].forEach(
+    (tabName, index) => {
+      const tabLink = document.createElement("a");
+      tabLink.href = "#";
+      tabLink.textContent = tabName;
+      tabLink.className = index === 0 ? "active" : "";
 
-    tabLink.addEventListener("click", (event) => {
-      event.preventDefault();
-      tabs
-        .querySelectorAll("a")
-        .forEach((link) => link.classList.remove("active"));
-      tabLink.classList.add("active");
-      updateContent(contentContainer, index);
-    });
-
-    tabs.appendChild(tabLink);
-  });
+      // Обработчик события клика
+      tabLink.addEventListener("click", (event) => {
+        event.preventDefault();
+        tabs
+          .querySelectorAll("a")
+          .forEach((link) => link.classList.remove("active"));
+        tabLink.classList.add("active");
+        updateContent(contentContainer, index);
+      });
+      tabs.appendChild(tabLink);
+    },
+  );
 }
 
 function updateContent(contentContainer: HTMLDivElement, index: number) {
   contentContainer.innerHTML = "";
-  if (index === 0) {
-    contentContainer.appendChild(createProfileForm());
-  } else if (index === 1) {
-    contentContainer.appendChild(createSecurityForm());
+  switch (index) {
+    case 0:
+      contentContainer.appendChild(createProfileForm());
+      break;
+    case 1:
+      contentContainer.appendChild(createSecurityForm());
+      break;
+    default:
+      console.error("Страница не найдена", index);
   }
 }
 
@@ -103,7 +106,6 @@ function createProfileForm(): HTMLDivElement {
 
   const formTitle = document.createElement("h2");
   formTitle.textContent = "Персонализируйте свою страницу";
-
   formContainer.appendChild(formTitle);
 
   const usernameRow = document.createElement("div");
@@ -134,22 +136,26 @@ function createProfileForm(): HTMLDivElement {
   saveButton.className = ELEMENTS_CLASS.SEND_TIP.COMBINE;
   saveButton.textContent = "Сохранить";
 
-  //   saveButton.addEventListener('click', (event) => {
-  //       event.preventDefault();
-  //       validationMainInfoSave(usernameInput, emailInput, usernameError, emailError);
-  //   });
   formContainer.addEventListener("input", (event) => {
     event.preventDefault();
-    validationMainInfoSave(
-      usernameInput,
-      emailInput,
-      usernameError,
-      emailError,
-    );
+
+    const { usernameError: usernameErrorMsg, emailError: emailErrorMsg } =
+      validationMainInfoSave(usernameInput.value, emailInput.value);
+    usernameError.textContent = usernameErrorMsg || "";
+    emailError.textContent = emailErrorMsg || "";
   });
+
   formContainer.append(roleRow, profilePicRow, saveButton);
 
   return formContainer;
+}
+
+export function validationMainInfoSave(
+  username: string,
+  email: string,
+): { usernameError: string; emailError: string } {
+  const { usernameError, emailError } = validateMainInfo(username, email);
+  return { usernameError, emailError };
 }
 
 function createSecurityForm(): HTMLDivElement {
@@ -193,10 +199,6 @@ function createSecurityForm(): HTMLDivElement {
   saveButton.className = ELEMENTS_CLASS.SEND_TIP.COMBINE;
   saveButton.textContent = "Сохранить";
 
-  //   saveButton.addEventListener('click', (event) => {
-  //       event.preventDefault();
-  //       validationSecuritySave(oldPasswordInput, newPasswordInput, confirmPasswordInput, oldPasswordError, newPasswordError, confirmPasswordError);
-  //   });
   formContainer.addEventListener("input", (event) => {
     event.preventDefault();
     validationSecuritySave(
@@ -220,6 +222,28 @@ function createSecurityForm(): HTMLDivElement {
   );
 
   return formContainer;
+}
+
+function validationSecuritySave(
+  oldPasswordInput: HTMLInputElement,
+  newPasswordInput: HTMLInputElement,
+  confirmPasswordInput: HTMLInputElement,
+  oldPasswordError: HTMLDivElement,
+  newPasswordError: HTMLDivElement,
+  confirmPasswordError: HTMLDivElement,
+): void {
+  oldPasswordError.textContent = "";
+  newPasswordError.textContent = "";
+  confirmPasswordError.textContent = "";
+
+  let passwordStrength = 0; // Переменная для хранения силы пароля
+  validateSettingsPassword(
+    newPasswordInput,
+    confirmPasswordInput,
+    passwordStrength,
+    newPasswordError,
+    confirmPasswordError,
+  );
 }
 
 function createLabel(text: string, htmlFor: string): HTMLLabelElement {
@@ -305,52 +329,4 @@ function createErrorMessageStrength(): HTMLDivElement {
   const errorMessage = document.createElement("div");
   errorMessage.className = "password-strength";
   return errorMessage;
-}
-
-function validationMainInfoSave(
-  usernameInput: HTMLInputElement,
-  emailInput: HTMLInputElement,
-  usernameError: HTMLDivElement,
-  emailError: HTMLDivElement,
-): void {
-  usernameError.textContent = "";
-  emailError.textContent = "";
-
-  const username = usernameInput.value;
-  const email = emailInput.value;
-  validateSettingsPersonalize(email, emailError, username, usernameError);
-  //   const errors = validateSettings(username, email, '', '', '');
-  //   if (errors.length > 0) {
-  //       errors.forEach(error => {
-  //           if (error.includes('Имя пользователя')) {
-  //               usernameError.textContent = error;
-  //           } else if (error.includes('адрес электронной почты')) {
-  //               emailError.textContent = error;
-  //           }
-  //       });
-  //   } else {
-  //       alert('Настройки успешно сохранены!');
-  //   }
-}
-
-function validationSecuritySave(
-  oldPasswordInput: HTMLInputElement,
-  newPasswordInput: HTMLInputElement,
-  confirmPasswordInput: HTMLInputElement,
-  oldPasswordError: HTMLDivElement,
-  newPasswordError: HTMLDivElement,
-  confirmPasswordError: HTMLDivElement,
-): void {
-  oldPasswordError.textContent = "";
-  newPasswordError.textContent = "";
-  confirmPasswordError.textContent = "";
-
-  let passwordStrength = 0; // Переменная для хранения силы пароля
-  validateSettingsPassword(
-    newPasswordInput,
-    confirmPasswordInput,
-    passwordStrength,
-    newPasswordError,
-    confirmPasswordError,
-  );
 }

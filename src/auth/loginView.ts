@@ -97,4 +97,5 @@ export function renderLogin() {
   });
 
   removeItemLocalStorage(findUsername());
+  return container;
 }
