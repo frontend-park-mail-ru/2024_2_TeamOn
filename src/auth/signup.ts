@@ -149,8 +149,10 @@ export function validatePasswords(
   // Проверка совпадения паролей
   if (inputRepeatPassword.value !== inputPassword.value) {
     showError(inputRepeatPassword, "Пароли должны совпадать");
-    hasError = true;
+    return;
   } else {
+    passwordStrength++;
+    updatePasswordStrengthBar(passwordStrength);
     removeError(inputRepeatPassword);
   }
 }

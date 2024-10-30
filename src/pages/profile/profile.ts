@@ -290,6 +290,7 @@ export async function renderProfile() {
 
     logoutbutton.addEventListener("click", (event: any) => {
       event.preventDefault();
+      alert(user.username)
       removeItemLocalStorage(user.username);
       route(LINKS.HOME.HREF);
     });
