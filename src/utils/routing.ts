@@ -41,39 +41,6 @@ interface MenuElements {
   signup: HTMLElement;
 }
 
-// function updatePageContent(render: string): void {
-//   const feedRegex = /^\/profile\/\d+$/;
-//   const menuElements: MenuElements = state.menuElements as MenuElements;
-
-//   if (feedRegex.test(render) && !nonauth()) {
-//     goToPage(menuElements.profile);
-//     return;
-//   }
-
-//   const linkToMenuMap: Record<string, keyof MenuElements> = {
-//     [LINKS.FEED.HREF]: "feed",
-//     [LINKS.PROFILE.HREF]: "profile",
-//     [LINKS.SETTINGS.HREF]: "settings",
-//     [LINKS.NOTIFICATIONS.HREF]: "notifications",
-//     [LINKS.HOME.HREF]: "home",
-//     [LINKS.LOGIN.HREF]: "login",
-//     [LINKS.SIGNUP.HREF]: "signup",
-//   };
-
-//   if (linkToMenuMap[render]) {
-//     if (
-//       nonauth() &&
-//       render !== LINKS.HOME.HREF &&
-//       render !== LINKS.LOGIN.HREF &&
-//       render !== LINKS.SIGNUP.HREF
-//     ) {
-//       return;
-//     }
-//     goToPage(menuElements[linkToMenuMap[render]]);
-//   } else {
-//     goToPage(menuElements.home);
-//   }
-// }
 function updatePageContent(render: string): void {
   const feedRegex = /^\/profile\/\d+$/;
   const menuElements: MenuElements = state.menuElements as MenuElements;
