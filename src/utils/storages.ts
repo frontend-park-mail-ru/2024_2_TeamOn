@@ -17,7 +17,7 @@ export function getItemLocalStorage(Item: any) {
  */
 export function removeItemLocalStorage(Item: any) {
   try {
-    localStorage.clear()
+    localStorage.clear();
     return localStorage.removeItem(Item);
   } catch (error) {
     console.error("Ошибка удаления стоража", error);
