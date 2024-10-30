@@ -31,54 +31,83 @@ class Routing {
   }
 }
 
+interface MenuElements {
+  profile: HTMLElement;
+  feed: HTMLElement;
+  settings: HTMLElement;
+  notifications: HTMLElement;
+  home: HTMLElement;
+  login: HTMLElement;
+  signup: HTMLElement;
+}
+
+// function updatePageContent(render: string): void {
+//   const feedRegex = /^\/profile\/\d+$/;
+//   const menuElements: MenuElements = state.menuElements as MenuElements;
+
+//   if (feedRegex.test(render) && !nonauth()) {
+//     goToPage(menuElements.profile);
+//     return;
+//   }
+
+//   const linkToMenuMap: Record<string, keyof MenuElements> = {
+//     [LINKS.FEED.HREF]: "feed",
+//     [LINKS.PROFILE.HREF]: "profile",
+//     [LINKS.SETTINGS.HREF]: "settings",
+//     [LINKS.NOTIFICATIONS.HREF]: "notifications",
+//     [LINKS.HOME.HREF]: "home",
+//     [LINKS.LOGIN.HREF]: "login",
+//     [LINKS.SIGNUP.HREF]: "signup",
+//   };
+
+//   if (linkToMenuMap[render]) {
+//     if (
+//       nonauth() &&
+//       render !== LINKS.HOME.HREF &&
+//       render !== LINKS.LOGIN.HREF &&
+//       render !== LINKS.SIGNUP.HREF
+//     ) {
+//       return;
+//     }
+//     goToPage(menuElements[linkToMenuMap[render]]);
+//   } else {
+//     goToPage(menuElements.home);
+//   }
+// }
 function updatePageContent(render: string): void {
   const feedRegex = /^\/profile\/\d+$/;
-  if (feedRegex.test(render)) {
-    if (nonauth()) {
-      return;
-    }
-    goToPage((state.menuElements as { profile: HTMLElement }).profile);
+  const menuElements: MenuElements = state.menuElements as MenuElements;
+
+  if (
+    feedRegex.test(render) ||
+    [
+      LINKS.FEED.HREF,
+      LINKS.PROFILE.HREF,
+      LINKS.SETTINGS.HREF,
+      LINKS.NOTIFICATIONS.HREF,
+    ].includes(render)
+  ) {
+    if (nonauth()) return;
+    const pageMap: Record<string, keyof MenuElements> = {
+      [LINKS.FEED.HREF]: "feed",
+      [LINKS.PROFILE.HREF]: "profile",
+      [LINKS.SETTINGS.HREF]: "settings",
+      [LINKS.NOTIFICATIONS.HREF]: "notifications",
+    };
+    goToPage(menuElements[pageMap[render]] || menuElements.profile);
     return;
   }
-  switch (render) {
-    case LINKS.FEED.HREF:
-      if (nonauth()) {
-        break;
-      }
-      goToPage((state.menuElements as { feed: HTMLElement }).feed);
-      break;
-    case LINKS.PROFILE.HREF:
-      if (nonauth()) {
-        break;
-      }
-      goToPage((state.menuElements as { profile: HTMLElement }).profile);
-      break;
-    case LINKS.SETTINGS.HREF:
-      if (nonauth()) {
-        break;
-      }
-      goToPage((state.menuElements as { settings: HTMLElement }).settings);
-      break;
-    case LINKS.NOTIFICATIONS.HREF:
-      if (nonauth()) {
-        break;
-      }
-      goToPage(
-        (state.menuElements as { notifications: HTMLElement }).notifications,
-      );
-      break;
-    case LINKS.HOME.HREF:
-      goToPage((state.menuElements as { home: HTMLElement }).home);
-      break;
-    case LINKS.LOGIN.HREF:
-      goToPage((state.menuElements as { login: HTMLElement }).login);
-      break;
-    case LINKS.SIGNUP.HREF:
-      goToPage((state.menuElements as { signup: HTMLElement }).signup);
-      break;
-    default: {
-      goToPage((state.menuElements as { home: HTMLElement }).home);
-    }
+
+  const defaultPages: Record<string, keyof MenuElements> = {
+    [LINKS.HOME.HREF]: "home",
+    [LINKS.LOGIN.HREF]: "login",
+    [LINKS.SIGNUP.HREF]: "signup",
+  };
+
+  if (defaultPages[render]) {
+    goToPage(menuElements[defaultPages[render]]);
+  } else {
+    goToPage(menuElements.home);
   }
 }
 

@@ -1,0 +1,3 @@
+cd ../../ && npm run build
+
+sudo ssh -i /home/alex/.ssh/2024-2-TeamOn-HB2FGg4B.cer ubuntu@89.208.221.5 'sudo rm -r /var/www/mysite/dir && sudo git clone https://github.com/frontend-park-mail-ru/2024 /var/www/mysite/dir'

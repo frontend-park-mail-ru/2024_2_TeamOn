@@ -106,7 +106,7 @@ form input[type=text]:focus {
 }
 
 .home-container {
-  background-image: url("photos/home.png");
+  background-image: url("photos/fon.png");
   position: relative;
 }
 
@@ -641,6 +641,9 @@ form input[type=text]:focus {
   cursor: pointer;
   font-size: 18px;
   color: #666;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 
 /* FEED */

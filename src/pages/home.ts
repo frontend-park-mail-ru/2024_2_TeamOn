@@ -1,7 +1,7 @@
 import { ELEMENTS_CLASS, LINKS } from "../consts";
 import { route } from "../utils/routing";
 import { hasLogged } from "../utils/hasLogged";
-import { ClearHistoryBrowser } from "../utils/clearHistory";
+import { clearHistoryBrowser } from "../utils/clearHistory";
 import { pageContainer } from "../index";
 import { createElement, createText, update } from "../lib/vdom/lib";
 import { controllerMask, createMask } from "../utils/utilsView/circle";
@@ -15,7 +15,7 @@ export function renderHome() {
     route(LINKS.FEED.HREF);
   } else {
     document.body.style.height = "100vh";
-    ClearHistoryBrowser();
+    clearHistoryBrowser();
 
     const vdom: VNode = createElement(
       "div",

@@ -8,11 +8,8 @@ export function hasLogged() {
 }
 
 export function findUsername() {
-  var username: any = null;
-  for (let key in localStorage) {
-    if (localStorage.hasOwnProperty(key)) {
-      username = key;
-    }
-  }
-  return username;
+  return (
+    Object.keys(localStorage).find((key) => localStorage.hasOwnProperty(key)) ||
+    null
+  );
 }
