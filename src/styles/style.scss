@@ -173,6 +173,13 @@ form input[type="text"]:focus {
   justify-content: center;
   align-items: center;
 }
+.save__button {
+  color: green;
+}
+.delete__button {
+  color: red;
+}
+
 .create__button {
   position: relative;
   height: 30px;
@@ -819,17 +826,6 @@ form input[type="text"]:focus {
 .comments {
   background-image: url("photos/icon_comment.png");
 }
-
-// .amount-comments:hover,
-// .comments:hover,
-// .likes:hover,
-// .amount-likes:hover,
-// .author-name:hover {
-//   cursor: pointer;
-//   filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%)
-//     hue-rotate(0deg) brightness(100%) contrast(100%);
-//   transition: filter 0.1s ease;
-// }
 .likes-container:hover .amount-likes,
 .comments-container:hover .amount-comments,
 .likes-container:hover .likes,
@@ -1147,8 +1143,11 @@ select {
     height: 50%;
     font-size: 14px;
   }
-  .modal {
-    max-width: 46%;
+  .modal__tip,
+  .modal__createpost,
+  .modal__deletepost,
+  .modal__editpost {
+    max-width: 90%;
   }
   .profile {
     flex-direction: column;
