@@ -69,8 +69,8 @@ function validateErrorLoginForm(inputLogin: string, inputPassword: string) {
 export function authLogin(form: any, inputLogin: any, inputPassword: any) {
   if (!validateLoginForm(form, inputLogin, inputPassword)) {
     fetchAjax(
-      LOCATIONS.LOGIN.METHOD,
-      LOCATIONS.LOGIN.HREF,
+      LOCATIONS.AUTH.LOGIN.METHOD,
+      LOCATIONS.AUTH.LOGIN.HREF,
       { username: inputLogin.value, password: inputPassword.value },
       (response) => {
         if (response.ok) {

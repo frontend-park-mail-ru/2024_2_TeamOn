@@ -251,8 +251,8 @@ export function authSignup(
 ) {
   if (!validateSignupForm(form, username, password, inputRepeatPassword)) {
     fetchAjax(
-      LOCATIONS.SIGNUP.METHOD,
-      LOCATIONS.SIGNUP.HREF,
+      LOCATIONS.AUTH.SIGNUP.METHOD,
+      LOCATIONS.AUTH.SIGNUP.HREF,
       { username: username.value, password: password.value },
       (response) => {
         if (response.ok) {

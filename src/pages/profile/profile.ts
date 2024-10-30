@@ -1,4 +1,4 @@
-import { ELEMENTS_CLASS, LINKS, LOCATIONS } from "../../consts";
+import { ELEMENTS_CLASS, LINKS, LOCATIONS, QUERY } from "../../consts";
 import { fetchAjax } from "../../utils/fetchAjax";
 import { removeItemLocalStorage } from "../../utils/storages";
 import { route } from "../../utils/routing";
@@ -19,56 +19,86 @@ import { createElement, createText, update } from "../../lib/vdom/lib";
 import { pageContainer } from "../../index";
 import { findUsername } from "../../utils/hasLogged";
 import { modifierSidebar } from "../feed/feed";
+var offset = 0;
 
-function getUserPosts() {
-  return [
+function getUserPosts(link: string) {
+  return new Promise((resolve, reject) => {
+    offset += QUERY.LIMIT;
+    const jsonString = `[
+  {
+    "postId": "1",
+    "title": "Это тоже заголовок",
+    "content": "Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?",
+    "likes": 10,
+    "isLiked": false,
+    "createdAt": "30.10.2024"
+  },
     {
-      title: "Как прошла предзащита",
-      content:
-        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "19.10.2024",
-      likes: 34,
-      comments: 34,
-    },
+    "postId": "2",
+    "title": "Ого и это заголовок, но последний",
+    "content": "Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?",
+    "likes": 11,
+    "isLiked": false,
+    "createdAt": "30.10.2024"
+  },
     {
-      title: "Как прошла предзащита",
-      content:
-        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "19.10.2024",
-      likes: 34,
-      comments: 34,
-    },
+    "postId": "3",
+    "title": "Ну тоже заголовок ладно, теперь точно последний",
+    "content": "Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?",
+    "likes": 500,
+    "isLiked": false,
+    "createdAt": "30.10.2024"
+  },
     {
-      title: "Как прошла предзащита/DADA",
-      content:
-        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "19.10.2024",
-      likes: 34,
-      comments: 34,
-    },
-    {
-      title: "Как прошла предзащита",
-      content:
-        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "19.10.2024",
-      likes: 34,
-      comments: 34,
-    },
-  ];
+    "postId": "4",
+    "title": "Вот-вот и уже все, последний точно",
+    "content": "Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?",
+    "likes": 90,
+    "isLiked": false,
+    "createdAt": "30.10.2024"
+  }
+]`;
+
+    try {
+      const post = JSON.parse(jsonString); // Конвертация JSON в объект
+      resolve(post); // Возвращаем объект
+    } catch (error) {
+      reject(error);
+    }
+    // fetchAjax(
+    // link == LINKS.
+    //   LOCATIONS.POSTS.AUTHOR_POST.METHOD,
+    //   LOCATIONS.POSTS.AUTHOR_POST.HREF +
+    //     `${authorId/me}?limit=${QUERY.LIMIT}&offset=${offset}`,
+    //   null,
+    //   (response) => {
+    //     if (response.ok) {
+    //       response.json().then((data) => {
+    //         resolve(data);
+    //       });
+    //     } else if (response.status === 404) {
+    //       reject("Пост не найден");
+    //     } else {
+    //       reject(new Error("Внутреняя ошибка сервера"));
+    //     }
+    //   },
+    // );
+  });
 }
 /**
- * Получение текущего профиля через объект типа промис
+ * Получение текущей страницы профиля через объект типа промис
  * @returns Информация о пользователе
  */
-export function getCurrentUser(link: string) {
+export function getPageAuthor(link: string) {
+  const authorId = 12;
   return new Promise((resolve, reject) => {
     fetchAjax(
-      link === LINKS.PROFILE.HREF
-        ? LOCATIONS.PROFILE.METHOD
-        : LOCATIONS.OTHER_PAGE.METHOD,
-      link === LINKS.PROFILE.HREF
-        ? LOCATIONS.PROFILE.HREF
-        : LOCATIONS.OTHER_PAGE.HREF,
+      "GET",
+      "/api/profile",
+      // LOCATIONS.AUTHOR.GET_PAGE.METHOD,
+      // link === LINKS.PROFILE.HREF
+      //   ? "/api/author/me/media"
+      //   : `/api/author/${authorId}/media`,
       null,
       (response) => {
         if (response.ok) {
@@ -76,7 +106,62 @@ export function getCurrentUser(link: string) {
             resolve(data);
           });
         } else if (response.status === 401) {
-          route(LINKS.LOGIN.HREF);
+          route(LINKS.ERROR.HREF);
+        } else {
+          reject(new Error("Ответ от фетча с ошибкой"));
+        }
+      },
+    );
+  });
+}
+
+function getPageMedia(link: string) {
+  const authorId = 12;
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      LOCATIONS.AUTHOR.GET_PAGE_MEDIA.METHOD,
+      link === LINKS.PROFILE.HREF
+        ? "/api/author/me/media"
+        : `/api/author/${authorId}/media`,
+      null,
+      (response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            resolve(data);
+          });
+        } else if (response.status === 401) {
+          route(LINKS.ERROR.HREF);
+        } else {
+          reject(new Error("Ответ от фетча с ошибкой"));
+        }
+      },
+    );
+  });
+}
+/**
+ * Получение данных о пользователе через объект типа промис
+ * @returns Информация о пользователе
+ */
+export function getCurrentUser(link: string) {
+  const authorId = 12;
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      link === LINKS.PROFILE.HREF
+        ? LOCATIONS.AUTHOR.GET_PAGE.METHOD
+        : LOCATIONS.AUTHOR.GET_PAGE.METHOD,
+      link === LINKS.PROFILE.HREF
+        ? LOCATIONS.AUTHOR.GET_PAGE.HREF
+        : LOCATIONS.AUTHOR.GET_PAGE.HREF,
+      // LOCATIONS.ACCOUNT.GET_ACCOUNT.METHOD,
+      // LOCATIONS.ACCOUNT.GET_ACCOUNT.HREF,
+      null,
+      (response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            resolve(data);
+          });
+        } else if (response.status === 401) {
+          route(LINKS.ERROR.HREF);
         } else {
           reject(new Error("Ответ от фетча с ошибкой"));
         }
@@ -104,22 +189,15 @@ export function renderLogoutButton() {
   return logout;
 }
 
-function renderPosts() {
-  const userPosts = getUserPosts();
-
+function renderPosts(authorPosts: any[]) {
   var posts: any = [];
-  userPosts.forEach((post: any) => {
+  authorPosts.forEach((post: any) => {
     const container: VNode = renderUserPosts(post);
     posts.push(container);
   });
   return posts;
 }
-function modifirePosts(containers: any) {
-  const posts: any = getUserPosts();
-  const containersPost = containers.querySelectorAll(".post");
-  containersPost.forEach((container: any, index: any) => {
-    customizePost(container, posts[index]);
-  });
+function modifirePosts(containers: any, posts: any[]) {
   const menu = containers.querySelectorAll(`.menu-icon`);
   const dropdownMenu = containers.querySelectorAll(`.dropdown-menu`);
   document.body.addEventListener("click", () => {
@@ -194,14 +272,27 @@ function modifirePosts(containers: any) {
     });
   });
 }
+function handleImageUpload() {
+  const button: any = document.querySelector(`.image-upload-label`);
+  const profilePicInput: any = document.querySelector(`.image-upload-input`);
+  const profilePic: any = document.querySelector(`.background-image`);
 
-function customizePost(container: any, post: any) {
-  const title = container.querySelector(".title");
-  title.innerHTML = post.title;
-  const content = container.querySelector(".content");
-  content.innerHTML = post.content;
-  const date = container.querySelector(".date");
-  date.innerHTML = post.date;
+  // Добавляем обработчик события change к input
+  profilePicInput.addEventListener("change", (event: any) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e: any) {
+        profilePic.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Добавляем обработчик события click к кнопке
+  button.addEventListener("click", () => {
+    profilePicInput.click(); // Программно вызываем клик на input
+  });
 }
 /**
  * Асинхронная функция рендеринга профиля пользователя.
@@ -210,9 +301,10 @@ function customizePost(container: any, post: any) {
  */
 export async function renderProfile() {
   try {
-    const user: any = await getCurrentUser(window.location.pathname);
-    const posts: any = getUserPosts();
-    if (!user) {
+    const authorData: any = await getPageAuthor(window.location.pathname);
+    const authorPosts: any = await getUserPosts(window.location.pathname);
+    // const authorMedias: any = await getPageMedia(window.location.pathname);
+    if (!authorData) {
       throw new Error("Пользователь не найден");
     }
 
@@ -222,23 +314,44 @@ export async function renderProfile() {
     const vdom: VNode = createElement("div", { class: "main-content" }, [
       createElement("div", { class: ELEMENTS_CLASS.PROFILE.FORM }, [
         createElement("div", { class: ELEMENTS_CLASS.PROFILE.HEADER }, [
-          renderVibe(user),
+          renderVibe(authorData),
+          createElement(
+            "label",
+            {
+              class: "image-upload-label",
+              type: "file",
+              accept: "image/*",
+              htmlFor: "image-upload", // Ссылка на скрытый input
+            },
+            [createText("Выбрать обложку")], // Текст кнопки
+          ),
+          createElement(
+            "input",
+            {
+              id: "image-upload", // Уникальный ID для связи с label
+              class: "image-upload-input",
+              type: "file",
+              accept: "image/*",
+              style: "display: none;",
+            },
+            [],
+          ),
+          createElement("img", { class: "background-image" }, []),
         ]),
         createElement("div", { class: ELEMENTS_CLASS.PROFILE.BLOCK }, [
-          renderUserInfo(user, null),
+          renderUserInfo(authorData, null),
           createElement("div", { class: ELEMENTS_CLASS.PROFILE.RIGHT }, [
-            renderUserStats(user, user),
+            renderUserStats(authorData, authorPosts),
             renderButtonCreatePost(),
-            ...renderPosts(),
+            ...renderPosts(authorPosts),
           ]),
         ]),
       ]),
       renderSidebar(),
       renderCreatePost(),
       renderTip(),
-      // createElement("div", { class: "edit" }, []),
-      renderEditPost(posts),
-      renderDeletePost(posts),
+      renderEditPost(authorPosts),
+      renderDeletePost(authorPosts),
     ]);
 
     const container = update(pageContainer, vdom);
@@ -255,7 +368,9 @@ export async function renderProfile() {
 
     if (window.location.pathname === "/feed/profile") {
       const containerCreatePost = container.querySelector(".modal__createpost");
-      const buttonCreatePost: any = container.querySelector(".create-posts");
+      const buttonCreatePost: any = container.querySelector(
+        `.${ELEMENTS_CLASS.CREATE.BLOCK}`,
+      );
 
       buttonCreatePost?.addEventListener("click", () => {
         containerCreatePost.style.display = "block";
@@ -282,7 +397,7 @@ export async function renderProfile() {
       });
     }
 
-    modifirePosts(containerPosts);
+    modifirePosts(containerPosts, authorPosts);
 
     const logoutbutton = container.querySelector(
       `.${ELEMENTS_CLASS.LOGOUT.BLOCK}`,
@@ -290,9 +405,12 @@ export async function renderProfile() {
 
     logoutbutton.addEventListener("click", (event: any) => {
       event.preventDefault();
-      removeItemLocalStorage(user.username);
+      removeItemLocalStorage(authorData.username);
       route(LINKS.HOME.HREF);
     });
+
+    handleImageUpload();
+
     return container;
   } catch (error) {
     console.log("EROR");

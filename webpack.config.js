@@ -35,7 +35,7 @@ module.exports = {
   devServer: {
     static: path.join(__dirname, "dist"),
     open: true,
-    port: 8088,
+    port: 8080,
     historyApiFallback: true,
     headers: {
       "Access-Control-Allow-Origin": "*",
@@ -53,13 +53,17 @@ module.exports = {
         context: "/api/auth",
         target: "http://localhost:8081",
         changeOrigin: true,
-        pathRewrite: { "^/api/auth": "/auth" },
+        pathRewrite: { "^/api/auth": "/auth", "^/api/posts": "" },
       },
       {
         context: "/api/profile",
         target: "http://localhost:8082",
         changeOrigin: true,
-        pathRewrite: { "^/api/profile": "/profile" },
+        pathRewrite: {
+          "^/api/account": "/account",
+          "^/api/author": "/author",
+          "^/api/profile": "/profile",
+        },
       },
     ],
   },

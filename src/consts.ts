@@ -70,23 +70,101 @@ export const LINKS = {
     TEXT: "Уведомления",
   },
 };
-
+export const QUERY = {
+  LIMIT: 10,
+};
 export const LOCATIONS = {
-  LOGIN: {
-    METHOD: "POST",
-    HREF: "/api/auth/login",
+  AUTH: {
+    LOGIN: {
+      METHOD: "POST",
+      HREF: "/api/auth/login",
+    },
+    SIGNUP: {
+      METHOD: "POST",
+      HREF: "/api/auth/register",
+    },
   },
-  SIGNUP: {
-    METHOD: "POST",
-    HREF: "/api/auth/register",
+  ACCOUNT: {
+    GET_ACCOUNT: {
+      METHOD: "GET",
+      HREF: "/api/account",
+    },
+    GET_AVATAR: {
+      METHOD: "GET",
+      HREF: "/api/account/{userId}/avatar", // userId = uuid | me
+    },
+    UPDATE: {
+      METHOD: "POST",
+      HREF: "/api/account/update",
+    },
+    UPDATE_AVATAR: {
+      METHOD: "POST",
+      HREF: "/api/account/update/avatar",
+    },
   },
-  PROFILE: {
-    METHOD: "GET",
-    HREF: "/api/profile",
+  AUTHOR: {
+    GET_PAGE: {
+      METHOD: "GET",
+      HREF: "/api/profile", // + '/me' | '/{authorId}'
+    },
+    // GET_PAGE: {
+    //   METHOD: "GET",
+    //   HREF: "/api/author", // + '/me' | '/{authorId}'
+    // },
+    GET_PAGE_MEDIA: {
+      METHOD: "GET",
+      HREF: "/api/author/{authorId}/media", // authorId = uuid | me
+    },
+    GET_PAYMENTS: {
+      METHOD: "GET",
+      HREF: "/api/author/payments",
+    },
+    UPDATE_STATUS: {
+      METHOD: "POST",
+      HREF: "/api/author/update/info",
+    },
+    UPDATE_BACKGROUND: {
+      METHOD: "POST",
+      HREF: "/api/author/update/background",
+    },
   },
-  OTHER_PAGE: {
-    METHOD: "GET",
-    HREF: "/api/profile",
+  POSTS: {
+    POPULAR_POSTS: {
+      METHOD: "GET",
+      HREF: "/api/posts/feed/popular",
+    },
+    RECENTLY_POSTS: {
+      METHOD: "GET",
+      HREF: "/api/posts/feed/subscriptions",
+    },
+    ADD: {
+      METHOD: "POST",
+      HREF: "/api/posts/post",
+    },
+    UPDATE: {
+      METHOD: "POST",
+      HREF: "/api/posts/post/update",
+    },
+    UPLOAD_POST_MEDIA: {
+      METHOD: "POST",
+      HREF: "/api/posts/post/upload/content",
+    },
+    GET_POST_MEDIA: {
+      METHOD: "GET",
+      HREF: "/api/posts/post/media",
+    },
+    LIKE: {
+      METHOD: "POST",
+      HREF: "/api/posts/post/like",
+    },
+    AUTHOR_POST: {
+      METHOD: "GET",
+      HREF: "/api/posts/author/post", // + '/me' | '/{authorId}'
+    },
+    DELETE_POST: {
+      METHOD: "DELETE",
+      HREF: "/api/posts/delete/post", // + '/{postId}'
+    },
   },
 };
 /**

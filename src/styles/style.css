@@ -198,6 +198,7 @@ form input[type=text]:focus {
   right: 0;
   margin-left: 80%;
   margin-bottom: 5%;
+  margin-top: 5%;
 }
 
 .home-buttons__button {
@@ -243,7 +244,8 @@ form input[type=text]:focus {
 .save__button__effects.primary,
 .delete__button__effects.primary,
 .cancel__button__effects.primary,
-.create__button__effects.primary {
+.create__button__effects.primary,
+.image-upload-label.primary {
   background: #f8f8f8;
   color: black;
   border: none;
@@ -256,7 +258,8 @@ form input[type=text]:focus {
 .save__button__effects.primary:hover,
 .delete__button__effects.primary:hover,
 .cancel__button__effects.primary:hover,
-.create__button__effects.primary:hover {
+.create__button__effects.primary:hover,
+.image-upload-label.primary:hover {
   background: black;
   color: white;
 }
@@ -442,18 +445,30 @@ form input[type=text]:focus {
 }
 
 .header-profile {
-  background-image: url("photos/fon.jpg");
-  background-size: cover;
   color: white;
   padding: 120px;
   text-align: center;
-  box-shadow: 0 2px 5px rgba(255, 0, 0, 0.1);
   border-radius: 10px;
+  height: 200px;
+  overflow: hidden;
+  bottom: 5px;
+}
+
+.background-image {
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 50%;
+  background-size: cover;
+  background-position: center;
+  border: none;
 }
 
 .image-profile {
   background-image: url("photos/timon.jpg");
-  background-size: contain; /* Измените на contain */
+  background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
 }
@@ -463,6 +478,8 @@ form input[type=text]:focus {
   background-color: rgb(243, 243, 243);
   width: 100%;
   height: 100%;
+  top: 50px;
+  position: relative;
 }
 
 .profile .left {
@@ -1050,6 +1067,33 @@ span {
 .main-content h1 {
   font-size: 24px;
   margin-bottom: 20px;
+  z-index: 1;
+  position: relative;
+}
+
+.image-upload-label {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: black; /* Цвет кнопки */
+  color: white; /* Цвет текста */
+  border-radius: 35px; /* Скругление углов */
+  cursor: pointer; /* Указатель при наведении */
+  transition: background-color 0.3s; /* Плавный переход цвета */
+  z-index: 1;
+  position: relative;
+  top: 100%;
+  position: relative;
+  bottom: -40px;
+  opacity: 0.3;
+}
+
+.image-upload-label:hover {
+  background-color: rgb(114, 114, 114); /* Цвет кнопки при наведении */
+}
+
+.image-upload-input {
+  z-index: 1;
+  position: relative;
 }
 
 .tabs {
@@ -1277,6 +1321,11 @@ select {
   .media-post {
     min-width: 150px;
     min-height: 200px;
+  }
+  .image-upload-label {
+    height: 20px;
+    right: 140%;
+    top: -100px;
   }
   .right-content {
     margin-left: 0;

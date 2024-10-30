@@ -93,7 +93,7 @@ function createContainerPost(post: any, mediaContent: any[]) {
           [],
         ),
         createElement("div", { class: ELEMENTS_CLASS.POST.AUTHOR.NAME }, [
-          createText(post.authorName),
+          createText(post.authorUsername),
         ]),
       ]),
       createElement("div", { class: ELEMENTS_CLASS.POST.TITLE }, [
@@ -115,16 +115,6 @@ function createContainerPost(post: any, mediaContent: any[]) {
           ),
           createElement("h3", { class: ELEMENTS_CLASS.POST.LIKES.AMOUNT }, [
             createText(post.likes),
-          ]),
-        ]),
-        createElement("div", { class: ELEMENTS_CLASS.POST.COMMENTS.BLOCK }, [
-          createElement(
-            "div",
-            { class: ELEMENTS_CLASS.POST.COMMENTS.ELEMENT },
-            [],
-          ),
-          createElement("h3", { class: ELEMENTS_CLASS.POST.COMMENTS.AMOUNT }, [
-            createText(post.comments),
           ]),
         ]),
       ]),

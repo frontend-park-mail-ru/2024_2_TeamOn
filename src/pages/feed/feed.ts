@@ -1,4 +1,11 @@
-import { ELEMENTS_CLASS, LINKS, sidebarLinks, state } from "../../consts";
+import {
+  ELEMENTS_CLASS,
+  LINKS,
+  LOCATIONS,
+  QUERY,
+  sidebarLinks,
+  state,
+} from "../../consts";
 import { getCurrentUser } from "../profile/profile";
 import {
   renderSearchbar,
@@ -11,58 +18,60 @@ import { createElement, createText, update } from "../../lib/vdom/lib";
 import { pageContainer } from "../../index";
 import { route } from "../../utils/routing";
 import { removeItemLocalStorage } from "../../utils/storages";
+import { fetchAjax } from "../../utils/fetchAjax";
 
-function getPopularPosts() {
-  return [
-    {
-      id: 1,
-      avatarSrc:
-        "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
-      authorName: "Alolo",
-      title: "Как прошла предзащита",
-      content:
-        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "19.10.2024",
-      likes: 34,
-      comments: 34,
-    },
-    {
-      id: 2,
-      avatarSrc:
-        "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
-      authorName: "Anatolich",
-      title: "Как прошла предзащита",
-      content:
-        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "19.10.2024",
-      likes: 34,
-      comments: 34,
-    },
-    {
-      id: 3,
-      avatarSrc:
-        "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
-      authorName: "Anatolich",
-      title: "Как прошла предзащита",
-      content:
-        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "19.10.2024",
-      likes: 34,
-      comments: 34,
-    },
-    {
-      id: 4,
-      avatarSrc:
-        "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
-      authorName: "Anatolich",
-      title: "Как прошла предзащита",
-      content:
-        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "19.10.2024",
-      likes: 34,
-      comments: 34,
-    },
-  ];
+var offset = 0;
+
+async function getPopularPosts() {
+  return new Promise((resolve, reject) => {
+    offset += QUERY.LIMIT;
+    const jsonString = `[
+      {
+        "postId": "1",
+        "title": "Заголовок",
+        "content": "Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к постуЭто контент к посту",
+        "authorUsername": "author123",
+        "authorId": "authorId123",
+        "likes": "10",
+        "layer": "1",
+        "isLiked": "false"
+      },
+      {
+        "postId": "2",
+        "title": "Заголовок",
+        "content": "Это контент к  посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к постуЭто контент к посту",
+        "authorUsername": "author12",
+        "authorId": "authorId12",
+        "likes": "10",
+        "layer": "1",
+        "isLiked": "false"
+      }
+    ]`;
+
+    try {
+      const popularPost = JSON.parse(jsonString); // Конвертация JSON в объект
+      resolve(popularPost); // Возвращаем объект
+    } catch (error) {
+      reject(error);
+    }
+    // fetchAjax(
+    //   LOCATIONS.POSTS.POPULAR_POSTS.METHOD,
+    //   LOCATIONS.POSTS.POPULAR_POSTS.HREF +
+    //     `?limit=${QUERY.LIMIT}&offset=${offset}`,
+    //   null,
+    //   (response) => {
+    //     if (response.ok) {
+    //       response.json().then((data) => {
+    //         resolve(data);
+    //       });
+    //     } else if (response.status === 400) {
+    //       route(LINKS.ERROR.HREF);
+    //     } else {
+    //       reject(new Error("Внутреняя ошибка сервера"));
+    //     }
+    //   },
+    // );
+  });
 }
 function getmedia() {
   return [
@@ -82,100 +91,140 @@ function getmedia() {
     },
   ];
 }
-function getRecentlyPosts() {
-  return [
-    {
-      id: 1,
-      avatarSrc:
-        "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
-      authorName: "Anatolich",
-      title: "Как прошла предзащита",
-      content:
-        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "19.10.2024",
-      likes: 34,
-      comments: 34,
-    },
-    {
-      id: 2,
-      avatarSrc:
-        "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
-      authorName: "Anatolich",
-      title: "Как прошла предзащита",
-      content:
-        "На предзащите сидели порядка 60 человек 10 из которых это преподы. Все прошло просто замечательно. Была комфортная обстановка. Задавали понятные и интересные вопросы на подумать. Учили для себя что-то важное",
-      date: "19.10.2024",
-      likes: 34,
-      comments: 34,
-    },
-  ];
+async function getRecentlyPosts() {
+  return new Promise((resolve, reject) => {
+    offset += QUERY.LIMIT;
+    const jsonString = `[
+      {
+        "postId": "1",
+        "title": "Заголовок",
+        "content": "Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к постуЭто контент к посту",
+        "authorUsername": "author123",
+        "authorId": "authorId123",
+        "likes": "10",
+        "layer": "1",
+        "isLiked": "false"
+      },
+        {
+          "postId": "1",
+          "title": "Заголовок",
+          "content": "Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к постуЭто контент к посту",
+          "authorUsername": "author123",
+          "authorId": "authorId123",
+          "likes": "10",
+          "layer": "1",
+          "isLiked": "false"
+        }
+    ]`;
+
+    try {
+      const recentPost = JSON.parse(jsonString); // Конвертация JSON в объект
+      resolve(recentPost);
+    } catch (error) {
+      reject(error);
+    }
+    // fetchAjax(
+    //   LOCATIONS.POSTS.RECENTLY_POSTS.METHOD,
+    //   LOCATIONS.POSTS.RECENTLY_POSTS.HREF +
+    //     `?limit=${QUERY.LIMIT}&offset=${offset}`,
+    //   null,
+    //   (response) => {
+    //     if (response.ok) {
+    //       response.json().then((data) => {
+    //         resolve(data);
+    //       });
+    //     } else if (response.status === 400) {
+    //       // route(LINKS.ERROR.HREF);
+    //     } else {
+    //       reject(new Error("Внутреняя ошибка сервера"));
+    //     }
+    //   },
+    // );
+  });
 }
 /**
  * Берет каждый пост и наполняет его
  * @param containerPopularPosts Контейнер популярных постов
  * @param containerRecentlyPosts Контейнер недавних постов
  */
-function modifirePosts(
+async function modifirePosts(
   containerPopularPosts: any,
   containerRecentlyPosts: any,
 ) {
-  const popularPosts = getPopularPosts();
-  const mediacontent = getmedia();
+  try {
+    const popularPosts: any = await getPopularPosts();
+    const mediacontent = getmedia();
 
-  const containersPopularPosts = containerPopularPosts.querySelectorAll(
-    `.${ELEMENTS_CLASS.POST.FEED.BLOCK}`,
-  );
-  containersPopularPosts.forEach((container: any, index: any) => {
-    customizePost(container, popularPosts[index], mediacontent);
-  });
-
-  const recentlyPosts = getPopularPosts();
-  const containersRecentlyPosts = containerRecentlyPosts.querySelectorAll(
-    `.${ELEMENTS_CLASS.POST.FEED.BLOCK}`,
-  );
-  containersRecentlyPosts.forEach((container: any, index: any) => {
-    customizePost(container, recentlyPosts[index], mediacontent);
-  });
-}
-/**
- * Рендерит скелет популярных постов
- * @returns
- */
-function renderPopularPosts() {
-  const popularPosts = getPopularPosts();
-  const media = getmedia();
-
-  var posts: any = [];
-  popularPosts.forEach((post: any) => {
-    const mediaContent =
-      media.find((m) => m.postId === post.postId)?.mediaContent || [];
-
-    const container: VNode = createContainerPost(post, mediaContent);
-    posts.push(container);
-  });
-  return posts;
-}
-/**
- * Рендерит скелет популярных постов
- * @returns
- */
-function renderRecentlyPosts() {
-  const recentlyPosts = getRecentlyPosts();
-  const media = getmedia();
-  var arrayMedia: any = [];
-
-  var posts: any = [];
-  recentlyPosts.forEach((post: any) => {
-    media.forEach((oneMedia: any) => {
-      if (oneMedia.postId == post.id) {
-        arrayMedia.push(oneMedia);
-      }
+    const containersPopularPosts = containerPopularPosts.querySelectorAll(
+      `.${ELEMENTS_CLASS.POST.FEED.BLOCK}`,
+    );
+    containersPopularPosts.forEach((container: any, index: any) => {
+      customizePost(container, popularPosts[index], mediacontent);
     });
-    console.log(arrayMedia);
-    const container: VNode = createContainerPost(post, arrayMedia);
-    posts.push(container);
-  });
-  return posts;
+
+    const recentlyPosts: any = await getRecentlyPosts();
+    const containersRecentlyPosts = containerRecentlyPosts.querySelectorAll(
+      `.${ELEMENTS_CLASS.POST.FEED.BLOCK}`,
+    );
+    containersRecentlyPosts.forEach((container: any, index: any) => {
+      customizePost(container, recentlyPosts[index], mediacontent);
+    });
+  } catch (error) {
+    console.log("EROR");
+    throw error;
+  }
+}
+/**
+ * Рендерит скелет популярных постов
+ * @returns
+ */
+async function renderPopularPosts() {
+  try {
+    const popularPosts: any = await getPopularPosts();
+    const media = getmedia();
+
+    var posts: any = [];
+    popularPosts.forEach((post: any) => {
+      const mediaContent =
+        media.find((m) => m.postId === post.postId)?.mediaContent || [];
+
+      const container: VNode = createContainerPost(post, mediaContent);
+      posts.push(container);
+    });
+    return posts;
+  } catch (error) {
+    console.log("EROR");
+    throw error;
+  }
+}
+/**
+ * Рендерит скелет популярных постов
+ * @returns
+ */
+async function renderRecentlyPosts() {
+  try {
+    const recentlyPosts: any = await getRecentlyPosts();
+    console.log(recentlyPosts);
+    const media = getmedia();
+    var arrayMedia: any = [];
+
+    var posts: any = [];
+    recentlyPosts.forEach((post: any) => {
+      console.log(post);
+      media.forEach((oneMedia: any) => {
+        if (oneMedia.postId == post.id) {
+          arrayMedia.push(oneMedia);
+        }
+      });
+      console.log(arrayMedia);
+      const container: VNode = createContainerPost(post, arrayMedia);
+      posts.push(container);
+    });
+    return posts;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 /**
  * Кастомизирует сайдраб
@@ -233,13 +282,13 @@ function customizePost(container: any, post: any = null, mediaContents: any[]) {
   if (avatar) {
     avatar.alt = "Аватар автора";
     avatar.height = 50;
-    avatar.src = post.avatarSrc;
+    // avatar.src = post.avatarSrc;
     avatar.width = 50;
   }
   const authorName: any = container.querySelector(
     `.${ELEMENTS_CLASS.POST.AUTHOR.NAME}`,
   );
-  authorName.textContent = post.authorName;
+  authorName.textContent = post.authorUsername;
   const author_id = 12; // БЕКЕНД ЗАГЛУШКА
   authorSection.addEventListener("click", () => {
     route(`/profile/${author_id}`);
@@ -266,21 +315,9 @@ function customizePost(container: any, post: any = null, mediaContents: any[]) {
     `.${ELEMENTS_CLASS.POST.LIKES.AMOUNT}`,
   );
   amountLike.innerHTML = `${post.likes}`;
-
-  const amountComment: any = container.querySelector(
-    `.${ELEMENTS_CLASS.POST.COMMENTS.AMOUNT}`,
-  );
-  amountComment.innerHTML = `${post.likes}`;
 }
 export async function renderFeed() {
   try {
-    sidebarLinks.forEach((link) => {
-      if (window.location.pathname == link.href) {
-        link.active = true;
-      } else {
-        link.active = false;
-      }
-    });
     const user: any | null = await getCurrentUser(window.location.pathname);
     if (!user) {
       throw new Error("Пользователь не найден");
@@ -299,13 +336,13 @@ export async function renderFeed() {
           createText("Популярное"),
         ]),
         createElement("div", { class: "main-container-popular" }, [
-          ...renderPopularPosts(),
+          ...(await renderPopularPosts()),
         ]),
         createElement("div", { class: "section-title" }, [
           createText("Недавние"),
         ]),
         createElement("div", { class: "main-container-recently" }, [
-          ...renderRecentlyPosts(),
+          ...(await renderRecentlyPosts()),
         ]),
       ]),
     ]);

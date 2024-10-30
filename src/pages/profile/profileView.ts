@@ -3,7 +3,7 @@ import { createElement, createText } from "../../lib/vdom/lib";
 import { calculateAmountPosts } from "../../utils/calculateAmountPosts";
 import { VNode } from "../../lib/vdom/src/source";
 
-function renderUserPosts(user: any) {
+function renderUserPosts(post: any) {
   const container: VNode = createElement("div", { class: "posts" }, [
     createElement("div", { class: ELEMENTS_CLASS.POST.PROFILE.BLOCK }, [
       window.location.pathname === "/feed/profile"
@@ -24,13 +24,13 @@ function renderUserPosts(user: any) {
           ])
         : createElement("div", {}, []),
       createElement("h4", { class: ELEMENTS_CLASS.POST.TITLE }, [
-        createText(user.posts_title),
+        createText(post.title),
       ]),
       createElement("p", { class: ELEMENTS_CLASS.POST.CONTENT }, [
-        createText(user.posts_content),
+        createText(post.content),
       ]),
       createElement("div", { class: ELEMENTS_CLASS.POST.DATE }, [
-        createText(user.posts_date),
+        createText(post.createdAt),
       ]),
     ]),
   ]);
@@ -172,7 +172,7 @@ export function renderTip() {
         createText("Закрыть"),
       ]),
       createElement("button", { class: ELEMENTS_CLASS.SEND_TIP.COMBINE }, [
-        createText("Пост"),
+        createText("Отправить"),
       ]),
     ]),
   ]);
