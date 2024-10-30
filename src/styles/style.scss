@@ -626,7 +626,8 @@ form input[type="text"]:focus {
 .icon-notification,
 .icon-settings,
 .icon-profile,
-.icon-notification-big {
+.icon-notification-big,
+.icon-edit-background {
   display: inline-block;
   width: 30px;
   height: 30px;
@@ -635,6 +636,16 @@ form input[type="text"]:focus {
 .icon-notification-big {
   width: 60px;
   height: 60px;
+}
+.icon-edit-background {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  left: 3px;
+  top: 8px;
+}
+.icon-edit-background {
+  background-image: url("photos/icon_edit.png");
 }
 .icon-home {
   background-image: url("photos/icon_home.png");
@@ -995,11 +1006,15 @@ span {
   top: 100%;
   position: relative;
   bottom: -40px;
-  opacity: 0.3;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 1;
+  width: 150px;
+  font-weight: bold;
 }
 
 .image-upload-label:hover {
-  background-color: rgb(114, 114, 114); /* Цвет кнопки при наведении */
+  color: rgb(172, 172, 172);
 }
 
 .image-upload-input {

@@ -17,7 +17,6 @@ import {
 import { VNode } from "../../lib/vdom/src/source";
 import { createElement, createText, update } from "../../lib/vdom/lib";
 import { pageContainer } from "../../index";
-import { findUsername } from "../../utils/hasLogged";
 import { modifierSidebar } from "../feed/feed";
 var offset = 0;
 
@@ -319,16 +318,20 @@ export async function renderProfile() {
             "label",
             {
               class: "image-upload-label",
+              style: "display: none",
               type: "file",
               accept: "image/*",
               htmlFor: "image-upload", // Ссылка на скрытый input
             },
-            [createText("Выбрать обложку")], // Текст кнопки
+            [
+              createElement("i", { class: "icon-edit-background" }, []),
+              createText("Выбрать обложку"),
+            ],
           ),
           createElement(
             "input",
             {
-              id: "image-upload", // Уникальный ID для связи с label
+              id: "image-upload",
               class: "image-upload-input",
               type: "file",
               accept: "image/*",
@@ -410,7 +413,37 @@ export async function renderProfile() {
     });
 
     handleImageUpload();
+    const background = container.querySelector(".background-image");
+    const buttonUploadBackground = container.querySelector(
+      ".image-upload-label",
+    );
 
+    background.addEventListener("mouseover", () => {
+      buttonUploadBackground.style.display = "inline-block";
+    });
+
+    background.addEventListener("mouseout", () => {
+      // Убираем кнопку только если курсор не над кнопкой
+      if (!buttonUploadBackground.matches(":hover")) {
+        buttonUploadBackground.style.display = "none";
+      }
+    });
+
+    // Добавляем обработчик для кнопки, чтобы она оставалась видимой при наведении
+    buttonUploadBackground.addEventListener("mouseover", () => {
+      buttonUploadBackground.style.display = "inline-block";
+    });
+
+    buttonUploadBackground.addEventListener("mouseout", () => {
+      buttonUploadBackground.style.display = "none";
+    });
+
+    background.addEventListener("mouseout", () => {
+      const buttonUploadBackground = container.querySelector(
+        ".image-upload-label",
+      );
+      buttonUploadBackground.style.display = "none";
+    });
     return container;
   } catch (error) {
     console.log("EROR");
