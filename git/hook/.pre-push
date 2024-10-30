@@ -1,0 +1,1 @@
+ssh -i /home/alex/.ssh/2024-2-TeamOn-HB2FGg4B.cer ubuntu@89.208.221.5 'git clone https://github.com/frontend-park-mail-ru/2024_2_TeamOn /var/www/mysite/dir'
