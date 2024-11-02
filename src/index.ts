@@ -11,6 +11,7 @@ import { renderNotifications } from "./pages/notifications/notifications";
 import { renderSettings } from "./pages/settings/settingsView";
 import { VirtualDOM } from "./lib/vdom/src/source";
 import { render } from "./lib/vdom/lib";
+import { renderSubscriptions } from "./pages/subscriptions/subscriptions";
 
 /**
  * Объект, содержащий конфигурацию меню приложения.
@@ -35,6 +36,7 @@ interface MenuConfig {
   profile: AsyncLinkConfig;
   settings: AsyncLinkConfig;
   feed: AsyncLinkConfig;
+  // subscriptions: AsyncLinkConfig;
   notifications: AsyncLinkConfig;
 }
 
@@ -74,6 +76,11 @@ const config: Config = {
       text: LINKS.FEED.TEXT,
       render: renderFeed,
     },
+    // subscriptions: {
+    //   href: LINKS.NOTIFICATIONS.HREF,
+    //   text: LINKS.NOTIFICATIONS.TEXT,
+    //   render: renderSubscriptions,
+    // },
     notifications: {
       href: LINKS.NOTIFICATIONS.HREF,
       text: LINKS.NOTIFICATIONS.TEXT,

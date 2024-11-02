@@ -169,7 +169,7 @@ async function modifirePosts(
       customizePost(container, recentlyPosts[index], mediacontent);
     });
   } catch (error) {
-    console.log("EROR");
+    console.log("ERROR");
     throw error;
   }
 }
@@ -192,7 +192,7 @@ async function renderPopularPosts() {
     });
     return posts;
   } catch (error) {
-    console.log("EROR");
+    console.log("ERROR");
     throw error;
   }
 }
@@ -203,19 +203,16 @@ async function renderPopularPosts() {
 async function renderRecentlyPosts() {
   try {
     const recentlyPosts: any = await getRecentlyPosts();
-    console.log(recentlyPosts);
     const media = getmedia();
     var arrayMedia: any = [];
 
     var posts: any = [];
     recentlyPosts.forEach((post: any) => {
-      console.log(post);
       media.forEach((oneMedia: any) => {
         if (oneMedia.postId == post.id) {
           arrayMedia.push(oneMedia);
         }
       });
-      console.log(arrayMedia);
       const container: VNode = createContainerPost(post, arrayMedia);
       posts.push(container);
     });
@@ -347,6 +344,7 @@ export async function renderFeed() {
     ]);
 
     const container = update(pageContainer, vdom);
+    console.log(vdom);
     state.currentUser = user;
 
     const mainContent = container.querySelector(".main-content");
@@ -361,11 +359,11 @@ export async function renderFeed() {
 
     modifirePosts(containerPopularPosts, containerRecentlyPosts);
 
-    const side: any = container.querySelector(
-      `.${ELEMENTS_CLASS.SEARCH.ELEMENT}`,
-    );
-    side.type = "text";
-    side.placeholder = "Найти креаторов";
+    // const side: any = container.querySelector(
+    //   `.${ELEMENTS_CLASS.SEARCH.ELEMENT}`,
+    // );
+    // side.type = "text";
+    // side.placeholder = "Найти креаторов";
 
     const logoutbutton = container.querySelector(
       `.${ELEMENTS_CLASS.LOGOUT.BLOCK}`,
@@ -378,7 +376,7 @@ export async function renderFeed() {
     });
     return container;
   } catch (error) {
-    console.log("EROR");
+    console.log("ERROR");
     throw error;
   }
 }

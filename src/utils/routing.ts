@@ -90,7 +90,6 @@ export function route(fromTo: string, currentUrl?: any): void {
     return;
   }
   routing.navigate(fromTo);
-  console.log(fromTo);
 
   updatePageContent(fromTo);
   return;
@@ -100,6 +99,5 @@ window.addEventListener("popstate", () => {
   const currentState = window.location.pathname;
   const pageIndex = routing.history.indexOf(currentState);
   routing.currentIndex = pageIndex; // Обновляем текущий индекс
-  console.log(currentState);
   updatePageContent(currentState); // Обновляем содержимое страницы
 });

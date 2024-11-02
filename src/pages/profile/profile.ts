@@ -216,59 +216,58 @@ function modifirePosts(containers: any, posts: any[]) {
       });
 
       dropdownMenu[index].classList.toggle(ELEMENTS_CLASS.ACTIVE);
-      const buttonCancel: any = document.querySelectorAll(
-        `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
-      );
-      const buttonDeleteConfirm: any = document.querySelector(
-        `.${ELEMENTS_CLASS.DELETE.BLOCK}`,
-      );
-      const buttonEditConfirm: any = document.querySelector(
-        `.${ELEMENTS_CLASS.SAVE.BLOCK}`,
-      );
-      const buttonsEditpost = containers.querySelectorAll(".button-edit-post");
-      const buttonsDeletepost = containers.querySelectorAll(
-        ".button-delete-post",
-      );
 
-      const modalsEdit: any = document.querySelector(".modal__editpost");
-      const modalsDelete: any = document.querySelector(".modal__deletepost");
+      const buttonEditpost = containers.querySelector(".button-edit-post");
+      const buttonDeletepost = containers.querySelector(".button-delete-post");
 
-      const title: any = modalsEdit.querySelector(`.input-group`);
-      const content: any = modalsEdit.querySelector(`.textarea-group`);
-
-      const contentDelete: any = modalsDelete.querySelector(
-        `.textarea-group-delete`,
-      );
-
-      buttonsEditpost[index].addEventListener("click", () => {
+      buttonEditpost.addEventListener("click", () => {
+        renderEditPost(posts[index]);
+        const buttonCancel: any = document.querySelector(
+          `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
+        );
+        const modalsEdit: any = document.querySelector(".modal__editpost");
+        const title: any = document.querySelector(`.input-group`);
+        const content: any = document.querySelector(`.textarea-group`);
+        const buttonEditConfirm: any = document.querySelector(
+          `.${ELEMENTS_CLASS.SAVE.BLOCK}`,
+        );
         modalsEdit.style.display = "block";
         title.textContent = posts[index].title;
         content.textContent = posts[index].content;
         containers.classList.add("blur");
+        buttonCancel.addEventListener("click", () => {
+          modalsEdit.style.display = "none";
+          containers.classList.remove("blur");
+        });
+        buttonEditConfirm.addEventListener("click", () => {
+          modalsEdit.style.display = "none";
+          containers.classList.remove("blur");
+        });
       });
 
-      console.log(buttonCancel);
-      buttonCancel[1]?.addEventListener("click", () => {
-        modalsEdit.style.display = "none";
-        containers.classList.remove("blur");
-      });
-      buttonEditConfirm.addEventListener("click", () => {
-        modalsEdit.style.display = "none";
-        containers.classList.remove("blur");
-      });
-
-      buttonsDeletepost[index].addEventListener("click", () => {
+      buttonDeletepost.addEventListener("click", () => {
+        renderDeletePost(posts[index]);
+        const modalsDelete: any = document.querySelector(`.modal__deletepost`);
+        const buttonDeleteConfirm: any = document.querySelector(
+          `.${ELEMENTS_CLASS.DELETE.BLOCK}`,
+        );
+        const contentDelete: any = document.querySelector(
+          `.textarea-group-delete`,
+        );
         modalsDelete.style.display = "block";
         contentDelete.textContent = `Вы действительно хотите удалить пост "${posts[index].title}" ?`;
         containers.classList.add("blur");
-      });
-      buttonCancel[2]?.addEventListener("click", () => {
-        modalsDelete.style.display = "none";
-        containers.classList.remove("blur");
-      });
-      buttonDeleteConfirm.addEventListener("click", () => {
-        modalsDelete.style.display = "none";
-        containers.classList.remove("blur");
+        const buttonCancel: any = document.querySelector(
+          `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
+        );
+        buttonCancel.addEventListener("click", () => {
+          modalsDelete.style.display = "none";
+          containers.classList.remove("blur");
+        });
+        buttonDeleteConfirm.addEventListener("click", () => {
+          modalsDelete.style.display = "none";
+          containers.classList.remove("blur");
+        });
       });
     });
   });
@@ -321,8 +320,8 @@ function handleImageUploadMobile() {
 }
 function controlMediaProfile(container: any) {
   if (window.location.pathname === "/profile") {
-    handleImageUpload();
-    handleImageUploadMobile();
+    window.innerWidth <= 1024 ? handleImageUploadMobile() : handleImageUpload();
+
     const background = container.querySelector(".header-profile");
     const buttonUploadBackground = container.querySelector(
       ".image-upload-label",
@@ -358,7 +357,9 @@ function controlMediaProfile(container: any) {
 }
 
 function controlAdaptiveProfile(container: any) {
-  const buttonMobileAbout = container.querySelector(".about-mobile__button");
+  const buttonMobileAbout: any = document.querySelector(
+    ".about-mobile__button",
+  );
   const buttonMobilePosts = container.querySelector(".posts-mobile__button");
   const feedProfile = container.querySelector(".feed-profile");
   const feedProfilePost = container.querySelectorAll(".posts");
@@ -384,25 +385,25 @@ function controlAdaptiveProfile(container: any) {
     buttonMobileAbout.classList.add(ELEMENTS_CLASS.ACTIVE);
   }
 
-  // Изначально показываем нужный элемент в зависимости от ширины окна
   if (window.innerWidth <= 1024) {
-    showAboutProfile(); // Показываем about, если это мобильное устройство
+    showAboutProfile();
   } else {
     feedProfile.classList.remove("hidden");
     aboutProfile.classList.remove("hidden");
   }
+  if (buttonMobileAbout && buttonMobilePosts) {
+    buttonMobileAbout.addEventListener("click", () => {
+      if (window.innerWidth <= 1024) {
+        showAboutProfile();
+      }
+    });
 
-  buttonMobileAbout.addEventListener("click", () => {
-    if (window.innerWidth <= 1024) {
-      showAboutProfile();
-    }
-  });
-
-  buttonMobilePosts.addEventListener("click", () => {
-    if (window.innerWidth <= 1024) {
-      showFeedProfile();
-    }
-  });
+    buttonMobilePosts.addEventListener("click", () => {
+      if (window.innerWidth <= 1024) {
+        showFeedProfile();
+      }
+    });
+  }
 }
 function controlLogout(container: any, authorData: any) {
   const logoutbutton = container.querySelector(
@@ -416,40 +417,78 @@ function controlLogout(container: any, authorData: any) {
   });
 }
 function controlAdaptivePageAuthors(container: any, containerPosts: any) {
-  const buttonCancel: any = container.querySelectorAll(
-    `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
-  );
-
   if (window.location.pathname === "/profile") {
-    const containerCreatePost = container.querySelector(".modal__createpost");
     const buttonCreatePost: any = container.querySelectorAll(
       `.${ELEMENTS_CLASS.CREATE.BLOCK}`,
     );
     buttonCreatePost.forEach((button: any) => {
       button.addEventListener("click", () => {
+        renderCreatePost();
+        const buttonCancel: any = document.querySelector(
+          `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
+        );
+        const containerCreatePost =
+          container.querySelector(".modal__createpost");
         containerCreatePost.style.display = "block";
         containerPosts.classList.add("blur");
-      });
-      buttonCancel[0]?.addEventListener("click", () => {
-        containerCreatePost.style.display = "none";
-        containerPosts.classList.remove("blur");
+
+        buttonCancel.addEventListener("click", () => {
+          const containerCreatePost =
+            container.querySelector(".modal__createpost");
+          containerCreatePost.style.display = "none";
+          containerPosts.classList.remove("blur");
+        });
       });
     });
   }
   if (window.location.pathname !== "/profile") {
-    const containerTip = container.querySelector(".modal__tip");
-    const buttonTip = container.querySelectorAll(`.send-tip__button-new`);
-    buttonTip.forEach((button: any) => {
-      button.addEventListener("click", () => {
-        containerTip.style.display = "block";
-        containerPosts.classList.add("blur");
-      });
-      buttonCancel[0]?.addEventListener("click", () => {
+    const buttonTip = container.querySelector(`.send-tip__button-new`);
+    buttonTip.addEventListener("click", () => {
+      renderTip();
+      const buttonCancel: any = document.querySelector(
+        `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
+      );
+      const containerTip: any = document.querySelector(".modal__tip");
+      containerTip.style.display = "block";
+      containerPosts.classList.add("blur");
+
+      buttonCancel.addEventListener("click", () => {
         containerTip.style.display = "none";
         containerPosts.classList.remove("blur");
       });
     });
   }
+}
+function renderProfileForm(authorData: any, authorPosts: any): VNode {
+  return createElement("div", { class: "profile-form" }, [
+    createElement("div", { class: "div-mobile" }, []),
+    renderDesktopProfileHeader(),
+    createElement("div", { class: "container-profile" }, [
+      renderDesktopProfileInfo(authorData),
+      createElement("div", { class: "center-column-profile" }, [
+        renderAbout(),
+        createElement("div", { class: "feed-profile" }, [
+          createElement("div", { class: "nav-tabs-profile" }, [
+            createElement("a", { class: "active-profile active" }, [
+              createText("Лента"),
+            ]),
+          ]),
+          ...renderPosts(authorPosts),
+        ]),
+      ]),
+    ]),
+  ]);
+}
+
+function renderMainContent(authorData: any, authorPosts: any): VNode {
+  return createElement("div", { class: "main-content" }, [
+    renderSidebar(),
+    renderProfileForm(authorData, authorPosts),
+    createElement("div", { class: "div-create-post" }, []),
+    createElement("div", { class: "div-send-tip" }, []),
+    createElement("div", { class: "div-edit-posts" }, []),
+    createElement("div", { class: "div-delete-posts" }, []),
+  ]);
 }
 /**
  * Асинхронная функция рендеринга профиля пользователя.
@@ -461,42 +500,19 @@ export async function renderProfile() {
     const authorData: any = await getPageAuthor(window.location.pathname);
     const authorPosts: any = await getUserPosts(window.location.pathname);
     // const authorMedias: any = await getPageMedia(window.location.pathname);
-    document.body.style.height = "100vh";
+
+    document.body.style.height = "100%";
     state.currentUser = authorData;
     if (!authorData) {
       throw new Error("Пользователь не найден");
     }
-
-    const vdom: VNode = createElement("div", { class: "main-content" }, [
-      createElement("div", { class: "profile-form" }, [
-        mobileProfile(authorData),
-        renderDesktopProfileHeader(),
-        createElement("div", { class: "container-profile" }, [
-          renderDesktopProfileInfo(authorData),
-          createElement("div", { class: "center-column-profile" }, [
-            renderAbout(),
-            createElement("div", { class: "feed-profile" }, [
-              createElement("div", { class: "nav-tabs-profile" }, [
-                createElement("a", { class: "active-profile" }, [
-                  createText("Лента"),
-                ]),
-                createElement("a", { class: "active-profile" }, [
-                  createText("Медиа"),
-                ]),
-              ]),
-            ]),
-            ...renderPosts(authorPosts),
-          ]),
-        ]),
-      ]),
-      renderSidebar(),
-      renderCreatePost(),
-      renderTip(),
-      renderEditPost(authorPosts),
-      renderDeletePost(authorPosts),
-    ]);
+    const vdom = renderMainContent(authorData, authorPosts);
 
     const container = update(pageContainer, vdom);
+
+    if (window.innerWidth <= 1024) {
+      mobileProfile(authorData);
+    }
 
     const mainContent = container.querySelector(".main-content");
 
@@ -516,7 +532,7 @@ export async function renderProfile() {
 
     return container;
   } catch (error) {
-    console.log("EROR");
+    console.log("ERROR");
     throw error;
   }
 }

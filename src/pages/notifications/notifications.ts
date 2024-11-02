@@ -57,7 +57,7 @@ export async function renderNotifications() {
     });
     return container;
   } catch (error) {
-    console.log("EROR");
+    console.log("ERROR");
     throw error;
   }
 }

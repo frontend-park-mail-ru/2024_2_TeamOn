@@ -1,7 +1,8 @@
 import { ELEMENTS_CLASS } from "../../consts";
-import { createElement, createText } from "../../lib/vdom/lib";
+import { createElement, createText, update } from "../../lib/vdom/lib";
 import { calculateAmountPosts } from "../../utils/calculateAmountPosts";
 import { VNode } from "../../lib/vdom/src/source";
+import { controllerMask } from "../../utils/utilsView/circle";
 
 function renderUserPosts(post: any) {
   const container: VNode = createElement("div", { class: "posts" }, [
@@ -87,7 +88,7 @@ export function getEarnings(payments: any) {
 }
 
 export function renderEditPost(post: any) {
-  const container: VNode = createElement("div", { class: "modal__editpost" }, [
+  const vdom: VNode = createElement("div", { class: "modal__editpost" }, [
     createElement("div", { class: "modal-header" }, [
       createElement("h2", {}, [createText("Редактирование")]),
     ]),
@@ -115,32 +116,30 @@ export function renderEditPost(post: any) {
       ]),
     ]),
   ]);
-  return container;
+  const container = document.querySelector(`.div-edit-posts`);
+  update(container, vdom);
 }
 export function renderDeletePost(post: any) {
-  const container: VNode = createElement(
-    "div",
-    { class: "modal__deletepost" },
-    [
-      createElement("div", { class: "modal-header" }, [
-        createElement("h2", {}, [createText("Удаление поста")]),
+  const vdom: VNode = createElement("div", { class: "modal__deletepost" }, [
+    createElement("div", { class: "modal-header" }, [
+      createElement("h2", {}, [createText("Удаление поста")]),
+    ]),
+    createElement("div", { class: "form-group " }, [
+      createElement("p", { class: "textarea-group-delete" }, [
+        createText(`Вы действительно хотите удалить пост ${post.title}`),
       ]),
-      createElement("div", { class: "form-group " }, [
-        createElement("p", { class: "textarea-group-delete" }, [
-          createText(`Вы действительно хотите удалить пост ${post.title}`),
-        ]),
+    ]),
+    createElement("div", { class: "form-actions " }, [
+      createElement("button", { class: ELEMENTS_CLASS.CANCEL.COMBINE }, [
+        createText("Отменить"),
       ]),
-      createElement("div", { class: "form-actions " }, [
-        createElement("button", { class: ELEMENTS_CLASS.CANCEL.COMBINE }, [
-          createText("Отменить"),
-        ]),
-        createElement("button", { class: ELEMENTS_CLASS.DELETE.COMBINE }, [
-          createText("Подтвердить"),
-        ]),
+      createElement("button", { class: ELEMENTS_CLASS.DELETE.COMBINE }, [
+        createText("Подтвердить"),
       ]),
-    ],
-  );
-  return container;
+    ]),
+  ]);
+  const container = document.querySelector(`.div-delete-posts`);
+  update(container, vdom);
 }
 export function renderTip() {
   const feedRegex = /^\/profile\/\d+$/;
@@ -148,7 +147,7 @@ export function renderTip() {
     return createElement("div", {}, []);
   }
 
-  const container: VNode = createElement("div", { class: "modal__tip" }, [
+  const vdom: VNode = createElement("div", { class: "modal__tip" }, [
     createElement("div", { class: "modal-header" }, [
       createElement("h2", {}, [createText("Пожертвование")]),
     ]),
@@ -174,7 +173,8 @@ export function renderTip() {
       ]),
     ]),
   ]);
-  return container;
+  const container = document.querySelector(`.div-send-tip`);
+  update(container, vdom);
 }
 
 export function renderCreatePost() {
@@ -182,36 +182,32 @@ export function renderCreatePost() {
     return createElement("div", {}, []);
   }
 
-  const container: VNode = createElement(
-    "div",
-    { class: "modal__createpost" },
-    [
-      createElement("div", { class: "modal-header" }, [
-        createElement("h2", {}, [createText("Создание поста")]),
+  const vdom: VNode = createElement("div", { class: "modal__createpost" }, [
+    createElement("div", { class: "modal-header" }, [
+      createElement("h2", {}, [createText("Создание поста")]),
+    ]),
+    createElement("div", { class: "form-group " }, [
+      createElement("label", { class: "label-tip" }, [createText("Заголовок")]),
+      createElement("textarea", { class: "input-group" }, []),
+    ]),
+    createElement("div", { class: "form-group " }, [
+      createElement("label", { class: "label-group" }, [
+        createText("Содержание"),
       ]),
-      createElement("div", { class: "form-group " }, [
-        createElement("label", { class: "label-tip" }, [
-          createText("Заголовок"),
-        ]),
-        createElement("textarea", { class: "input-group" }, []),
+      createElement("textarea", { class: "textarea-group" }, []),
+    ]),
+    createElement("div", { class: "form-actions" }, [
+      createElement("button", { class: ELEMENTS_CLASS.CANCEL.COMBINE }, [
+        createText("Закрыть"),
       ]),
-      createElement("div", { class: "form-group " }, [
-        createElement("label", { class: "label-group" }, [
-          createText("Содержание"),
-        ]),
-        createElement("textarea", { class: "textarea-group" }, []),
+      createElement("button", { class: ELEMENTS_CLASS.SEND_TIP.COMBINE }, [
+        createText("Создать"),
       ]),
-      createElement("div", { class: "form-actions " }, [
-        createElement("button", { class: ELEMENTS_CLASS.CANCEL.COMBINE }, [
-          createText("Закрыть"),
-        ]),
-        createElement("button", { class: ELEMENTS_CLASS.SEND_TIP.COMBINE }, [
-          createText("Создать"),
-        ]),
-      ]),
-    ],
-  );
-  return container;
+    ]),
+  ]);
+  const container = document.querySelector(`.div-create-post`);
+  update(container, vdom);
+  // return vdom;
 }
 function renderAbout() {
   const vdom = createElement("div", { class: "about" }, [
@@ -265,6 +261,7 @@ function renderDesktopProfileHeader() {
     ),
     createElement("img", { class: "background-image" }, []),
   ]);
+
   return vdom;
 }
 function mobileProfile(user: any) {
@@ -314,7 +311,8 @@ function mobileProfile(user: any) {
       ...renderUserInfo(user),
     ]),
   ]);
-  return vdom;
+  const container = document.querySelector(`.div-mobile`);
+  update(container, vdom);
 }
 /**
  * Функция рендерит информацию о пользователе.

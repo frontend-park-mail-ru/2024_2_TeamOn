@@ -20,6 +20,7 @@ main {
   flex: 1;
   padding: 0px;
   background-color: #f5f5f5;
+  height: 100%;
 }
 
 form {
@@ -420,6 +421,12 @@ form input[type="text"]:focus {
   height: 300px;
   position: relative;
 }
+.active-profile.active {
+  font-weight: bold;
+}
+.active-profile {
+  cursor: pointer;
+}
 .container-profile {
   display: flex;
   flex-wrap: wrap;
@@ -662,7 +669,9 @@ form input[type="text"]:focus {
   transition: background-color 0.3s;
 }
 .buttons-profile button:hover {
-  background-color: red;
+  // background-color: red;
+  color: rgb(252, 225, 225);
+  transition: color 0.3s ease;
 }
 .profile-header-mobile {
   text-align: center;
@@ -1383,9 +1392,6 @@ select {
 }
 /* Адаптивность */
 @media (max-width: 768px) {
-  main {
-    width: 90%;
-  }
   .defs {
     display: none;
   }

@@ -43,7 +43,6 @@ export function renderHome() {
     const button: any = container.querySelector(
       `.${ELEMENTS_CLASS.HOME_BUTTONS.BLOCK}`,
     );
-    console.log(button);
     button.addEventListener("click", () => {
       route(LINKS.LOGIN.HREF);
     });

@@ -65,6 +65,10 @@ export const LINKS = {
     HREF: "/feed",
     TEXT: "Лента",
   },
+  SUBSCRIBTIONS: {
+    HREF: "/subscriptions",
+    TEXT: "Уведомления",
+  },
   NOTIFICATIONS: {
     HREF: "/notifications",
     TEXT: "Уведомления",
@@ -282,6 +286,12 @@ export const ELEMENTS_CLASS = {
     ELEMENT: "create__button",
     MODIFIER: "create__button__effects",
     COMBINE: "create create__button create__button__effects",
+  },
+  SAVE_NEW_POST: {
+    BLOCK: "save-post",
+    ELEMENT: "save-post__button",
+    MODIFIER: "save-post__button__effects",
+    COMBINE: "save-post save-post__button save-post__button__effects",
   },
   PROFILE: {
     BLOCK: "profile",
