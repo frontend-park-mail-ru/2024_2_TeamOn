@@ -366,10 +366,9 @@ function controlAdaptiveProfile(container: any) {
 
   function showFeedProfile() {
     feedProfile.classList.remove("hidden");
-    feedProfilePost.forEach( (post: any) => {
-
+    feedProfilePost.forEach((post: any) => {
       post.classList.remove("hidden");
-    })
+    });
     aboutProfile.classList.add("hidden");
     buttonMobilePosts.classList.add(ELEMENTS_CLASS.ACTIVE);
     buttonMobileAbout.classList.remove(ELEMENTS_CLASS.ACTIVE);
@@ -378,9 +377,9 @@ function controlAdaptiveProfile(container: any) {
   function showAboutProfile() {
     aboutProfile.classList.remove("hidden");
     feedProfile.classList.add("hidden");
-    feedProfilePost.forEach( (post: any) => {
+    feedProfilePost.forEach((post: any) => {
       post.classList.add("hidden");
-    })
+    });
     buttonMobilePosts.classList.remove(ELEMENTS_CLASS.ACTIVE);
     buttonMobileAbout.classList.add(ELEMENTS_CLASS.ACTIVE);
   }
