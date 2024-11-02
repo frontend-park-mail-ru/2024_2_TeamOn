@@ -18,12 +18,13 @@ body {
 
 :root {
   --main-color: #d9534f;
+  --main-background-color: #f5f5f5;
 }
 
 main {
   flex: 1;
   padding: 0px;
-  background-color: #f5f5f5;
+  background-color: var(--main-background-color);
   height: 100%;
 }
 

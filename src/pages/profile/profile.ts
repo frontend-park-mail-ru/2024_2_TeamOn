@@ -217,56 +217,62 @@ function modifirePosts(containers: any, posts: any[]) {
 
       dropdownMenu[index].classList.toggle(ELEMENTS_CLASS.ACTIVE);
 
-      const buttonEditpost = containers.querySelector(".button-edit-post");
-      const buttonDeletepost = containers.querySelector(".button-delete-post");
-
-      buttonEditpost.addEventListener("click", () => {
-        renderEditPost(posts[index]);
-        const buttonCancel: any = document.querySelector(
-          `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
-        );
-        const modalsEdit: any = document.querySelector(".modal__editpost");
-        const title: any = document.querySelector(`.input-group`);
-        const content: any = document.querySelector(`.textarea-group`);
-        const buttonEditConfirm: any = document.querySelector(
-          `.${ELEMENTS_CLASS.SAVE.BLOCK}`,
-        );
-        modalsEdit.style.display = "block";
-        title.textContent = posts[index].title;
-        content.textContent = posts[index].content;
-        containers.classList.add("blur");
-        buttonCancel.addEventListener("click", () => {
-          modalsEdit.style.display = "none";
-          containers.classList.remove("blur");
-        });
-        buttonEditConfirm.addEventListener("click", () => {
-          modalsEdit.style.display = "none";
-          containers.classList.remove("blur");
+      const buttonsEditpost = containers.querySelectorAll(".button-edit-post");
+      const buttonsDeletepost = containers.querySelectorAll(
+        ".button-delete-post",
+      );
+      buttonsEditpost.forEach((button: any) => {
+        button.addEventListener("click", () => {
+          renderEditPost(posts[index]);
+          const modalsEdit: any = document.querySelector(".modal__editpost");
+          const buttonCancel: any = modalsEdit.querySelector(
+            `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
+          );
+          console.log(buttonCancel);
+          const title: any = document.querySelector(`.input-group`);
+          const content: any = document.querySelector(`.textarea-group`);
+          const buttonEditConfirm: any = document.querySelector(
+            `.${ELEMENTS_CLASS.SAVE.BLOCK}`,
+          );
+          modalsEdit.style.display = "block";
+          title.textContent = posts[index].title;
+          content.textContent = posts[index].content;
+          containers.classList.add("blur");
+          buttonCancel.addEventListener("click", () => {
+            modalsEdit.style.display = "none";
+            containers.classList.remove("blur");
+          });
+          buttonEditConfirm.addEventListener("click", () => {
+            modalsEdit.style.display = "none";
+            containers.classList.remove("blur");
+          });
         });
       });
-
-      buttonDeletepost.addEventListener("click", () => {
-        renderDeletePost(posts[index]);
-        const modalsDelete: any = document.querySelector(`.modal__deletepost`);
-        const buttonDeleteConfirm: any = document.querySelector(
-          `.${ELEMENTS_CLASS.DELETE.BLOCK}`,
-        );
-        const contentDelete: any = document.querySelector(
-          `.textarea-group-delete`,
-        );
-        modalsDelete.style.display = "block";
-        contentDelete.textContent = `Вы действительно хотите удалить пост "${posts[index].title}" ?`;
-        containers.classList.add("blur");
-        const buttonCancel: any = document.querySelector(
-          `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
-        );
-        buttonCancel.addEventListener("click", () => {
-          modalsDelete.style.display = "none";
-          containers.classList.remove("blur");
-        });
-        buttonDeleteConfirm.addEventListener("click", () => {
-          modalsDelete.style.display = "none";
-          containers.classList.remove("blur");
+      buttonsDeletepost.forEach((button: any) => {
+        button.addEventListener("click", () => {
+          renderDeletePost(posts[index]);
+          const modalsDelete: any =
+            document.querySelector(`.modal__deletepost`);
+          const buttonDeleteConfirm: any = modalsDelete.querySelector(
+            `.${ELEMENTS_CLASS.DELETE.BLOCK}`,
+          );
+          const contentDelete: any = document.querySelector(
+            `.textarea-group-delete`,
+          );
+          modalsDelete.style.display = "block";
+          contentDelete.textContent = `Вы действительно хотите удалить пост "${posts[index].title}" ?`;
+          containers.classList.add("blur");
+          const buttonCancel: any = modalsDelete.querySelector(
+            `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
+          );
+          buttonCancel.addEventListener("click", () => {
+            modalsDelete.style.display = "none";
+            containers.classList.remove("blur");
+          });
+          buttonDeleteConfirm.addEventListener("click", () => {
+            modalsDelete.style.display = "none";
+            containers.classList.remove("blur");
+          });
         });
       });
     });
