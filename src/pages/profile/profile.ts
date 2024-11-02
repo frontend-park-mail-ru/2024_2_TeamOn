@@ -356,6 +356,7 @@ function controlMediaProfile(container: any) {
     });
   }
 }
+
 function controlAdaptiveProfile(container: any) {
   const buttonMobileAbout = container.querySelector(".about-mobile__button");
   const buttonMobilePosts = container.querySelector(".posts-mobile__button");
@@ -376,6 +377,14 @@ function controlAdaptiveProfile(container: any) {
     buttonMobileAbout.classList.add(ELEMENTS_CLASS.ACTIVE);
   }
 
+  // Изначально показываем нужный элемент в зависимости от ширины окна
+  if (window.innerWidth <= 1024) {
+    showAboutProfile(); // Показываем about, если это мобильное устройство
+  } else {
+    feedProfile.classList.remove("hidden");
+    aboutProfile.classList.remove("hidden");
+  }
+
   buttonMobileAbout.addEventListener("click", () => {
     if (window.innerWidth <= 1024) {
       showAboutProfile();
@@ -387,24 +396,6 @@ function controlAdaptiveProfile(container: any) {
       showFeedProfile();
     }
   });
-
-  if (window.innerWidth > 1024) {
-    feedProfile.classList.remove("hidden");
-    aboutProfile.classList.remove("hidden");
-  } else {
-    feedProfile.classList.add("hidden");
-    aboutProfile.classList.remove("hidden");
-    showAboutProfile();
-  }
-  // window.addEventListener("resize", () => {
-  //   if (window.innerWidth > 1024) {
-  //     feedProfile.classList.remove("hidden");
-  //     aboutProfile.classList.remove("hidden");
-  //   } else {
-  //     feedProfile.classList.add("hidden");
-  //     aboutProfile.classList.add("hidden");
-  //   }
-  // });
 }
 function controlLogout(container: any, authorData: any) {
   const logoutbutton = container.querySelector(
@@ -461,7 +452,7 @@ export async function renderProfile() {
     const authorData: any = await getPageAuthor(window.location.pathname);
     const authorPosts: any = await getUserPosts(window.location.pathname);
     // const authorMedias: any = await getPageMedia(window.location.pathname);
-    document.body.style.height = "100vh"
+    document.body.style.height = "100vh";
     state.currentUser = authorData;
     if (!authorData) {
       throw new Error("Пользователь не найден");
