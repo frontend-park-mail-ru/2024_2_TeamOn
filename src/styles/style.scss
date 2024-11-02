@@ -734,7 +734,7 @@ form input[type="text"]:focus {
 }
 .menu-icon {
   top: 0;
-  left: 100%;
+  left: 98%;
   position: relative;
   font-size: 24px;
   cursor: pointer;
@@ -1380,12 +1380,7 @@ select {
   .mobile-profile {
     display: none;
   }
-  // .feed-profile {
-  //   display: block;
-  // }
-  // .about {
-  //   display: block;
-  // }
+
 }
 /* Адаптивность */
 @media (max-width: 768px) {
