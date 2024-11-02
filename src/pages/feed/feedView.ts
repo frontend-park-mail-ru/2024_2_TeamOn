@@ -38,11 +38,11 @@ function renderSidebar() {
             createElement("i", { class: "icon-home" }, []),
             createText(" Главная"),
           ]),
-          createElement("a", { class: "referens" }, [
-            createElement("i", { class: "icon-notification" }, []),
-            createText(" Уведомления"),
-            createElement("span", { class: "new" }, [createText("НОВОЕ")]),
-          ]),
+          // createElement("a", { class: "referens" }, [
+          //   createElement("i", { class: "icon-notification" }, []),
+          //   createText(" Уведомления"),
+          //   createElement("span", { class: "new" }, [createText("НОВОЕ")]),
+          // ]),
           createElement("a", { class: "referens" }, [
             createElement("i", { class: "icon-settings" }, []),
             createText(" Настройки"),

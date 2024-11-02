@@ -236,6 +236,7 @@ export function modifierSidebar(mainContainer: any) {
     sidebar.classList.toggle(ELEMENTS_CLASS.ACTIVE);
   });
   const sidebarReferenses = sidebar.querySelectorAll(".referens");
+  console.log(sidebarReferenses);
   sidebarLinks.forEach((link: any, index: any) => {
     sidebarReferenses[index]?.addEventListener("click", (event: any) => {
       event.preventDefault();
@@ -248,8 +249,8 @@ export function modifierSidebar(mainContainer: any) {
     if (link.active) {
       sidebarReferenses[index].className = ELEMENTS_CLASS.ACTIVE;
     }
-    const span: any = mainContainer.querySelector(".new");
-    span.style.color = "red";
+    // const span: any = mainContainer.querySelector(".new");
+    // span.style.color = "red";
 
     window.addEventListener("popstate", () => {
       sidebarLinks.forEach((link: any, index: any) => {
