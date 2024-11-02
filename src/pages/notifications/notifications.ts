@@ -1,4 +1,4 @@
-import { ELEMENTS_CLASS, LINKS } from "../../consts";
+import { ELEMENTS_CLASS, LINKS, state } from "../../consts";
 import { pageContainer } from "../../index";
 import { createElement, createText, update } from "../../lib/vdom/lib";
 import { VNode } from "../../lib/vdom/src/source";
@@ -10,10 +10,7 @@ import { getCurrentUser } from "../profile/profile";
 
 export async function renderNotifications() {
   try {
-    const user: any | null = await getCurrentUser(window.location.pathname);
-    if (!user) {
-      throw new Error("Пользователь не найден");
-    }
+    const user: any | null = await getCurrentUser("Здесь будет getAccount()");
     const doc: any = document.body;
     doc.style.height = "100%";
 

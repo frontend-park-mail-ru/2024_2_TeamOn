@@ -6,9 +6,8 @@ import {
   sidebarLinks,
   state,
 } from "../../consts";
-import { getCurrentUser } from "../profile/profile";
+import { getCurrentUser, getPageAuthor } from "../profile/profile";
 import {
-  renderSearchbar,
   renderSidebar,
   createContainerPost,
   setActiveLink,
@@ -318,7 +317,8 @@ function customizePost(container: any, post: any = null, mediaContents: any[]) {
 }
 export async function renderFeed() {
   try {
-    const user: any | null = await getCurrentUser(window.location.pathname);
+    const user: any = getPageAuthor("Здесь будет getAccount()");
+    // const user: any = state.currentUser;
     if (!user) {
       throw new Error("Пользователь не найден");
     }
@@ -329,7 +329,6 @@ export async function renderFeed() {
     const doc: any = document.body;
     doc.style.height = "100%";
     const vdom: VNode = createElement("div", { class: "main-content" }, [
-      renderSearchbar(),
       renderSidebar(),
       createElement("div", { class: "right-content" }, [
         createElement("div", { class: "section-title" }, [
@@ -350,17 +349,6 @@ export async function renderFeed() {
     const container = update(pageContainer, vdom);
     state.currentUser = user;
 
-    const searchBar: any = container.querySelector(
-      `.${ELEMENTS_CLASS.SEARCH.BLOCK}`,
-    );
-
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 0) {
-        searchBar.style.position = "fixed";
-      } else {
-        searchBar.style.position = "";
-      }
-    });
     const mainContent = container.querySelector(".main-content");
     modifierSidebar(mainContent);
 

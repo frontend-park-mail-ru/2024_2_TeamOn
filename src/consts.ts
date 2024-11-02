@@ -50,7 +50,7 @@ export const LINKS = {
     TEXT: "Регистрация",
   },
   PROFILE: {
-    HREF: "/feed/profile",
+    HREF: "/profile",
     TEXT: "Профиль",
   },
   ERROR: {
@@ -58,7 +58,7 @@ export const LINKS = {
     TEXT: "Ошибка",
   },
   SETTINGS: {
-    HREF: "/feed/settings",
+    HREF: "/settings",
     TEXT: "Настройки",
   },
   FEED: {
@@ -66,7 +66,7 @@ export const LINKS = {
     TEXT: "Лента",
   },
   NOTIFICATIONS: {
-    HREF: "/feed/notifications",
+    HREF: "/notifications",
     TEXT: "Уведомления",
   },
 };

@@ -47,12 +47,10 @@ function renderSidebar() {
             createElement("i", { class: "icon-settings" }, []),
             createText(" Настройки"),
           ]),
-          // state.currentUser.author
           createElement("a", { class: "referens" }, [
             createElement("i", { class: "icon-profile" }, []),
             createText(" Профиль"),
           ]),
-          // : createText(""),
         ]),
         renderLogoutButton(),
       ]),
@@ -60,15 +58,15 @@ function renderSidebar() {
   );
   return vdom;
 }
-function renderSearchbar() {
-  const vdom: VNode = createElement(
-    "div",
-    { class: ELEMENTS_CLASS.SEARCH.BLOCK },
-    [createElement("input", { class: ELEMENTS_CLASS.SEARCH.ELEMENT }, [])],
-  );
+// function renderSearchbar() {
+//   const vdom: VNode = createElement(
+//     "div",
+//     { class: ELEMENTS_CLASS.SEARCH.BLOCK },
+//     [createElement("input", { class: ELEMENTS_CLASS.SEARCH.ELEMENT }, [])],
+//   );
 
-  return vdom;
-}
+//   return vdom;
+// }
 function rendermediaContent(mediaContent: any[]) {
   var result: any = [];
   mediaContent.forEach((media: any) => {
@@ -122,4 +120,4 @@ function createContainerPost(post: any, mediaContent: any[]) {
   );
   return vdom;
 }
-export { renderSidebar, renderSearchbar, createContainerPost };
+export { renderSidebar, createContainerPost };

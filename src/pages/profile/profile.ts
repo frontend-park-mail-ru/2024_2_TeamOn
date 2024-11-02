@@ -1,18 +1,19 @@
-import { ELEMENTS_CLASS, LINKS, LOCATIONS, QUERY } from "../../consts";
+import { ELEMENTS_CLASS, LINKS, LOCATIONS, QUERY, state } from "../../consts";
 import { fetchAjax } from "../../utils/fetchAjax";
 import { removeItemLocalStorage } from "../../utils/storages";
 import { route } from "../../utils/routing";
 import { renderSidebar } from "../feed/feedView";
 import {
-  renderButtonCreatePost,
+  mobileProfile,
+  renderAbout,
   renderCreatePost,
   renderDeletePost,
+  renderDesktopProfileHeader,
+  renderDesktopProfileInfo,
   renderEditPost,
   renderTip,
   renderUserInfo,
   renderUserPosts,
-  renderUserStats,
-  renderVibe,
 } from "./profileView";
 import { VNode } from "../../lib/vdom/src/source";
 import { createElement, createText, update } from "../../lib/vdom/lib";
@@ -105,7 +106,8 @@ export function getPageAuthor(link: string) {
             resolve(data);
           });
         } else if (response.status === 401) {
-          route(LINKS.ERROR.HREF);
+          localStorage.clear();
+          route(LINKS.HOME.HREF);
         } else {
           reject(new Error("Ответ от фетча с ошибкой"));
         }
@@ -234,8 +236,9 @@ function modifirePosts(containers: any, posts: any[]) {
       const title: any = modalsEdit.querySelector(`.input-group`);
       const content: any = modalsEdit.querySelector(`.textarea-group`);
 
-      const titleDelete: any = modalsDelete.querySelector(`.input-group`);
-      const contentDelete: any = modalsDelete.querySelector(`.textarea-group`);
+      const contentDelete: any = modalsDelete.querySelector(
+        `.textarea-group-delete`,
+      );
 
       buttonsEditpost[index].addEventListener("click", () => {
         modalsEdit.style.display = "block";
@@ -256,8 +259,7 @@ function modifirePosts(containers: any, posts: any[]) {
 
       buttonsDeletepost[index].addEventListener("click", () => {
         modalsDelete.style.display = "block";
-        titleDelete.textContent = posts[index].title;
-        contentDelete.textContent = posts[index].content;
+        contentDelete.textContent = `Вы действительно хотите удалить пост "${posts[index].title}" ?`;
         containers.classList.add("blur");
       });
       buttonCancel[2]?.addEventListener("click", () => {
@@ -293,127 +295,35 @@ function handleImageUpload() {
     profilePicInput.click(); // Программно вызываем клик на input
   });
 }
-/**
- * Асинхронная функция рендеринга профиля пользователя.
- * @returns созданный элемент профиля пользователя или 0,
- * если пользователь не найден
- */
-export async function renderProfile() {
-  try {
-    const authorData: any = await getPageAuthor(window.location.pathname);
-    const authorPosts: any = await getUserPosts(window.location.pathname);
-    // const authorMedias: any = await getPageMedia(window.location.pathname);
-    if (!authorData) {
-      throw new Error("Пользователь не найден");
+function handleImageUploadMobile() {
+  const profilePicInput: any = document.querySelector(
+    `.image-upload-input-mobile`,
+  );
+  const profilePic: any = document.querySelector(`.background-image-mobile`);
+
+  // Добавляем обработчик события change к input
+  profilePicInput.addEventListener("change", (event: any) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e: any) {
+        profilePic.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
     }
+  });
 
-    const doc: any = document.body;
-    doc.style.height = "100%";
-
-    const vdom: VNode = createElement("div", { class: "main-content" }, [
-      createElement("div", { class: ELEMENTS_CLASS.PROFILE.FORM }, [
-        createElement("div", { class: ELEMENTS_CLASS.PROFILE.HEADER }, [
-          renderVibe(authorData),
-          createElement(
-            "label",
-            {
-              class: "image-upload-label",
-              style: "display: none",
-              type: "file",
-              accept: "image/*",
-              htmlFor: "image-upload", // Ссылка на скрытый input
-            },
-            [
-              createElement("i", { class: "icon-edit-background" }, []),
-              createText("Выбрать обложку"),
-            ],
-          ),
-          createElement(
-            "input",
-            {
-              id: "image-upload",
-              class: "image-upload-input",
-              type: "file",
-              accept: "image/*",
-              style: "display: none;",
-            },
-            [],
-          ),
-          createElement("img", { class: "background-image" }, []),
-        ]),
-        createElement("div", { class: ELEMENTS_CLASS.PROFILE.BLOCK }, [
-          renderUserInfo(authorData, null),
-          createElement("div", { class: ELEMENTS_CLASS.PROFILE.RIGHT }, [
-            renderUserStats(authorData, authorPosts),
-            renderButtonCreatePost(),
-            ...renderPosts(authorPosts),
-          ]),
-        ]),
-      ]),
-      renderSidebar(),
-      renderCreatePost(),
-      renderTip(),
-      renderEditPost(authorPosts),
-      renderDeletePost(authorPosts),
-    ]);
-
-    const container = update(pageContainer, vdom);
-
-    const mainContent = container.querySelector(".main-content");
-    modifierSidebar(mainContent);
-
-    const containerPosts: any = container.querySelector(
-      `.${ELEMENTS_CLASS.PROFILE.FORM}`,
-    );
-    const buttonCancel: any = container.querySelectorAll(
-      `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
-    );
-
-    if (window.location.pathname === "/feed/profile") {
-      const containerCreatePost = container.querySelector(".modal__createpost");
-      const buttonCreatePost: any = container.querySelector(
-        `.${ELEMENTS_CLASS.CREATE.BLOCK}`,
-      );
-
-      buttonCreatePost?.addEventListener("click", () => {
-        containerCreatePost.style.display = "block";
-        containerPosts.classList.add("blur");
-      });
-      buttonCancel[0]?.addEventListener("click", () => {
-        containerCreatePost.style.display = "none";
-        containerPosts.classList.remove("blur");
-      });
-    }
-    if (window.location.pathname !== "/feed/profile") {
-      const containerTip = container.querySelector(".modal__tip");
-      const buttonTip = container.querySelector(
-        `.${ELEMENTS_CLASS.DONATE.BLOCK}`,
-      );
-
-      buttonTip?.addEventListener("click", () => {
-        containerTip.style.display = "block";
-        containerPosts.classList.add("blur");
-      });
-      buttonCancel[0]?.addEventListener("click", () => {
-        containerTip.style.display = "none";
-        containerPosts.classList.remove("blur");
-      });
-    }
-
-    modifirePosts(containerPosts, authorPosts);
-
-    const logoutbutton = container.querySelector(
-      `.${ELEMENTS_CLASS.LOGOUT.BLOCK}`,
-    );
-
-    logoutbutton.addEventListener("click", (event: any) => {
-      event.preventDefault();
-      removeItemLocalStorage(authorData.username);
-      route(LINKS.HOME.HREF);
-    });
-
+  const button: any = document.querySelector(`.change-cover-button-mobile`);
+  const buttonUpload: any = document.getElementById("image-upload-mobile");
+  button.addEventListener("click", () => {
+    buttonUpload.click();
+  });
+}
+function controlMediaProfile(container: any) {
+  if (window.location.pathname === "/profile") {
     handleImageUpload();
-    const background = container.querySelector(".background-image");
+    handleImageUploadMobile();
+    const background = container.querySelector(".header-profile");
     const buttonUploadBackground = container.querySelector(
       ".image-upload-label",
     );
@@ -444,6 +354,166 @@ export async function renderProfile() {
       );
       buttonUploadBackground.style.display = "none";
     });
+  }
+}
+function controlAdaptiveProfile(container: any) {
+  const buttonMobileAbout = container.querySelector(".about-mobile__button");
+  const buttonMobilePosts = container.querySelector(".posts-mobile__button");
+  const feedProfile = container.querySelector(".feed-profile");
+  const aboutProfile = container.querySelector(".about");
+
+  function showFeedProfile() {
+    feedProfile.classList.remove("hidden");
+    aboutProfile.classList.add("hidden");
+    buttonMobilePosts.classList.add(ELEMENTS_CLASS.ACTIVE);
+    buttonMobileAbout.classList.remove(ELEMENTS_CLASS.ACTIVE);
+  }
+
+  function showAboutProfile() {
+    aboutProfile.classList.remove("hidden");
+    feedProfile.classList.add("hidden");
+    buttonMobilePosts.classList.remove(ELEMENTS_CLASS.ACTIVE);
+    buttonMobileAbout.classList.add(ELEMENTS_CLASS.ACTIVE);
+  }
+
+  buttonMobileAbout.addEventListener("click", () => {
+    if (window.innerWidth <= 1024) {
+      showAboutProfile();
+    }
+  });
+
+  buttonMobilePosts.addEventListener("click", () => {
+    if (window.innerWidth <= 1024) {
+      showFeedProfile();
+    }
+  });
+
+  if (window.innerWidth > 1024) {
+    feedProfile.classList.remove("hidden");
+    aboutProfile.classList.remove("hidden");
+  } else {
+    feedProfile.classList.add("hidden");
+    aboutProfile.classList.remove("hidden");
+    showAboutProfile();
+  }
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 1024) {
+      feedProfile.classList.remove("hidden");
+      aboutProfile.classList.remove("hidden");
+    } else {
+      feedProfile.classList.add("hidden");
+      aboutProfile.classList.add("hidden");
+    }
+  });
+}
+function controlLogout(container: any, authorData: any) {
+  const logoutbutton = container.querySelector(
+    `.${ELEMENTS_CLASS.LOGOUT.BLOCK}`,
+  );
+
+  logoutbutton.addEventListener("click", (event: any) => {
+    event.preventDefault();
+    removeItemLocalStorage(authorData.username);
+    route(LINKS.HOME.HREF);
+  });
+}
+function controlAdaptivePageAuthors(container: any, containerPosts: any) {
+  const buttonCancel: any = container.querySelectorAll(
+    `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
+  );
+
+  if (window.location.pathname === "/profile") {
+    const containerCreatePost = container.querySelector(".modal__createpost");
+    const buttonCreatePost: any = container.querySelector(
+      `.${ELEMENTS_CLASS.CREATE.BLOCK}`,
+    );
+
+    buttonCreatePost?.addEventListener("click", () => {
+      containerCreatePost.style.display = "block";
+      containerPosts.classList.add("blur");
+    });
+    buttonCancel[0]?.addEventListener("click", () => {
+      containerCreatePost.style.display = "none";
+      containerPosts.classList.remove("blur");
+    });
+  }
+  if (window.location.pathname !== "/profile") {
+    const containerTip = container.querySelector(".modal__tip");
+    const buttonTip = container.querySelector(`.send-tip__button-new`);
+
+    buttonTip?.addEventListener("click", () => {
+      containerTip.style.display = "block";
+      containerPosts.classList.add("blur");
+    });
+    buttonCancel[0]?.addEventListener("click", () => {
+      containerTip.style.display = "none";
+      containerPosts.classList.remove("blur");
+    });
+  }
+}
+/**
+ * Асинхронная функция рендеринга профиля пользователя.
+ * @returns созданный элемент профиля пользователя или 0,
+ * если пользователь не найден
+ */
+export async function renderProfile() {
+  try {
+    const authorData: any = await getPageAuthor(window.location.pathname);
+    const authorPosts: any = await getUserPosts(window.location.pathname);
+    // const authorMedias: any = await getPageMedia(window.location.pathname);
+
+    state.currentUser = authorData;
+    if (!authorData) {
+      throw new Error("Пользователь не найден");
+    }
+
+    const vdom: VNode = createElement("div", { class: "main-content" }, [
+      createElement("div", { class: "profile-form" }, [
+        mobileProfile(authorData),
+        renderDesktopProfileHeader(),
+        createElement("div", { class: "container-profile" }, [
+          renderDesktopProfileInfo(authorData),
+          createElement("div", { class: "center-column-profile" }, [
+            renderAbout(),
+            createElement("div", { class: "feed-profile" }, [
+              createElement("div", { class: "nav-tabs-profile" }, [
+                createElement("a", { class: "active-profile" }, [
+                  createText("Лента"),
+                ]),
+                createElement("a", { class: "active-profile" }, [
+                  createText("Медиа"),
+                ]),
+              ]),
+              ...renderPosts(authorPosts),
+            ]),
+          ]),
+        ]),
+      ]),
+      renderSidebar(),
+      renderCreatePost(),
+      renderTip(),
+      renderEditPost(authorPosts),
+      renderDeletePost(authorPosts),
+    ]);
+
+    const container = update(pageContainer, vdom);
+
+    const mainContent = container.querySelector(".main-content");
+
+    const containerPosts: any = container.querySelector(`.profile-form`);
+
+    modifierSidebar(mainContent);
+
+    controlAdaptivePageAuthors(container, containerPosts);
+
+    modifirePosts(containerPosts, authorPosts);
+
+    controlLogout(container, authorData);
+
+    controlMediaProfile(container);
+
+    controlAdaptiveProfile(container);
+
     return container;
   } catch (error) {
     console.log("EROR");

@@ -6,7 +6,7 @@ import { VNode } from "../../lib/vdom/src/source";
 function renderUserPosts(post: any) {
   const container: VNode = createElement("div", { class: "posts" }, [
     createElement("div", { class: ELEMENTS_CLASS.POST.PROFILE.BLOCK }, [
-      window.location.pathname === "/feed/profile"
+      window.location.pathname === "/profile"
         ? createElement("div", { class: "menu-icon" }, [
             createText("⋮"),
             createElement("div", { class: "dropdown-menu" }, [
@@ -121,25 +121,19 @@ export function renderDeletePost(post: any) {
     { class: "modal__deletepost" },
     [
       createElement("div", { class: "modal-header" }, [
-        createElement("h2", {}, [createText("Удаление")]),
+        createElement("h2", {}, [createText("Удаление поста")]),
       ]),
       createElement("div", { class: "form-group " }, [
-        createElement("div", { class: "input-group" }, [
-          createText(post.title),
+        createElement("p", { class: "textarea-group-delete" }, [
+          createText(`Вы действительно хотите удалить пост ${post.title}`),
         ]),
-      ]),
-      createElement("div", { class: "form-group " }, [
-        createElement("div", { class: "textarea-group" }, [
-          createText(post.content),
-        ]),
-        createElement("div", { class: "char-count" }, []),
       ]),
       createElement("div", { class: "form-actions " }, [
         createElement("button", { class: ELEMENTS_CLASS.CANCEL.COMBINE }, [
-          createText("Закрыть"),
+          createText("Отменить"),
         ]),
         createElement("button", { class: ELEMENTS_CLASS.DELETE.COMBINE }, [
-          createText("Удалить"),
+          createText("Подтвердить"),
         ]),
       ]),
     ],
@@ -157,15 +151,17 @@ export function renderTip() {
       createElement("h2", {}, [createText("Пожертвование")]),
     ]),
     createElement("div", { class: "form-group " }, [
-      createElement("label", { class: "label-tip" }, [createText("Заголовок")]),
-      createElement("textarea", { class: "input-group" }, []),
+      createElement("label", { class: "label-tip" }, [createText("Сумма")]),
+      createElement("textarea", { class: "input-group" }, [createText("10")]),
+      createElement("div", { class: "amount-count" }, [
+        createText("Минимум 10 рублей"),
+      ]),
     ]),
     createElement("div", { class: "form-group " }, [
       createElement("label", { class: "label-group" }, [
         createText("Содержание"),
       ]),
       createElement("textarea", { class: "textarea-group" }, []),
-      createElement("div", { class: "char-count" }, [createText("0/200")]),
     ]),
     createElement("div", { class: "form-actions " }, [
       createElement("button", { class: ELEMENTS_CLASS.CANCEL.COMBINE }, [
@@ -178,17 +174,9 @@ export function renderTip() {
   ]);
   return container;
 }
-export function renderButtonCreatePost() {
-  const container: VNode = createElement("div", { class: "create-posts" }, [
-    createElement("div", { class: ELEMENTS_CLASS.CREATE.COMBINE }, [
-      createText("Создать"),
-    ]),
-  ]);
-  return window.location.pathname === "/feed/profile" ? container : 0;
-}
 
 export function renderCreatePost() {
-  if (window.location.pathname !== "/feed/profile") {
+  if (window.location.pathname !== "/profile") {
     return createElement("div", {}, []);
   }
 
@@ -210,47 +198,161 @@ export function renderCreatePost() {
           createText("Содержание"),
         ]),
         createElement("textarea", { class: "textarea-group" }, []),
-        createElement("div", { class: "char-count" }, [createText("0/200")]),
       ]),
       createElement("div", { class: "form-actions " }, [
         createElement("button", { class: ELEMENTS_CLASS.CANCEL.COMBINE }, [
           createText("Закрыть"),
         ]),
         createElement("button", { class: ELEMENTS_CLASS.SEND_TIP.COMBINE }, [
-          createText("Пост"),
+          createText("Создать"),
         ]),
       ]),
     ],
   );
   return container;
 }
-
+function renderAbout() {
+  const vdom = createElement("div", { class: "about" }, [
+    createElement("h2", {}, [createText("ОБО МНЕ")]),
+    createElement("p", { class: "about-profile" }, [
+      createText("Это информация об авторе"),
+    ]),
+  ]);
+  return vdom;
+}
+function renderDesktopProfileInfo(authorData: any) {
+  const vdom: VNode = createElement("div", { class: "left-column" }, [
+    createElement(
+      "img",
+      {
+        src: "https://a.d-cd.net/475eb1as-960.jpg",
+        class: "profile-avatar",
+      },
+      [],
+    ),
+    ...renderUserInfo(authorData),
+  ]);
+  return vdom;
+}
+function renderDesktopProfileHeader() {
+  const vdom: VNode = createElement("div", { class: "header-profile" }, [
+    createElement(
+      "label",
+      {
+        class: "image-upload-label",
+        style: "display: none",
+        type: "file",
+        accept: "image/*",
+        htmlFor: "image-upload",
+      },
+      [
+        createElement("i", { class: "icon-edit-background" }, []),
+        createText("  Выбрать обложку"),
+      ],
+    ),
+    createElement(
+      "input",
+      {
+        id: "image-upload",
+        class: "image-upload-input",
+        type: "file",
+        accept: "image/*",
+        style: "display: none;",
+      },
+      [],
+    ),
+    createElement("img", { class: "background-image" }, []),
+  ]);
+  return vdom;
+}
+function mobileProfile(user: any) {
+  const vdom: VNode = createElement("div", { class: "mobile-profile" }, [
+    createElement("div", { class: "profile-header-mobile" }, [
+      createElement(
+        "img",
+        {
+          class: "profile-avatar",
+          src: "https://storage.googleapis.com/a1aa/image/T5eRp2ABc9QWfkBRqFUjCIhfXbZ3lAeBU3pxRhWfsdwsSDmdC.jpg",
+          height: "90",
+          width: "90",
+        },
+        [createElement("h1", {}, [createText("")])],
+      ),
+      createElement(
+        "input",
+        {
+          id: "image-upload-mobile",
+          class: "image-upload-input-mobile",
+          type: "file",
+          accept: "image/*",
+          style: "display: none;",
+        },
+        [],
+      ),
+      createElement("img", { class: "background-image-mobile" }, []),
+      window.location.pathname === "/profile"
+        ? createElement(
+            "button",
+            {
+              class: "change-cover-button-mobile",
+            },
+            [createText("  Выбрать обложку")],
+          )
+        : createElement("div", {}, []),
+    ]),
+    createElement("div", { class: "tabs-mobile" }, [
+      createElement("div", { class: "about-mobile__button" }, [
+        createText("ABOUT"),
+      ]),
+      createElement("div", { class: "posts-mobile__button" }, [
+        createText("POSTS"),
+      ]),
+    ]),
+    createElement("div", { class: "content-mobile" }, [
+      ...renderUserInfo(user),
+    ]),
+  ]);
+  return vdom;
+}
 /**
  * Функция рендерит информацию о пользователе.
  * @param {*} user Объект пользователя
  * @param {*} payments Объект выплат
  */
-function renderUserInfo(user: any, payments: any, formProfile?: any) {
-  const earnings: VNode =
-    window.location.pathname === "/feed/profile"
-      ? getEarnings(payments)
-      : createElement("div", { class: "donate-container" }, [
-          createElement("button", { class: ELEMENTS_CLASS.DONATE.COMBINE }, [
-            createText("Пожертвовать"),
-          ]),
-        ]);
-
-  const vdom = createElement("div", { class: ELEMENTS_CLASS.PROFILE.LEFT }, [
-    createElement("div", { class: ELEMENTS_CLASS.PROFILE.LEFT_BAR }, [
-      createElement("img", { class: ELEMENTS_CLASS.PROFILE.IMAGE_PROFILE }, []),
-      createElement("div", { class: ELEMENTS_CLASS.PROFILE.INFO }, [
-        createElement("h2", {}, [createText(user.username)]),
-        createElement("p", {}, [createText(user.role)]),
-        earnings,
-      ]),
+function renderUserInfo(user: any) {
+  const vdom: VNode[] = [
+    createElement("div", { class: "stats" }, [
+      createElement("p", {}, [createText(user.username)]),
+      createElement("p", { class: "amount-subs" }, []),
+      createElement("p", {}, [createText("Подписчики")]),
     ]),
-  ]);
-
+    createElement("div", { class: "buttons-profile" }, [
+      window.location.pathname == "/profile"
+        ? createElement("button", { class: "create" }, [
+            createElement("i", { class: "icon-sendtip" }, []),
+            createText("Создать публикацию"),
+          ])
+        : createElement("div", {}, [
+            createElement("button", { class: "follow" }, [
+              createElement("i", { class: "icon-follow" }, []),
+              createText("Подписаться"),
+            ]),
+            createElement("button", { class: "send-tip__button-new" }, [
+              createElement("i", { class: "icon-sendtip" }, []),
+              createText("Отправить пожертвование"),
+            ]),
+          ]),
+    ]),
+  ];
   return vdom;
 }
-export { renderUserPosts, renderVibe, renderUserStats, renderUserInfo };
+export {
+  renderUserPosts,
+  renderVibe,
+  renderUserStats,
+  renderUserInfo,
+  mobileProfile,
+  renderDesktopProfileHeader,
+  renderAbout,
+  renderDesktopProfileInfo,
+};
