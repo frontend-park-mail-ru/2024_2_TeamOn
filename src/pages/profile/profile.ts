@@ -396,15 +396,15 @@ function controlAdaptiveProfile(container: any) {
     aboutProfile.classList.remove("hidden");
     showAboutProfile();
   }
-  window.addEventListener("resize", () => {
-    if (window.innerWidth > 1024) {
-      feedProfile.classList.remove("hidden");
-      aboutProfile.classList.remove("hidden");
-    } else {
-      feedProfile.classList.add("hidden");
-      aboutProfile.classList.add("hidden");
-    }
-  });
+  // window.addEventListener("resize", () => {
+  //   if (window.innerWidth > 1024) {
+  //     feedProfile.classList.remove("hidden");
+  //     aboutProfile.classList.remove("hidden");
+  //   } else {
+  //     feedProfile.classList.add("hidden");
+  //     aboutProfile.classList.add("hidden");
+  //   }
+  // });
 }
 function controlLogout(container: any, authorData: any) {
   const logoutbutton = container.querySelector(
@@ -461,7 +461,7 @@ export async function renderProfile() {
     const authorData: any = await getPageAuthor(window.location.pathname);
     const authorPosts: any = await getUserPosts(window.location.pathname);
     // const authorMedias: any = await getPageMedia(window.location.pathname);
-
+    document.body.style.height = "100vh"
     state.currentUser = authorData;
     if (!authorData) {
       throw new Error("Пользователь не найден");
