@@ -6,25 +6,27 @@ import { VNode } from "../../lib/vdom/src/source";
 function renderUserPosts(post: any) {
   const container: VNode = createElement("div", { class: "posts" }, [
     createElement("div", { class: ELEMENTS_CLASS.POST.PROFILE.BLOCK }, [
-      window.location.pathname === "/profile"
-        ? createElement("div", { class: "menu-icon" }, [
-            createText("⋮"),
-            createElement("div", { class: "dropdown-menu" }, [
-              createElement("div", { class: "interaction-post" }, [
-                createElement("div", { class: "button-edit-post" }, [
-                  createText("Редактировать"),
+      createElement("div", { style: "display: flex;" }, [
+        window.location.pathname === "/profile"
+          ? createElement("div", { class: "menu-icon" }, [
+              createText("⋮"),
+              createElement("div", { class: "dropdown-menu" }, [
+                createElement("div", { class: "interaction-post" }, [
+                  createElement("div", { class: "button-edit-post" }, [
+                    createText("Редактировать"),
+                  ]),
+                ]),
+                createElement("div", { class: "interaction-post" }, [
+                  createElement("div", { class: "button-delete-post" }, [
+                    createText("Удалить"),
+                  ]),
                 ]),
               ]),
-              createElement("div", { class: "interaction-post" }, [
-                createElement("div", { class: "button-delete-post" }, [
-                  createText("Удалить"),
-                ]),
-              ]),
-            ]),
-          ])
-        : createElement("div", {}, []),
-      createElement("h4", { class: ELEMENTS_CLASS.POST.TITLE }, [
-        createText(post.title),
+            ])
+          : createElement("div", {}, []),
+        createElement("h4", { class: ELEMENTS_CLASS.POST.TITLE }, [
+          createText(post.title),
+        ]),
       ]),
       createElement("p", { class: ELEMENTS_CLASS.POST.CONTENT }, [
         createText(post.content),

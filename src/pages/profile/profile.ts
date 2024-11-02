@@ -415,30 +415,32 @@ function controlAdaptivePageAuthors(container: any, containerPosts: any) {
 
   if (window.location.pathname === "/profile") {
     const containerCreatePost = container.querySelector(".modal__createpost");
-    const buttonCreatePost: any = container.querySelector(
+    const buttonCreatePost: any = container.querySelectorAll(
       `.${ELEMENTS_CLASS.CREATE.BLOCK}`,
     );
-
-    buttonCreatePost?.addEventListener("click", () => {
-      containerCreatePost.style.display = "block";
-      containerPosts.classList.add("blur");
-    });
-    buttonCancel[0]?.addEventListener("click", () => {
-      containerCreatePost.style.display = "none";
-      containerPosts.classList.remove("blur");
+    buttonCreatePost.forEach((button: any) => {
+      button.addEventListener("click", () => {
+        containerCreatePost.style.display = "block";
+        containerPosts.classList.add("blur");
+      });
+      buttonCancel[0]?.addEventListener("click", () => {
+        containerCreatePost.style.display = "none";
+        containerPosts.classList.remove("blur");
+      });
     });
   }
   if (window.location.pathname !== "/profile") {
     const containerTip = container.querySelector(".modal__tip");
-    const buttonTip = container.querySelector(`.send-tip__button-new`);
-
-    buttonTip?.addEventListener("click", () => {
-      containerTip.style.display = "block";
-      containerPosts.classList.add("blur");
-    });
-    buttonCancel[0]?.addEventListener("click", () => {
-      containerTip.style.display = "none";
-      containerPosts.classList.remove("blur");
+    const buttonTip = container.querySelectorAll(`.send-tip__button-new`);
+    buttonTip.forEach((button: any) => {
+      button.addEventListener("click", () => {
+        containerTip.style.display = "block";
+        containerPosts.classList.add("blur");
+      });
+      buttonCancel[0]?.addEventListener("click", () => {
+        containerTip.style.display = "none";
+        containerPosts.classList.remove("blur");
+      });
     });
   }
 }
@@ -475,8 +477,8 @@ export async function renderProfile() {
                   createText("Медиа"),
                 ]),
               ]),
-              ...renderPosts(authorPosts),
             ]),
+            ...renderPosts(authorPosts),
           ]),
         ]),
       ]),

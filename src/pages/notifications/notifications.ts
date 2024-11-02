@@ -11,8 +11,6 @@ import { getCurrentUser } from "../profile/profile";
 export async function renderNotifications() {
   try {
     const user: any | null = await getCurrentUser("Здесь будет getAccount()");
-    const doc: any = document.body;
-    doc.style.height = "100%";
 
     const vdom: VNode = createElement("div", { class: "main-content" }, [
       renderSidebar(),

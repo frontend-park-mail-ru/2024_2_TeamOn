@@ -7,8 +7,6 @@ body {
 }
 
 #root {
-  display: flex;
-  flex-direction: row;
   height: 100%;
   width: 100%;
 }
@@ -583,7 +581,6 @@ form input[type="text"]:focus {
 .nav-tabs-profile {
   display: flex;
   justify-content: space-around;
-  margin-bottom: 20px;
 }
 .nav-tabs-profile a {
   text-decoration: none;
@@ -629,15 +626,10 @@ form input[type="text"]:focus {
 }
 .posts {
   background-color: white;
-  padding: 20px;
   border-radius: 10px;
-  margin-bottom: 2%;
-}
-
-.posts {
+  margin-top: 2%;
   padding: 20px;
   border: 1px solid #e0e0e0;
-  margin: 10px;
 }
 
 .post {
