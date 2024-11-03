@@ -10,8 +10,13 @@
 со значением application/json; charset=utf-8, если предоставлено тело запроса.
 Опция mode установлена в cors, чтобы включить CORS.
  */
-export function fetchAjax(method, url, body = null, callback = () => {}) {
-  const headers = {};
+export function fetchAjax(
+  method: any,
+  url: any,
+  body?: any,
+  callback: (response: Response) => void = () => {},
+) {
+  const headers: any = {};
 
   if (body) {
     headers["Content-Type"] = "application/json; charset=utf-8";
@@ -21,8 +26,8 @@ export function fetchAjax(method, url, body = null, callback = () => {}) {
     method,
     headers,
     ...(body ? { body } : {}),
-    mode: "cors",
-    credentials: "include",
+    mode: "cors" as RequestMode,
+    credentials: "include" as RequestCredentials,
   };
   return fetch(url, init)
     .then((response) => {
