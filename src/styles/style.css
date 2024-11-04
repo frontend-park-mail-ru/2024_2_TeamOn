@@ -798,11 +798,6 @@ form input[type=text]:focus {
   font-size: 16px;
 }
 
-.tabs .active {
-  border-bottom: 2px solid orange;
-  color: orange;
-}
-
 .content-mobile {
   text-align: center;
   padding: 20px;
@@ -1156,6 +1151,12 @@ form input[type=text]:focus {
   transition: filter 0.3s ease; /* Плавный переход */
 }
 
+.likes-container.active {
+  cursor: pointer;
+  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(100%) contrast(100%);
+  transition: filter 0.3s ease; /* Плавный переход */
+}
+
 /* ДОНАТ */
 .modal__createpost,
 .modal__tip,
@@ -1425,16 +1426,19 @@ span {
   font-weight: bold;
 }
 
-.form-container {
+.form-container,
+.form-container-security {
   background-color: #fff;
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   max-width: 1000px;
   margin: 0 auto;
+  display: none;
 }
 
-.form-container h2 {
+.form-container h2,
+.form-container-security h2 {
   font-size: 20px;
   margin-bottom: 20px;
 }
@@ -1445,7 +1449,8 @@ span {
   gap: 10px;
 }
 
-.form-container label {
+.form-container label,
+.form-container-security label {
   display: block;
   margin-left: 0;
   margin-bottom: 10px;
@@ -1460,7 +1465,10 @@ select {
 
 .form-container input[type=text],
 .form-container input[type=email],
-.form-container input[type=password] {
+.form-container input[type=password],
+.form-container-security input[type=text],
+.form-container-security input[type=email],
+.form-container-security input[type=password] {
   width: 20%;
   padding: 10px;
   margin-bottom: 20px;
@@ -1468,7 +1476,8 @@ select {
   border-radius: 20px;
 }
 
-.form-container select {
+.form-container select,
+.form-container-security select {
   width: 51.5%;
   padding: 10px;
   margin-bottom: 20px;
@@ -1479,7 +1488,7 @@ select {
           appearance: none;
 }
 
-.form-container .profile-pic {
+.form-container .profile-pic .form-container-security .profile-pic {
   display: block;
   width: 100px;
   height: 100px;
@@ -1488,7 +1497,8 @@ select {
   margin-bottom: 20px;
 }
 
-.form-container button {
+.form-container button,
+.form-container-security button {
   background-color: #000;
   color: #fff;
   border: none;

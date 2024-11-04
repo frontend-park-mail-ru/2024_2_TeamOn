@@ -2,7 +2,6 @@ import { ELEMENTS_CLASS } from "../../consts";
 import { createElement, createText, update } from "../../lib/vdom/lib";
 import { calculateAmountPosts } from "../../utils/calculateAmountPosts";
 import { VNode } from "../../lib/vdom/src/source";
-import { controllerMask } from "../../utils/utilsView/circle";
 
 function renderUserPosts(post: any) {
   const container: VNode = createElement("div", { class: "posts" }, [
@@ -142,7 +141,7 @@ export function renderDeletePost(post: any) {
   update(container, vdom);
 }
 export function renderTip() {
-  const feedRegex = /^\/profile\/\d+$/;
+  const feedRegex = /^\/profile\/[0-9a-zA-Z-]+$/;
   if (!feedRegex.test(window.location.pathname)) {
     return createElement("div", {}, []);
   }
@@ -174,6 +173,8 @@ export function renderTip() {
     ]),
   ]);
   const container = document.querySelector(`.div-send-tip`);
+  console.log(container);
+  console.log("vot");
   update(container, vdom);
 }
 
@@ -218,12 +219,12 @@ function renderAbout() {
   ]);
   return vdom;
 }
-function renderDesktopProfileInfo(authorData: any) {
+function renderDesktopProfileInfo(authorData: any, avatar: any) {
   const vdom: VNode = createElement("div", { class: "left-column" }, [
     createElement(
       "img",
       {
-        src: "https://a.d-cd.net/475eb1as-960.jpg",
+        src: avatar,
         class: "profile-avatar",
       },
       [],
@@ -322,7 +323,7 @@ function mobileProfile(user: any) {
 function renderUserInfo(user: any) {
   const vdom: VNode[] = [
     createElement("div", { class: "stats" }, [
-      createElement("p", {}, [createText(user.username)]),
+      createElement("p", {}, [createText(user.authorUsername)]),
       createElement("p", { class: "amount-subs" }, []),
       createElement("p", {}, [createText("Подписчики")]),
     ]),

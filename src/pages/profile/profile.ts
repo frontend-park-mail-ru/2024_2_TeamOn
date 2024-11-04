@@ -18,87 +18,64 @@ import {
 import { VNode } from "../../lib/vdom/src/source";
 import { createElement, createText, update } from "../../lib/vdom/lib";
 import { pageContainer } from "../../index";
-import { modifierSidebar } from "../feed/feed";
-var offset = 0;
+import { customizePost, modifierSidebar } from "../feed/feed";
 
-function getUserPosts(link: string) {
+async function getUserPosts(link: string, offset: number) {
   return new Promise((resolve, reject) => {
-    offset += QUERY.LIMIT;
-    const jsonString = `[
-  {
-    "postId": "1",
-    "title": "Это тоже заголовок",
-    "content": "Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?",
-    "likes": 10,
-    "isLiked": false,
-    "createdAt": "30.10.2024"
-  },
-    {
-    "postId": "2",
-    "title": "Ого и это заголовок, но последний",
-    "content": "Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?",
-    "likes": 11,
-    "isLiked": false,
-    "createdAt": "30.10.2024"
-  },
-    {
-    "postId": "3",
-    "title": "Ну тоже заголовок ладно, теперь точно последний",
-    "content": "Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?",
-    "likes": 500,
-    "isLiked": false,
-    "createdAt": "30.10.2024"
-  },
-    {
-    "postId": "4",
-    "title": "Вот-вот и уже все, последний точно",
-    "content": "Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?Когда бек будет готов?",
-    "likes": 90,
-    "isLiked": false,
-    "createdAt": "30.10.2024"
-  }
-]`;
-
-    try {
-      const post = JSON.parse(jsonString); // Конвертация JSON в объект
-      resolve(post); // Возвращаем объект
-    } catch (error) {
-      reject(error);
-    }
-    // fetchAjax(
-    // link == LINKS.
-    //   LOCATIONS.POSTS.AUTHOR_POST.METHOD,
-    //   LOCATIONS.POSTS.AUTHOR_POST.HREF +
-    //     `${authorId/me}?limit=${QUERY.LIMIT}&offset=${offset}`,
-    //   null,
-    //   (response) => {
-    //     if (response.ok) {
-    //       response.json().then((data) => {
-    //         resolve(data);
-    //       });
-    //     } else if (response.status === 404) {
-    //       reject("Пост не найден");
-    //     } else {
-    //       reject(new Error("Внутреняя ошибка сервера"));
-    //     }
-    //   },
-    // );
+    fetchAjax(
+      "GET",
+      link === "/profile"
+        ? "/api/posts/author/post/me"
+        : `/api/posts/author/post/${sessionStorage.getItem("page")}`,
+      null,
+      (response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            resolve(data);
+            offset += QUERY.LIMIT;
+          });
+        } else if (response.status === 404) {
+          reject("Пост не найден");
+        } else if (response.status === 504) {
+          reject("Сервер не ответил вовремя. Попробуйте позже.");
+        } else {
+          reject(new Error("Внутреняя ошибка сервера"));
+        }
+      },
+    );
+  });
+}
+async function addUserPost(title: string, content: string) {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "POST",
+      "/api/posts/post",
+      { title: title, content: content },
+      (response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            resolve(data);
+          });
+        } else if (response.status === 400) {
+          reject(new Error("Ошибка валидации данных"));
+        } else {
+          reject(new Error("Внутреняя ошибка сервера"));
+        }
+      },
+    );
   });
 }
 /**
  * Получение текущей страницы профиля через объект типа промис
  * @returns Информация о пользователе
  */
-export function getPageAuthor(link: string) {
-  const authorId = 12;
+async function getPageAuthor(link: string) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "GET",
-      "/api/profile",
-      // LOCATIONS.AUTHOR.GET_PAGE.METHOD,
-      // link === LINKS.PROFILE.HREF
-      //   ? "/api/author/me/media"
-      //   : `/api/author/${authorId}/media`,
+      link === "/profile"
+        ? "/api/danya/author/me"
+        : `/api/danya/author/${sessionStorage.getItem("page")}`,
       null,
       (response) => {
         if (response.ok) {
@@ -115,6 +92,29 @@ export function getPageAuthor(link: string) {
     );
   });
 }
+async function getAvatarAuthor(link: string) {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "GET",
+      link == "/profile"
+        ? "/api/accounts/account/me/avatar"
+        : `/api/accounts/account/${sessionStorage.getItem("page")}/avatar`,
+      null,
+      (response) => {
+        if (response.ok) {
+          response.blob().then((blob) => {
+            const url = URL.createObjectURL(blob);
+            resolve(url);
+          });
+        } else if (response.status === 500) {
+          resolve("../../styles/photos/avatar/default.jpg");
+        } else {
+          reject(new Error("Ответ от фетча с ошибкой"));
+        }
+      },
+    );
+  });
+}
 
 function getPageMedia(link: string) {
   const authorId = 12;
@@ -124,37 +124,6 @@ function getPageMedia(link: string) {
       link === LINKS.PROFILE.HREF
         ? "/api/author/me/media"
         : `/api/author/${authorId}/media`,
-      null,
-      (response) => {
-        if (response.ok) {
-          response.json().then((data) => {
-            resolve(data);
-          });
-        } else if (response.status === 401) {
-          route(LINKS.ERROR.HREF);
-        } else {
-          reject(new Error("Ответ от фетча с ошибкой"));
-        }
-      },
-    );
-  });
-}
-/**
- * Получение данных о пользователе через объект типа промис
- * @returns Информация о пользователе
- */
-export function getCurrentUser(link: string) {
-  const authorId = 12;
-  return new Promise((resolve, reject) => {
-    fetchAjax(
-      link === LINKS.PROFILE.HREF
-        ? LOCATIONS.AUTHOR.GET_PAGE.METHOD
-        : LOCATIONS.AUTHOR.GET_PAGE.METHOD,
-      link === LINKS.PROFILE.HREF
-        ? LOCATIONS.AUTHOR.GET_PAGE.HREF
-        : LOCATIONS.AUTHOR.GET_PAGE.HREF,
-      // LOCATIONS.ACCOUNT.GET_ACCOUNT.METHOD,
-      // LOCATIONS.ACCOUNT.GET_ACCOUNT.HREF,
       null,
       (response) => {
         if (response.ok) {
@@ -411,11 +380,11 @@ function controlAdaptiveProfile(container: any) {
     });
   }
 }
-function controlLogout(container: any, authorData: any) {
+export function controlLogout(container: any, authorData: any) {
   const logoutbutton = container.querySelector(
     `.${ELEMENTS_CLASS.LOGOUT.BLOCK}`,
   );
-
+  console.log(logoutbutton);
   logoutbutton.addEventListener("click", (event: any) => {
     event.preventDefault();
     removeItemLocalStorage(authorData.username);
@@ -433,6 +402,9 @@ function controlAdaptivePageAuthors(container: any, containerPosts: any) {
         const buttonCancel: any = document.querySelector(
           `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
         );
+        const buttonSend: any = document.querySelector(
+          `.${ELEMENTS_CLASS.SEND_TIP.BLOCK}`,
+        );
         const containerCreatePost =
           container.querySelector(".modal__createpost");
         containerCreatePost.style.display = "block";
@@ -443,6 +415,27 @@ function controlAdaptivePageAuthors(container: any, containerPosts: any) {
             container.querySelector(".modal__createpost");
           containerCreatePost.style.display = "none";
           containerPosts.classList.remove("blur");
+        });
+        buttonSend.addEventListener("click", async () => {
+          const title = container.querySelector(`.input-group`);
+          const content = container.querySelector(`.textarea-group`);
+          const post = await addUserPost(title.value, content.value);
+          const containerCreatePost =
+            container.querySelector(".modal__createpost");
+          containerCreatePost.style.display = "none";
+          containerPosts.classList.remove("blur");
+
+          const authorPosts: any = await getUserPosts(
+            window.location.pathname,
+            0,
+          );
+          console.log(authorPosts);
+          const newDiv = document.createElement("div");
+          const containerPost: VNode = renderUserPosts(post);
+          update(newDiv, containerPost);
+          const feedProfile: any = document.querySelector(`.feed-profile`);
+          feedProfile.appendChild(newDiv);
+          customizePost(containerPosts, authorPosts[0]);
         });
       });
     });
@@ -465,12 +458,16 @@ function controlAdaptivePageAuthors(container: any, containerPosts: any) {
     });
   }
 }
-function renderProfileForm(authorData: any, authorPosts: any): VNode {
+function renderProfileForm(
+  authorData: any,
+  authorPosts: any,
+  avatar: any,
+): VNode {
   return createElement("div", { class: "profile-form" }, [
     createElement("div", { class: "div-mobile" }, []),
     renderDesktopProfileHeader(),
     createElement("div", { class: "container-profile" }, [
-      renderDesktopProfileInfo(authorData),
+      renderDesktopProfileInfo(authorData, avatar),
       createElement("div", { class: "center-column-profile" }, [
         renderAbout(),
         createElement("div", { class: "feed-profile" }, [
@@ -486,10 +483,14 @@ function renderProfileForm(authorData: any, authorPosts: any): VNode {
   ]);
 }
 
-function renderMainContent(authorData: any, authorPosts: any): VNode {
+async function renderMainContent(
+  authorData: any,
+  authorPosts: any,
+  avatar: any,
+): Promise<VNode> {
   return createElement("div", { class: "main-content" }, [
-    renderSidebar(),
-    renderProfileForm(authorData, authorPosts),
+    await renderSidebar(),
+    renderProfileForm(authorData, authorPosts, avatar),
     createElement("div", { class: "div-create-post" }, []),
     createElement("div", { class: "div-send-tip" }, []),
     createElement("div", { class: "div-edit-posts" }, []),
@@ -503,17 +504,28 @@ function renderMainContent(authorData: any, authorPosts: any): VNode {
  */
 export async function renderProfile() {
   try {
+    let offset = 0;
     const authorData: any = await getPageAuthor(window.location.pathname);
-    const authorPosts: any = await getUserPosts(window.location.pathname);
-    // const authorMedias: any = await getPageMedia(window.location.pathname);
+    // const authorData: any = state.currentUser;
+    const authorPosts: any = await getUserPosts(
+      window.location.pathname,
+      offset,
+    );
+    const avatar: any = await getAvatarAuthor(window.location.pathname);
 
+    // const authorMedias: any = await getPageMedia(window.location.pathname);
+    console.log(authorPosts);
+    console.log("ASDASD");
     document.body.style.height = "100%";
     state.currentUser = authorData;
     if (!authorData) {
       throw new Error("Пользователь не найден");
     }
-    const vdom = renderMainContent(authorData, authorPosts);
+    const vdom = await renderMainContent(authorData, authorPosts, avatar);
 
+    if (!vdom) {
+      throw new Error("VirtualDOM не построился");
+    }
     const container = update(pageContainer, vdom);
 
     if (window.innerWidth <= 1024) {

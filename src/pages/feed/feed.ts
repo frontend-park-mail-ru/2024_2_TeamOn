@@ -6,7 +6,7 @@ import {
   sidebarLinks,
   state,
 } from "../../consts";
-import { getCurrentUser, getPageAuthor } from "../profile/profile";
+import { controlLogout } from "../profile/profile";
 import {
   renderSidebar,
   createContainerPost,
@@ -19,57 +19,27 @@ import { route } from "../../utils/routing";
 import { removeItemLocalStorage } from "../../utils/storages";
 import { fetchAjax } from "../../utils/fetchAjax";
 
-var offset = 0;
+let popularPostsArray: any = [];
 
-async function getPopularPosts() {
+async function getPopularPosts(offset: any) {
   return new Promise((resolve, reject) => {
-    offset += QUERY.LIMIT;
-    const jsonString = `[
-      {
-        "postId": "1",
-        "title": "Заголовок",
-        "content": "Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к постуЭто контент к посту",
-        "authorUsername": "author123",
-        "authorId": "authorId123",
-        "likes": "10",
-        "layer": "1",
-        "isLiked": "false"
+    fetchAjax(
+      LOCATIONS.POSTS.POPULAR_POSTS.METHOD,
+      LOCATIONS.POSTS.POPULAR_POSTS.HREF +
+        `?limit=${QUERY.LIMIT}&offset=${offset}`,
+      null,
+      (response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            resolve(data);
+          });
+        } else if (response.status === 400) {
+          route(LINKS.ERROR.HREF);
+        } else {
+          reject(new Error("Внутреняя ошибка сервера"));
+        }
       },
-      {
-        "postId": "2",
-        "title": "Заголовок",
-        "content": "Это контент к  посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к постуЭто контент к посту",
-        "authorUsername": "author12",
-        "authorId": "authorId12",
-        "likes": "10",
-        "layer": "1",
-        "isLiked": "false"
-      }
-    ]`;
-
-    try {
-      const popularPost = JSON.parse(jsonString); // Конвертация JSON в объект
-      resolve(popularPost); // Возвращаем объект
-    } catch (error) {
-      reject(error);
-    }
-    // fetchAjax(
-    //   LOCATIONS.POSTS.POPULAR_POSTS.METHOD,
-    //   LOCATIONS.POSTS.POPULAR_POSTS.HREF +
-    //     `?limit=${QUERY.LIMIT}&offset=${offset}`,
-    //   null,
-    //   (response) => {
-    //     if (response.ok) {
-    //       response.json().then((data) => {
-    //         resolve(data);
-    //       });
-    //     } else if (response.status === 400) {
-    //       route(LINKS.ERROR.HREF);
-    //     } else {
-    //       reject(new Error("Внутреняя ошибка сервера"));
-    //     }
-    //   },
-    // );
+    );
   });
 }
 function getmedia() {
@@ -90,57 +60,29 @@ function getmedia() {
     },
   ];
 }
-async function getRecentlyPosts() {
+async function getRecentlyPosts(offset: any) {
   return new Promise((resolve, reject) => {
-    offset += QUERY.LIMIT;
-    const jsonString = `[
-      {
-        "postId": "1",
-        "title": "Заголовок",
-        "content": "Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к постуЭто контент к посту",
-        "authorUsername": "author123",
-        "authorId": "authorId123",
-        "likes": "10",
-        "layer": "1",
-        "isLiked": "false"
-      },
-        {
-          "postId": "1",
-          "title": "Заголовок",
-          "content": "Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к посту.Это контент к постуЭто контент к посту",
-          "authorUsername": "author123",
-          "authorId": "authorId123",
-          "likes": "10",
-          "layer": "1",
-          "isLiked": "false"
+    fetchAjax(
+      LOCATIONS.POSTS.RECENTLY_POSTS.METHOD,
+      LOCATIONS.POSTS.RECENTLY_POSTS.HREF +
+        `?limit=${QUERY.LIMIT}&offset=${offset}`,
+      null,
+      (response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            resolve(data);
+            offset += QUERY.LIMIT;
+          });
+        } else if (response.status === 400) {
+          route(LINKS.ERROR.HREF);
+        } else {
+          reject(new Error("Внутреняя ошибка сервера"));
         }
-    ]`;
-
-    try {
-      const recentPost = JSON.parse(jsonString); // Конвертация JSON в объект
-      resolve(recentPost);
-    } catch (error) {
-      reject(error);
-    }
-    // fetchAjax(
-    //   LOCATIONS.POSTS.RECENTLY_POSTS.METHOD,
-    //   LOCATIONS.POSTS.RECENTLY_POSTS.HREF +
-    //     `?limit=${QUERY.LIMIT}&offset=${offset}`,
-    //   null,
-    //   (response) => {
-    //     if (response.ok) {
-    //       response.json().then((data) => {
-    //         resolve(data);
-    //       });
-    //     } else if (response.status === 400) {
-    //       // route(LINKS.ERROR.HREF);
-    //     } else {
-    //       reject(new Error("Внутреняя ошибка сервера"));
-    //     }
-    //   },
-    // );
+      },
+    );
   });
 }
+
 /**
  * Берет каждый пост и наполняет его
  * @param containerPopularPosts Контейнер популярных постов
@@ -149,24 +91,31 @@ async function getRecentlyPosts() {
 async function modifirePosts(
   containerPopularPosts: any,
   containerRecentlyPosts: any,
+  popularPosts: any,
+  recentlyPosts: any,
 ) {
   try {
-    const popularPosts: any = await getPopularPosts();
+    // const popularPosts: any = await getPopularPosts();
+    // const popularPosts: any = popularPostsArray;
     const mediacontent = getmedia();
-
+    if (!popularPosts) {
+      console.error("Популярные посты не загрузились");
+    }
     const containersPopularPosts = containerPopularPosts.querySelectorAll(
       `.${ELEMENTS_CLASS.POST.FEED.BLOCK}`,
     );
     containersPopularPosts.forEach((container: any, index: any) => {
-      customizePost(container, popularPosts[index], mediacontent);
+      console.log(popularPosts[index]);
+      console.log("WO");
+      customizePost(container, popularPosts[index]);
     });
 
-    const recentlyPosts: any = await getRecentlyPosts();
+    // const recentlyPosts: any = await getRecentlyPosts();
     const containersRecentlyPosts = containerRecentlyPosts.querySelectorAll(
       `.${ELEMENTS_CLASS.POST.FEED.BLOCK}`,
     );
     containersRecentlyPosts.forEach((container: any, index: any) => {
-      customizePost(container, recentlyPosts[index], mediacontent);
+      customizePost(container, recentlyPosts[index]);
     });
   } catch (error) {
     console.log("ERROR");
@@ -177,11 +126,9 @@ async function modifirePosts(
  * Рендерит скелет популярных постов
  * @returns
  */
-async function renderPopularPosts() {
+async function renderPopularPosts(popularPosts: any) {
   try {
-    const popularPosts: any = await getPopularPosts();
     const media = getmedia();
-
     var posts: any = [];
     popularPosts.forEach((post: any) => {
       const mediaContent =
@@ -200,9 +147,8 @@ async function renderPopularPosts() {
  * Рендерит скелет популярных постов
  * @returns
  */
-async function renderRecentlyPosts() {
+async function renderRecentlyPosts(recentlyPosts: any) {
   try {
-    const recentlyPosts: any = await getRecentlyPosts();
     const media = getmedia();
     var arrayMedia: any = [];
 
@@ -221,6 +167,26 @@ async function renderRecentlyPosts() {
     console.error(error);
     throw error;
   }
+}
+async function AddLikeOnPost(postId: any) {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      LOCATIONS.POSTS.LIKE.METHOD,
+      LOCATIONS.POSTS.LIKE.HREF,
+      { postId: postId },
+      (response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            resolve(data);
+          });
+        } else if (response.status === 404) {
+          route(LINKS.ERROR.HREF);
+        } else {
+          reject(new Error("Внутреняя ошибка сервера"));
+        }
+      },
+    );
+  });
 }
 /**
  * Кастомизирует сайдраб
@@ -268,7 +234,7 @@ export function modifierSidebar(mainContainer: any) {
  * @param container Контейнер ( популярных | недавних постов )
  * @param post Пост
  */
-function customizePost(container: any, post: any = null, mediaContents: any[]) {
+export function customizePost(container: any, post: any = null) {
   const authorSection: any = container.querySelector(
     `.${ELEMENTS_CLASS.POST.AUTHOR.NAME}`,
   );
@@ -285,11 +251,15 @@ function customizePost(container: any, post: any = null, mediaContents: any[]) {
   const authorName: any = container.querySelector(
     `.${ELEMENTS_CLASS.POST.AUTHOR.NAME}`,
   );
-  authorName.textContent = post.authorUsername;
-  const author_id = 12; // БЕКЕНД ЗАГЛУШКА
-  authorSection.addEventListener("click", () => {
-    route(`/profile/${author_id}`);
-  });
+  if (authorName) {
+    authorName.textContent = post.authorUsername;
+  }
+  if (authorSection) {
+    authorSection.addEventListener("click", () => {
+      sessionStorage.setItem("page", post.authorId);
+      route(`/profile/${sessionStorage.getItem("page")}`);
+    });
+  }
 
   const title: any = container.querySelector(`.${ELEMENTS_CLASS.POST.TITLE}`);
   title.textContent = post.title;
@@ -299,24 +269,82 @@ function customizePost(container: any, post: any = null, mediaContents: any[]) {
   );
   content.textContent = post.content;
 
-  const mediaConten: any = container.querySelector(
-    `.${ELEMENTS_CLASS.POST.MEDIA}`,
-  );
-  // mediaConten.src = mediaContents[1].mediaContent[1].file;
-  // mediaContent.alt = "Описание"
-
   const date: any = container.querySelector(`.${ELEMENTS_CLASS.POST.DATE}`);
   date.textContent = post.date;
 
-  const amountLike: any = container.querySelector(
-    `.${ELEMENTS_CLASS.POST.LIKES.AMOUNT}`,
-  );
-  amountLike.innerHTML = `${post.likes}`;
+  const divLikes: any = container.querySelector(`.likes-container`);
+  if (divLikes) {
+    const amountLike: any = container.querySelector(
+      `.${ELEMENTS_CLASS.POST.LIKES.AMOUNT}`,
+    );
+    amountLike.innerHTML = `${post.likes}`;
+
+    // Установка состояния лайка
+    if (post.isLiked) {
+      divLikes.classList.add("active");
+    } else {
+      divLikes.classList.remove("active");
+    }
+
+    const divLike: any = container.querySelector(
+      `.${ELEMENTS_CLASS.POST.LIKES.BLOCK}`,
+    );
+
+    divLike.addEventListener("click", async () => {
+      if (post.isLiked) {
+        // Удалить лайк
+        const likeCount: any = await AddLikeOnPost(post.postId);
+        post.isLiked = false; // Обновляем состояние
+        post.likes = likeCount.count; // Обновляем количество лайков
+        divLikes.classList.remove("active");
+      } else {
+        // Добавить лайк
+        const likeCount: any = await AddLikeOnPost(post.postId);
+        post.isLiked = true; // Обновляем состояние
+        post.likes = likeCount.count; // Обновляем количество лайков
+        divLikes.classList.add("active");
+      }
+      amountLike.innerHTML = `${post.likes}`; // Обновляем отображаемое количество лайков
+    });
+  }
 }
 export async function renderFeed() {
   try {
-    const user: any = getPageAuthor("Здесь будет getAccount()");
-    // const user: any = state.currentUser;
+    let offset = 0;
+    const allPopularPosts: any = []; // Массив для хранения всех загруженных популярных постов
+    const allRecentlyPosts: any = [];
+
+    while (true) {
+      const popularPosts: any = await getPopularPosts(offset);
+
+      // Если постов меньше, чем лимит, выходим из цикла
+      if (popularPosts.length < QUERY.LIMIT) {
+        break;
+      }
+
+      // Добавляем загруженные посты в общий массив
+      allPopularPosts.push(...popularPosts);
+
+      // Увеличиваем offset для следующей итерации
+      offset += QUERY.LIMIT;
+    }
+
+    while (true) {
+      const recentlyPosts: any = await getRecentlyPosts(offset);
+
+      // Если постов меньше, чем лимит, выходим из цикла
+      if (recentlyPosts.length < QUERY.LIMIT) {
+        break;
+      }
+
+      // Добавляем загруженные посты в общий массив
+      allRecentlyPosts.push(...recentlyPosts);
+
+      // Увеличиваем offset для следующей итерации
+      offset += QUERY.LIMIT;
+    }
+
+    const user: any = state.currentUser;
     if (!user) {
       throw new Error("Пользователь не найден");
     }
@@ -327,25 +355,24 @@ export async function renderFeed() {
     const doc: any = document.body;
     doc.style.height = "100%";
     const vdom: VNode = createElement("div", { class: "main-content" }, [
-      renderSidebar(),
+      await renderSidebar(),
       createElement("div", { class: "right-content" }, [
         createElement("div", { class: "section-title" }, [
           createText("Популярное"),
         ]),
         createElement("div", { class: "main-container-popular" }, [
-          ...(await renderPopularPosts()),
+          ...(await renderPopularPosts(allPopularPosts)),
         ]),
         createElement("div", { class: "section-title" }, [
           createText("Недавние"),
         ]),
         createElement("div", { class: "main-container-recently" }, [
-          ...(await renderRecentlyPosts()),
+          ...(await renderRecentlyPosts(allRecentlyPosts)),
         ]),
       ]),
     ]);
 
     const container = update(pageContainer, vdom);
-    console.log(vdom);
     state.currentUser = user;
 
     const mainContent = container.querySelector(".main-content");
@@ -358,7 +385,12 @@ export async function renderFeed() {
       ".main-container-recently",
     );
 
-    modifirePosts(containerPopularPosts, containerRecentlyPosts);
+    modifirePosts(
+      containerPopularPosts,
+      containerRecentlyPosts,
+      allPopularPosts,
+      allRecentlyPosts,
+    );
 
     // const side: any = container.querySelector(
     //   `.${ELEMENTS_CLASS.SEARCH.ELEMENT}`,
@@ -366,15 +398,8 @@ export async function renderFeed() {
     // side.type = "text";
     // side.placeholder = "Найти креаторов";
 
-    const logoutbutton = container.querySelector(
-      `.${ELEMENTS_CLASS.LOGOUT.BLOCK}`,
-    );
+    controlLogout(container, user);
 
-    logoutbutton.addEventListener("click", (event: any) => {
-      event.preventDefault();
-      removeItemLocalStorage(user.username);
-      route(LINKS.HOME.HREF);
-    });
     return container;
   } catch (error) {
     console.log("ERROR");

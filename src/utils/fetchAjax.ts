@@ -13,12 +13,14 @@
 export function fetchAjax(
   method: any,
   url: any,
-  body?: any,
+  body?: FormData | any,
   callback: (response: Response) => void = () => {},
 ) {
   const headers: any = {};
 
-  if (body) {
+  if (body instanceof FormData) {
+    // Не устанавливаем Content-Type, он будет установлен автоматически
+  } else if (body) {
     headers["Content-Type"] = "application/json; charset=utf-8";
     body = JSON.stringify(body);
   }

@@ -42,7 +42,7 @@ interface MenuElements {
 }
 
 function updatePageContent(render: string): void {
-  const feedRegex = /^\/profile\/\d+$/;
+  const feedRegex = /^\/profile\/[0-9a-zA-Z-]+$/;
   const menuElements: MenuElements = state.menuElements as MenuElements;
 
   if (

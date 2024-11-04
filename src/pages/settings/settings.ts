@@ -28,7 +28,9 @@ export function validateSettingsPassword(
             ? `В пароле должен содержаться спец символ`
             : !REGEXP.REGEXP_UPPER_LOWER_CASE.test(inputPassword.value)
               ? `Не хватает: большой и маленькой буквы`
-              : "";
+              : inputRepeatPassword.value !== inputPassword.value
+                ? "Пароли должны совпадать"
+                : "";
 
   passwordStrength +=
     (inputPassword.value.length >= validatePassword.MIN_SYMBOLS ? 1 : 0) +
@@ -36,13 +38,8 @@ export function validateSettingsPassword(
     (REGEXP.REGEXP_PASSWORD_ONE_NUMBER.test(inputPassword.value) ? 1 : 0) +
     (REGEXP.REGEX_SPEC_SYMBOL.test(inputPassword.value) ? 1 : 0) +
     (REGEXP.REGEXP_UPPER_LOWER_CASE.test(inputPassword.value) ? 1 : 0);
-
+  passwordStrength -= inputRepeatPassword.value !== inputPassword.value ? 1 : 0;
   updatePasswordStrengthBar(passwordStrength);
-
-  confirmPasswordError.innerHTML =
-    inputRepeatPassword.value !== inputPassword.value
-      ? "Пароли должны совпадать"
-      : "";
 
   if (!newPasswordError.innerHTML) {
     newPasswordError.innerHTML = "";

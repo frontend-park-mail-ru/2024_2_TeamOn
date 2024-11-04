@@ -1,7 +1,15 @@
-import { ELEMENTS_CLASS, sidebarLinks, state } from "../../consts";
+import {
+  ELEMENTS_CLASS,
+  LINKS,
+  LOCATIONS,
+  sidebarLinks,
+  state,
+} from "../../consts";
 import { renderLogoutButton } from "../profile/profile";
 import { createElement, createText } from "../../lib/vdom/lib";
 import { VNode } from "../../lib/vdom/src/source";
+import { fetchAjax } from "../../utils/fetchAjax";
+import { route } from "../../utils/routing";
 
 export function setActiveLink(link: any) {
   sidebarLinks.forEach((sidebarLink: any) => {
@@ -25,8 +33,29 @@ function renderBurger() {
 
   return vdom;
 }
-
-function renderSidebar() {
+async function checkAuthor() {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      LOCATIONS.ACCOUNT.GET_ACCOUNT.METHOD,
+      "/api/accounts/account",
+      null,
+      (response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            resolve(data);
+          });
+        } else if (response.status === 404) {
+          route(LINKS.ERROR.HREF);
+        } else {
+          reject(new Error("Внутреняя ошибка сервера"));
+        }
+      },
+    );
+  });
+}
+async function renderSidebar() {
+  const userdata: any = await checkAuthor();
+  const role = userdata.role;
   const vdom: VNode = createElement(
     "div",
     { class: ELEMENTS_CLASS.SIDEBAR.BLOCK },
@@ -47,9 +76,13 @@ function renderSidebar() {
             createElement("i", { class: "icon-settings" }, []),
             createText(" Настройки"),
           ]),
-          createElement("a", { class: "referens" }, [
-            createElement("i", { class: "icon-profile" }, []),
-            createText(" Профиль"),
+          createElement("div", { class: "section-profile" }, [
+            role == "Reader"
+              ? createElement("div", {}, [])
+              : createElement("a", { class: "referens" }, [
+                  createElement("i", { class: "icon-profile" }, []),
+                  createText(" Профиль"),
+                ]),
           ]),
         ]),
         renderLogoutButton(),
@@ -79,7 +112,10 @@ function rendermediaContent(mediaContent: any[]) {
   });
   return result;
 }
+
 function createContainerPost(post: any, mediaContent: any[]) {
+  // Функция, которая будет вызываться при клике на имя автора
+
   const vdom: VNode = createElement(
     "div",
     { class: ELEMENTS_CLASS.POST.FEED.BLOCK },
@@ -91,7 +127,7 @@ function createContainerPost(post: any, mediaContent: any[]) {
           [],
         ),
         createElement("div", { class: ELEMENTS_CLASS.POST.AUTHOR.NAME }, [
-          createText(post.authorUsername),
+          createText("23" + post.authorUsername),
         ]),
       ]),
       createElement("div", { class: ELEMENTS_CLASS.POST.TITLE }, [

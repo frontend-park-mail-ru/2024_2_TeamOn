@@ -6,14 +6,13 @@ import { route } from "../../utils/routing";
 import { removeItemLocalStorage } from "../../utils/storages";
 import { modifierSidebar } from "../feed/feed";
 import { renderSidebar } from "../feed/feedView";
-import { getCurrentUser } from "../profile/profile";
 
 export async function renderNotifications() {
   try {
-    const user: any | null = await getCurrentUser("Здесь будет getAccount()");
-
+    // const user: any | null = await getCurrentUser("Здесь будет getAccount()");
+    const user: any = state.currentUser;
     const vdom: VNode = createElement("div", { class: "main-content" }, [
-      renderSidebar(),
+      await renderSidebar(),
       createElement("div", { class: ELEMENTS_CLASS.NOTIFICATION.BLOCK }, [
         createElement("h1", {}, [createText("Уведомления")]),
         createElement("div", { class: ELEMENTS_CLASS.NOTIFICATION.ELEMENT }, [

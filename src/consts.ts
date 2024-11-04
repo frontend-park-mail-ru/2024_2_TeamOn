@@ -109,12 +109,8 @@ export const LOCATIONS = {
   AUTHOR: {
     GET_PAGE: {
       METHOD: "GET",
-      HREF: "/api/profile", // + '/me' | '/{authorId}'
+      HREF: "/api/author", // + '/me' | '/{authorId}'
     },
-    // GET_PAGE: {
-    //   METHOD: "GET",
-    //   HREF: "/api/author", // + '/me' | '/{authorId}'
-    // },
     GET_PAGE_MEDIA: {
       METHOD: "GET",
       HREF: "/api/author/{authorId}/media", // authorId = uuid | me
