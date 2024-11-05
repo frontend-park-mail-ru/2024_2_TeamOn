@@ -6,7 +6,7 @@ import { getAccount } from "../feed/feedView";
 import { getUserPosts } from "./profile";
 
 function renderUserPosts(post: any) {
-  const container = document.querySelector(`.place-posts`);
+  const container = document.createElement("div");
   const vdom: VNode = createElement("div", { class: "posts" }, [
     createElement("div", { class: ELEMENTS_CLASS.POST.PROFILE.BLOCK }, [
       createElement("div", { style: "display: flex;" }, [
@@ -192,7 +192,7 @@ export function renderCreatePost() {
   if (window.location.pathname !== "/profile") {
     return createElement("div", {}, []);
   }
-
+  // const container: any = document.createElement('div');
   const vdom: VNode = createElement("div", { class: "modal__createpost" }, [
     createElement("div", { class: "modal-header" }, [
       createElement("h2", {}, [createText("Создание поста")]),

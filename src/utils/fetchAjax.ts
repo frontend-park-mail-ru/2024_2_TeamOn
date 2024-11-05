@@ -26,7 +26,7 @@ export async function fetchAjax(
   // Получаем CSRF-токен
   const csrfToken = await getCsrfToken();
   if (csrfToken) {
-    headers["X-CSRF-Token"] = csrfToken; 
+    headers["X-CSRF-Token"] = csrfToken;
   }
 
   if (body instanceof FormData) {

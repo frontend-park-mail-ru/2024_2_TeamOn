@@ -253,7 +253,7 @@ function renderPosts(authorPosts: any[]) {
   });
   return posts;
 }
-function modifirePosts(containers: any, posts: any[]) {
+function modifirePosts(containers: any, posts: any[], offset: any) {
   const menu = containers.querySelectorAll(`.menu-icon`);
   const dropdownMenu = containers.querySelectorAll(`.dropdown-menu`);
 
@@ -269,89 +269,92 @@ function modifirePosts(containers: any, posts: any[]) {
 
   // Установка состояния лайка
   divsLike.forEach((divLike: any, index: number) => {
-    if (posts[index].isLiked) {
-      divLike.classList.add("active");
-    } else {
-      divLike.classList.remove("active");
+    if (index < posts.length) {
+      if (posts[index].isLiked) {
+        divLike.classList.add("active");
+      } else {
+        divLike.classList.remove("active");
+      }
+
+      const amountsLike: any = containers.querySelectorAll(
+        `.${ELEMENTS_CLASS.POST.LIKES.AMOUNT}`,
+      );
+
+      divLike.addEventListener("click", async () => {
+        const likeCount: any = await AddLikeOnPost(posts[index].postId);
+        posts[index].likes = likeCount.count; // Обновляем количество лайков
+        divLike.classList.toggle("active");
+        amountsLike[index].innerHTML = `${posts[index].likes}`; // Обновляем отображаемое количество лайков
+      });
     }
-
-    const amountsLike: any = containers.querySelectorAll(
-      `.${ELEMENTS_CLASS.POST.LIKES.AMOUNT}`,
-    );
-
-    divLike.addEventListener("click", async () => {
-      const likeCount: any = await AddLikeOnPost(posts[index].postId);
-      posts[index].isLiked = !posts[index].isLiked; // Обновляем состояние
-      posts[index].likes = likeCount.count; // Обновляем количество лайков
-      divLike.classList.toggle("active");
-      amountsLike[index].innerHTML = `${posts[index].likes}`; // Обновляем отображаемое количество лайков
-    });
   });
 
   const handleMenuClick = (event: any, index: number) => {
     event.stopPropagation();
-    dropdownMenu.forEach((dropdown: any, dropdownIndex: number) => {
-      if (dropdownIndex !== index) {
-        dropdown.classList.remove(ELEMENTS_CLASS.ACTIVE);
+    if (index < posts.length) {
+      dropdownMenu.forEach((dropdown: any, dropdownIndex: number) => {
+        if (dropdownIndex !== index) {
+          dropdown.classList.remove(ELEMENTS_CLASS.ACTIVE);
+        }
+      });
+
+      dropdownMenu[index].classList.toggle(ELEMENTS_CLASS.ACTIVE);
+      renderDeletePost(posts[index]);
+      renderEditPost(posts[index]);
+      const modalsEdit: any = document.querySelector(".modal__editpost");
+      const modalsDelete: any = document.querySelector(".modal__deletepost");
+
+      const resetModalStates = () => {
+        modalsEdit.style.display = "none";
+        modalsDelete.style.display = "none";
+        containers.classList.remove("blur");
+      };
+
+      if (event.target.classList.contains("button-edit-post")) {
+        const title: any = document.querySelector(".input-group");
+        const content: any = document.querySelector(".textarea-group");
+
+        title.textContent = posts[index].title;
+        content.value = posts[index].content;
+        modalsEdit.style.display = "block";
+        containers.classList.add("blur");
+
+        modalsEdit.querySelector(`.${ELEMENTS_CLASS.CANCEL.BLOCK}`).onclick =
+          resetModalStates;
+
+        modalsEdit.querySelector(`.${ELEMENTS_CLASS.SAVE.BLOCK}`).onclick =
+          async (e: any) => {
+            e.preventDefault();
+            await editPost(
+              modalsEdit,
+              posts[index].postId,
+              title.value,
+              content.value,
+            );
+            resetModalStates();
+            await updatePosts();
+          };
+        return;
       }
-    });
 
-    dropdownMenu[index].classList.toggle(ELEMENTS_CLASS.ACTIVE);
-    renderDeletePost(posts[index]);
-    renderEditPost(posts[index]);
-    const modalsEdit: any = document.querySelector(".modal__editpost");
-    const modalsDelete: any = document.querySelector(".modal__deletepost");
+      if (event.target.classList.contains("button-delete-post")) {
+        const contentDelete: any = document.querySelector(
+          ".textarea-group-delete",
+        );
+        contentDelete.textContent = `Вы действительно хотите удалить пост "${posts[index].title}" ?`;
+        modalsDelete.style.display = "block";
+        containers.classList.add("blur");
 
-    const resetModalStates = () => {
-      modalsEdit.style.display = "none";
-      modalsDelete.style.display = "none";
-      containers.classList.remove("blur");
-    };
+        modalsDelete.querySelector(`.${ELEMENTS_CLASS.CANCEL.BLOCK}`).onclick =
+          resetModalStates;
 
-    if (event.target.classList.contains("button-edit-post")) {
-      const title: any = document.querySelector(".input-group");
-      const content: any = document.querySelector(".textarea-group");
-
-      title.textContent = posts[index].title;
-      content.value = posts[index].content;
-      modalsEdit.style.display = "block";
-      containers.classList.add("blur");
-
-      modalsEdit.querySelector(`.${ELEMENTS_CLASS.CANCEL.BLOCK}`).onclick =
-        resetModalStates;
-
-      modalsEdit.querySelector(`.${ELEMENTS_CLASS.SAVE.BLOCK}`).onclick =
-        async (e: any) => {
-          e.preventDefault();
-          await editPost(
-            modalsEdit,
-            posts[index].postId,
-            title.value,
-            content.value,
-          );
-          resetModalStates();
-          await updatePosts();
-        };
-      return;
-    }
-
-    if (event.target.classList.contains("button-delete-post")) {
-      const contentDelete: any = document.querySelector(
-        ".textarea-group-delete",
-      );
-      contentDelete.textContent = `Вы действительно хотите удалить пост "${posts[index].title}" ?`;
-      modalsDelete.style.display = "block";
-      containers.classList.add("blur");
-
-      modalsDelete.querySelector(`.${ELEMENTS_CLASS.CANCEL.BLOCK}`).onclick =
-        resetModalStates;
-
-      modalsDelete.querySelector(`.${ELEMENTS_CLASS.DELETE.BLOCK}`).onclick =
-        async () => {
-          await deletePost(posts[index].postId);
-          await updatePosts();
-          resetModalStates();
-        };
+        modalsDelete.querySelector(`.${ELEMENTS_CLASS.DELETE.BLOCK}`).onclick =
+          async () => {
+            await deletePost(posts[index].postId);
+            await updatePosts();
+            resetModalStates();
+          };
+      }
     }
   };
 
@@ -756,6 +759,41 @@ function controlInfo(authorData: any, container: any) {
     }
   });
 }
+
+function renderPostsAuthor(posts: any) {
+  var allposts: any = [];
+  posts.forEach(async (post: any) => {
+    const container: any = await renderUserPosts(post);
+    allposts.push(container);
+  });
+  return allposts;
+}
+// async function paginageProfile(allPosts: any, containerPosts:any) {
+//   let stopLoadPosts: boolean = false;
+//   let offsetPost = 0;
+//   // Объект для предотвращения повторной загрузки
+//   let isLoading = false;
+
+//   async function loadPosts() {
+//     if (isLoading) return;
+//     isLoading = true;
+
+//     try {
+//       if (!stopLoadPosts) {
+//         const newposts: any = await getUserPosts(window.location.pathname, offsetPost);
+//         const nextpost: any = newposts.slice(0, QUERY.LIMIT);
+
+//         if (nextpost.length > 0) {
+//           allPosts.pust(...nextpost);
+//           offsetPost += QUERY.LIMIT;
+
+//           containerPosts.append( ...await renderPostsAuthor(nextpost));
+
+//         }
+//       }
+//     }
+//   }
+// }
 async function renderMainContent(
   authorData: any,
   avatar: any,
@@ -784,8 +822,8 @@ export async function renderProfile() {
 
     const authorData: any = await getPageAuthor(window.location.pathname);
     let authorPosts: any = await getUserPosts(window.location.pathname, offset);
-    offset += QUERY.LIMIT;
 
+    let allUserPosts: any = [];
     const avatar: any = await getAvatarAuthor(
       window.location.pathname,
       sessionStorage.getItem("authorid"),
@@ -835,7 +873,6 @@ export async function renderProfile() {
 
     modifierSidebar(mainContent);
     controlAdaptivePageAuthors(authorData, container, containerPosts);
-    // controlAdaptiveProfile(container);
 
     controlLogout(container, authorData);
     controlMediaProfile(container);
@@ -847,7 +884,9 @@ export async function renderProfile() {
       ...renderPosts(authorPosts),
     ]);
     update(place, arrayPost);
-    modifirePosts(containerPosts, authorPosts);
+    modifirePosts(place, authorPosts, offset);
+    offset += QUERY.LIMIT;
+    allUserPosts.push(...authorPosts);
     // Обработчик события прокрутки
     window.addEventListener("scroll", async () => {
       const { scrollTop, clientHeight, scrollHeight } =
@@ -856,26 +895,26 @@ export async function renderProfile() {
       // Проверяем, достиг ли пользователь нижней части страницы
       if (scrollTop + clientHeight >= scrollHeight - 500 && !isLoading) {
         isLoading = true; // Устанавливаем флаг загрузки
-
         const newPosts: any = await getUserPosts(
           window.location.pathname,
           offset,
         );
-
+        allUserPosts.push(...newPosts);
         if (newPosts.length > 0) {
           const arrayPost: VNode = createElement("div", {}, [
             ...renderPosts(newPosts),
           ]);
-          update(place, arrayPost);
-          modifirePosts(containerPosts, newPosts);
-          offset += QUERY.LIMIT; // Увеличиваем оффсет
+          const newdiv: any = document.createElement("div");
+          update(newdiv, arrayPost);
+          place.append(newdiv);
         }
 
+        modifirePosts(place, allUserPosts, offset);
+        offset += QUERY.LIMIT;
         isLoading = false; // Сбрасываем флаг загрузки
       }
     });
 
-    const buttonMob: any = document.querySelector(`.posts-mobile__button`);
     return container;
   } catch (error) {
     console.log("ERROR");
