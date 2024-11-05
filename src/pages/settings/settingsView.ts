@@ -36,9 +36,13 @@ export async function renderSettings() {
 
     controlLogout(container, user);
 
-    setupTabs(tabs, contentContainer);
+    setupTabs(tabs, contentContainer, userdata);
     const index: any = sessionStorage.getItem("active");
-    updateContent(contentContainer, index == null ? 0 : Number(index));
+    updateContent(
+      contentContainer,
+      index == null ? 0 : Number(index),
+      userdata,
+    );
 
     const profilePicForm: any = document.querySelector(
       `.profile-pic-container`,
@@ -73,10 +77,12 @@ async function saveSettings(username: string, email: string, password: string) {
       (response) => {
         if (response.ok) {
           resolve(true);
-        } else if (response.status === 404) {
-          route(LINKS.ERROR.HREF);
+        } else if (response.status === 400) {
+          response.json().then((data: any) => {
+            resolve(data);
+          });
         } else {
-          reject(new Error("Внутреняя ошибка сервера"));
+          resolve(false);
         }
       },
     );
@@ -100,7 +106,11 @@ async function saveAvatar(avatar: FormData) {
     );
   });
 }
-function setupTabs(tabs: HTMLDivElement, contentContainer: HTMLDivElement) {
+function setupTabs(
+  tabs: HTMLDivElement,
+  contentContainer: HTMLDivElement,
+  userdata: any,
+) {
   ["Основная информация", "Безопасность", "Получение дохода"].forEach(
     (tabName, index) => {
       const tabLink = document.createElement("a");
@@ -120,7 +130,7 @@ function setupTabs(tabs: HTMLDivElement, contentContainer: HTMLDivElement) {
           .forEach((link) => link.classList.remove("active"));
         tabLink.classList.add("active");
         sessionStorage.setItem("active", index.toString());
-        updateContent(contentContainer, index);
+        updateContent(contentContainer, index, userdata);
       });
       tabs.appendChild(tabLink);
     },
@@ -132,9 +142,10 @@ let buttonPassword: any;
 async function updateContent(
   contentContainer: HTMLDivElement,
   index: number = 0,
+  userdata: any,
 ) {
   contentContainer.innerHTML = "";
-  contentContainer.appendChild(await createProfileForm());
+  contentContainer.appendChild(await createProfileForm(userdata));
   contentContainer.appendChild(createSecurityForm());
   let containerPersonalize: any =
     contentContainer.querySelector(`.form-container`);
@@ -155,7 +166,7 @@ async function updateContent(
       return [buttonPersonalize, buttonPassword];
   }
 }
-async function createProfileForm(): Promise<HTMLDivElement> {
+async function createProfileForm(userdata: any): Promise<HTMLDivElement> {
   const formContainer = document.createElement("div");
   formContainer.className = "form-container";
 
@@ -166,7 +177,7 @@ async function createProfileForm(): Promise<HTMLDivElement> {
   const usernameRow = document.createElement("div");
   usernameRow.className = "form-row";
   const usernameLabel = createLabel("Имя пользователя", "username");
-  const usernameInput = createInput("text", "username");
+  const usernameInput = createInput("text", "username", userdata.username);
   const usernameError = createErrorMessage();
   usernameRow.append(usernameLabel, usernameInput);
   formContainer.append(usernameRow, usernameError);
@@ -174,7 +185,7 @@ async function createProfileForm(): Promise<HTMLDivElement> {
   const emailRow = document.createElement("div");
   emailRow.className = "form-row";
   const emailLabel = createLabel("Электронная почта", "email");
-  const emailInput = createInput("email", "email");
+  const emailInput = createInput("email", "email", userdata.email);
   const buttonSetAuthor = await createButtonSetAuthor();
   const emailError = createErrorMessage();
   emailRow.append(emailLabel, emailInput);
@@ -194,8 +205,48 @@ async function createProfileForm(): Promise<HTMLDivElement> {
       validationMainInfoSave(usernameInput.value, emailInput.value);
     usernameError.textContent = usernameErrorMsg || "";
     emailError.textContent = emailErrorMsg || "";
-    if (username.value && email.value) {
-      const setSettings = await saveSettings(username.value, email.value, "");
+    if (username.value || email.value) {
+      const ok: any = await saveSettings(username.value, email.value, "");
+      ok.message
+        ? (emailError.textContent = ok.message)
+        : (emailError.textContent = "");
+      // Проверяем, успешно ли сохранен аватар
+      if (ok && !ok.message) {
+        const user: any = await getAccount();
+        if (!formContainer.querySelector(`.succcesful-title`)) {
+          // Создаем элемент для сообщения об успешной загрузке
+          const successMessage = document.createElement("div");
+          successMessage.textContent = "Данные успешно сохранены";
+          successMessage.style.color = "green";
+          successMessage.style.marginTop = "10px";
+          successMessage.style.fontWeight = "bold";
+          successMessage.className = "succcesful-title";
+          emailInput.value = user.email;
+          usernameInput.value = user.username;
+          // Добавляем сообщение в профильный div
+          formContainer.appendChild(successMessage);
+          // Убираем сообщение через несколько секунд
+          setTimeout(() => {
+            successMessage.remove();
+          }, 3000); // Удаляем сообщение через 3 секунды
+        }
+      } else {
+        if (!formContainer.querySelector(`.reject-title`)) {
+          const successMessage = document.createElement("div");
+          successMessage.textContent = "Ошибка при сохранении данных";
+          successMessage.style.color = "red";
+          successMessage.style.marginTop = "10px";
+          successMessage.className = "reject-title";
+
+          // Добавляем сообщение в профильный div
+          formContainer.appendChild(successMessage);
+
+          // Убираем сообщение через несколько секунд
+          setTimeout(() => {
+            successMessage.remove();
+          }, 3000); // Удаляем сообщение через 3 секунды
+        }
+      }
     }
   });
 
@@ -292,11 +343,55 @@ function createSecurityForm(): HTMLDivElement {
       newPasswordError,
       confirmPasswordError,
     );
-    if (
-      // oldPasswordError.textContent == "" &&
-      newPasswordError.textContent == ""
-    ) {
-      const setSettings = await saveSettings("", "", password.value);
+    if (newPasswordError.textContent == "") {
+      const ok: any = await saveSettings("", "", password.value);
+      // Проверяем, успешно ли сохранен аватар
+      ok.message
+        ? (newPasswordError.textContent = ok.message)
+        : (newPasswordError.textContent = "");
+      if (ok && !ok.message) {
+        if (!formContainer.querySelector(`.succcesful-title`)) {
+          // Создаем элемент для сообщения об успешной загрузке
+          const successMessage = document.createElement("div");
+          successMessage.textContent = "Данные успешно сохранены";
+          successMessage.style.color = "green";
+          successMessage.style.marginTop = "10px";
+          successMessage.style.fontWeight = "bold";
+          successMessage.className = "succcesful-title";
+          newPasswordInput.value = "";
+          confirmPasswordInput.value = "";
+          validationSecuritySave(
+            // oldPasswordInput,
+            newPasswordInput,
+            confirmPasswordInput,
+            // oldPasswordError,
+            newPasswordError,
+            confirmPasswordError,
+          );
+          // Добавляем сообщение в профильный div
+          formContainer.appendChild(successMessage);
+          // Убираем сообщение через несколько секунд
+          setTimeout(() => {
+            successMessage.remove();
+          }, 3000); // Удаляем сообщение через 3 секунды
+        }
+      } else {
+        if (!formContainer.querySelector(`.reject-title`)) {
+          const successMessage = document.createElement("div");
+          successMessage.textContent = "Ошибка при сохранении данных";
+          successMessage.style.color = "red";
+          successMessage.style.marginTop = "10px";
+          successMessage.className = "reject-title";
+
+          // Добавляем сообщение в профильный div
+          formContainer.appendChild(successMessage);
+
+          // Убираем сообщение через несколько секунд
+          setTimeout(() => {
+            successMessage.remove();
+          }, 3000); // Удаляем сообщение через 3 секунды
+        }
+      }
     }
   });
   return formContainer;
@@ -331,26 +426,36 @@ function createLabel(text: string, htmlFor: string): HTMLLabelElement {
   return label;
 }
 
-function createInput(type: string, id: string): HTMLInputElement {
+function createInput(
+  type: string,
+  id: string,
+  initialtext: any = null,
+): HTMLInputElement {
   const input = document.createElement("input");
   input.type = type;
   input.id = id;
+  input.value = initialtext;
   return input;
 }
 async function createButtonSetAuthor() {
+  const divButton: any = document.createElement("button");
   const button: any = document.createElement("button");
   button.classList.add("become-author-button");
   const text: any = document.createElement("h3");
   text.textContent = "Стать автором";
   button.appendChild(text);
+  divButton.appendChild(button);
   const userdata: any = await getAccount();
   const role = userdata.role;
   if (role !== "Reader") {
     button.classList.add("active");
+
     return button;
   }
-  button.addEventListener("click", async () => {
+  const handleClick = async () => {
     const setrole = await setAuthor();
+    button.classList.add("active");
+
     const vdom = createElement("a", { class: "referens" }, [
       createElement("i", { class: "icon-profile" }, []),
       createText(" Профиль"),
@@ -358,8 +463,10 @@ async function createButtonSetAuthor() {
     const navMenu: any = document.querySelector(`.section-profile`);
 
     update(navMenu, vdom);
-  });
-  return button;
+    button.removeEventListener("click", handleClick);
+  };
+  button.addEventListener("click", handleClick);
+  return divButton;
 }
 
 function createRoleSelect(): HTMLSelectElement {

@@ -337,7 +337,6 @@ async function mobileProfile(
   avatar: any,
   background: any,
   payments: any,
-  posts: any[],
 ) {
   const vdom: VNode = createElement("div", { class: "mobile-profile" }, [
     createElement("div", { class: "profile-header-mobile" }, [
@@ -391,6 +390,7 @@ async function mobileProfile(
   ]);
   const container = document.querySelector(`.div-mobile`);
   update(container, vdom);
+  return container;
 }
 
 /**

@@ -176,30 +176,6 @@ export async function getBackgroundAuthor(link: string, authorID: any) {
   });
 }
 
-function getPageMedia(link: string) {
-  const authorId = 12;
-  return new Promise((resolve, reject) => {
-    fetchAjax(
-      LOCATIONS.AUTHOR.GET_PAGE_MEDIA.METHOD,
-      link === LINKS.PROFILE.HREF
-        ? "/api/author/me/media"
-        : `/api/author/${authorId}/media`,
-      null,
-      (response) => {
-        if (response.ok) {
-          response.json().then((data) => {
-            resolve(data);
-          });
-        } else if (response.status === 401) {
-          route(LINKS.ERROR.HREF);
-        } else {
-          reject(new Error("Ответ от фетча с ошибкой"));
-        }
-      },
-    );
-  });
-}
-
 /**
  * Функция рендерит кнопку выхода из системы.
  * @param {*} Item Ключ, по которому необходимо стереть локальные и сессионные данные
@@ -519,7 +495,6 @@ function handleImageUploadMobile() {
 function controlMediaProfile(container: any) {
   if (window.location.pathname === "/profile") {
     window.innerWidth <= 1024 ? handleImageUploadMobile() : handleImageUpload();
-
     const background = container.querySelector(".header-profile");
     const buttonUploadBackground = container.querySelector(
       ".image-upload-label",
@@ -559,15 +534,12 @@ function controlAdaptiveProfile(container: any) {
     ".about-mobile__button",
   );
   const buttonMobilePosts = container.querySelector(".posts-mobile__button");
-  const feedProfile = container.querySelector(".feed-profile");
-  const feedProfilePost = container.querySelectorAll(".posts");
-  const aboutProfile = container.querySelector(".about");
+
+  const feedProfile: any = container.querySelector(".feed-profile");
+  const aboutProfile: any = container.querySelector(".place-edit-info");
 
   function showFeedProfile() {
     feedProfile.classList.remove("hidden");
-    feedProfilePost.forEach((post: any) => {
-      post.classList.remove("hidden");
-    });
     aboutProfile.classList.add("hidden");
     buttonMobilePosts.classList.add(ELEMENTS_CLASS.ACTIVE);
     buttonMobileAbout.classList.remove(ELEMENTS_CLASS.ACTIVE);
@@ -576,9 +548,6 @@ function controlAdaptiveProfile(container: any) {
   function showAboutProfile() {
     aboutProfile.classList.remove("hidden");
     feedProfile.classList.add("hidden");
-    feedProfilePost.forEach((post: any) => {
-      post.classList.add("hidden");
-    });
     buttonMobilePosts.classList.remove(ELEMENTS_CLASS.ACTIVE);
     buttonMobileAbout.classList.add(ELEMENTS_CLASS.ACTIVE);
   }
@@ -861,23 +830,29 @@ export async function renderProfile() {
     }
 
     const container = update(pageContainer, vdom);
+    if (window.innerWidth <= 1024) {
+      const mobileContaine = await mobileProfile(
+        authorData,
+        avatar,
+        background,
+        payments,
+      );
+      controlAdaptiveProfile(container);
+    }
 
     // Отрисовка информации о пользователе
     renderAbout(authorData);
-
-    if (window.innerWidth <= 1024) {
-      mobileProfile(authorData, avatar, background, payments, authorPosts);
-    }
 
     const mainContent = container.querySelector(".main-content");
     const containerPosts = container.querySelector(`.profile-form`);
 
     modifierSidebar(mainContent);
     controlAdaptivePageAuthors(authorData, container, containerPosts);
+    // controlAdaptiveProfile(container);
 
     controlLogout(container, authorData);
     controlMediaProfile(container);
-    controlAdaptiveProfile(container);
+
     controlInfo(authorData, container);
 
     const place = container.querySelector(`.place-posts`);
@@ -913,6 +888,7 @@ export async function renderProfile() {
       }
     });
 
+    const buttonMob: any = document.querySelector(`.posts-mobile__button`);
     return container;
   } catch (error) {
     console.log("ERROR");
