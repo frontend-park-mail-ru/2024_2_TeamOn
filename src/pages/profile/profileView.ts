@@ -2,9 +2,12 @@ import { ELEMENTS_CLASS } from "../../consts";
 import { createElement, createText, update } from "../../lib/vdom/lib";
 import { calculateAmountPosts } from "../../utils/calculateAmountPosts";
 import { VNode } from "../../lib/vdom/src/source";
+import { getAccount } from "../feed/feedView";
+import { getUserPosts } from "./profile";
 
 function renderUserPosts(post: any) {
-  const container: VNode = createElement("div", { class: "posts" }, [
+  const container = document.querySelector(`.place-posts`);
+  const vdom: VNode = createElement("div", { class: "posts" }, [
     createElement("div", { class: ELEMENTS_CLASS.POST.PROFILE.BLOCK }, [
       createElement("div", { style: "display: flex;" }, [
         window.location.pathname === "/profile"
@@ -34,9 +37,22 @@ function renderUserPosts(post: any) {
       createElement("div", { class: ELEMENTS_CLASS.POST.DATE }, [
         createText(post.createdAt),
       ]),
+      createElement("div", { class: "interaction-section" }, [
+        createElement("div", { class: ELEMENTS_CLASS.POST.LIKES.BLOCK }, [
+          createElement(
+            "div",
+            { class: ELEMENTS_CLASS.POST.LIKES.ELEMENT },
+            [],
+          ),
+          createElement("h3", { class: ELEMENTS_CLASS.POST.LIKES.AMOUNT }, [
+            createText(post.likes),
+          ]),
+        ]),
+      ]),
     ]),
   ]);
-  return container;
+  // update(container, vdom)
+  return vdom;
 }
 
 /**
@@ -53,36 +69,30 @@ function renderVibe(user: any) {
  * @param {*} user Объект пользователя
  * @param {*} posts Объект постов (не используется в функции)
  */
-function renderUserStats(user: any, posts: any[]) {
-  const statsData: string[] = [
-    `посты: ${calculateAmountPosts(posts)}`,
-    `подписчики: ${user.subscriptions}`,
-    `подписки: ${user.followers}`,
-  ];
-
-  const vdom: VNode = createElement(
-    "div",
-    { class: ELEMENTS_CLASS.PROFILE.STATS },
-    [
-      createElement("div", {}, [createText(statsData[0])]),
-      createElement("div", {}, [createText(statsData[1])]),
-      createElement("div", {}, [createText(statsData[2])]),
-    ],
-  );
-  return vdom;
-}
-export function getEarnings(payments: any) {
-  const vdom: VNode = createElement(
-    "div",
-    { class: ELEMENTS_CLASS.PROFILE.EARNINGS },
-    [
-      createElement("h3", {}, [createText("Выплаты")]),
-      createElement("h4", {}, [createText("За сегодня вы заработали")]),
-      createElement("p", {}, [
-        createText(payments ? `${payments.amount}` : `0.0 ₽`),
-      ]),
-    ],
-  );
+async function renderUserStats(user: any, payments: any) {
+  const posts: any = await getUserPosts(window.location.pathname, 0, 300);
+  const vdom: VNode = createElement("div", { class: "stats" }, [
+    createElement("p", { style: "font-weight: bold; font-size: 26px" }, [
+      createText(user.authorUsername),
+    ]),
+    createElement("p", { class: "amount-subs" }, []),
+    createElement("p", {}, [
+      createText(
+        `Подписки ${user.subscriptions === null ? 0 : user.subscriptions}`,
+      ),
+    ]),
+    window.location.pathname == "/profile"
+      ? createElement("p", {}, [
+          createText(
+            `Выплаты ${payments.amount === null ? 0 : payments.amount}`,
+          ),
+        ])
+      : createElement("div", {}, []),
+    createElement("p", {}, [createText(`Подписчики ${user.followers}`)]),
+    createElement("p", {}, [
+      createText(`Посты ${calculateAmountPosts(posts)}`),
+    ]),
+  ]);
   return vdom;
 }
 
@@ -152,9 +162,9 @@ export function renderTip() {
     ]),
     createElement("div", { class: "form-group " }, [
       createElement("label", { class: "label-tip" }, [createText("Сумма")]),
-      createElement("textarea", { class: "input-group" }, [createText("10")]),
+      createElement("textarea", { class: "input-group" }, [createText("360")]),
       createElement("div", { class: "amount-count" }, [
-        createText("Минимум 10 рублей"),
+        createText("Минимум 360 рублей"),
       ]),
     ]),
     createElement("div", { class: "form-group " }, [
@@ -210,16 +220,71 @@ export function renderCreatePost() {
   update(container, vdom);
   // return vdom;
 }
-function renderAbout() {
-  const vdom = createElement("div", { class: "about" }, [
-    createElement("h2", {}, [createText("ОБО МНЕ")]),
-    createElement("p", { class: "about-profile" }, [
-      createText("Это информация об авторе"),
-    ]),
-  ]);
-  return vdom;
+function renderAbout(authorData: any, isEdit = false, newValue?: any) {
+  const container: any = document.querySelector(`.place-edit-info`);
+
+  let vdom;
+
+  if (isEdit) {
+    // Режим редактирования
+    vdom = createElement("div", { class: "about" }, [
+      createElement("h2", {}, [createText("ОБО МНЕ")]),
+      createElement(
+        "input",
+        {
+          class: "about-input",
+          value: newValue == undefined ? "ну ладно" : newValue,
+        },
+        [],
+      ),
+      createElement("div", { class: "interaction-place-info" }, [
+        createElement("button", { class: "save-info-button" }, [
+          createText("Сохранить"),
+        ]),
+        createElement("button", { class: "cancel-info-button" }, [
+          createText("Отменить"),
+        ]),
+      ]),
+    ]);
+  } else {
+    // Обычный режим
+    vdom = createElement("div", { class: "about" }, [
+      createElement("h2", {}, [createText("ОБО МНЕ")]),
+      createElement(
+        "input",
+        {
+          class: "about-input",
+          value: newValue == undefined ? "ну ладно" : newValue,
+          style: "display: none;", // Скрываем инпут в обычном режиме
+        },
+        [],
+      ),
+      createElement("p", { class: "about-profile" }, [
+        createText(
+          authorData.info == null
+            ? newValue == undefined
+              ? "Изменить статус..."
+              : newValue
+            : authorData.info,
+        ),
+      ]),
+      window.location.pathname == "/profile"
+        ? createElement("button", { class: "edit-info-button" }, [
+            createText("Изменить"),
+          ])
+        : createElement("div", {}, []),
+    ]);
+  }
+
+  update(container, vdom);
+
+  return container;
 }
-function renderDesktopProfileInfo(authorData: any, avatar: any) {
+async function renderDesktopProfileInfo(
+  authorData: any,
+  avatar: any,
+  payments: any,
+) {
   const vdom: VNode = createElement("div", { class: "left-column" }, [
     createElement(
       "img",
@@ -229,50 +294,58 @@ function renderDesktopProfileInfo(authorData: any, avatar: any) {
       },
       [],
     ),
-    ...renderUserInfo(authorData),
+    ...(await renderUserInfo(authorData, payments)),
   ]);
   return vdom;
 }
-function renderDesktopProfileHeader() {
+function renderDesktopProfileHeader(background: any) {
   const vdom: VNode = createElement("div", { class: "header-profile" }, [
-    createElement(
-      "label",
-      {
-        class: "image-upload-label",
-        style: "display: none",
-        type: "file",
-        accept: "image/*",
-        htmlFor: "image-upload",
-      },
-      [
-        createElement("i", { class: "icon-edit-background" }, []),
-        createText("  Выбрать обложку"),
-      ],
-    ),
-    createElement(
-      "input",
-      {
-        id: "image-upload",
-        class: "image-upload-input",
-        type: "file",
-        accept: "image/*",
-        style: "display: none;",
-      },
-      [],
-    ),
-    createElement("img", { class: "background-image" }, []),
+    createElement("form", {}, [
+      createElement(
+        "label",
+        {
+          class: "image-upload-label",
+          style: "display: none",
+          type: "file",
+          accept: "image/*",
+          htmlFor: "image-upload",
+        },
+        [
+          createElement("i", { class: "icon-edit-background" }, []),
+          createText("  Выбрать обложку"),
+        ],
+      ),
+      createElement(
+        "input",
+        {
+          id: "image-upload",
+          class: "image-upload-input",
+          type: "file",
+          accept: "image/*",
+          style: "display: none;",
+        },
+        [],
+      ),
+      createElement("img", { class: "background-image", src: background }, []),
+    ]),
   ]);
 
   return vdom;
 }
-function mobileProfile(user: any) {
+async function mobileProfile(
+  user: any,
+  avatar: any,
+  background: any,
+  payments: any,
+  posts: any[],
+) {
   const vdom: VNode = createElement("div", { class: "mobile-profile" }, [
     createElement("div", { class: "profile-header-mobile" }, [
       createElement(
         "img",
         {
           class: "profile-avatar",
-          src: "https://storage.googleapis.com/a1aa/image/T5eRp2ABc9QWfkBRqFUjCIhfXbZ3lAeBU3pxRhWfsdwsSDmdC.jpg",
+          src: avatar,
           height: "90",
           width: "90",
         },
@@ -289,7 +362,11 @@ function mobileProfile(user: any) {
         },
         [],
       ),
-      createElement("img", { class: "background-image-mobile" }, []),
+      createElement(
+        "img",
+        { class: "background-image-mobile", src: background },
+        [],
+      ),
       window.location.pathname === "/profile"
         ? createElement(
             "button",
@@ -309,24 +386,23 @@ function mobileProfile(user: any) {
       ]),
     ]),
     createElement("div", { class: "content-mobile" }, [
-      ...renderUserInfo(user),
+      ...(await renderUserInfo(user, payments)),
     ]),
   ]);
   const container = document.querySelector(`.div-mobile`);
   update(container, vdom);
 }
+
 /**
  * Функция рендерит информацию о пользователе.
  * @param {*} user Объект пользователя
  * @param {*} payments Объект выплат
  */
-function renderUserInfo(user: any) {
+async function renderUserInfo(user: any, payments: any) {
   const vdom: VNode[] = [
-    createElement("div", { class: "stats" }, [
-      createElement("p", {}, [createText(user.authorUsername)]),
-      createElement("p", { class: "amount-subs" }, []),
-      createElement("p", {}, [createText("Подписчики")]),
-    ]),
+    // createElement("div", { class: "stats" }, [
+    await renderUserStats(user, payments),
+    // ]),
     createElement("div", { class: "buttons-profile" }, [
       window.location.pathname == "/profile"
         ? createElement("button", { class: "create" }, [

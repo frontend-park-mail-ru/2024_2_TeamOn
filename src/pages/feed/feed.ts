@@ -6,27 +6,24 @@ import {
   sidebarLinks,
   state,
 } from "../../consts";
-import { controlLogout } from "../profile/profile";
+import { controlLogout, getAvatarAuthor } from "../profile/profile";
 import {
   renderSidebar,
   createContainerPost,
   setActiveLink,
+  getAccount,
 } from "../feed/feedView";
-import { VNode } from "../../lib/vdom/src/source";
 import { createElement, createText, update } from "../../lib/vdom/lib";
 import { pageContainer } from "../../index";
 import { route } from "../../utils/routing";
-import { removeItemLocalStorage } from "../../utils/storages";
 import { fetchAjax } from "../../utils/fetchAjax";
 
-let popularPostsArray: any = [];
-
-async function getPopularPosts(offset: any) {
+async function getPopularPosts(offsetPopular: any) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       LOCATIONS.POSTS.POPULAR_POSTS.METHOD,
       LOCATIONS.POSTS.POPULAR_POSTS.HREF +
-        `?limit=${QUERY.LIMIT}&offset=${offset}`,
+        `?limit=${QUERY.LIMIT}&offset=${offsetPopular}`,
       null,
       (response) => {
         if (response.ok) {
@@ -42,36 +39,18 @@ async function getPopularPosts(offset: any) {
     );
   });
 }
-function getmedia() {
-  return [
-    {
-      postId: 1,
-      mediaContent: [
-        {
-          file: "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
-        },
-        {
-          file: "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
-        },
-        {
-          file: "https://storage.googleapis.com/a1aa/image/CBxaavBCBJ7LEpZ4JuAkjHDS1NkBmGD0yKHdp2irmfcnCL0JA.jpg",
-        },
-      ],
-    },
-  ];
-}
-async function getRecentlyPosts(offset: any) {
+
+async function getRecentlyPosts(offsetRecently: any) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       LOCATIONS.POSTS.RECENTLY_POSTS.METHOD,
       LOCATIONS.POSTS.RECENTLY_POSTS.HREF +
-        `?limit=${QUERY.LIMIT}&offset=${offset}`,
+        `?limit=${QUERY.LIMIT}&offset=${offsetRecently}`,
       null,
       (response) => {
         if (response.ok) {
           response.json().then((data) => {
             resolve(data);
-            offset += QUERY.LIMIT;
           });
         } else if (response.status === 400) {
           route(LINKS.ERROR.HREF);
@@ -95,28 +74,43 @@ async function modifirePosts(
   recentlyPosts: any,
 ) {
   try {
-    // const popularPosts: any = await getPopularPosts();
-    // const popularPosts: any = popularPostsArray;
-    const mediacontent = getmedia();
-    if (!popularPosts) {
-      console.error("Популярные посты не загрузились");
-    }
-    const containersPopularPosts = containerPopularPosts.querySelectorAll(
-      `.${ELEMENTS_CLASS.POST.FEED.BLOCK}`,
-    );
-    containersPopularPosts.forEach((container: any, index: any) => {
-      console.log(popularPosts[index]);
-      console.log("WO");
-      customizePost(container, popularPosts[index]);
-    });
+    // Обработка популярных постов
+    if (popularPosts.length > 0) {
+      const containersPopularPosts = containerPopularPosts.querySelectorAll(
+        `.${ELEMENTS_CLASS.POST.FEED.BLOCK}`,
+      );
 
-    // const recentlyPosts: any = await getRecentlyPosts();
-    const containersRecentlyPosts = containerRecentlyPosts.querySelectorAll(
-      `.${ELEMENTS_CLASS.POST.FEED.BLOCK}`,
-    );
-    containersRecentlyPosts.forEach((container: any, index: any) => {
-      customizePost(container, recentlyPosts[index]);
-    });
+      // Используем Promise.all для обработки популярных постов параллельно
+      await Promise.all(
+        Array.from(containersPopularPosts)
+          .slice(-popularPosts.length)
+          .map((container: any, index: any) => {
+            return customizePost(
+              container,
+              popularPosts[popularPosts.length - 1 - index],
+            );
+          }),
+      );
+    }
+
+    // Обработка недавних постов
+    if (recentlyPosts.length > 0) {
+      const containersRecentlyPosts = containerRecentlyPosts.querySelectorAll(
+        `.${ELEMENTS_CLASS.POST.FEED.BLOCK}`,
+      );
+
+      // Используем Promise.all для обработки недавних постов параллельно
+      await Promise.all(
+        Array.from(containersRecentlyPosts)
+          .slice(-recentlyPosts.length)
+          .map((container: any, index: any) => {
+            return customizePost(
+              container,
+              recentlyPosts[recentlyPosts.length - 1 - index],
+            );
+          }),
+      );
+    }
   } catch (error) {
     console.log("ERROR");
     throw error;
@@ -126,22 +120,14 @@ async function modifirePosts(
  * Рендерит скелет популярных постов
  * @returns
  */
-async function renderPopularPosts(popularPosts: any) {
-  try {
-    const media = getmedia();
-    var posts: any = [];
-    popularPosts.forEach((post: any) => {
-      const mediaContent =
-        media.find((m) => m.postId === post.postId)?.mediaContent || [];
-
-      const container: VNode = createContainerPost(post, mediaContent);
-      posts.push(container);
-    });
-    return posts;
-  } catch (error) {
-    console.log("ERROR");
-    throw error;
-  }
+function renderPopularPosts(popularPosts: any) {
+  var posts: any = [];
+  popularPosts.forEach(async (post: any) => {
+    const container: any = await createContainerPost(post, []);
+    posts.push(container);
+  });
+  console.log(posts);
+  return posts;
 }
 /**
  * Рендерит скелет популярных постов
@@ -149,26 +135,19 @@ async function renderPopularPosts(popularPosts: any) {
  */
 async function renderRecentlyPosts(recentlyPosts: any) {
   try {
-    const media = getmedia();
-    var arrayMedia: any = [];
-
     var posts: any = [];
     recentlyPosts.forEach((post: any) => {
-      media.forEach((oneMedia: any) => {
-        if (oneMedia.postId == post.id) {
-          arrayMedia.push(oneMedia);
-        }
-      });
-      const container: VNode = createContainerPost(post, arrayMedia);
-      posts.push(container);
+      const container: any = createContainerPost(post, []);
+      posts.append(container);
     });
+
     return posts;
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
-async function AddLikeOnPost(postId: any) {
+export async function AddLikeOnPost(postId: any) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       LOCATIONS.POSTS.LIKE.METHOD,
@@ -234,7 +213,7 @@ export function modifierSidebar(mainContainer: any) {
  * @param container Контейнер ( популярных | недавних постов )
  * @param post Пост
  */
-export function customizePost(container: any, post: any = null) {
+export async function customizePost(container: any, post: any = null) {
   const authorSection: any = container.querySelector(
     `.${ELEMENTS_CLASS.POST.AUTHOR.NAME}`,
   );
@@ -245,7 +224,11 @@ export function customizePost(container: any, post: any = null) {
   if (avatar) {
     avatar.alt = "Аватар автора";
     avatar.height = 50;
-    // avatar.src = post.avatarSrc;
+    const avatarload: any = await getAvatarAuthor(
+      window.location.pathname,
+      post.authorId,
+    );
+    avatar.src = avatarload;
     avatar.width = 50;
   }
   const authorName: any = container.querySelector(
@@ -256,8 +239,11 @@ export function customizePost(container: any, post: any = null) {
   }
   if (authorSection) {
     authorSection.addEventListener("click", () => {
-      sessionStorage.setItem("page", post.authorId);
-      route(`/profile/${sessionStorage.getItem("page")}`);
+      sessionStorage.setItem("authorid", post.authorId);
+      sessionStorage.setItem("author", post.authorUsername);
+      sessionStorage.getItem("account") == post.authorUsername
+        ? route(`/profile`)
+        : route(`/profile/${sessionStorage.getItem("authorid")}`);
     });
   }
 
@@ -270,7 +256,7 @@ export function customizePost(container: any, post: any = null) {
   content.textContent = post.content;
 
   const date: any = container.querySelector(`.${ELEMENTS_CLASS.POST.DATE}`);
-  date.textContent = post.date;
+  date.textContent = post.createdAt;
 
   const divLikes: any = container.querySelector(`.likes-container`);
   if (divLikes) {
@@ -308,41 +294,97 @@ export function customizePost(container: any, post: any = null) {
     });
   }
 }
+export async function paginate(
+  allPopularPosts: any,
+  allRecentlyPosts: any,
+  containerPopularPosts: any,
+  containerRecentlyPosts: any,
+) {
+  let stopLoadPopularPosts: boolean = false;
+  let stopLoadRecentlyPosts: boolean = false;
+  let offsetPopular = 0;
+  let offsetRecently = 0;
+  // Объект для предотвращения повторной загрузки
+  let isLoading = false;
+  const cache: any = {
+    popular: [],
+    recently: [],
+  };
+  async function loadPosts() {
+    if (isLoading) return; // Если загрузка уже идет, выходим из функции
+    isLoading = true; // Устанавливаем флаг загрузки
+
+    try {
+      if (!stopLoadPopularPosts) {
+        // Загружаем популярные посты
+        const popularPosts: any = await getPopularPosts(offsetPopular);
+        const nextPopularPosts = popularPosts.slice(0, QUERY.LIMIT);
+
+        if (nextPopularPosts.length > 0) {
+          allPopularPosts.push(...nextPopularPosts);
+          offsetPopular += QUERY.LIMIT;
+
+          containerPopularPosts.append(
+            ...(await renderPopularPosts(nextPopularPosts)),
+          );
+          modifirePosts(
+            containerPopularPosts,
+            containerRecentlyPosts,
+            nextPopularPosts,
+            [],
+          );
+          cache.popular.push(...nextPopularPosts);
+        } else {
+          stopLoadPopularPosts = true;
+        }
+      }
+      if (!stopLoadRecentlyPosts) {
+        // Загружаем недавние посты
+        const recentlyPosts: any = await getRecentlyPosts(offsetRecently);
+        const nextRecentlyPosts = recentlyPosts.slice(0, QUERY.LIMIT);
+        if (nextRecentlyPosts.length > 0) {
+          alert("kak");
+          allRecentlyPosts.push(...nextRecentlyPosts);
+          offsetRecently += QUERY.LIMIT; // Увеличиваем смещение на количество загруженных постов
+
+          // Обновляем контейнер недавних постов
+          containerRecentlyPosts.append(
+            ...(await renderRecentlyPosts(nextRecentlyPosts)),
+          );
+          modifirePosts(
+            containerPopularPosts,
+            containerRecentlyPosts,
+            [],
+            nextRecentlyPosts,
+          );
+          cache.recently.push(...nextRecentlyPosts);
+        } else {
+          stopLoadRecentlyPosts = true;
+        }
+      }
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  // Инициализируем загрузку первых постов
+  await loadPosts();
+
+  // Обработчик события прокрутки
+  window.addEventListener("scroll", async () => {
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+
+    // Проверяем, достиг ли пользователь нижней части страницы
+    if (scrollTop + clientHeight >= scrollHeight - 500) {
+      await loadPosts();
+    }
+  });
+}
 export async function renderFeed() {
   try {
-    let offset = 0;
     const allPopularPosts: any = []; // Массив для хранения всех загруженных популярных постов
-    const allRecentlyPosts: any = [];
-
-    while (true) {
-      const popularPosts: any = await getPopularPosts(offset);
-
-      // Если постов меньше, чем лимит, выходим из цикла
-      if (popularPosts.length < QUERY.LIMIT) {
-        break;
-      }
-
-      // Добавляем загруженные посты в общий массив
-      allPopularPosts.push(...popularPosts);
-
-      // Увеличиваем offset для следующей итерации
-      offset += QUERY.LIMIT;
-    }
-
-    while (true) {
-      const recentlyPosts: any = await getRecentlyPosts(offset);
-
-      // Если постов меньше, чем лимит, выходим из цикла
-      if (recentlyPosts.length < QUERY.LIMIT) {
-        break;
-      }
-
-      // Добавляем загруженные посты в общий массив
-      allRecentlyPosts.push(...recentlyPosts);
-
-      // Увеличиваем offset для следующей итерации
-      offset += QUERY.LIMIT;
-    }
+    const allRecentlyPosts: any = []; // Массив для хранения всех загруженных недавних постов
+    const userdata = await getAccount();
 
     const user: any = state.currentUser;
     if (!user) {
@@ -352,31 +394,25 @@ export async function renderFeed() {
       ? (state.currentUser.reader = user)
       : (state.currentUser.author = user);
 
-    const doc: any = document.body;
+    const doc = document.body;
     doc.style.height = "100%";
-    const vdom: VNode = createElement("div", { class: "main-content" }, [
-      await renderSidebar(),
+
+    const vdom = createElement("div", { class: "main-content" }, [
+      await renderSidebar(userdata),
       createElement("div", { class: "right-content" }, [
         createElement("div", { class: "section-title" }, [
           createText("Популярное"),
         ]),
-        createElement("div", { class: "main-container-popular" }, [
-          ...(await renderPopularPosts(allPopularPosts)),
-        ]),
+        createElement("div", { class: "main-container-popular" }, []),
         createElement("div", { class: "section-title" }, [
           createText("Недавние"),
         ]),
-        createElement("div", { class: "main-container-recently" }, [
-          ...(await renderRecentlyPosts(allRecentlyPosts)),
-        ]),
+        createElement("div", { class: "main-container-recently" }, []),
       ]),
     ]);
 
     const container = update(pageContainer, vdom);
     state.currentUser = user;
-
-    const mainContent = container.querySelector(".main-content");
-    modifierSidebar(mainContent);
 
     const containerPopularPosts = container.querySelector(
       ".main-container-popular",
@@ -385,18 +421,30 @@ export async function renderFeed() {
       ".main-container-recently",
     );
 
-    modifirePosts(
-      containerPopularPosts,
-      containerRecentlyPosts,
+    const mainContent = container.querySelector(`.main-content`);
+
+    await paginate(
       allPopularPosts,
       allRecentlyPosts,
+      containerPopularPosts,
+      containerRecentlyPosts,
     );
 
-    // const side: any = container.querySelector(
-    //   `.${ELEMENTS_CLASS.SEARCH.ELEMENT}`,
-    // );
-    // side.type = "text";
-    // side.placeholder = "Найти креаторов";
+    // if (cache.popular.length > 0 || cache.recently.length > 0) {
+    //   containerPopularPosts.append(
+    //     ...(await renderRecentlyPosts(cache.popular)),
+    //   );
+    //   modifirePosts(
+    //     containerPopularPosts,
+    //     containerRecentlyPosts,
+    //     cache.popular,
+    //     [],
+    //   );
+    //   offsetPopular = cache.popular.length;
+    //   cache.popular = [];
+    // }
+
+    modifierSidebar(mainContent);
 
     controlLogout(container, user);
 

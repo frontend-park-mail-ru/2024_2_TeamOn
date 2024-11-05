@@ -5,7 +5,7 @@ import { VNode } from "../../lib/vdom/src/source";
 import { fetchAjax } from "../../utils/fetchAjax";
 import { route } from "../../utils/routing";
 import { modifierSidebar } from "../feed/feed";
-import { renderSidebar } from "../feed/feedView";
+import { getAccount, renderSidebar } from "../feed/feedView";
 import { controlLogout } from "../profile/profile";
 import { validateSettingsPassword, validateMainInfo } from "./settings";
 
@@ -14,9 +14,10 @@ export async function renderSettings() {
     const user = state.currentUser;
     const doc: any = document.body;
     doc.style.height = "100%";
+    const userdata: any = await getAccount();
 
     const vdom: VNode = createElement("div", { class: "main-content" }, [
-      await renderSidebar(),
+      await renderSidebar(userdata),
       createElement("div", { class: "container" }, [
         createElement("h1", {}, [createText("Настройки")]),
         createElement("div", { class: "tabs" }, []),
@@ -174,16 +175,10 @@ async function createProfileForm(): Promise<HTMLDivElement> {
   emailRow.className = "form-row";
   const emailLabel = createLabel("Электронная почта", "email");
   const emailInput = createInput("email", "email");
-  const buttonSetAuthor = createButtonSetAuthor();
+  const buttonSetAuthor = await createButtonSetAuthor();
   const emailError = createErrorMessage();
   emailRow.append(emailLabel, emailInput);
   formContainer.append(emailRow, emailError, buttonSetAuthor);
-
-  const roleRow = document.createElement("div");
-  roleRow.className = "form-row";
-  const roleLabel = createLabel("Роль", "role");
-  const roleSelect = createRoleSelect();
-  roleRow.append(roleLabel, roleSelect);
 
   const profilePicRow = createPhoto();
 
@@ -194,21 +189,26 @@ async function createProfileForm(): Promise<HTMLDivElement> {
   const username: any = usernameInput;
   const email: any = emailInput;
   console.log(username);
-
-  saveButton.addEventListener("click", async () => {
-    const setSettings = await saveSettings(username.value, email.value, "");
-  });
-
-  formContainer.addEventListener("input", (event) => {
-    event.preventDefault();
-
+  saveButton.addEventListener("click", async (event: any) => {
     const { usernameError: usernameErrorMsg, emailError: emailErrorMsg } =
       validationMainInfoSave(usernameInput.value, emailInput.value);
     usernameError.textContent = usernameErrorMsg || "";
     emailError.textContent = emailErrorMsg || "";
+    if (username.value && email.value) {
+      const setSettings = await saveSettings(username.value, email.value, "");
+    }
   });
 
-  formContainer.append(roleRow, profilePicRow, saveButton);
+  formContainer.addEventListener("input", (event) => {
+    if (event.target === usernameInput || event.target === emailInput) {
+      const { usernameError: usernameErrorMsg, emailError: emailErrorMsg } =
+        validationMainInfoSave(usernameInput.value, emailInput.value);
+      usernameError.textContent = usernameErrorMsg || "";
+      emailError.textContent = emailErrorMsg || "";
+    }
+  });
+
+  formContainer.append(profilePicRow, saveButton);
   return formContainer;
 }
 
@@ -228,13 +228,13 @@ function createSecurityForm(): HTMLDivElement {
   formTitle.textContent = "Измените данные вашей страницы";
   formContainer.appendChild(formTitle);
 
-  const oldPasswordRow = document.createElement("div");
-  oldPasswordRow.className = "form-row";
-  const oldPasswordLabel = createLabel("Введите старый пароль", "old-password");
-  const oldPasswordInput = createInput("password", "old-password");
-  const oldPasswordError = createErrorMessage();
-  oldPasswordRow.append(oldPasswordLabel, oldPasswordInput);
-  formContainer.append(oldPasswordRow, oldPasswordError);
+  // const oldPasswordRow = document.createElement("div");
+  // oldPasswordRow.className = "form-row";
+  // const oldPasswordLabel = createLabel("Введите старый пароль", "old-password");
+  // const oldPasswordInput = createInput("password", "old-password");
+  // const oldPasswordError = createErrorMessage();
+  // oldPasswordRow.append(oldPasswordLabel, oldPasswordInput);
+  // formContainer.append(oldPasswordRow, oldPasswordError);
 
   const newPasswordRow = document.createElement("div");
   newPasswordRow.className = "form-row";
@@ -264,18 +264,18 @@ function createSecurityForm(): HTMLDivElement {
   formContainer.addEventListener("input", (event) => {
     event.preventDefault();
     validationSecuritySave(
-      oldPasswordInput,
+      // oldPasswordInput,
       newPasswordInput,
       confirmPasswordInput,
-      oldPasswordError,
+      // oldPasswordError,
       newPasswordError,
       confirmPasswordError,
     );
   });
 
   formContainer.append(
-    oldPasswordRow,
-    oldPasswordError,
+    // oldPasswordRow,
+    // oldPasswordError,
     newPasswordRow,
     newPasswordError,
     confirmPasswordRow,
@@ -284,24 +284,37 @@ function createSecurityForm(): HTMLDivElement {
   );
   const password: any = newPasswordInput;
   saveButton.addEventListener("click", async () => {
-    const setSettings = await saveSettings("", "", password.value);
+    validationSecuritySave(
+      // oldPasswordInput,
+      newPasswordInput,
+      confirmPasswordInput,
+      // oldPasswordError,
+      newPasswordError,
+      confirmPasswordError,
+    );
+    if (
+      // oldPasswordError.textContent == "" &&
+      newPasswordError.textContent == ""
+    ) {
+      const setSettings = await saveSettings("", "", password.value);
+    }
   });
   return formContainer;
 }
 
 function validationSecuritySave(
-  oldPasswordInput: HTMLInputElement,
+  // oldPasswordInput: HTMLInputElement,
   newPasswordInput: HTMLInputElement,
   confirmPasswordInput: HTMLInputElement,
-  oldPasswordError: HTMLDivElement,
+  // oldPasswordError: HTMLDivElement,
   newPasswordError: HTMLDivElement,
   confirmPasswordError: HTMLDivElement,
 ): void {
-  oldPasswordError.textContent = "";
+  // oldPasswordError.textContent = "";
   newPasswordError.textContent = "";
   confirmPasswordError.textContent = "";
 
-  let passwordStrength = 0; // Переменная для хранения силы пароля
+  let passwordStrength = 0;
   validateSettingsPassword(
     newPasswordInput,
     confirmPasswordInput,
@@ -324,12 +337,18 @@ function createInput(type: string, id: string): HTMLInputElement {
   input.id = id;
   return input;
 }
-function createButtonSetAuthor() {
+async function createButtonSetAuthor() {
   const button: any = document.createElement("button");
   button.classList.add("become-author-button");
   const text: any = document.createElement("h3");
   text.textContent = "Стать автором";
   button.appendChild(text);
+  const userdata: any = await getAccount();
+  const role = userdata.role;
+  if (role !== "Reader") {
+    button.classList.add("active");
+    return button;
+  }
   button.addEventListener("click", async () => {
     const setrole = await setAuthor();
     const vdom = createElement("a", { class: "referens" }, [
@@ -380,12 +399,19 @@ function createPhoto(): HTMLDivElement {
   const profilePicInput = document.createElement("input");
   profilePicInput.type = "file";
   profilePicInput.id = "profile-pic";
-  profilePicInput.name = "file"; // Добавлено имя для поля
+  profilePicInput.name = "file";
   profilePicInput.accept = "image/*";
+  profilePicInput.style.display = "none";
 
-  const submit = document.createElement("button");
-  submit.type = "submit";
-  submit.textContent = "Сохранить";
+  const uploadButton = document.createElement("button");
+  uploadButton.type = "button";
+  uploadButton.textContent = "Выбрать аватар";
+  uploadButton.className =
+    "send-tip send-tip__button send-tip__button__effects save-settings";
+
+  uploadButton.addEventListener("click", () => {
+    profilePicInput.click();
+  });
 
   profilePicInput.addEventListener("change", async (event: any) => {
     const file = event.target.files[0];
@@ -398,10 +424,11 @@ function createPhoto(): HTMLDivElement {
     }
   });
 
-  profilePicDiv.appendChild(profilePic);
-  profilePicDiv.appendChild(profilePicInput);
-  profilePicDiv.appendChild(submit);
+  const submit = document.createElement("button");
+  submit.type = "submit";
+  submit.textContent = "Сохранить";
 
+  // Добавляем обработчик события для формы
   profilePicDiv.addEventListener("submit", async (e: any) => {
     e.preventDefault();
 
@@ -410,13 +437,48 @@ function createPhoto(): HTMLDivElement {
     // Проверка наличия файла в FormData
     if (formData.has("file")) {
       console.log("Файл загружен:", formData.get("file"));
+
+      const ok: any = await saveAvatar(formData);
+
+      // Проверяем, успешно ли сохранен аватар
+      if (ok) {
+        // Создаем элемент для сообщения об успешной загрузке
+        const successMessage = document.createElement("div");
+        successMessage.textContent = "Аватар успешно загружен!";
+        successMessage.style.color = "green";
+        successMessage.style.marginTop = "10px";
+        successMessage.style.fontWeight = "bold";
+
+        // Добавляем сообщение в профильный div
+        profilePicDiv.appendChild(successMessage);
+
+        // Убираем сообщение через несколько секунд
+        setTimeout(() => {
+          successMessage.remove();
+        }, 3000); // Удаляем сообщение через 3 секунды
+      } else {
+        const successMessage = document.createElement("div");
+        successMessage.textContent = "Ошибка при сохранении аватара";
+        successMessage.style.color = "red";
+        successMessage.style.marginTop = "10px";
+
+        // Добавляем сообщение в профильный div
+        profilePicDiv.appendChild(successMessage);
+
+        // Убираем сообщение через несколько секунд
+        setTimeout(() => {
+          successMessage.remove();
+        }, 3000); // Удаляем сообщение через 3 секунды
+      }
     } else {
       console.error("Файл не выбран.");
       return; // Прекращаем выполнение, если файл не выбран
     }
-
-    const ok: any = await saveAvatar(formData);
   });
+  profilePicDiv.appendChild(profilePic);
+  profilePicDiv.appendChild(profilePicInput);
+  profilePicDiv.appendChild(uploadButton);
+  profilePicDiv.appendChild(submit);
 
   const container = document.createElement("div");
   container.appendChild(profilePicLabel);
@@ -424,55 +486,6 @@ function createPhoto(): HTMLDivElement {
 
   return container;
 }
-// function createPhoto(): HTMLDivElement {
-//   const profilePicLabel = document.createElement("label");
-//   profilePicLabel.setAttribute("for", "profile-pic");
-//   profilePicLabel.textContent = "Фото профиля";
-
-//   const profilePicDiv = document.createElement("form");
-//   profilePicDiv.className = "profile-pic-container";
-
-//   const profilePic = document.createElement("img");
-//   profilePic.className = "profile-pic";
-
-//   profilePicDiv.enctype = "multipart/form-data";
-
-//   const profilePicInput = document.createElement("input");
-//   profilePicInput.type = "file";
-//   profilePicInput.id = "profile-pic";
-//   profilePicInput.accept = "image/*";
-
-//   const submit = document.createElement("button")
-//   submit.type = "submit";
-
-//   profilePicInput.addEventListener("change", async (event: any) => {
-//     const file = event.target.files[0];
-//     if (file) {
-//       const reader = new FileReader();
-//       reader.onload = function (e: any) {
-//         profilePic.src = e.target.result;
-//       };
-//       reader.readAsDataURL(file);
-//     }
-//   });
-
-//   profilePicDiv.appendChild(profilePic);
-//   profilePicDiv.appendChild(profilePicInput);
-// profilePicDiv.appendChild(submit)
-// profilePicDiv.addEventListener("submit", async (e: any) => {
-//   e.preventDefault();
-
-//   const formData = new FormData(profilePicDiv);
-//   console.log(formData)
-
-//   const ok: any = await saveAvatar(formData);
-// })
-//   const container = document.createElement("div");
-//   container.appendChild(profilePicLabel);
-//   container.appendChild(profilePicDiv);
-
-//   return container;
-// }
 
 function createErrorMessage(): HTMLDivElement {
   const errorMessage = document.createElement("div");

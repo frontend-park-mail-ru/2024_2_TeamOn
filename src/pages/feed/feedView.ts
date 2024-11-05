@@ -1,12 +1,6 @@
-import {
-  ELEMENTS_CLASS,
-  LINKS,
-  LOCATIONS,
-  sidebarLinks,
-  state,
-} from "../../consts";
+import { ELEMENTS_CLASS, LINKS, LOCATIONS, sidebarLinks } from "../../consts";
 import { renderLogoutButton } from "../profile/profile";
-import { createElement, createText } from "../../lib/vdom/lib";
+import { createElement, createText, update } from "../../lib/vdom/lib";
 import { VNode } from "../../lib/vdom/src/source";
 import { fetchAjax } from "../../utils/fetchAjax";
 import { route } from "../../utils/routing";
@@ -33,7 +27,7 @@ function renderBurger() {
 
   return vdom;
 }
-async function checkAuthor() {
+export async function getAccount() {
   return new Promise((resolve, reject) => {
     fetchAjax(
       LOCATIONS.ACCOUNT.GET_ACCOUNT.METHOD,
@@ -53,9 +47,9 @@ async function checkAuthor() {
     );
   });
 }
-async function renderSidebar() {
-  const userdata: any = await checkAuthor();
-  const role = userdata.role;
+
+async function renderSidebar(userdata: any) {
+  sessionStorage.setItem("account", userdata.username);
   const vdom: VNode = createElement(
     "div",
     { class: ELEMENTS_CLASS.SIDEBAR.BLOCK },
@@ -77,7 +71,7 @@ async function renderSidebar() {
             createText(" Настройки"),
           ]),
           createElement("div", { class: "section-profile" }, [
-            role == "Reader"
+            userdata.role == "Reader"
               ? createElement("div", {}, [])
               : createElement("a", { class: "referens" }, [
                   createElement("i", { class: "icon-profile" }, []),
@@ -113,9 +107,8 @@ function rendermediaContent(mediaContent: any[]) {
   return result;
 }
 
-function createContainerPost(post: any, mediaContent: any[]) {
-  // Функция, которая будет вызываться при клике на имя автора
-
+async function createContainerPost(post: any, mediaContent: any[]) {
+  const container = document.createElement("div");
   const vdom: VNode = createElement(
     "div",
     { class: ELEMENTS_CLASS.POST.FEED.BLOCK },
@@ -127,7 +120,7 @@ function createContainerPost(post: any, mediaContent: any[]) {
           [],
         ),
         createElement("div", { class: ELEMENTS_CLASS.POST.AUTHOR.NAME }, [
-          createText("23" + post.authorUsername),
+          createText(post.authorUsername),
         ]),
       ]),
       createElement("div", { class: ELEMENTS_CLASS.POST.TITLE }, [
@@ -138,7 +131,7 @@ function createContainerPost(post: any, mediaContent: any[]) {
       ]),
       ...rendermediaContent(mediaContent),
       createElement("div", { class: ELEMENTS_CLASS.POST.DATE }, [
-        createText(post.date),
+        createText(post.createdAt),
       ]),
       createElement("div", { class: "interaction-section" }, [
         createElement("div", { class: ELEMENTS_CLASS.POST.LIKES.BLOCK }, [
@@ -154,6 +147,8 @@ function createContainerPost(post: any, mediaContent: any[]) {
       ]),
     ],
   );
-  return vdom;
+  update(container, vdom);
+  return container;
+  // return vdom;
 }
 export { renderSidebar, createContainerPost };

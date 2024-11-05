@@ -97,6 +97,37 @@ const state2: State = {
   activePageLink: null,
 };
 
+// export function setupScrollPositionHandlers() {
+//   document.addEventListener("DOMContentLoaded", () => {
+//     const saveScrollPosition = () => {
+//       const scrollPosition: any = window.scrollY;
+//       sessionStorage.setItem("scrollPosition", scrollPosition);
+//     };
+
+//     // Сохраняем позицию прокрутки при прокрутке
+//     window.addEventListener("scroll", saveScrollPosition);
+
+//     // Восстанавливаем позицию прокрутки при загрузке страницы
+//     window.addEventListener("load", () => {
+//       const savedScrollPosition = sessionStorage.getItem("scrollPosition");
+//       if (savedScrollPosition) {
+//         window.scrollTo(0, parseInt(savedScrollPosition, 10));
+//       }
+//     });
+
+//     // Сохраняем позицию прокрутки перед выгрузкой страницы
+//     window.addEventListener("beforeunload", saveScrollPosition);
+
+//     // Обработка события popstate для навигации
+//     window.addEventListener("popstate", () => {
+//       const savedScrollPosition = sessionStorage.getItem("scrollPosition");
+//       if (savedScrollPosition) {
+//         window.scrollTo(0, parseInt(savedScrollPosition, 10));
+//       }
+//     });
+//   });
+//   return true;
+// }
 export function setupScrollPositionHandlers() {
   document.addEventListener("DOMContentLoaded", () => {
     const saveScrollPosition = () => {
@@ -128,6 +159,8 @@ export function setupScrollPositionHandlers() {
   });
   return true;
 }
+
+// Вызов функции для установки обработчиков
 const flag: any = setupScrollPositionHandlers();
 
 /**

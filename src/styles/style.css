@@ -36,19 +36,18 @@ form {
   border: 1px solid #ccc;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  align-content: stretch;
 }
 
 form button[type=submit] {
-  background-color: #4caf50;
-  color: #fff;
-  padding: 15px 25px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
+  margin-top: 1px;
+  width: 152.14px;
 }
 
-form button[type=submit]:hover {
+form button[type=submit]:hover,
+.profile-pic-container.custom-upload-button:hover {
   background-color: #3e8e41;
 }
 
@@ -454,6 +453,66 @@ form input[type=text]:focus {
   font-size: 24px;
   height: 300px;
   position: relative;
+}
+
+/* Стили для заголовка "ОБО МНЕ" */
+.about h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Стили для текстового блока "ОБО МНЕ" */
+.about-profile {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+/* Стили для кнопки "Изменить" */
+.edit-info-button,
+.save-info-button,
+.cancel-info-button {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #d9534f;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.edit-info-button:hover,
+.save-info-button:hover,
+.cancel-info-button:hover {
+  color: rgb(252, 225, 225);
+  transition: color 0.3s ease;
+}
+
+.interaction-place-info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex-direction: row-reverse;
+}
+
+/* Стили для поля ввода */
+.about-input {
+  width: 90%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-bottom: 15px;
+  transition: border-color 0.3s, box-shadow 0.3s; /* Плавный переход для фокуса */
+}
+
+/* Эффекты при фокусе на поле ввода */
+.about-input:focus {
+  border-color: #007bff; /* Синий цвет при фокусе */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Легкая тень при фокусе */
 }
 
 .active-profile.active {
@@ -1488,13 +1547,28 @@ select {
           appearance: none;
 }
 
-.form-container .profile-pic .form-container-security .profile-pic {
+.form-container .profile-pic,
+.form-container-security .profile-pic {
   display: block;
   width: 100px;
   height: 100px;
   border: 1px solid #000;
-  border-radius: 50%;
+  border-radius: 10px;
   margin-bottom: 20px;
+}
+
+.custom-file-upload {
+  display: inline-block;
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #4caf50; /* Зеленый цвет */
+  color: white;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.custom-file-upload:hover {
+  background-color: #45a049; /* Темнее при наведении */
 }
 
 .form-container button,
@@ -1504,10 +1578,14 @@ select {
   border: none;
   padding: 10px 20px;
   border-radius: 20px;
-  cursor: pointer;
   font-size: 15px;
   float: right;
   cursor: pointer;
+}
+
+.become-author-button.active {
+  background-color: gray;
+  cursor: not-allowed;
 }
 
 .error-message {

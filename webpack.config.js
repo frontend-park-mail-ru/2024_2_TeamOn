@@ -64,16 +64,7 @@ module.exports = {
           "^/api/accounts/account/update/avatar": "/account/update/avatar",
           "^/api/accounts/account/update/role": "/account/update/role",
           "^/api/accounts/account/update": "/account/update",
-          "^/(.*)/api/accounts/account": "/account",
           "^/api/accounts/account": "/account",
-        },
-      },
-      {
-        context: "/api/accounts",
-        target: "http://localhost:8082",
-        changeOrigin: true,
-        pathRewrite: {
-          "^/profile/api/accounts/account": "/account",
         },
       },
       {
@@ -83,21 +74,13 @@ module.exports = {
         pathRewrite: {
           "^/api/danya/author/me": "/author/me",
           "^/api/danya/author/(.*)": "/author/$1",
+          "^/api/danya/author/payments": "/author/payments",
+          "^/api/danya/author/(.*)/background": "/author/$1/background",
+          "^/api/danya/author/update/background": "/author/update/background",
+          "^/api/danya/author/update/info": "/author/update/info",
+          "^/api/danya/author/(.*)/tip": "/author/$1/tip",
         },
       },
-      // {
-      //   context: "/api/author",
-      //   target: "http://localhost:8083",
-      //   changeOrigin: true,
-      //   pathRewrite: {
-      //     "^/api/author/me": "/author/as/meme",
-      //     // "^/api/author/(.*)": "/author/as/$1",
-      //     // "^/api/author/(.*)/media": "/author/$1/media",
-      //     // "^/api/author/payments": "/account/payments",
-      //     // "^/api/author/update/info": "/author/update/info",
-      //     // "^/api/author/update/background": "/author/update/background",
-      //   },
-      // },
       {
         context: "/api/posts",
         target: "http://localhost:8084",
