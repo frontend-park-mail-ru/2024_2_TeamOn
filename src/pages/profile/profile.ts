@@ -19,6 +19,7 @@ import { VNode } from "../../lib/vdom/src/source";
 import { createElement, createText, update } from "../../lib/vdom/lib";
 import { pageContainer } from "../../index";
 import { AddLikeOnPost, modifierSidebar } from "../feed/feed";
+import DOMPurify from "dompurify";
 
 export async function getUserPosts(
   link: string,
@@ -321,15 +322,28 @@ function modifirePosts(containers: any, posts: any[], offset: any) {
 
         modalsEdit.querySelector(`.${ELEMENTS_CLASS.CANCEL.BLOCK}`).onclick =
           resetModalStates;
-
-        modalsEdit.querySelector(`.${ELEMENTS_CLASS.SAVE.BLOCK}`).onclick =
+          const sanitizedTitle = DOMPurify.sanitize(title.value);
+          const sanitizedContent = DOMPurify.sanitize(content.value);
+          
+          if (!sanitizedTitle || !sanitizedContent) {
+            const input = modalsEdit.querySelector(`.form-group`);
+            const error = input.querySelector("p");
+            if (!error) {
+              const error = document.createElement("p");
+              error.style.color = "red";
+              error.textContent = "Ошибка";
+              input.appendChild(error);
+            }
+            return;
+          }
+          modalsEdit.querySelector(`.${ELEMENTS_CLASS.SAVE.BLOCK}`).onclick =
           async (e: any) => {
             e.preventDefault();
             await editPost(
               modalsEdit,
               posts[index].postId,
-              title.value,
-              content.value,
+              sanitizedTitle,
+              sanitizedContent,
             );
             resetModalStates();
             await updatePosts();
@@ -373,9 +387,9 @@ function modifirePosts(containers: any, posts: any[], offset: any) {
     const arrayPost: VNode = createElement("div", {}, [
       ...renderPosts(newPosts),
     ]);
-    const place: any = containers.querySelector(".place-posts");
-
-    update(place, arrayPost);
+    // const place: any = containers.querySelector(".place-posts");
+    // alert(place)
+    update(containers, arrayPost);
     const placeStats: any = document.querySelector(`.stats`);
     const payments: any = await getPayments(window.location.pathname);
     const authorData: any = await getPageAuthor(window.location.pathname);
@@ -624,11 +638,25 @@ function controlAdaptivePageAuthors(
           const title = container.querySelector(`.input-group`);
           const content = container.querySelector(`.textarea-group`);
           const containerCreatePost =
-            container.querySelector(".modal__createpost");
+          container.querySelector(".modal__createpost");
+          const sanitizedTitle = DOMPurify.sanitize(title.value);
+          const sanitizedContent = DOMPurify.sanitize(content.value);
+          
+          if (!sanitizedTitle || !sanitizedContent) {
+            const input = containerCreatePost.querySelector(`.form-group`);
+            const error = input.querySelector("p");
+            if (!error) {
+              const error = document.createElement("p");
+              error.style.color = "red";
+              error.textContent = "Ошибка";
+              input.appendChild(error);
+            }
+            return;
+          }
           const post = await addUserPost(
             containerCreatePost,
-            title.value,
-            content.value,
+            sanitizedTitle,
+            sanitizedContent,
           );
           containerCreatePost.style.display = "none";
           containerPosts.classList.remove("blur");
@@ -755,6 +783,9 @@ function controlInfo(authorData: any, container: any) {
     if (event.target.classList.contains("cancel-info-button")) {
       const input = container.querySelector(`.about-input`);
       const currentText = input.value;
+      if (!DOMPurify.sanitize(currentText)) {
+        return;
+      }
       renderAbout(authorData, false, currentText);
     }
   });
