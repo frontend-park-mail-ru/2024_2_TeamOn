@@ -199,7 +199,6 @@ async function editPost(
   postIdEdit: any,
   titleEdit: any,
   contentEdit: any,
-  layer: any,
 ) {
   return new Promise((resolve, reject) => {
     fetchAjax(
@@ -209,7 +208,6 @@ async function editPost(
         postId: postIdEdit,
         title: titleEdit,
         content: contentEdit,
-        layer: layer,
       },
       (response) => {
         if (response.ok) {
@@ -259,26 +257,18 @@ function modifirePosts(containers: any, posts: any[]) {
   const menu = containers.querySelectorAll(`.menu-icon`);
   const dropdownMenu = containers.querySelectorAll(`.dropdown-menu`);
 
-  // Добавляем обработчик клика на документе
-  document.body.addEventListener("click", (event: any) => {
-    // Проверяем, был ли клик вне всех выпадающих меню
-    if (!event.target.closest(".dropdown-menu")) {
-      dropdownMenu.forEach((dropdown: any) => {
-        dropdown.classList.remove(ELEMENTS_CLASS.ACTIVE);
-      });
-    }
-  });
-
   document.body.addEventListener("click", () => {
-    dropdownMenu.forEach((dropdown: any, dropdownIndex: number) => {
+    dropdownMenu.forEach((dropdown: any) => {
       dropdown.classList.remove(ELEMENTS_CLASS.ACTIVE);
     });
   });
+
   const divsLike: any = containers.querySelectorAll(
     `.${ELEMENTS_CLASS.POST.LIKES.BLOCK}`,
   );
+
+  // Установка состояния лайка
   divsLike.forEach((divLike: any, index: number) => {
-    // Установка состояния лайка
     if (posts[index].isLiked) {
       divLike.classList.add("active");
     } else {
@@ -288,115 +278,112 @@ function modifirePosts(containers: any, posts: any[]) {
     const amountsLike: any = containers.querySelectorAll(
       `.${ELEMENTS_CLASS.POST.LIKES.AMOUNT}`,
     );
+
     divLike.addEventListener("click", async () => {
-      if (posts[index].isLiked) {
-        // Удалить лайк
-        const likeCount: any = await AddLikeOnPost(posts[index].postId);
-        posts[index].isLiked = false; // Обновляем состояние
-        posts[index].likes = likeCount.count; // Обновляем количество лайков
-        divLike.classList.remove("active");
-      } else {
-        // Добавить лайк
-        const likeCount: any = await AddLikeOnPost(posts[index].postId);
-        posts[index].isLiked = true; // Обновляем состояние
-        posts[index].likes = likeCount.count; // Обновляем количество лайков
-        divLike.classList.add("active");
-      }
+      const likeCount: any = await AddLikeOnPost(posts[index].postId);
+      posts[index].isLiked = !posts[index].isLiked; // Обновляем состояние
+      posts[index].likes = likeCount.count; // Обновляем количество лайков
+      divLike.classList.toggle("active");
       amountsLike[index].innerHTML = `${posts[index].likes}`; // Обновляем отображаемое количество лайков
     });
   });
-  menu.forEach((menuElement: any, index: number) => {
-    const handleMenuClick = (event: any) => {
-      event.stopPropagation();
 
-      // Закрыть другие брошюры
-      dropdownMenu.forEach((dropdown: any, dropdownIndex: number) => {
-        if (dropdownIndex !== index) {
-          dropdown.classList.remove(ELEMENTS_CLASS.ACTIVE);
-        }
-      });
-
-      dropdownMenu[index].classList.toggle(ELEMENTS_CLASS.ACTIVE);
-
-      renderDeletePost(posts[index]);
-      renderEditPost(posts[index]);
-      const modalsEdit: any = document.querySelector(".modal__editpost");
-      const modalsDelete: any = document.querySelector(".modal__deletepost");
-
-      const resetModalStates = () => {
-        modalsEdit.style.display = "none";
-        modalsDelete.style.display = "none";
-        containers.classList.remove("blur");
-      };
-
-      if (event.target.classList.contains("button-edit-post")) {
-        const title: any = document.querySelector(".input-group");
-        const content: any = document.querySelector(".textarea-group");
-
-        title.textContent = posts[index].title;
-        content.value = posts[index].content;
-        modalsEdit.style.display = "block";
-        containers.classList.add("blur");
-
-        modalsEdit.querySelector(`.${ELEMENTS_CLASS.CANCEL.BLOCK}`).onclick =
-          resetModalStates;
-
-        modalsEdit.querySelector(`.${ELEMENTS_CLASS.SAVE.BLOCK}`).onclick =
-          async (e: any) => {
-            e.preventDefault();
-            const ok = await editPost(
-              modalsEdit,
-              posts[index].postId,
-              title.value,
-              content.value,
-              0,
-            );
-            updatePosts();
-            resetModalStates();
-          };
+  const handleMenuClick = (event: any, index: number) => {
+    event.stopPropagation();
+    dropdownMenu.forEach((dropdown: any, dropdownIndex: number) => {
+      if (dropdownIndex !== index) {
+        dropdown.classList.remove(ELEMENTS_CLASS.ACTIVE);
       }
+    });
 
-      if (event.target.classList.contains("button-delete-post")) {
-        const contentDelete: any = document.querySelector(
-          ".textarea-group-delete",
-        );
+    dropdownMenu[index].classList.toggle(ELEMENTS_CLASS.ACTIVE);
+    renderDeletePost(posts[index]);
+    renderEditPost(posts[index]);
+    const modalsEdit: any = document.querySelector(".modal__editpost");
+    const modalsDelete: any = document.querySelector(".modal__deletepost");
 
-        contentDelete.textContent = `Вы действительно хотите удалить пост "${posts[index].title}" ?`;
-        modalsDelete.style.display = "block";
-        containers.classList.add("blur");
-
-        modalsDelete.querySelector(`.${ELEMENTS_CLASS.CANCEL.BLOCK}`).onclick =
-          resetModalStates;
-
-        modalsDelete.querySelector(`.${ELEMENTS_CLASS.DELETE.BLOCK}`).onclick =
-          async () => {
-            await deletePost(posts[index].postId);
-            updatePosts();
-            resetModalStates();
-          };
-      }
+    const resetModalStates = () => {
+      modalsEdit.style.display = "none";
+      modalsDelete.style.display = "none";
+      containers.classList.remove("blur");
     };
 
-    // Добавляем обработчик клика на menuElement
-    menuElement.addEventListener("click", handleMenuClick);
-  });
+    if (event.target.classList.contains("button-edit-post")) {
+      const title: any = document.querySelector(".input-group");
+      const content: any = document.querySelector(".textarea-group");
 
-  // Обновление постов
+      title.textContent = posts[index].title;
+      content.value = posts[index].content;
+      modalsEdit.style.display = "block";
+      containers.classList.add("blur");
+
+      modalsEdit.querySelector(`.${ELEMENTS_CLASS.CANCEL.BLOCK}`).onclick =
+        resetModalStates;
+
+      modalsEdit.querySelector(`.${ELEMENTS_CLASS.SAVE.BLOCK}`).onclick =
+        async (e: any) => {
+          e.preventDefault();
+          await editPost(
+            modalsEdit,
+            posts[index].postId,
+            title.value,
+            content.value,
+          );
+          resetModalStates();
+          await updatePosts();
+        };
+      return;
+    }
+
+    if (event.target.classList.contains("button-delete-post")) {
+      const contentDelete: any = document.querySelector(
+        ".textarea-group-delete",
+      );
+      contentDelete.textContent = `Вы действительно хотите удалить пост "${posts[index].title}" ?`;
+      modalsDelete.style.display = "block";
+      containers.classList.add("blur");
+
+      modalsDelete.querySelector(`.${ELEMENTS_CLASS.CANCEL.BLOCK}`).onclick =
+        resetModalStates;
+
+      modalsDelete.querySelector(`.${ELEMENTS_CLASS.DELETE.BLOCK}`).onclick =
+        async () => {
+          await deletePost(posts[index].postId);
+          await updatePosts();
+          resetModalStates();
+        };
+    }
+  };
+
+  // Функция для добавления обработчиков клика на меню
+  const addMenuClickHandlers = () => {
+    menu.forEach((menuElement: any, index: number) => {
+      menuElement.onclick = (event: any) => handleMenuClick(event, index);
+    });
+  };
+
+  // Изначально добавляем обработчики клика на меню
+  addMenuClickHandlers();
+
   const updatePosts = async () => {
     const newPosts: any = await getUserPosts(window.location.pathname, 0);
     const arrayPost: VNode = createElement("div", {}, [
       ...renderPosts(newPosts),
     ]);
     const place: any = containers.querySelector(".place-posts");
-    update(place, arrayPost);
 
+    update(place, arrayPost);
     const placeStats: any = document.querySelector(`.stats`);
     const payments: any = await getPayments(window.location.pathname);
     const authorData: any = await getPageAuthor(window.location.pathname);
     const arrayStats: VNode = await renderUserStats(authorData, payments);
     update(placeStats, arrayStats);
+
+    // Добавляем обработчики клика на меню снова после обновления постов
+    addMenuClickHandlers();
   };
 }
+
 function handleImageUpload() {
   const button: any = document.querySelector(`.image-upload-label`);
   const profilePicInput: any = document.querySelector(`.image-upload-input`);

@@ -10,7 +10,12 @@
 со значением application/json; charset=utf-8, если предоставлено тело запроса.
 Опция mode установлена в cors, чтобы включить CORS.
  */
-export function fetchAjax(
+async function getCsrfToken() {
+  const response = await fetch("/token-endpoint"); // Вызов TokenHandler
+  return response.headers.get("X-CSRF-Token");
+}
+
+export async function fetchAjax(
   method: any,
   url: any,
   body?: FormData | any,
@@ -18,12 +23,19 @@ export function fetchAjax(
 ) {
   const headers: any = {};
 
+  // Получаем CSRF-токен
+  const csrfToken = await getCsrfToken();
+  if (csrfToken) {
+    headers["X-CSRF-Token"] = csrfToken; 
+  }
+
   if (body instanceof FormData) {
     // Не устанавливаем Content-Type, он будет установлен автоматически
   } else if (body) {
     headers["Content-Type"] = "application/json; charset=utf-8";
     body = JSON.stringify(body);
   }
+
   const init = {
     method,
     headers,
@@ -31,6 +43,7 @@ export function fetchAjax(
     mode: "cors" as RequestMode,
     credentials: "include" as RequestCredentials,
   };
+
   return fetch(url, init)
     .then((response) => {
       callback(response);

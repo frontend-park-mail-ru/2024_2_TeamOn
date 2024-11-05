@@ -438,13 +438,11 @@ function createInput(
   return input;
 }
 async function createButtonSetAuthor() {
-  const divButton: any = document.createElement("button");
   const button: any = document.createElement("button");
   button.classList.add("become-author-button");
   const text: any = document.createElement("h3");
   text.textContent = "Стать автором";
   button.appendChild(text);
-  divButton.appendChild(button);
   const userdata: any = await getAccount();
   const role = userdata.role;
   if (role !== "Reader") {
@@ -466,7 +464,7 @@ async function createButtonSetAuthor() {
     button.removeEventListener("click", handleClick);
   };
   button.addEventListener("click", handleClick);
-  return divButton;
+  return button;
 }
 
 function createRoleSelect(): HTMLSelectElement {
