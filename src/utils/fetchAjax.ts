@@ -10,11 +10,35 @@
 со значением application/json; charset=utf-8, если предоставлено тело запроса.
 Опция mode установлена в cors, чтобы включить CORS.
  */
-async function getCsrfToken() {
-  const response = await fetch("/token-endpoint"); // Вызов TokenHandler
-  return response.headers.get("X-CSRF-Token");
+const tokenEndpoints: any = {
+  auth: "/api/auth/token-endpoint",
+  accounts: "/api/accounts/token-endpoint",
+  danya: "/api/danya/token-endpoint",
+  posts: "/api/posts/token-endpoint",
+};
+async function getCSRFTokenForPosts() {
+  const response = await fetch("/api/posts/token-endpoint");
+  const data = await response.json();
+  return data;
 }
 
+async function getCSRFTokenForAuth() {
+  const response = await fetch("/api/auth/token-endpoint");
+  const data = await response.json();
+  return data;
+}
+
+async function getCSRFTokenForAccounts() {
+  const response = await fetch("/api/accounts/token-endpoint");
+  const data = await response.json();
+  return data;
+}
+
+async function getCSRFTokenForAuthor() {
+  const response = await fetch("/api/danya/token-endpoint");
+  const data = await response.json();
+  return data;
+}
 export async function fetchAjax(
   method: any,
   url: any,
@@ -23,12 +47,24 @@ export async function fetchAjax(
 ) {
   const headers: any = {};
 
-  // Получаем CSRF-токен
-  const csrfToken = await getCsrfToken();
-  if (csrfToken) {
-    headers["X-CSRF-Token"] = csrfToken;
-  }
+  // Получаем CSRF-токен в зависимости от URL
+  if (method === "POST" || method === "DELETE") {
+    let csrfToken;
 
+    if (url.startsWith("/api/posts")) {
+      csrfToken = await getCSRFTokenForPosts();
+    } else if (url.startsWith("/api/auth")) {
+      csrfToken = await getCSRFTokenForAuth();
+    } else if (url.startsWith("/api/accounts")) {
+      csrfToken = await getCSRFTokenForAccounts();
+    } else if (url.startsWith("/api/danya")) {
+      csrfToken = await getCSRFTokenForAuthor();
+    }
+
+    if (csrfToken) {
+      headers["X-CSRF-Token"] = csrfToken.csrfToken;
+    }
+  }
   if (body instanceof FormData) {
     // Не устанавливаем Content-Type, он будет установлен автоматически
   } else if (body) {

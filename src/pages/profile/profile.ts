@@ -322,21 +322,21 @@ function modifirePosts(containers: any, posts: any[], offset: any) {
 
         modalsEdit.querySelector(`.${ELEMENTS_CLASS.CANCEL.BLOCK}`).onclick =
           resetModalStates;
-          const sanitizedTitle = DOMPurify.sanitize(title.value);
-          const sanitizedContent = DOMPurify.sanitize(content.value);
-          
-          if (!sanitizedTitle || !sanitizedContent) {
-            const input = modalsEdit.querySelector(`.form-group`);
-            const error = input.querySelector("p");
-            if (!error) {
-              const error = document.createElement("p");
-              error.style.color = "red";
-              error.textContent = "Ошибка";
-              input.appendChild(error);
-            }
-            return;
+        const sanitizedTitle = DOMPurify.sanitize(title.value);
+        const sanitizedContent = DOMPurify.sanitize(content.value);
+
+        if (!sanitizedTitle || !sanitizedContent) {
+          const input = modalsEdit.querySelector(`.form-group`);
+          const error = input.querySelector("p");
+          if (!error) {
+            const error = document.createElement("p");
+            error.style.color = "red";
+            error.textContent = "Ошибка";
+            input.appendChild(error);
           }
-          modalsEdit.querySelector(`.${ELEMENTS_CLASS.SAVE.BLOCK}`).onclick =
+          return;
+        }
+        modalsEdit.querySelector(`.${ELEMENTS_CLASS.SAVE.BLOCK}`).onclick =
           async (e: any) => {
             e.preventDefault();
             await editPost(
@@ -638,10 +638,10 @@ function controlAdaptivePageAuthors(
           const title = container.querySelector(`.input-group`);
           const content = container.querySelector(`.textarea-group`);
           const containerCreatePost =
-          container.querySelector(".modal__createpost");
+            container.querySelector(".modal__createpost");
           const sanitizedTitle = DOMPurify.sanitize(title.value);
           const sanitizedContent = DOMPurify.sanitize(content.value);
-          
+
           if (!sanitizedTitle || !sanitizedContent) {
             const input = containerCreatePost.querySelector(`.form-group`);
             const error = input.querySelector("p");

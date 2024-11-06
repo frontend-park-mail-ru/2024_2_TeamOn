@@ -53,13 +53,17 @@ module.exports = {
         context: "/api/auth",
         target: "http://localhost:8081",
         changeOrigin: true,
-        pathRewrite: { "^/api/auth": "/auth", "^/api/posts": "" },
+        pathRewrite: {
+          "^/api/auth": "/auth",
+          "^/api/auth/token-endpoint": "/token-endpoint",
+        },
       },
       {
         context: "/api/accounts",
         target: "http://localhost:8082",
         changeOrigin: true,
         pathRewrite: {
+          "^/api/accounts/token-endpoint": "/token-endpoint",
           "^/api/accounts/account/(.*)/avatar": "/account/$1/avatar",
           "^/api/accounts/account/update/avatar": "/account/update/avatar",
           "^/api/accounts/account/update/role": "/account/update/role",
@@ -72,6 +76,7 @@ module.exports = {
         target: "http://localhost:8083",
         changeOrigin: true,
         pathRewrite: {
+          "^/api/danya/token-endpoint": "/token-endpoint",
           "^/api/danya/author/me": "/author/me",
           "^/api/danya/author/(.*)": "/author/$1",
           "^/api/danya/author/payments": "/author/payments",
@@ -86,6 +91,7 @@ module.exports = {
         target: "http://localhost:8084",
         changeOrigin: true,
         pathRewrite: {
+          "^/api/posts/token-endpoint": "/token-endpoint",
           "^/api/posts/feed/popular": "/feed/popular",
           "^/api/posts/feed/subscriptions": "/feed/subscriptions",
           "^/api/posts/post": "/post",
