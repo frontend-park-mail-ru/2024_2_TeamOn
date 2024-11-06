@@ -617,8 +617,7 @@ async function controlAdaptivePageAuthors(
   container: any,
   containerPosts: any,
 ) {
-  const userdata: any = await getPageAuthor(window.location.pathname);
-  let authorId: any;
+  const userdata: any = await getUserPosts(window.location.pathname, 0);
 
   if (window.location.pathname === "/profile") {
     const buttonCreatePost: any = container.querySelectorAll(
@@ -689,7 +688,7 @@ async function controlAdaptivePageAuthors(
   }
   if (window.location.pathname !== "/profile") {
     const buttonTip = container.querySelector(`.send-tip__button-new`);
-    const buttonSubs = container.querySelector(`.follow`);
+    const buttonSubs: any = document.querySelector(`.follow`);
 
     buttonTip.addEventListener("click", () => {
       renderTip();
@@ -722,9 +721,7 @@ async function controlAdaptivePageAuthors(
     if (!authorData.isSubscribe) {
       // console.log(authorId);
       buttonSubs.addEventListener("click", async () => {
-        if (authorId) {
-          const ok: any = await following(userdata.authorId);
-        }
+          const ok: any = await following(userdata[0].authorId);
         buttonSubs.textContent = "Подписан";
       });
     }

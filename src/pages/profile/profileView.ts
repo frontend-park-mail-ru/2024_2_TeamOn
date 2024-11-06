@@ -414,7 +414,7 @@ async function renderUserInfo(user: any, payments: any) {
               "button",
               {
                 class: "follow",
-                disabled: isSubs,
+                // disabled: isSubs,
                 style: isSubs ? "cursor: default;" : "cursor: pointer;",
               },
               [
