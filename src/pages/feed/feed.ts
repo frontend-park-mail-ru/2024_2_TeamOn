@@ -343,7 +343,6 @@ export async function paginate(
         const recentlyPosts: any = await getRecentlyPosts(offsetRecently);
         const nextRecentlyPosts = recentlyPosts.slice(0, QUERY.LIMIT);
         if (nextRecentlyPosts.length > 0) {
-          alert("kak");
           allRecentlyPosts.push(...nextRecentlyPosts);
           offsetRecently += QUERY.LIMIT; // Увеличиваем смещение на количество загруженных постов
 
