@@ -546,9 +546,9 @@ async function controlAdaptiveProfile(container: any) {
     buttonMobileAbout.classList.remove(ELEMENTS_CLASS.ACTIVE);
     buttonMobilePosts.classList.add(ELEMENTS_CLASS.ACTIVE);
     aboutProfile.classList.add("hidden");
-    if (data && !data.isSubscribe) {
-      return;
-    }
+    // if (data && !data.isSubscribe) {
+    //   return;
+    // }
     if (feedProfile) {
       feedProfile.classList.remove("hidden");
     }
@@ -679,7 +679,7 @@ async function controlAdaptivePageAuthors(
             ...renderPosts(newposts),
           ]);
           const place: any = containerPosts.querySelector(".place-posts");
-          update(place, arrayPost);
+          // update(place, arrayPost);
 
           const placeStats: any = document.querySelector(`.stats`);
           const payments: any = await getPayments(window.location.pathname);
@@ -764,17 +764,22 @@ async function renderProfileForm(
       await renderDesktopProfileInfo(authorData, avatar, payments),
       createElement("div", { class: "center-column-profile" }, [
         createElement("div", { class: "place-edit-info" }, []),
-        authorData.isSubscribe
-          ? createElement("div", { class: "feed-profile" }, [
+        window.location.pathname === "/profile" ?
+           createElement("div", { class: "feed-profile" }, [
               createElement("div", { class: "nav-tabs-profile" }, [
                 createElement("a", { class: "active-profile active" }, [
                   createText("Лента"),
                 ]),
               ]),
               createElement("div", { class: "place-posts" }, []),
-            ])
-          : createElement("div", {}, []),
-        createElement("div", {}, []),
+            ]) : authorData.isSubscribe  ? createElement("div", { class: "feed-profile" }, [
+              createElement("div", { class: "nav-tabs-profile" }, [
+                createElement("a", { class: "active-profile active" }, [
+                  createText("Лента"),
+                ]),
+              ]),
+              createElement("div", { class: "place-posts" }, []),
+            ]) : createElement("div", {}, []),
       ]),
     ]),
   ]);
