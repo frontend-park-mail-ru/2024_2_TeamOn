@@ -617,11 +617,8 @@ async function controlAdaptivePageAuthors(
   container: any,
   containerPosts: any,
 ) {
-  const userposts: any = await getUserPosts(window.location.pathname, 0);
+  const userdata: any = await getPageAuthor(window.location.pathname);
   let authorId: any;
-  if (userposts.length > 0) {
-    authorId = userposts[0].authorId;
-  }
 
   if (window.location.pathname === "/profile") {
     const buttonCreatePost: any = container.querySelectorAll(
@@ -722,11 +719,11 @@ async function controlAdaptivePageAuthors(
         containerPosts.classList.remove("blur");
       });
     });
-    if (!authorData.userIsSubscribe) {
+    if (!authorData.isSubscribe) {
       // console.log(authorId);
       buttonSubs.addEventListener("click", async () => {
         if (authorId) {
-          const ok: any = await following(authorId);
+          const ok: any = await following(userdata.authorId);
         }
         buttonSubs.textContent = "Подписан";
       });
