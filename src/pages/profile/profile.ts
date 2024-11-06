@@ -86,7 +86,7 @@ async function addUserPost(
  * Получение текущей страницы профиля через объект типа промис
  * @returns Информация о пользователе
  */
-async function getPageAuthor(link: string) {
+export async function getPageAuthor(link: string) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "GET",
@@ -342,8 +342,8 @@ function modifirePosts(containers: any, posts: any[], offset: any) {
             await editPost(
               modalsEdit,
               posts[index].postId,
-              sanitizedTitle,
-              sanitizedContent,
+              DOMPurify.sanitize(title.value),
+              DOMPurify.sanitize(content.value),
             );
             resetModalStates();
             await updatePosts();
@@ -533,7 +533,7 @@ function controlMediaProfile(container: any) {
   }
 }
 
-function controlAdaptiveProfile(container: any) {
+async function controlAdaptiveProfile(container: any) {
   const buttonMobileAbout: any = document.querySelector(
     ".about-mobile__button",
   );
@@ -541,17 +541,24 @@ function controlAdaptiveProfile(container: any) {
 
   const feedProfile: any = container.querySelector(".feed-profile");
   const aboutProfile: any = container.querySelector(".place-edit-info");
-
+  const data: any = await getPageAuthor(window.location.pathname);
   function showFeedProfile() {
-    feedProfile.classList.remove("hidden");
-    aboutProfile.classList.add("hidden");
-    buttonMobilePosts.classList.add(ELEMENTS_CLASS.ACTIVE);
     buttonMobileAbout.classList.remove(ELEMENTS_CLASS.ACTIVE);
+    buttonMobilePosts.classList.add(ELEMENTS_CLASS.ACTIVE);
+    aboutProfile.classList.add("hidden");
+    if (data && !data.isSubscribe) {
+      return;
+    }
+    if (feedProfile) {
+      feedProfile.classList.remove("hidden");
+    }
   }
 
   function showAboutProfile() {
     aboutProfile.classList.remove("hidden");
-    feedProfile.classList.add("hidden");
+    if (feedProfile) {
+      feedProfile.classList.add("hidden");
+    }
     buttonMobilePosts.classList.remove(ELEMENTS_CLASS.ACTIVE);
     buttonMobileAbout.classList.add(ELEMENTS_CLASS.ACTIVE);
   }
@@ -590,7 +597,7 @@ async function sendTip(authorId: any, body: any) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "POST",
-      `/api/danya/author/update/info`,
+      `/api/danya/author/${authorId}/tip`,
       { message: body.message, cost: body.cost },
       (response) => {
         if (response.ok) {
@@ -605,11 +612,17 @@ async function sendTip(authorId: any, body: any) {
     );
   });
 }
-function controlAdaptivePageAuthors(
+async function controlAdaptivePageAuthors(
   authorData: any,
   container: any,
   containerPosts: any,
 ) {
+  const userposts: any = await getUserPosts(window.location.pathname, 0);
+  let authorId: any;
+  if (userposts.length > 0) {
+    authorId = userposts[0].authorId;
+  }
+
   if (window.location.pathname === "/profile") {
     const buttonCreatePost: any = container.querySelectorAll(
       `.${ELEMENTS_CLASS.CREATE.BLOCK}`,
@@ -679,6 +692,8 @@ function controlAdaptivePageAuthors(
   }
   if (window.location.pathname !== "/profile") {
     const buttonTip = container.querySelector(`.send-tip__button-new`);
+    const buttonSubs = container.querySelector(`.follow`);
+
     buttonTip.addEventListener("click", () => {
       renderTip();
       const buttonCancel: any = document.querySelector(
@@ -695,8 +710,10 @@ function controlAdaptivePageAuthors(
         const messageInput = containerTip.querySelector(`.textarea-group`);
         const costInput = containerTip.querySelector(`.input-group`);
         const message = messageInput.value;
-        const cost = costInput.value;
-        const ok = await sendTip(authorData.authorId, { message, cost });
+        const costString = costInput.value;
+        const cost = parseInt(costString, 10);
+        const userposts: any = await getUserPosts(window.location.pathname, 0);
+        const ok = await sendTip(userposts[0].authorId, { message, cost });
         containerTip.style.display = "none";
         containerPosts.classList.remove("blur");
       });
@@ -705,7 +722,34 @@ function controlAdaptivePageAuthors(
         containerPosts.classList.remove("blur");
       });
     });
+    if (!authorData.userIsSubscribe) {
+      // console.log(authorId);
+      buttonSubs.addEventListener("click", async () => {
+        if (authorId) {
+          const ok: any = await following(authorId);
+        }
+        buttonSubs.textContent = "Подписан";
+      });
+    }
   }
+}
+async function following(authorId: any) {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "POST",
+      `/api/danya/author/${authorId}/following`,
+      null,
+      (response) => {
+        if (response.ok) {
+          resolve(true);
+        } else if (response.status === 400) {
+          route(LINKS.ERROR.HREF);
+        } else {
+          reject(new Error("Ответ от фетча с ошибкой"));
+        }
+      },
+    );
+  });
 }
 async function renderProfileForm(
   authorData: any,
@@ -720,16 +764,17 @@ async function renderProfileForm(
       await renderDesktopProfileInfo(authorData, avatar, payments),
       createElement("div", { class: "center-column-profile" }, [
         createElement("div", { class: "place-edit-info" }, []),
-        createElement("div", { class: "feed-profile" }, [
-          createElement("div", { class: "nav-tabs-profile" }, [
-            createElement("a", { class: "active-profile active" }, [
-              createText("Лента"),
-            ]),
-          ]),
-          createElement("div", { class: "place-posts" }, [
-            // ...renderPosts(authorPosts),
-          ]),
-        ]),
+        authorData.isSubscribe
+          ? createElement("div", { class: "feed-profile" }, [
+              createElement("div", { class: "nav-tabs-profile" }, [
+                createElement("a", { class: "active-profile active" }, [
+                  createText("Лента"),
+                ]),
+              ]),
+              createElement("div", { class: "place-posts" }, []),
+            ])
+          : createElement("div", {}, []),
+        createElement("div", {}, []),
       ]),
     ]),
   ]);
@@ -799,32 +844,7 @@ function renderPostsAuthor(posts: any) {
   });
   return allposts;
 }
-// async function paginageProfile(allPosts: any, containerPosts:any) {
-//   let stopLoadPosts: boolean = false;
-//   let offsetPost = 0;
-//   // Объект для предотвращения повторной загрузки
-//   let isLoading = false;
 
-//   async function loadPosts() {
-//     if (isLoading) return;
-//     isLoading = true;
-
-//     try {
-//       if (!stopLoadPosts) {
-//         const newposts: any = await getUserPosts(window.location.pathname, offsetPost);
-//         const nextpost: any = newposts.slice(0, QUERY.LIMIT);
-
-//         if (nextpost.length > 0) {
-//           allPosts.pust(...nextpost);
-//           offsetPost += QUERY.LIMIT;
-
-//           containerPosts.append( ...await renderPostsAuthor(nextpost));
-
-//         }
-//       }
-//     }
-//   }
-// }
 async function renderMainContent(
   authorData: any,
   avatar: any,

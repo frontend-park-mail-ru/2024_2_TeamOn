@@ -54,8 +54,8 @@ module.exports = {
         target: "http://localhost:8081",
         changeOrigin: true,
         pathRewrite: {
-          "^/api/auth": "/auth",
           "^/api/auth/token-endpoint": "/token-endpoint",
+          "^/api/auth": "/auth",
         },
       },
       {
@@ -78,6 +78,7 @@ module.exports = {
         pathRewrite: {
           "^/api/danya/token-endpoint": "/token-endpoint",
           "^/api/danya/author/me": "/author/me",
+          "^/api/danya/author/(.*)/following": "/author/$1/following",
           "^/api/danya/author/(.*)": "/author/$1",
           "^/api/danya/author/payments": "/author/payments",
           "^/api/danya/author/(.*)/background": "/author/$1/background",

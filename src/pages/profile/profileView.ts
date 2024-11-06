@@ -3,7 +3,7 @@ import { createElement, createText, update } from "../../lib/vdom/lib";
 import { calculateAmountPosts } from "../../utils/calculateAmountPosts";
 import { VNode } from "../../lib/vdom/src/source";
 import { getAccount } from "../feed/feedView";
-import { getUserPosts } from "./profile";
+import { getPageAuthor, getUserPosts } from "./profile";
 
 function renderUserPosts(post: any) {
   const container = document.createElement("div");
@@ -399,10 +399,10 @@ async function mobileProfile(
  * @param {*} payments Объект выплат
  */
 async function renderUserInfo(user: any, payments: any) {
+  const authorData: any = await getPageAuthor(window.location.pathname);
+  const isSubs: any = authorData.isSubscribe;
   const vdom: VNode[] = [
-    // createElement("div", { class: "stats" }, [
     await renderUserStats(user, payments),
-    // ]),
     createElement("div", { class: "buttons-profile" }, [
       window.location.pathname == "/profile"
         ? createElement("button", { class: "create" }, [
@@ -410,10 +410,18 @@ async function renderUserInfo(user: any, payments: any) {
             createText("Создать публикацию"),
           ])
         : createElement("div", {}, [
-            createElement("button", { class: "follow" }, [
-              createElement("i", { class: "icon-follow" }, []),
-              createText("Подписаться"),
-            ]),
+            createElement(
+              "button",
+              {
+                class: "follow",
+                disabled: isSubs,
+                style: isSubs ? "cursor: default;" : "cursor: pointer;",
+              },
+              [
+                createElement("i", { class: "icon-follow" }, []),
+                isSubs ? createText("Подписаны") : createText("Подписаться"),
+              ],
+            ),
             createElement("button", { class: "send-tip__button-new" }, [
               createElement("i", { class: "icon-sendtip" }, []),
               createText("Отправить пожертвование"),
