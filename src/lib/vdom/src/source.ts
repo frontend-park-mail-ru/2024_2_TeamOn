@@ -3,7 +3,9 @@ export interface VNode {
   props: { [key: string]: any };
   children: VNode[];
 }
-
+/**
+ * Класс виртуального дома
+ */
 export class VirtualDOM {
   private root: VNode;
 

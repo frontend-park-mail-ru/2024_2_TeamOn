@@ -19,6 +19,11 @@ import { route } from "../../utils/routing";
 import { fetchAjax } from "../../utils/fetchAjax";
 import { convertISOToRussianDate } from "../../utils/parsedate";
 
+/**
+ * Функция получения популярных постов
+ * @param offsetPopular Оффсет для популярных постов
+ * @returns 
+ */
 async function getPopularPosts(offsetPopular: any) {
   return new Promise((resolve, reject) => {
     fetchAjax(
@@ -40,7 +45,11 @@ async function getPopularPosts(offsetPopular: any) {
     );
   });
 }
-
+/**
+ * Функция получения недавних постов
+ * @param offsetRecently Оффсет для недавних
+ * @returns 
+ */
 async function getRecentlyPosts(offsetRecently: any) {
   return new Promise((resolve, reject) => {
     fetchAjax(
@@ -129,8 +138,9 @@ function renderPopularPosts(popularPosts: any) {
   });
   return posts;
 }
+
 /**
- * Рендерит скелет популярных постов
+ * Рендерит скелет недавних постов
  * @returns
  */
 async function renderRecentlyPosts(recentlyPosts: any) {
@@ -147,6 +157,11 @@ async function renderRecentlyPosts(recentlyPosts: any) {
     throw error;
   }
 }
+/**
+ * Функция добавления лайка
+ * @param postId 
+ * @returns 
+ */
 export async function AddLikeOnPost(postId: any) {
   return new Promise((resolve, reject) => {
     fetchAjax(
@@ -168,7 +183,7 @@ export async function AddLikeOnPost(postId: any) {
   });
 }
 /**
- * Кастомизирует сайдраб
+ * Кастомизирует сайдбар
  * @param sidebar
  * @returns
  */
@@ -208,6 +223,7 @@ export function modifierSidebar(mainContainer: any) {
     });
   });
 }
+
 /**
  * Кастомизирует каждый пост, который к нему пришел
  * @param container Контейнер ( популярных | недавних постов )
@@ -294,6 +310,13 @@ export async function customizePost(container: any, post: any = null) {
     });
   }
 }
+/**
+ * Функция пагинация для ленты
+ * @param allPopularPosts Все популярные посты
+ * @param allRecentlyPosts Все недавние посты
+ * @param containerPopularPosts Контейнер популярных постов
+ * @param containerRecentlyPosts Конейтер недавних постов
+ */
 export async function paginate(
   allPopularPosts: any,
   allRecentlyPosts: any,
@@ -379,6 +402,10 @@ export async function paginate(
     }
   });
 }
+/**
+ * Функция рендера ленты
+ * @returns 
+ */
 export async function renderFeed() {
   try {
     const allPopularPosts: any = []; // Массив для хранения всех загруженных популярных постов
@@ -428,20 +455,6 @@ export async function renderFeed() {
       containerPopularPosts,
       containerRecentlyPosts,
     );
-
-    // if (cache.popular.length > 0 || cache.recently.length > 0) {
-    //   containerPopularPosts.append(
-    //     ...(await renderRecentlyPosts(cache.popular)),
-    //   );
-    //   modifirePosts(
-    //     containerPopularPosts,
-    //     containerRecentlyPosts,
-    //     cache.popular,
-    //     [],
-    //   );
-    //   offsetPopular = cache.popular.length;
-    //   cache.popular = [];
-    // }
 
     modifierSidebar(mainContent);
 

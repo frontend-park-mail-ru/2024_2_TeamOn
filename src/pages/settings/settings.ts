@@ -1,12 +1,14 @@
-//TODO добавить в поле роль связь с бд
-//TODO добавить проверку существует ли такое имя пользователя и почта
-//TODO добавить обработку старого пароля
-
 import { updatePasswordStrengthBar } from "../../auth/signup";
 import { REGEXP, validatePassword } from "../../consts";
 
-//TODO добавить обработку старого пароля
-
+/**
+ * Валидация пароля для настроек
+ * @param inputPassword Входящий пароль
+ * @param inputRepeatPassword Повторения входящего пароля
+ * @param passwordStrength Длина шкалы заполнения валидности пароля
+ * @param newPasswordError Ошибка валидности старого пароля
+ * @param confirmPasswordError Ошибка валидности подтвержденного пароля
+ */
 export function validateSettingsPassword(
   inputPassword: any,
   inputRepeatPassword: any,
@@ -45,7 +47,12 @@ export function validateSettingsPassword(
     newPasswordError.innerHTML = "";
   }
 }
-
+/**
+ * Валидация основной информации
+ * @param username Имя
+ * @param email Почта
+ * @returns 
+ */
 export function validateMainInfo(
   username: string,
   email: string,

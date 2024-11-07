@@ -5,6 +5,10 @@ import { VNode } from "../../lib/vdom/src/source";
 import { fetchAjax } from "../../utils/fetchAjax";
 import { route } from "../../utils/routing";
 
+/**
+ * Функция установки активной ссылки
+ * @param link Ссылка на страницу
+ */
 export function setActiveLink(link: any) {
   sidebarLinks.forEach((sidebarLink: any) => {
     if (link != sidebarLink) {
@@ -14,6 +18,11 @@ export function setActiveLink(link: any) {
   });
   link.active = true;
 }
+
+/**
+ * Рендер бургера
+ * @returns 
+ */
 function renderBurger() {
   const vdom: VNode = createElement(
     "div",
@@ -27,6 +36,10 @@ function renderBurger() {
 
   return vdom;
 }
+/**
+ * Функция получения аккаунта
+ * @returns 
+ */
 export async function getAccount() {
   return new Promise((resolve, reject) => {
     fetchAjax(
@@ -47,7 +60,11 @@ export async function getAccount() {
     );
   });
 }
-
+/**
+ * Функция рендера сайдбара
+ * @param userdata Информация о юзере
+ * @returns 
+ */
 async function renderSidebar(userdata: any) {
   sessionStorage.setItem("account", userdata.username);
   const vdom: VNode = createElement(
@@ -91,15 +108,11 @@ async function renderSidebar(userdata: any) {
   );
   return vdom;
 }
-// function renderSearchbar() {
-//   const vdom: VNode = createElement(
-//     "div",
-//     { class: ELEMENTS_CLASS.SEARCH.BLOCK },
-//     [createElement("input", { class: ELEMENTS_CLASS.SEARCH.ELEMENT }, [])],
-//   );
-
-//   return vdom;
-// }
+/**
+ * Рендер медиа контента к постам (в разработке)
+ * @param mediaContent  Медиа контент
+ * @returns 
+ */
 function rendermediaContent(mediaContent: any[]) {
   var result: any = [];
   mediaContent.forEach((media: any) => {
@@ -112,7 +125,12 @@ function rendermediaContent(mediaContent: any[]) {
   });
   return result;
 }
-
+/**
+ * Рендер контейнера поста
+ * @param post Пост
+ * @param mediaContent Медиа-контент у поста
+ * @returns 
+ */
 async function createContainerPost(post: any, mediaContent: any[]) {
   const container = document.createElement("div");
   const vdom: VNode = createElement(

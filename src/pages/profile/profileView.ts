@@ -5,10 +5,13 @@ import { VNode } from "../../lib/vdom/src/source";
 import { getAccount } from "../feed/feedView";
 import { getPageAuthor, getUserPosts } from "./profile";
 import { convertISOToRussianDate } from "../../utils/parsedate";
-
+/**
+ * Рендер контейнера поста
+ * @param post Пост
+ * @returns 
+ */
 function renderUserPosts(post: any) {
   const container: any = document.createElement("div");
-  // const userdata: any = await getPageAuthor(window.location.pathname);
   const vdom: VNode = createElement("div", { class: "posts" }, [
     createElement("div", { class: ELEMENTS_CLASS.POST.PROFILE.BLOCK }, [
       createElement("div", { style: "display: flex;" }, [
@@ -53,17 +56,8 @@ function renderUserPosts(post: any) {
       ]),
     ]),
   ]);
-  update(container, vdom)
+  update(container, vdom);
   return container;
-}
-
-/**
- * Функция рендерит заголовок настроения пользователя.
- * @param {*} user Объект пользователя
- */
-function renderVibe(user: any) {
-  const vdom: VNode = createElement("h1", {}, [createText(user.status)]);
-  return vdom;
 }
 
 /**
@@ -97,7 +91,10 @@ async function renderUserStats(user: any, payments: any = null) {
   ]);
   return vdom;
 }
-
+/**
+ * Рендер изменения поста
+ * @param post Пост
+ */
 export function renderEditPost(post: any) {
   const vdom: VNode = createElement("div", { class: "modal__editpost" }, [
     createElement("div", { class: "modal-header" }, [
@@ -130,6 +127,10 @@ export function renderEditPost(post: any) {
   const container = document.querySelector(`.div-edit-posts`);
   update(container, vdom);
 }
+/**
+ * Рендер удаления поста
+ * @param post Пост
+ */
 export function renderDeletePost(post: any) {
   const vdom: VNode = createElement("div", { class: "modal__deletepost" }, [
     createElement("div", { class: "modal-header" }, [
@@ -152,6 +153,10 @@ export function renderDeletePost(post: any) {
   const container = document.querySelector(`.div-delete-posts`);
   update(container, vdom);
 }
+/**
+ * Функция рендера модального окна пожертвования
+ * @returns 
+ */
 export function renderTip() {
   const feedRegex = /^\/profile\/[0-9a-zA-Z-]+$/;
   if (!feedRegex.test(window.location.pathname)) {
@@ -189,7 +194,10 @@ export function renderTip() {
   console.log("vot");
   update(container, vdom);
 }
-
+/**
+ * Рендер модального окна создания поста
+ * @returns 
+ */
 export function renderCreatePost() {
   if (window.location.pathname !== "/profile") {
     return createElement("div", {}, []);
@@ -222,6 +230,13 @@ export function renderCreatePost() {
   update(container, vdom);
   return container;
 }
+/**
+ * Рендер контейнера "О СЕБЕ"
+ * @param authorData Информация об авторе
+ * @param isEdit Флаг для перехода в режим редактирования
+ * @param newValue Новое значение
+ * @returns 
+ */
 function renderAbout(authorData: any, isEdit = false, newValue?: any) {
   const container: any = document.querySelector(`.place-edit-info`);
 
@@ -282,6 +297,13 @@ function renderAbout(authorData: any, isEdit = false, newValue?: any) {
 
   return container;
 }
+/**
+ * Рендер информации о профиле для десктопа
+ * @param authorData Информация об авторе
+ * @param avatar Аватар
+ * @param payments Выплаты
+ * @returns 
+ */
 async function renderDesktopProfileInfo(
   authorData: any,
   avatar: any,
@@ -300,6 +322,11 @@ async function renderDesktopProfileInfo(
   ]);
   return vdom;
 }
+/**
+ * Рендер бекграунда профиля для десктопа
+ * @param background Бекграунд
+ * @returns 
+ */
 function renderDesktopProfileHeader(background: any) {
   const vdom: VNode = createElement("div", { class: "header-profile" }, [
     createElement("form", {}, [
@@ -334,6 +361,14 @@ function renderDesktopProfileHeader(background: any) {
 
   return vdom;
 }
+/**
+ * Рендер мобильного профиля
+ * @param user Пользователь
+ * @param avatar Аватар
+ * @param background Бекграунд
+ * @param payments Выплаты
+ * @returns 
+ */
 async function mobileProfile(
   user: any,
   avatar: any,
@@ -380,10 +415,10 @@ async function mobileProfile(
     ]),
     createElement("div", { class: "tabs-mobile" }, [
       createElement("div", { class: "about-mobile__button" }, [
-        createText("ABOUT"),
+        createText("ПРОФИЛЬ"),
       ]),
       createElement("div", { class: "posts-mobile__button" }, [
-        createText("POSTS"),
+        createText("ЛЕНТА"),
       ]),
     ]),
     createElement("div", { class: "content-mobile" }, [
@@ -396,7 +431,7 @@ async function mobileProfile(
 }
 
 /**
- * Функция рендерит информацию о пользователе.
+ * Функция рендерит информацию о пользователе
  * @param {*} user Объект пользователя
  * @param {*} payments Объект выплат
  */
@@ -433,7 +468,6 @@ async function renderUserInfo(user: any, payments: any) {
 }
 export {
   renderUserPosts,
-  renderVibe,
   renderUserStats,
   renderUserInfo,
   mobileProfile,

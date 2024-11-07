@@ -6,10 +6,12 @@ import { route } from "../../utils/routing";
 import { removeItemLocalStorage } from "../../utils/storages";
 import { modifierSidebar } from "../feed/feed";
 import { getAccount, renderSidebar } from "../feed/feedView";
-
+/**
+ * Функция рендера уведомлений (в обработке)
+ * @returns 
+ */
 export async function renderNotifications() {
   try {
-    // const user: any | null = await getCurrentUser("Здесь будет getAccount()");
     const user: any = state.currentUser;
     const userdata: any | null = await getAccount();
 

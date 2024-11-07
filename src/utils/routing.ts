@@ -40,7 +40,11 @@ interface MenuElements {
   login: HTMLElement;
   signup: HTMLElement;
 }
-
+/**
+ * Функция обновления контента на странице
+ * @param render Ссылка на страницу
+ * @returns 
+ */
 function updatePageContent(render: string): void {
   const feedRegex = /^\/profile\/[0-9a-zA-Z-]+$/;
   const menuElements: MenuElements = state.menuElements as MenuElements;

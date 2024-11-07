@@ -9,7 +9,10 @@ import { modifierSidebar } from "../feed/feed";
 import { getAccount, renderSidebar } from "../feed/feedView";
 import { controlLogout, getAvatar } from "../profile/profile";
 import { validateSettingsPassword, validateMainInfo } from "./settings";
-
+/**
+ * Рендер настроек
+ * @returns 
+ */
 export async function renderSettings() {
   try {
     const user = state.currentUser;
@@ -56,6 +59,10 @@ export async function renderSettings() {
     throw error;
   }
 }
+/**
+ * Функция стать автором
+ * @returns 
+ */
 async function setAuthor() {
   return new Promise((resolve, reject) => {
     fetchAjax("POST", "/api/accounts/account/update/role", null, (response) => {
@@ -69,6 +76,13 @@ async function setAuthor() {
     });
   });
 }
+/**
+ * Функция сохранения настроек
+ * @param username Имя
+ * @param email Почта
+ * @param password Пароль
+ * @returns 
+ */
 async function saveSettings(username: string, email: string, password: string) {
   return new Promise((resolve, reject) => {
     fetchAjax(
@@ -89,6 +103,11 @@ async function saveSettings(username: string, email: string, password: string) {
     );
   });
 }
+/**
+ * Функция сохранения аватара
+ * @param avatar Аватар
+ * @returns 
+ */
 async function saveAvatar(avatar: FormData) {
   return new Promise((resolve, reject) => {
     fetchAjax(
@@ -107,12 +126,18 @@ async function saveAvatar(avatar: FormData) {
     );
   });
 }
+/**
+ * Функция утановки навбара в виде таблицы
+ * @param tabs Таблицы
+ * @param contentContainer Контейнер основной
+ * @param userdata Информация о пользователе
+ */
 function setupTabs(
   tabs: HTMLDivElement,
   contentContainer: HTMLDivElement,
   userdata: any,
 ) {
-  ["Основная информация", "Безопасность"/** , "Получение дохода"*/].forEach(
+  ["Основная информация", "Безопасность" /** , "Получение дохода"*/].forEach(
     (tabName, index) => {
       const tabLink = document.createElement("a");
       tabLink.textContent = tabName;
@@ -140,6 +165,14 @@ function setupTabs(
 
 let buttonPersonalize: any;
 let buttonPassword: any;
+
+/**
+ * Обновление контейнера
+ * @param contentContainer Основной контейнер
+ * @param index Индекс в таблице
+ * @param userdata Информация о пользователе
+ * @returns 
+ */
 async function updateContent(
   contentContainer: HTMLDivElement,
   index: number = 0,
@@ -167,6 +200,11 @@ async function updateContent(
       return [buttonPersonalize, buttonPassword];
   }
 }
+/**
+ * Функция создания формы профиля
+ * @param userdata Информация о юзере
+ * @returns 
+ */
 async function createProfileForm(userdata: any): Promise<HTMLDivElement> {
   const formContainer = document.createElement("div");
   formContainer.className = "form-container";
@@ -270,7 +308,12 @@ async function createProfileForm(userdata: any): Promise<HTMLDivElement> {
   // formContainer.append(profilePicRow);
   return formContainer;
 }
-
+/**
+ * Валидация основной информации
+ * @param username Имя
+ * @param email Почта
+ * @returns 
+ */
 export function validationMainInfoSave(
   username: string,
   email: string,
@@ -286,14 +329,6 @@ function createSecurityForm(): HTMLDivElement {
   const formTitle = document.createElement("h2");
   formTitle.textContent = "Измените данные вашей страницы";
   formContainer.appendChild(formTitle);
-
-  // const oldPasswordRow = document.createElement("div");
-  // oldPasswordRow.className = "form-row";
-  // const oldPasswordLabel = createLabel("Введите старый пароль", "old-password");
-  // const oldPasswordInput = createInput("password", "old-password");
-  // const oldPasswordError = createErrorMessage();
-  // oldPasswordRow.append(oldPasswordLabel, oldPasswordInput);
-  // formContainer.append(oldPasswordRow, oldPasswordError);
 
   const newPasswordRow = document.createElement("div");
   newPasswordRow.className = "form-row";
@@ -323,18 +358,14 @@ function createSecurityForm(): HTMLDivElement {
   formContainer.addEventListener("input", (event) => {
     event.preventDefault();
     validationSecuritySave(
-      // oldPasswordInput,
       newPasswordInput,
       confirmPasswordInput,
-      // oldPasswordError,
       newPasswordError,
       confirmPasswordError,
     );
   });
 
   formContainer.append(
-    // oldPasswordRow,
-    // oldPasswordError,
     newPasswordRow,
     newPasswordError,
     confirmPasswordRow,
@@ -344,10 +375,8 @@ function createSecurityForm(): HTMLDivElement {
   const password: any = newPasswordInput;
   saveButton.addEventListener("click", async () => {
     validationSecuritySave(
-      // oldPasswordInput,
       newPasswordInput,
       confirmPasswordInput,
-      // oldPasswordError,
       newPasswordError,
       confirmPasswordError,
     );
@@ -369,10 +398,8 @@ function createSecurityForm(): HTMLDivElement {
           newPasswordInput.value = "";
           confirmPasswordInput.value = "";
           validationSecuritySave(
-            // oldPasswordInput,
             newPasswordInput,
             confirmPasswordInput,
-            // oldPasswordError,
             newPasswordError,
             confirmPasswordError,
           );
@@ -404,16 +431,19 @@ function createSecurityForm(): HTMLDivElement {
   });
   return formContainer;
 }
-
+/**
+ * Валидация окна с безопасностью
+ * @param newPasswordInput Новый пароль
+ * @param confirmPasswordInput ПОдверждение пароля
+ * @param newPasswordError Ошибка для нового пароля
+ * @param confirmPasswordError Ошибка для подтвержденного пароля
+ */
 function validationSecuritySave(
-  // oldPasswordInput: HTMLInputElement,
   newPasswordInput: HTMLInputElement,
   confirmPasswordInput: HTMLInputElement,
-  // oldPasswordError: HTMLDivElement,
   newPasswordError: HTMLDivElement,
   confirmPasswordError: HTMLDivElement,
 ): void {
-  // oldPasswordError.textContent = "";
   newPasswordError.textContent = "";
   confirmPasswordError.textContent = "";
 
@@ -426,14 +456,25 @@ function validationSecuritySave(
     confirmPasswordError,
   );
 }
-
+/**
+ * Функция создания лейбла
+ * @param text Текст
+ * @param htmlFor Значение
+ * @returns 
+ */
 function createLabel(text: string, htmlFor: string): HTMLLabelElement {
   const label = document.createElement("label");
   label.setAttribute("for", htmlFor);
   label.textContent = text;
   return label;
 }
-
+/**
+ * Функция создания инпута
+ * @param type Тип
+ * @param id Айди
+ * @param initialtext Изначальный текст
+ * @returns 
+ */
 function createInput(
   type: string,
   id: string,
@@ -445,6 +486,10 @@ function createInput(
   input.value = initialtext;
   return input;
 }
+/**
+ * Функция рендера кнопки "СТАТЬ АВТОРОМ"
+ * @returns 
+ */
 async function createButtonSetAuthor() {
   const button: any = document.createElement("button");
   button.classList.add("become-author-button");
@@ -466,7 +511,10 @@ async function createButtonSetAuthor() {
   button.addEventListener("click", handleClick);
   return button;
 }
-
+/**
+ * Создания аватара
+ * @returns 
+ */
 async function createPhoto(): Promise<any> {
   const avatar: any = await getAvatar("/profile");
   const profilePicDiv = document.createElement("form");
@@ -512,10 +560,10 @@ async function createPhoto(): Promise<any> {
             successMessage.style.color = "green";
             successMessage.style.marginTop = "10px";
             successMessage.style.fontWeight = "bold";
-    
+
             // Добавляем сообщение в профильный div
             profilePicDiv.appendChild(successMessage);
-    
+
             // Убираем сообщение через несколько секунд
             setTimeout(() => {
               successMessage.remove();
@@ -535,7 +583,7 @@ async function createPhoto(): Promise<any> {
               }, 3000); // Удаляем сообщение через 3 секунды
             }
           }
-        } catch(error) {
+        } catch (error) {
           console.error("Ошибка при загрузке фонового изображения:", error);
         }
       };
@@ -543,30 +591,28 @@ async function createPhoto(): Promise<any> {
     }
   });
 
-  // const submit = document.createElement("button");
-  // submit.type = "submit";
-  // submit.textContent = "Загрузить";
+  // Проверка наличия файла в FormData
 
-  // Добавляем обработчик события для формы
-  // profilePicDiv.addEventListener("submit", async (e: any) => {
-  //   e.preventDefault();
-
-
-    // Проверка наличия файла в FormData
-   
   profilePicDiv.appendChild(profilePic);
   profilePicDiv.appendChild(profilePicInput);
   profilePicDiv.appendChild(uploadButton);
 
   return profilePicDiv;
 }
-
+/**
+ * Создание сообщения об ошибке
+ * @returns 
+ */
 function createErrorMessage(): HTMLDivElement {
   const errorMessage = document.createElement("div");
   errorMessage.className = "error-message";
   errorMessage.style.color = "red";
   return errorMessage;
 }
+/**
+ * Создание длины ошибок
+ * @returns 
+ */
 function createErrorMessageStrength(): HTMLDivElement {
   const errorMessage = document.createElement("div");
   errorMessage.className = "password-strength";

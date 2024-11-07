@@ -1,4 +1,4 @@
-import { ELEMENTS_CLASS, LINKS, LOCATIONS, QUERY, state } from "../../consts";
+import { ELEMENTS_CLASS, LINKS, QUERY, state } from "../../consts";
 import { fetchAjax } from "../../utils/fetchAjax";
 import { removeItemLocalStorage } from "../../utils/storages";
 import { route } from "../../utils/routing";
@@ -22,6 +22,13 @@ import { AddLikeOnPost, modifierSidebar } from "../feed/feed";
 import DOMPurify from "dompurify";
 import { convertISOToRussianDate } from "../../utils/parsedate";
 
+/**
+ * Получаем посты пользователя через объект типа промис
+ * @param link Ссылка на страницу
+ * @param offset Оффсет
+ * @param limit Лимит
+ * @returns 
+ */
 export async function getUserPosts(
   link: string,
   offset: number,
@@ -50,6 +57,13 @@ export async function getUserPosts(
     );
   });
 }
+/**
+ * Добавляем пост через объект типа промис
+ * @param containerCreatePost Контейнер добавления
+ * @param title Заголовок
+ * @param content Содержание
+ * @returns 
+ */
 async function addUserPost(
   containerCreatePost: any,
   title: string,
@@ -110,6 +124,11 @@ export async function getPageAuthor(link: string) {
     );
   });
 }
+/**
+ * Получение выплат через объект типа промис
+ * @param link Ссылка на страницу
+ * @returns 
+ */
 async function getPayments(link: string) {
   return new Promise((resolve, reject) => {
     if (link !== "/profile") {
@@ -129,6 +148,12 @@ async function getPayments(link: string) {
     });
   });
 }
+/**
+ * Функция получения аватара через объект типа промис
+ * @param link Ссылка на страницу
+ * @param authorID Автор айди
+ * @returns 
+ */
 export async function getAvatar(link: string, authorID: any = null) {
   return new Promise((resolve, reject) => {
     fetchAjax(
@@ -154,6 +179,12 @@ export async function getAvatar(link: string, authorID: any = null) {
     );
   });
 }
+/**
+ * Получение фона на странице автора через объект типа промис
+ * @param link Ссылка на страницу
+ * @param authorID Автор айди
+ * @returns 
+ */
 export async function getBackgroundAuthor(link: string, authorID: any) {
   return new Promise((resolve, reject) => {
     fetchAjax(
@@ -183,7 +214,6 @@ export async function getBackgroundAuthor(link: string, authorID: any) {
  * @param {*} Item Ключ, по которому необходимо стереть локальные и сессионные данные
  * @returns
  */
-
 export function renderLogoutButton() {
   const logout: VNode = createElement(
     "div",
@@ -196,6 +226,14 @@ export function renderLogoutButton() {
   );
   return logout;
 }
+/**
+ * Функция изменения поста через объект типа промис
+ * @param modalEdit Модальное окно редактирования
+ * @param postIdEdit Айди редактируемого поста
+ * @param titleEdit Заголовок редактирования
+ * @param contentEdit Контент редактирования
+ * @returns 
+ */
 async function editPost(
   modalEdit: any,
   postIdEdit: any,
@@ -229,6 +267,11 @@ async function editPost(
     );
   });
 }
+/**
+ * Функция удаления поста через объект типа промис
+ * @param postId Айди поста
+ * @returns 
+ */
 async function deletePost(postId: any) {
   return new Promise((resolve, reject) => {
     fetchAjax(
@@ -247,6 +290,11 @@ async function deletePost(postId: any) {
     );
   });
 }
+/**
+ * Функция рендера постов
+ * @param authorPosts Массив постов у текущего юзера
+ * @returns 
+ */
 function renderPosts(authorPosts: any[]) {
   var posts: any = [];
   authorPosts.forEach(async (post: any) => {
@@ -255,14 +303,22 @@ function renderPosts(authorPosts: any[]) {
   });
   return posts;
 }
-async function modifireMorePostProfile(containerPosts: any, posts: any, postId: any = null) {
+/**
+ * Функция модифицирования каждого поста
+ * @param containerPosts Контейнер с постами
+ * @param posts Посты
+ * @param postId Пост айди. Нужен для создания поста
+ * @returns 
+ */
+async function modifireMyPosts(
+  containerPosts: any,
+  posts: any,
+  postId: any = null,
+) {
   try {
     // Обработка популярных постов
     if (posts.length > 1) {
-      alert("ALO")
-      const containersPost = containerPosts.querySelectorAll(
-        `.posts`,
-      );
+      const containersPost = containerPosts.querySelectorAll(`.posts`);
 
       // Используем Promise.all для обработки популярных постов параллельно
       await Promise.all(
@@ -272,55 +328,78 @@ async function modifireMorePostProfile(containerPosts: any, posts: any, postId: 
             return customizePostProfile(
               container,
               posts[posts.length - 1 - index],
-              postId
+              postId,
             );
           }),
       );
       return;
     }
-    alert("ALO2")
-    console.log(posts.postId)
-    const containersPost = containerPosts.querySelectorAll(
-      `.posts`,
-    );
-    return customizePostProfile(
-      containersPost[0],
-      posts[0],
-      postId
-    );
+    const containersPost = containerPosts.querySelectorAll(`.posts`);
+    return customizePostProfile(containersPost[0], posts[0], postId);
   } catch (error) {
     console.log("ERROR");
     throw error;
   }
 }
+/**
+ * Установка заголовка поста
+ * @param container Контейнер, в котором нужно установить заголовок поста
+ * @param post Пост
+ */
 function setTitle(container: any, post: any) {
   const title: any = container.querySelector(`.${ELEMENTS_CLASS.POST.TITLE}`);
   title.textContent = post.title;
 }
+/**
+ * Установка содержимого поста
+ * @param container Контейнер, в котором нужно установить содержимое поста
+ * @param post Пост
+ */
 function setContent(container: any, post: any) {
   const content: any = container.querySelector(
     `.${ELEMENTS_CLASS.POST.CONTENT}`,
   );
   content.textContent = post.content;
 }
+/**
+ * Установка даты поста
+ * @param container Контейнер, в котором нужно установить дату поста
+ * @param post Пост
+ */
 function setDate(container: any, post: any) {
   const date: any = container.querySelector(`.${ELEMENTS_CLASS.POST.DATE}`);
   date.textContent = convertISOToRussianDate(post.createdAt);
 }
-async function setDeletePost(dropdownmenu: any, profileForm: any, container: any, post: any) {
+/**
+ * Модифицирование модального окна удаления поста
+ * @param dropdownmenu Меню всплытия
+ * @param profileForm Форма профиля
+ * @param container Контейнер поста
+ * @param post Пост
+ */
+async function modifierModalDeletePost(
+  dropdownmenu: any,
+  profileForm: any,
+  container: any,
+  post: any,
+) {
   dropdownmenu.classList.remove(ELEMENTS_CLASS.ACTIVE);
-  const afteruserPosts: any = await getUserPosts(window.location.pathname, 0, 300);
-  const foundPost = afteruserPosts.find((afteruserpost: any) => afteruserpost.postId === post.postId);
+  const afteruserPosts: any = await getUserPosts(
+    window.location.pathname,
+    0,
+    300,
+  );
+  const foundPost = afteruserPosts.find(
+    (afteruserpost: any) => afteruserpost.postId === post.postId,
+  );
 
   renderDeletePost(foundPost);
   const modalsDelete: any = document.querySelector(".modal__deletepost");
   const buttonCancel: any = modalsDelete.querySelector(`.cancel`);
   const buttonConfirm: any = modalsDelete.querySelector(`.delete`);
 
-  const contentDelete: any = document.querySelector(
-    ".textarea-group-delete",
-  );
-  
+  const contentDelete: any = document.querySelector(".textarea-group-delete");
+
   contentDelete.textContent = `Вы действительно хотите удалить пост "${foundPost.title}" ?`;
   modalsDelete.style.display = "block";
   profileForm.classList.add("blur");
@@ -340,17 +419,34 @@ async function setDeletePost(dropdownmenu: any, profileForm: any, container: any
     return;
   });
 }
-async function setEditPost(dropdownmenu: any,profileForm: any,title: any, content: any, postbefore: any, postId: any = null) {
-
-  const alluserpost: any = await getUserPosts(window.location.pathname, 0, 300)
-  let post = alluserpost.find((userpost: any) => userpost.postId === postbefore.postId);
+/**
+ * Модифицрования модального окна редактирования поста
+ * @param dropdownmenu Меню всплытия
+ * @param profileForm Форма профиля
+ * @param title Заголовок
+ * @param content Содержимое
+ * @param postbefore Предыдущий пост (если изменим содержимое постов профиля)
+ * @param postId Айди поста (после создания)
+ */
+async function modifierModalEditPost(
+  dropdownmenu: any,
+  profileForm: any,
+  title: any,
+  content: any,
+  postbefore: any,
+  postId: any = null,
+) {
+  const alluserpost: any = await getUserPosts(window.location.pathname, 0, 300);
+  let post = alluserpost.find(
+    (userpost: any) => userpost.postId === postbefore.postId,
+  );
 
   if (postId) {
     post = alluserpost[0];
-    alert("sss")
+    alert("sss");
   }
-console.log(post)
-  console.log(post)
+  console.log(post);
+  console.log(post);
   dropdownmenu.classList.remove(ELEMENTS_CLASS.ACTIVE);
 
   renderEditPost(post);
@@ -359,12 +455,9 @@ console.log(post)
   const buttonCancel: any = modalsEdit.querySelector(`.cancel`);
   const buttonConfirm: any = modalsEdit.querySelector(`.save`);
 
-  // const modalsDelete: any = document.querySelector(".modal__deletepost");
 
   const edittitle: any = document.querySelector(".input-group");
   const editcontent: any = document.querySelector(".textarea-group");
-  // edittitle.textContent = post.title;
-  // editcontent.textContent = post.content;
 
   modalsEdit.style.display = "block";
   profileForm.classList.add("blur");
@@ -372,16 +465,18 @@ console.log(post)
   buttonCancel.addEventListener("click", () => {
     modalsEdit.style.display = "none";
     profileForm.classList.remove("blur");
-    
+
     return;
   });
 
   buttonConfirm.addEventListener("click", async () => {
     modalsEdit.style.display = "none";
     profileForm.classList.remove("blur");
-    
 
-    if (!DOMPurify.sanitize(edittitle.value) || !DOMPurify.sanitize(editcontent.value)) {
+    if (
+      !DOMPurify.sanitize(edittitle.value) ||
+      !DOMPurify.sanitize(editcontent.value)
+    ) {
       const input = modalsEdit.querySelector(`.form-group`);
       const error = input.querySelector("p");
       if (!error) {
@@ -392,7 +487,6 @@ console.log(post)
       }
       return;
     }
-    alert(edittitle.value)
     await editPost(
       modalsEdit,
       postId ? postId : post.postId,
@@ -400,20 +494,33 @@ console.log(post)
       DOMPurify.sanitize(editcontent.value),
     );
 
-    const afteruserPosts: any = await getUserPosts(window.location.pathname, 0, 300);
-    const foundPost = afteruserPosts.find((afteruserpost: any) => afteruserpost.postId === post.postId);
+    const afteruserPosts: any = await getUserPosts(
+      window.location.pathname,
+      0,
+      300,
+    );
+    const foundPost = afteruserPosts.find(
+      (afteruserpost: any) => afteruserpost.postId === post.postId,
+    );
     title.textContent = foundPost.title;
     content.textContent = foundPost.content;
 
     if (postId) {
-      const foundPostPostid = afteruserPosts.find((afteruserpost: any) => afteruserpost.postId === postId);
+      const foundPostPostid = afteruserPosts.find(
+        (afteruserpost: any) => afteruserpost.postId === postId,
+      );
       title.textContent = foundPostPostid.title;
       content.textContent = foundPostPostid.content;
     }
 
     return;
-  })
+  });
 }
+/**
+ * Установка взаимодействия с лайком у поста
+ * @param container Контейнер поста
+ * @param post Пост
+ */
 function setLike(container: any, post: any) {
   const divLikes: any = container.querySelector(`.likes-container`);
   if (divLikes) {
@@ -451,15 +558,20 @@ function setLike(container: any, post: any) {
     });
   }
 }
+/**
+ * Кастомизация одного поста профиля
+ * @param container Контейнер поста
+ * @param post Пост
+ * @param postId Айди поста
+ */
 function customizePostProfile(container: any, post: any, postId: any = null) {
+  setTitle(container, post);
 
-  setTitle(container, post)
+  setContent(container, post);
 
-  setContent(container, post)
+  setDate(container, post);
 
-  setDate(container, post)
-
-  setLike(container, post)
+  setLike(container, post);
 
   const menu = container.querySelector(`.menu-icon`);
   const alldropdownMenu = document.querySelectorAll(`.dropdown-menu`);
@@ -468,16 +580,15 @@ function customizePostProfile(container: any, post: any, postId: any = null) {
   const title = container.querySelector(`.title`);
   const content = container.querySelector(`.content`);
   const place = document.querySelector(`.place-posts`);
-
+  if (!menu) return;
   menu.addEventListener("click", async (event: any) => {
-
     if (event.target.classList.contains("button-edit-post")) {
-      setEditPost(dropdownmenu, profileForm, title, content, post, postId);
-      return; 
+      modifierModalEditPost(dropdownmenu, profileForm, title, content, post, postId);
+      return;
     }
 
     if (event.target.classList.contains("button-delete-post")) {
-      setDeletePost(dropdownmenu, profileForm, container, post)
+      modifierModalDeletePost(dropdownmenu, profileForm, container, post);
       return;
     }
 
@@ -486,14 +597,16 @@ function customizePostProfile(container: any, post: any, postId: any = null) {
     const isActive = dropdownmenu.classList.contains(ELEMENTS_CLASS.ACTIVE);
 
     alldropdownMenu.forEach((dropdown: any, dropdownIndex: number) => {
-        dropdown.classList.remove(ELEMENTS_CLASS.ACTIVE);
+      dropdown.classList.remove(ELEMENTS_CLASS.ACTIVE);
     });
     if (!isActive) {
       dropdownmenu.classList.toggle(ELEMENTS_CLASS.ACTIVE);
     }
-  })
+  });
 }
-
+/**
+ * Загрузка бекграунда
+ */
 function handleImageUpload() {
   const button: any = document.querySelector(`.image-upload-label`);
   const profilePicInput: any = document.querySelector(`.image-upload-input`);
@@ -530,6 +643,11 @@ function handleImageUpload() {
     profilePicInput.click(); // Программно вызываем клик на input
   });
 }
+/**
+ * Сохранения бекграунда после загрузки
+ * @param background Файл картинка
+ * @returns 
+ */
 async function saveBackground(background: FormData) {
   return new Promise((resolve, reject) => {
     fetchAjax(
@@ -549,7 +667,7 @@ async function saveBackground(background: FormData) {
   });
 }
 /**
- * Обновление бекграунда
+ * Загрузка бекграунда с мобильного приложения
  */
 function handleImageUploadMobile() {
   const profilePicInput: any = document.querySelector(
@@ -589,6 +707,10 @@ function handleImageUploadMobile() {
     buttonUpload.click(); // Программно вызываем клик на input
   });
 }
+/**
+ * Взаимодействие с бекграундом
+ * @param container Контейнер профиля
+ */
 function controlMediaProfile(container: any) {
   if (window.location.pathname === "/profile") {
     window.innerWidth <= 1024 ? handleImageUploadMobile() : handleImageUpload();
@@ -625,7 +747,10 @@ function controlMediaProfile(container: any) {
     });
   }
 }
-
+/**
+ * Управления адаптивностью профиля
+ * @param container Контейнер профиля
+ */
 async function controlAdaptiveProfile(container: any) {
   const buttonMobileAbout: any = document.querySelector(
     ".about-mobile__button",
@@ -635,18 +760,22 @@ async function controlAdaptiveProfile(container: any) {
   const feedProfile: any = container.querySelector(".feed-profile");
   const aboutProfile: any = container.querySelector(".place-edit-info");
   const data: any = await getPageAuthor(window.location.pathname);
+  
+  /**
+   * Функция показа ленты в профиле
+   */
   function showFeedProfile() {
     buttonMobileAbout.classList.remove(ELEMENTS_CLASS.ACTIVE);
     buttonMobilePosts.classList.add(ELEMENTS_CLASS.ACTIVE);
     aboutProfile.classList.add("hidden");
-    // if (data && !data.isSubscribe) {
-    //   return;
-    // }
     if (feedProfile) {
       feedProfile.classList.remove("hidden");
     }
   }
-
+  
+  /**
+   * Функция показа контейнера "ПРОФИЛЬ"
+   */
   function showAboutProfile() {
     aboutProfile.classList.remove("hidden");
     if (feedProfile) {
@@ -676,6 +805,11 @@ async function controlAdaptiveProfile(container: any) {
     });
   }
 }
+/**
+ * Управления кнопкой выйти
+ * @param container Контейнер основной
+ * @param authorData Информация об авторе
+ */
 export function controlLogout(container: any, authorData: any) {
   const logoutbutton = container.querySelector(
     `.${ELEMENTS_CLASS.LOGOUT.BLOCK}`,
@@ -686,6 +820,12 @@ export function controlLogout(container: any, authorData: any) {
     route(LINKS.HOME.HREF);
   });
 }
+/**
+ * Функция отправки пожертвования
+ * @param authorId 
+ * @param body 
+ * @returns 
+ */
 async function sendTip(authorId: any, body: any) {
   return new Promise((resolve, reject) => {
     fetchAjax(
@@ -705,6 +845,12 @@ async function sendTip(authorId: any, body: any) {
     );
   });
 }
+/**
+ * Управление адаптивностью на странице автора
+ * @param authorData Данные автора
+ * @param container Контейнер основной
+ * @param profileForm Форма профиля
+ */
 async function controlAdaptivePageAuthors(
   authorData: any,
   container: any,
@@ -716,7 +862,6 @@ async function controlAdaptivePageAuthors(
     );
     buttonCreatePost.forEach((button: any) => {
       button.addEventListener("click", () => {
-
         renderCreatePost();
         const containerCreatePost =
           container.querySelector(".modal__createpost");
@@ -727,7 +872,7 @@ async function controlAdaptivePageAuthors(
         const buttonSave: any = containerCreatePost.querySelector(
           `.${ELEMENTS_CLASS.SEND_TIP.BLOCK}`,
         );
-        
+
         containerCreatePost.style.display = "block";
         profileForm.classList.add("blur");
 
@@ -764,24 +909,22 @@ async function controlAdaptivePageAuthors(
           containerCreatePost.style.display = "none";
           profileForm.classList.remove("blur");
 
-          const newposts: any = await getUserPosts(window.location.pathname, 0, 300);
-          console.log(newposts)
-          const place: any = profileForm.querySelector(".place-posts");
-            place.prepend(
-              ...(await renderPosts(newposts.slice(0,1))),
-            );
-          modifireMorePostProfile(
-            place,
-            newposts.slice(0,1),
-            post.postId
+          const newposts: any = await getUserPosts(
+            window.location.pathname,
+            0,
+            300,
           );
+          console.log(newposts);
+          const place: any = profileForm.querySelector(".place-posts");
+          place.prepend(...(await renderPosts(newposts.slice(0, 1))));
+          modifireMyPosts(place, newposts.slice(0, 1), post.postId);
 
           const placeStats: any = document.querySelector(`.stats`);
           const payments: any = await getPayments(window.location.pathname);
 
           const arrayStats: VNode = await renderUserStats(authorData, payments);
           update(placeStats, arrayStats);
-          console.log(arrayStats)
+          console.log(arrayStats);
         });
       });
     });
@@ -832,7 +975,6 @@ async function controlAdaptivePageAuthors(
         const feedProfile: any = document.querySelector(`.place-posts`);
         feedProfile.style.display = "block";
         buttonSubs.textContent = "Подписаны";
-        buttonSubs.style.background = "gray"
       } else {
         const feedProfile: any = document.querySelector(`.place-posts`);
         feedProfile.style.display = "none";
@@ -841,6 +983,11 @@ async function controlAdaptivePageAuthors(
     });
   }
 }
+/**
+ * Функция подписки
+ * @param authorId Автор айди
+ * @returns 
+ */
 async function following(authorId: any) {
   return new Promise((resolve, reject) => {
     fetchAjax(
@@ -859,6 +1006,14 @@ async function following(authorId: any) {
     );
   });
 }
+/**
+ * Рендер формы профиля
+ * @param authorData Данные об авторе
+ * @param avatar Аватар
+ * @param background Бекграунд
+ * @param payments Выплаты
+ * @returns 
+ */
 async function renderProfileForm(
   authorData: any,
   avatar: any,
@@ -902,6 +1057,11 @@ async function renderProfileForm(
     ]),
   ]);
 }
+/**
+ * Изменение информации "О СЕБЕ"
+ * @param info Информация
+ * @returns 
+ */
 async function setInfo(info: any) {
   return new Promise((resolve, reject) => {
     fetchAjax(
@@ -921,6 +1081,12 @@ async function setInfo(info: any) {
     );
   });
 }
+/**
+ * УПравление информацией "О СЕБЕ"
+ * @param authorData Данные об авторе
+ * @param container Контейнер "О СЕБЕ"
+ * @returns 
+ */
 function controlInfo(authorData: any, container: any) {
   if (window.location.pathname !== "/profile") {
     return 0;
@@ -958,6 +1124,11 @@ function controlInfo(authorData: any, container: any) {
     }
   });
 }
+/**
+ * Функция пагинации на странице автора
+ * @param allPosts Все посты
+ * @param containerPosts Контейнер с постами
+ */
 async function paginateProfile(allPosts: any, containerPosts: any) {
   let stopLoad: boolean = false;
   let offset = 0;
@@ -967,7 +1138,10 @@ async function paginateProfile(allPosts: any, containerPosts: any) {
     popular: [],
     recently: [],
   };
-
+  /**
+   * Загрузка постов в профиле
+   * @returns 
+   */
   async function loadProfilePost() {
     if (isLoading) return; // Если загрузка уже идет, выходим из функции
     isLoading = true; // Устанавливаем флаг загрузки
@@ -977,18 +1151,13 @@ async function paginateProfile(allPosts: any, containerPosts: any) {
         // Загружаем популярные посты
         const posts: any = await getUserPosts(window.location.pathname, offset);
         const nextPosts = posts.slice(0, QUERY.LIMIT);
-        console.log(posts)
+        console.log(posts);
         if (nextPosts.length > 0) {
           allPosts.push(...nextPosts);
           offset += QUERY.LIMIT;
 
-          containerPosts.append(
-            ...(await renderPosts(nextPosts)),
-          );
-          modifireMorePostProfile(
-            containerPosts,
-            nextPosts.reverse(),
-          );
+          containerPosts.append(...(await renderPosts(nextPosts)));
+          modifireMyPosts(containerPosts, nextPosts.reverse());
           cache.popular.push(...nextPosts);
         } else {
           stopLoad = true;
@@ -1012,7 +1181,15 @@ async function paginateProfile(allPosts: any, containerPosts: any) {
     }
   });
 }
-
+/**
+ * Рендер основного контента
+ * @param authorData Данные об авторе
+ * @param avatar Аватар
+ * @param background Бекграунд
+ * @param userdata Данные о пользователе
+ * @param payments Выплаты
+ * @returns 
+ */
 async function renderMainContent(
   authorData: any,
   avatar: any,
@@ -1096,11 +1273,8 @@ export async function renderProfile() {
 
     const placeposts: any = container.querySelector(`.place-posts`);
 
-    await paginateProfile(
-      posts,
-      placeposts,
-    );
-    
+    await paginateProfile(posts, placeposts);
+
     return container;
   } catch (error) {
     console.log("ERROR");

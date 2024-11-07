@@ -11,7 +11,6 @@ import { renderNotifications } from "./pages/notifications/notifications";
 import { renderSettings } from "./pages/settings/settingsView";
 import { VirtualDOM } from "./lib/vdom/src/source";
 import { render } from "./lib/vdom/lib";
-import { renderSubscriptions } from "./pages/subscriptions/subscriptions";
 
 /**
  * Объект, содержащий конфигурацию меню приложения.
@@ -97,37 +96,6 @@ const state2: State = {
   activePageLink: null,
 };
 
-// export function setupScrollPositionHandlers() {
-//   document.addEventListener("DOMContentLoaded", () => {
-//     const saveScrollPosition = () => {
-//       const scrollPosition: any = window.scrollY;
-//       sessionStorage.setItem("scrollPosition", scrollPosition);
-//     };
-
-//     // Сохраняем позицию прокрутки при прокрутке
-//     window.addEventListener("scroll", saveScrollPosition);
-
-//     // Восстанавливаем позицию прокрутки при загрузке страницы
-//     window.addEventListener("load", () => {
-//       const savedScrollPosition = sessionStorage.getItem("scrollPosition");
-//       if (savedScrollPosition) {
-//         window.scrollTo(0, parseInt(savedScrollPosition, 10));
-//       }
-//     });
-
-//     // Сохраняем позицию прокрутки перед выгрузкой страницы
-//     window.addEventListener("beforeunload", saveScrollPosition);
-
-//     // Обработка события popstate для навигации
-//     window.addEventListener("popstate", () => {
-//       const savedScrollPosition = sessionStorage.getItem("scrollPosition");
-//       if (savedScrollPosition) {
-//         window.scrollTo(0, parseInt(savedScrollPosition, 10));
-//       }
-//     });
-//   });
-//   return true;
-// }
 export function setupScrollPositionHandlers() {
   document.addEventListener("DOMContentLoaded", () => {
     const saveScrollPosition = () => {
@@ -178,11 +146,6 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
 
   const renderPromise = Promise.resolve(routeConfig.render());
   renderPromise
-    .then((newPageElement) => {
-      // if (newPageElement) {
-      //   pageContainer.appendChild(newPageElement);
-      // }
-    })
     .catch((error) => {
       console.error("ERROR:", error);
     });

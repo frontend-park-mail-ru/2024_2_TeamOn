@@ -1,3 +1,52 @@
+
+/**
+ * Ручки для получения токена CSRF
+ */
+const tokenEndpoints: any = {
+  auth: "/api/auth/token-endpoint",
+  accounts: "/api/accounts/token-endpoint",
+  danya: "/api/danya/token-endpoint",
+  posts: "/api/posts/token-endpoint",
+};
+/**
+ * Функция получения токена к сервису "посты"
+ * @returns 
+ */
+async function getCSRFTokenForPosts() {
+  const response = await fetch("/api/posts/token-endpoint");
+  const data = await response.json();
+  return data;
+}
+
+/**
+ * Функция получения токена к сервису "логина и регистрации"
+ * @returns 
+ */
+async function getCSRFTokenForAuth() {
+  const response = await fetch("/api/auth/token-endpoint");
+  const data = await response.json();
+  return data;
+}
+
+/**
+ * Функция получения токена к сервису "аккаунт"
+ * @returns 
+ */
+async function getCSRFTokenForAccounts() {
+  const response = await fetch("/api/accounts/token-endpoint");
+  const data = await response.json();
+  return data;
+}
+
+/**
+ * Функция получения токена к сервису "автор"
+ * @returns 
+ */
+async function getCSRFTokenForAuthor() {
+  const response = await fetch("/api/danya/token-endpoint");
+  const data = await response.json();
+  return data;
+}
 /**
  * Отправляет запрос AJAX с помощью Fetch API с включенным CORS.
  * @param {*} method    HTTP-метод
@@ -10,35 +59,6 @@
 со значением application/json; charset=utf-8, если предоставлено тело запроса.
 Опция mode установлена в cors, чтобы включить CORS.
  */
-const tokenEndpoints: any = {
-  auth: "/api/auth/token-endpoint",
-  accounts: "/api/accounts/token-endpoint",
-  danya: "/api/danya/token-endpoint",
-  posts: "/api/posts/token-endpoint",
-};
-async function getCSRFTokenForPosts() {
-  const response = await fetch("/api/posts/token-endpoint");
-  const data = await response.json();
-  return data;
-}
-
-async function getCSRFTokenForAuth() {
-  const response = await fetch("/api/auth/token-endpoint");
-  const data = await response.json();
-  return data;
-}
-
-async function getCSRFTokenForAccounts() {
-  const response = await fetch("/api/accounts/token-endpoint");
-  const data = await response.json();
-  return data;
-}
-
-async function getCSRFTokenForAuthor() {
-  const response = await fetch("/api/danya/token-endpoint");
-  const data = await response.json();
-  return data;
-}
 export async function fetchAjax(
   method: any,
   url: any,
