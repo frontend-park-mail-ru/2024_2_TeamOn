@@ -155,6 +155,5 @@ async function createContainerPost(post: any, mediaContent: any[]) {
   );
   update(container, vdom);
   return container;
-  // return vdom;
 }
 export { renderSidebar, createContainerPost };

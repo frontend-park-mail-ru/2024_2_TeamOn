@@ -7,6 +7,7 @@ import { getPageAuthor, getUserPosts } from "./profile";
 import { convertISOToRussianDate } from "../../utils/parsedate";
 
 function renderUserPosts(post: any) {
+  const container: any = document.createElement("div");
   // const userdata: any = await getPageAuthor(window.location.pathname);
   const vdom: VNode = createElement("div", { class: "posts" }, [
     createElement("div", { class: ELEMENTS_CLASS.POST.PROFILE.BLOCK }, [
@@ -52,8 +53,8 @@ function renderUserPosts(post: any) {
       ]),
     ]),
   ]);
-  // update(container, vdom)
-  return vdom;
+  update(container, vdom)
+  return container;
 }
 
 /**
@@ -219,7 +220,7 @@ export function renderCreatePost() {
   ]);
   const container = document.querySelector(`.div-create-post`);
   update(container, vdom);
-  // return vdom;
+  return container;
 }
 function renderAbout(authorData: any, isEdit = false, newValue?: any) {
   const container: any = document.querySelector(`.place-edit-info`);

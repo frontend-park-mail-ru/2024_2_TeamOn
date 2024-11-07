@@ -127,7 +127,6 @@ function renderPopularPosts(popularPosts: any) {
     const container: any = await createContainerPost(post, []);
     posts.push(container);
   });
-  console.log(posts);
   return posts;
 }
 /**
