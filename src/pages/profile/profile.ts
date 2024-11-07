@@ -254,78 +254,6 @@ function renderPosts(authorPosts: any[]) {
   });
   return posts;
 }
-function modifireOnePost(body: any, post: any) {
-  document.body.addEventListener("click", () => {
-    body.dropdownmenu.classList.remove(ELEMENTS_CLASS.ACTIVE);
-  });
-  post.isLiked
-    ? body.like.classList.add("active")
-    : body.like.classList.remove("active");
-
-  body.like.addEventListener("click", async () => {
-    const likeCount: any = await AddLikeOnPost(post.postId);
-    body.like.classList.toggle("active");
-    body.amounlike.innerHTML = `${post.likes}`;
-  });
-
-  function handleClick(event: any) {
-    event.stopPropagation();
-    event.target.removeEventListener("click", handleClick);
-    body.dropdownmenu.classList.toggle(ELEMENTS_CLASS.ACTIVE);
-  }
-
-  body.menu.addEventListener("click", handleClick);
-
-  renderDeletePost(post);
-  renderEditPost(post);
-
-  const modalsEdit: any = document.querySelector(".modal__editpost");
-  const modalsDelete: any = document.querySelector(".modal__deletepost");
-
-  const resetModalStates = (event: any = null) => {
-    modalsEdit.style.display = "none";
-    modalsDelete.style.display = "none";
-    // containers.classList.remove("blur");
-    event.target.removeEventListener("click", handleClick);
-  };
-
-  const buttonEdit: any = document.querySelector(`.button-edit-post`);
-  const buttonSave: any = document.querySelector(
-    `.${ELEMENTS_CLASS.SAVE.BLOCK}`,
-  );
-
-  const buttonDelete: any = document.querySelector(`.button-delete-post`);
-  const title: any = document.querySelector(".input-group");
-  const content: any = document.querySelector(".textarea-group");
-
-  function handleClickEdit(event: any) {
-    event.stopPropagation();
-    event.target.removeEventListener("click", handleClickEdit);
-    body.dropdown.classList.remove(ELEMENTS_CLASS.ACTIVE);
-
-    title.textContent = post.title;
-    content.value = post.content;
-    modalsEdit.style.display = "block";
-  }
-  modalsEdit.addEventListener("click", handleClickEdit);
-
-  async function handleClickSave(event: any) {
-    event.stopPropagation();
-    event.target.removeEventListener("click", handleClickSave);
-
-    await editPost(
-      modalsEdit,
-      post.postId,
-      DOMPurify.sanitize(title.value),
-      DOMPurify.sanitize(content.value),
-    );
-    resetModalStates();
-    // const postsUser: any = await getUserPosts(window.location.pathname,0);
-    return;
-  }
-
-  buttonSave.addEventListener("click", handleClickSave);
-}
 function modifirePosts(containers: any, posts: any[], offset: any) {
   const dropdownMenu = containers.querySelectorAll(`.dropdown-menu`);
 
@@ -1052,7 +980,7 @@ export async function renderProfile() {
     );
     const menu: any = place.querySelectorAll(`.menu-icon`);
 
-    modifirePosts(place, authorPosts, offset);
+    modifirePosts(containerPosts, authorPosts, offset);
     offset += QUERY.LIMIT;
     allUserPosts.push(...authorPosts);
     // Обработчик события прокрутки
