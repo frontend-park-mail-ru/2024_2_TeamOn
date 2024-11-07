@@ -1,3 +1,4 @@
+import { Container } from "../../../node_modules/postcss/lib/postcss";
 import { ELEMENTS_CLASS, LINKS, state } from "../../consts";
 import { pageContainer } from "../../index";
 import { createElement, createText, update } from "../../lib/vdom/lib";
@@ -98,7 +99,7 @@ async function saveAvatar(avatar: FormData) {
         if (response.ok) {
           resolve(true);
         } else if (response.status === 400) {
-          route(LINKS.ERROR.HREF);
+          resolve(false);
         } else {
           reject(new Error("Внутреняя ошибка сервера"));
         }
@@ -174,6 +175,9 @@ async function createProfileForm(userdata: any): Promise<HTMLDivElement> {
   formTitle.textContent = "Персонализируйте свою страницу";
   formContainer.appendChild(formTitle);
 
+  const profilePicRow = createPhoto();
+  formContainer.appendChild(profilePicRow);
+
   const usernameRow = document.createElement("div");
   usernameRow.className = "form-row";
   const usernameLabel = createLabel("Имя пользователя", "username");
@@ -189,14 +193,12 @@ async function createProfileForm(userdata: any): Promise<HTMLDivElement> {
   const buttonSetAuthor = await createButtonSetAuthor();
   const emailError = createErrorMessage();
   emailRow.append(emailLabel, emailInput);
-  formContainer.append(emailRow, emailError, buttonSetAuthor);
-
-  const profilePicRow = createPhoto();
 
   const saveButton = document.createElement("button");
   saveButton.className = ELEMENTS_CLASS.SEND_TIP.COMBINE + " save-settings";
   saveButton.textContent = "Сохранить";
 
+  formContainer.append(emailRow, emailError, saveButton, buttonSetAuthor);
   const username: any = usernameInput;
   const email: any = emailInput;
   console.log(username);
@@ -205,7 +207,7 @@ async function createProfileForm(userdata: any): Promise<HTMLDivElement> {
       validationMainInfoSave(usernameInput.value, emailInput.value);
     usernameError.textContent = usernameErrorMsg || "";
     emailError.textContent = emailErrorMsg || "";
-    if (username.value || email.value) {
+    if (!usernameError.textContent && !emailError.textContent) {
       const ok: any = await saveSettings(username.value, email.value, "");
       ok.message
         ? (emailError.textContent = ok.message)
@@ -221,8 +223,14 @@ async function createProfileForm(userdata: any): Promise<HTMLDivElement> {
           successMessage.style.marginTop = "10px";
           successMessage.style.fontWeight = "bold";
           successMessage.className = "succcesful-title";
-          emailInput.value = user.email;
-          usernameInput.value = user.username;
+
+          user.email
+            ? (emailInput.value = user.email)
+            : (emailInput.value = "");
+          user.username
+            ? (usernameInput.value = user.username)
+            : (usernameInput.value = "");
+
           // Добавляем сообщение в профильный div
           formContainer.appendChild(successMessage);
           // Убираем сообщение через несколько секунд
@@ -259,7 +267,7 @@ async function createProfileForm(userdata: any): Promise<HTMLDivElement> {
     }
   });
 
-  formContainer.append(profilePicRow, saveButton);
+  // formContainer.append(profilePicRow);
   return formContainer;
 }
 
@@ -440,59 +448,26 @@ function createInput(
 async function createButtonSetAuthor() {
   const button: any = document.createElement("button");
   button.classList.add("become-author-button");
-  const text: any = document.createElement("h3");
-  text.textContent = "Стать автором";
-  button.appendChild(text);
+  button.textContent = "Стать автором";
   const userdata: any = await getAccount();
   const role = userdata.role;
+  const mainContainer: any = document.querySelector(`.main-content`);
   if (role !== "Reader") {
     button.classList.add("active");
-
     return button;
   }
   const handleClick = async () => {
     const setrole = await setAuthor();
     button.classList.add("active");
-
-    const vdom = createElement("a", { class: "referens" }, [
-      createElement("i", { class: "icon-profile" }, []),
-      createText(" Профиль"),
-    ]);
-    const navMenu: any = document.querySelector(`.section-profile`);
-
-    update(navMenu, vdom);
+    const profile: any = document.querySelector(`.profile`);
+    profile.style.display = "block";
     button.removeEventListener("click", handleClick);
   };
   button.addEventListener("click", handleClick);
   return button;
 }
 
-function createRoleSelect(): HTMLSelectElement {
-  const roleSelect = document.createElement("select");
-  roleSelect.id = "role";
-
-  const defaultOption = document.createElement("option");
-  defaultOption.value = "";
-  defaultOption.textContent = "Выберите роль";
-  defaultOption.disabled = true;
-  defaultOption.selected = true;
-  roleSelect.appendChild(defaultOption);
-
-  const roles = ["Автор", "Читатель"];
-  roles.forEach((role) => {
-    const option = document.createElement("option");
-    option.value = role.toLowerCase();
-    option.textContent = role;
-    roleSelect.appendChild(option);
-  });
-
-  return roleSelect;
-}
-function createPhoto(): HTMLDivElement {
-  const profilePicLabel = document.createElement("label");
-  profilePicLabel.setAttribute("for", "profile-pic");
-  profilePicLabel.textContent = "Фото профиля";
-
+function createPhoto(): any {
   const profilePicDiv = document.createElement("form");
   profilePicDiv.className = "profile-pic-container";
   profilePicDiv.enctype = "multipart/form-data";
@@ -531,7 +506,7 @@ function createPhoto(): HTMLDivElement {
 
   const submit = document.createElement("button");
   submit.type = "submit";
-  submit.textContent = "Сохранить";
+  submit.textContent = "Загрузить";
 
   // Добавляем обработчик события для формы
   profilePicDiv.addEventListener("submit", async (e: any) => {
@@ -562,22 +537,33 @@ function createPhoto(): HTMLDivElement {
           successMessage.remove();
         }, 3000); // Удаляем сообщение через 3 секунды
       } else {
-        const successMessage = document.createElement("div");
-        successMessage.textContent = "Ошибка при сохранении аватара";
-        successMessage.style.color = "red";
-        successMessage.style.marginTop = "10px";
-
-        // Добавляем сообщение в профильный div
-        profilePicDiv.appendChild(successMessage);
-
-        // Убираем сообщение через несколько секунд
-        setTimeout(() => {
-          successMessage.remove();
-        }, 3000); // Удаляем сообщение через 3 секунды
+        if (!document.querySelector(`.error-msg`)) {
+          const successMessage = document.createElement("div");
+          successMessage.textContent = "Ошибка при сохранении аватара";
+          successMessage.style.color = "red";
+          successMessage.style.marginTop = "10px";
+          successMessage.className = "error-msg";
+          // Добавляем сообщение в профильный div
+          profilePicDiv.appendChild(successMessage);
+          // Убираем сообщение через несколько секунд
+          setTimeout(() => {
+            successMessage.remove();
+          }, 3000); // Удаляем сообщение через 3 секунды
+        }
       }
     } else {
-      console.error("Файл не выбран.");
-      return; // Прекращаем выполнение, если файл не выбран
+      const successMessage = document.createElement("div");
+      successMessage.textContent = "Ошибка при сохранении аватара";
+      successMessage.style.color = "red";
+      successMessage.style.marginTop = "10px";
+
+      // Добавляем сообщение в профильный div
+      profilePicDiv.appendChild(successMessage);
+
+      // Убираем сообщение через несколько секунд
+      setTimeout(() => {
+        successMessage.remove();
+      }, 3000); // Удаляем сообщение через 3 секунды
     }
   });
   profilePicDiv.appendChild(profilePic);
@@ -585,11 +571,7 @@ function createPhoto(): HTMLDivElement {
   profilePicDiv.appendChild(uploadButton);
   profilePicDiv.appendChild(submit);
 
-  const container = document.createElement("div");
-  container.appendChild(profilePicLabel);
-  container.appendChild(profilePicDiv);
-
-  return container;
+  return profilePicDiv;
 }
 
 function createErrorMessage(): HTMLDivElement {

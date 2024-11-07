@@ -70,14 +70,20 @@ async function renderSidebar(userdata: any) {
             createElement("i", { class: "icon-settings" }, []),
             createText(" Настройки"),
           ]),
-          createElement("div", { class: "section-profile" }, [
-            userdata.role == "Reader"
-              ? createElement("div", {}, [])
-              : createElement("a", { class: "referens" }, [
-                  createElement("i", { class: "icon-profile" }, []),
-                  createText(" Профиль"),
-                ]),
-          ]),
+          createElement(
+            "a",
+            {
+              class: "referens profile",
+              style:
+                userdata.role === "Reader"
+                  ? "display: none;"
+                  : "display: block;",
+            },
+            [
+              createElement("i", { class: "icon-profile" }, []),
+              createText(" Профиль"),
+            ],
+          ),
         ]),
         renderLogoutButton(),
       ]),

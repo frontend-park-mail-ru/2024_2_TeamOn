@@ -16,7 +16,7 @@ import {
   renderUserStats,
 } from "./profileView";
 import { VNode } from "../../lib/vdom/src/source";
-import { createElement, createText, update } from "../../lib/vdom/lib";
+import { append, createElement, createText, update } from "../../lib/vdom/lib";
 import { pageContainer } from "../../index";
 import { AddLikeOnPost, modifierSidebar } from "../feed/feed";
 import DOMPurify from "dompurify";
@@ -248,14 +248,85 @@ async function deletePost(postId: any) {
 }
 function renderPosts(authorPosts: any[]) {
   var posts: any = [];
-  authorPosts.forEach((post: any) => {
+  authorPosts.forEach(async (post: any) => {
     const container: VNode = renderUserPosts(post);
     posts.push(container);
   });
   return posts;
 }
+function modifireOnePost(body: any, post: any) {
+  document.body.addEventListener("click", () => {
+    body.dropdownmenu.classList.remove(ELEMENTS_CLASS.ACTIVE);
+  });
+  post.isLiked
+    ? body.like.classList.add("active")
+    : body.like.classList.remove("active");
+
+  body.like.addEventListener("click", async () => {
+    const likeCount: any = await AddLikeOnPost(post.postId);
+    body.like.classList.toggle("active");
+    body.amounlike.innerHTML = `${post.likes}`;
+  });
+
+  function handleClick(event: any) {
+    event.stopPropagation();
+    event.target.removeEventListener("click", handleClick);
+    body.dropdownmenu.classList.toggle(ELEMENTS_CLASS.ACTIVE);
+  }
+
+  body.menu.addEventListener("click", handleClick);
+
+  renderDeletePost(post);
+  renderEditPost(post);
+
+  const modalsEdit: any = document.querySelector(".modal__editpost");
+  const modalsDelete: any = document.querySelector(".modal__deletepost");
+
+  const resetModalStates = (event: any = null) => {
+    modalsEdit.style.display = "none";
+    modalsDelete.style.display = "none";
+    // containers.classList.remove("blur");
+    event.target.removeEventListener("click", handleClick);
+  };
+
+  const buttonEdit: any = document.querySelector(`.button-edit-post`);
+  const buttonSave: any = document.querySelector(
+    `.${ELEMENTS_CLASS.SAVE.BLOCK}`,
+  );
+
+  const buttonDelete: any = document.querySelector(`.button-delete-post`);
+  const title: any = document.querySelector(".input-group");
+  const content: any = document.querySelector(".textarea-group");
+
+  function handleClickEdit(event: any) {
+    event.stopPropagation();
+    event.target.removeEventListener("click", handleClickEdit);
+    body.dropdown.classList.remove(ELEMENTS_CLASS.ACTIVE);
+
+    title.textContent = post.title;
+    content.value = post.content;
+    modalsEdit.style.display = "block";
+  }
+  modalsEdit.addEventListener("click", handleClickEdit);
+
+  async function handleClickSave(event: any) {
+    event.stopPropagation();
+    event.target.removeEventListener("click", handleClickSave);
+
+    await editPost(
+      modalsEdit,
+      post.postId,
+      DOMPurify.sanitize(title.value),
+      DOMPurify.sanitize(content.value),
+    );
+    resetModalStates();
+    // const postsUser: any = await getUserPosts(window.location.pathname,0);
+    return;
+  }
+
+  buttonSave.addEventListener("click", handleClickSave);
+}
 function modifirePosts(containers: any, posts: any[], offset: any) {
-  const menu = containers.querySelectorAll(`.menu-icon`);
   const dropdownMenu = containers.querySelectorAll(`.dropdown-menu`);
 
   document.body.addEventListener("click", () => {
@@ -271,6 +342,7 @@ function modifirePosts(containers: any, posts: any[], offset: any) {
   // Установка состояния лайка
   divsLike.forEach((divLike: any, index: number) => {
     if (index < posts.length) {
+      // ****
       if (posts[index].isLiked) {
         divLike.classList.add("active");
       } else {
@@ -289,9 +361,11 @@ function modifirePosts(containers: any, posts: any[], offset: any) {
       });
     }
   });
-
+  const menu = containers.querySelectorAll(`.menu-icon`);
   const handleMenuClick = (event: any, index: number) => {
     event.stopPropagation();
+    event.target.removeEventListener("click", handleMenuClick);
+
     if (index < posts.length) {
       dropdownMenu.forEach((dropdown: any, dropdownIndex: number) => {
         if (dropdownIndex !== index) {
@@ -309,6 +383,7 @@ function modifirePosts(containers: any, posts: any[], offset: any) {
         modalsEdit.style.display = "none";
         modalsDelete.style.display = "none";
         containers.classList.remove("blur");
+        event.target.removeEventListener("click", handleMenuClick);
       };
 
       if (event.target.classList.contains("button-edit-post")) {
@@ -348,7 +423,6 @@ function modifirePosts(containers: any, posts: any[], offset: any) {
             resetModalStates();
             await updatePosts();
           };
-        return;
       }
 
       if (event.target.classList.contains("button-delete-post")) {
@@ -372,10 +446,18 @@ function modifirePosts(containers: any, posts: any[], offset: any) {
     }
   };
 
-  // Функция для добавления обработчиков клика на меню
-  const addMenuClickHandlers = () => {
+  const removeMenuClickHandlers = async () => {
     menu.forEach((menuElement: any, index: number) => {
-      menuElement.onclick = (event: any) => handleMenuClick(event, index);
+      const menuClickHandler = (event: any) => handleMenuClick(event, index);
+      menuElement.removeEventListener("click", menuClickHandler); // Удаляем обработчик
+    });
+  };
+
+  const addMenuClickHandlers = async () => {
+    menu.forEach((menuElement: any, index: number) => {
+      // Создаем ссылку на обработчик
+      const menuClickHandler = (event: any) => handleMenuClick(event, index);
+      menuElement.addEventListener("click", menuClickHandler); // Добавляем новый обработчик
     });
   };
 
@@ -387,14 +469,15 @@ function modifirePosts(containers: any, posts: any[], offset: any) {
     const arrayPost: VNode = createElement("div", {}, [
       ...renderPosts(newPosts),
     ]);
-    // const place: any = containers.querySelector(".place-posts");
-    // alert(place)
+    removeMenuClickHandlers();
+    // document.removeEventListener("click", handleMenuClick);
     update(containers, arrayPost);
     const placeStats: any = document.querySelector(`.stats`);
     const payments: any = await getPayments(window.location.pathname);
     const authorData: any = await getPageAuthor(window.location.pathname);
     const arrayStats: VNode = await renderUserStats(authorData, payments);
     update(placeStats, arrayStats);
+    // return;
 
     // Добавляем обработчики клика на меню снова после обновления постов
     addMenuClickHandlers();
@@ -617,8 +700,6 @@ async function controlAdaptivePageAuthors(
   container: any,
   containerPosts: any,
 ) {
-  const userdata: any = await getUserPosts(window.location.pathname, 0);
-
   if (window.location.pathname === "/profile") {
     const buttonCreatePost: any = container.querySelectorAll(
       `.${ELEMENTS_CLASS.CREATE.BLOCK}`,
@@ -674,6 +755,7 @@ async function controlAdaptivePageAuthors(
           const arrayPost: VNode = createElement("div", {}, [
             ...renderPosts(newposts),
           ]);
+          const DIV: any = document.createElement("div");
           const place: any = containerPosts.querySelector(".place-posts");
           // update(place, arrayPost);
 
@@ -682,6 +764,8 @@ async function controlAdaptivePageAuthors(
 
           const arrayStats: VNode = await renderUserStats(authorData, payments);
           update(placeStats, arrayStats);
+
+          update(place, arrayPost);
         });
       });
     });
@@ -718,13 +802,27 @@ async function controlAdaptivePageAuthors(
         containerPosts.classList.remove("blur");
       });
     });
-    if (!authorData.isSubscribe) {
-      // console.log(authorId);
-      buttonSubs.addEventListener("click", async () => {
-          const ok: any = await following(userdata[0].authorId);
-        buttonSubs.textContent = "Подписан";
-      });
-    }
+    // console.log(authorId);
+    buttonSubs.addEventListener("click", async () => {
+      const userdata: any = await getUserPosts(window.location.pathname, 0);
+      const ok: any = await following(userdata[0].authorId);
+
+      const placeStats: any = document.querySelector(`.stats`);
+      const user: any = await getPageAuthor(window.location.pathname);
+      const arrayStats: VNode = await renderUserStats(user);
+      update(placeStats, arrayStats);
+
+      const userdataSec: any = await getPageAuthor(window.location.pathname);
+      if (userdataSec.isSubscribe) {
+        const feedProfile: any = document.querySelector(`.place-posts`);
+        feedProfile.style.display = "block";
+        buttonSubs.textContent = "Подписаны";
+      } else {
+        const feedProfile: any = document.querySelector(`.place-posts`);
+        feedProfile.style.display = "none";
+        buttonSubs.textContent = "Подписаться";
+      }
+    });
   }
 }
 async function following(authorId: any) {
@@ -758,22 +856,32 @@ async function renderProfileForm(
       await renderDesktopProfileInfo(authorData, avatar, payments),
       createElement("div", { class: "center-column-profile" }, [
         createElement("div", { class: "place-edit-info" }, []),
-        window.location.pathname === "/profile" ?
-           createElement("div", { class: "feed-profile" }, [
+        window.location.pathname === "/profile"
+          ? createElement("div", { class: "feed-profile" }, [
               createElement("div", { class: "nav-tabs-profile" }, [
                 createElement("a", { class: "active-profile active" }, [
                   createText("Лента"),
                 ]),
               ]),
               createElement("div", { class: "place-posts" }, []),
-            ]) : authorData.isSubscribe  ? createElement("div", { class: "feed-profile" }, [
+            ])
+          : createElement("div", { class: "feed-profile" }, [
               createElement("div", { class: "nav-tabs-profile" }, [
                 createElement("a", { class: "active-profile active" }, [
                   createText("Лента"),
                 ]),
               ]),
-              createElement("div", { class: "place-posts" }, []),
-            ]) : createElement("div", {}, []),
+              createElement(
+                "div",
+                {
+                  class: "place-posts",
+                  style: authorData.isSubscribe
+                    ? "display: block"
+                    : "display: none",
+                },
+                [],
+              ),
+            ]),
       ]),
     ]),
   ]);
@@ -934,17 +1042,27 @@ export async function renderProfile() {
       ...renderPosts(authorPosts),
     ]);
     update(place, arrayPost);
+
+    const divLikes: any = place.querySelectorAll(
+      `.${ELEMENTS_CLASS.POST.LIKES.BLOCK}`,
+    );
+    const dropdownMenus: any = place.querySelectorAll(`.dropdown-menu`);
+    const amountsLike: any = place.querySelectorAll(
+      `.${ELEMENTS_CLASS.POST.LIKES.AMOUNT}`,
+    );
+    const menu: any = place.querySelectorAll(`.menu-icon`);
+
     modifirePosts(place, authorPosts, offset);
     offset += QUERY.LIMIT;
     allUserPosts.push(...authorPosts);
     // Обработчик события прокрутки
+
     window.addEventListener("scroll", async () => {
       const { scrollTop, clientHeight, scrollHeight } =
         document.documentElement;
 
-      // Проверяем, достиг ли пользователь нижней части страницы
       if (scrollTop + clientHeight >= scrollHeight - 500 && !isLoading) {
-        isLoading = true; // Устанавливаем флаг загрузки
+        isLoading = true;
         const newPosts: any = await getUserPosts(
           window.location.pathname,
           offset,
@@ -961,7 +1079,7 @@ export async function renderProfile() {
 
         modifirePosts(place, allUserPosts, offset);
         offset += QUERY.LIMIT;
-        isLoading = false; // Сбрасываем флаг загрузки
+        isLoading = false;
       }
     });
 

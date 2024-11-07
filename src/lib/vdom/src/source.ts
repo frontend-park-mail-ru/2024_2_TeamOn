@@ -67,6 +67,29 @@ export class VirtualDOM {
     this.root = newVNode;
     return this.applyPatches(parent);
   }
+
+  public append(parent: VNode, newChild: VNode) {
+    // Находим узел родителя и добавляем к его дочерним узлам
+    if (parent && this.root) {
+      this._findAndAppend(this.root, parent, newChild);
+    }
+  }
+
+  private _findAndAppend(currentNode: VNode, parent: VNode, newChild: VNode) {
+    if (currentNode === parent) {
+      currentNode.children.push(newChild);
+      return true; // Успешно добавили
+    }
+
+    for (const child of currentNode.children) {
+      if (this._findAndAppend(child, parent, newChild)) {
+        return true; // Успешно добавили в дочернем узле
+      }
+    }
+
+    return false; // Родитель не найден
+  }
+
   private diff(oldNode: VNode, newNode: VNode): any {
     const patches: any = {};
 
@@ -119,8 +142,7 @@ export class VirtualDOM {
 
     for (let i = 0; i < maxLength; i++) {
       if (i >= oldChildren.length) {
-        // Новый дочерний узел добавлен
-        patches[i] = { type: "ADD", node: newChildren[i] };
+        // Новый дочерний узел добавлен patches[i] = { type: "ADD", node: newChildren[i] };
       } else if (i >= newChildren.length) {
         // Дочерний узел удален
         patches[i] = { type: "REMOVE", node: oldChildren[i] };
@@ -135,6 +157,7 @@ export class VirtualDOM {
 
     return patches;
   }
+
   private applyPatches(parent: any) {
     const html = this.render();
     parent.innerHTML = html;

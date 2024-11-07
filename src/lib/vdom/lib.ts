@@ -22,4 +22,11 @@ function update(parent: any, content: VNode, vdom: VirtualDOM = Virtual): any {
   return vdom.update(parent, content);
 }
 
-export { createElement, createText, render, update };
+function append(
+  parent: VNode,
+  newChild: VNode,
+  vdom: VirtualDOM = Virtual,
+): any {
+  return vdom.append(parent, newChild);
+}
+export { createElement, createText, render, update, append };

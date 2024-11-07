@@ -6,7 +6,7 @@ import { getAccount } from "../feed/feedView";
 import { getPageAuthor, getUserPosts } from "./profile";
 
 function renderUserPosts(post: any) {
-  const container = document.createElement("div");
+  // const userdata: any = await getPageAuthor(window.location.pathname);
   const vdom: VNode = createElement("div", { class: "posts" }, [
     createElement("div", { class: ELEMENTS_CLASS.POST.PROFILE.BLOCK }, [
       createElement("div", { style: "display: flex;" }, [
@@ -69,7 +69,7 @@ function renderVibe(user: any) {
  * @param {*} user Объект пользователя
  * @param {*} posts Объект постов (не используется в функции)
  */
-async function renderUserStats(user: any, payments: any) {
+async function renderUserStats(user: any, payments: any = null) {
   const posts: any = await getUserPosts(window.location.pathname, 0, 300);
   const vdom: VNode = createElement("div", { class: "stats" }, [
     createElement("p", { style: "font-weight: bold; font-size: 26px" }, [
@@ -78,7 +78,7 @@ async function renderUserStats(user: any, payments: any) {
     createElement("p", { class: "amount-subs" }, []),
     createElement("p", {}, [
       createText(
-        `Подписки ${user.subscriptions === null ? 0 : user.subscriptions}`,
+        `Подписки ${user.subscriptions.length === null ? 0 : user.subscriptions.length}`,
       ),
     ]),
     window.location.pathname == "/profile"
@@ -414,8 +414,6 @@ async function renderUserInfo(user: any, payments: any) {
               "button",
               {
                 class: "follow",
-                // disabled: isSubs,
-                style: isSubs ? "cursor: default;" : "cursor: pointer;",
               },
               [
                 createElement("i", { class: "icon-follow" }, []),
