@@ -112,7 +112,7 @@ function setupTabs(
   contentContainer: HTMLDivElement,
   userdata: any,
 ) {
-  ["Основная информация", "Безопасность", "Получение дохода"].forEach(
+  ["Основная информация", "Безопасность"/** , "Получение дохода"*/].forEach(
     (tabName, index) => {
       const tabLink = document.createElement("a");
       tabLink.textContent = tabName;
