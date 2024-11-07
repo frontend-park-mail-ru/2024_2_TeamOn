@@ -4,6 +4,7 @@ import { calculateAmountPosts } from "../../utils/calculateAmountPosts";
 import { VNode } from "../../lib/vdom/src/source";
 import { getAccount } from "../feed/feedView";
 import { getPageAuthor, getUserPosts } from "./profile";
+import { convertToISO } from "../../utils/parsedate";
 
 function renderUserPosts(post: any) {
   // const userdata: any = await getPageAuthor(window.location.pathname);
@@ -35,7 +36,7 @@ function renderUserPosts(post: any) {
         createText(post.content),
       ]),
       createElement("div", { class: ELEMENTS_CLASS.POST.DATE }, [
-        createText(post.createdAt),
+        createText(convertToISO(post.createdAt.toString())),
       ]),
       createElement("div", { class: "interaction-section" }, [
         createElement("div", { class: ELEMENTS_CLASS.POST.LIKES.BLOCK }, [
