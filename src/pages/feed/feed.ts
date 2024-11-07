@@ -17,7 +17,7 @@ import { createElement, createText, update } from "../../lib/vdom/lib";
 import { pageContainer } from "../../index";
 import { route } from "../../utils/routing";
 import { fetchAjax } from "../../utils/fetchAjax";
-import { convertToISO } from "../../utils/parsedate";
+import { convertISOToRussianDate } from "../../utils/parsedate";
 
 async function getPopularPosts(offsetPopular: any) {
   return new Promise((resolve, reject) => {
@@ -257,7 +257,7 @@ export async function customizePost(container: any, post: any = null) {
   content.textContent = post.content;
 
   const date: any = container.querySelector(`.${ELEMENTS_CLASS.POST.DATE}`);
-  date.textContent = convertToISO(post.createdAt);
+  date.textContent = convertISOToRussianDate(post.createdAt);
 
   const divLikes: any = container.querySelector(`.likes-container`);
   if (divLikes) {
