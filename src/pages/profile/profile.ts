@@ -16,7 +16,7 @@ import {
   renderUserStats,
 } from "./profileView";
 import { VNode } from "../../lib/vdom/src/source";
-import { append, createElement, createText, update } from "../../lib/vdom/lib";
+import { createElement, createText, update } from "../../lib/vdom/lib";
 import { pageContainer } from "../../index";
 import { AddLikeOnPost, modifierSidebar } from "../feed/feed";
 import DOMPurify from "dompurify";

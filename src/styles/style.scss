@@ -35,6 +35,19 @@ form {
   float: right;
   margin-top: -2%;
 }
+.form-login,
+.form-signup {
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  align-content: stretch;
+  width: 100%;
+}
 @media (max-width: 768px) {
   form {
     float: none;
@@ -268,7 +281,8 @@ form input[type="text"]:focus {
   background-position: center center;
 }
 
-.login__container {
+.login__container,
+.signup__container {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -281,6 +295,8 @@ form input[type="text"]:focus {
   align-items: center;
   justify-content: center;
   background-size: cover;
+  display: flex;
+  flex-direction: column;
 }
 
 .login__container h2 {
@@ -303,7 +319,7 @@ form input[type="text"]:focus {
   margin: 20px 0 0;
   border: none;
   border-radius: 20px;
-  background-color: #333;
+  background-color: black;
   color: white;
   font-size: 16px;
   cursor: pointer;
