@@ -499,79 +499,64 @@ async function createPhoto(): Promise<any> {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = function (e: any) {
+      reader.onload = async function (e: any) {
         profilePic.src = e.target.result;
+        const formData = new FormData();
+        formData.append("file", file);
+        try {
+          const ok: any = await saveAvatar(formData);
+          if (ok) {
+            // Создаем элемент для сообщения об успешной загрузке
+            const successMessage = document.createElement("div");
+            successMessage.textContent = "Аватар успешно загружен!";
+            successMessage.style.color = "green";
+            successMessage.style.marginTop = "10px";
+            successMessage.style.fontWeight = "bold";
+    
+            // Добавляем сообщение в профильный div
+            profilePicDiv.appendChild(successMessage);
+    
+            // Убираем сообщение через несколько секунд
+            setTimeout(() => {
+              successMessage.remove();
+            }, 3000); // Удаляем сообщение через 3 секунды
+          } else {
+            if (!document.querySelector(`.error-msg`)) {
+              const successMessage = document.createElement("div");
+              successMessage.textContent = "Ошибка при сохранении аватара";
+              successMessage.style.color = "red";
+              successMessage.style.marginTop = "10px";
+              successMessage.className = "error-msg";
+              // Добавляем сообщение в профильный div
+              profilePicDiv.appendChild(successMessage);
+              // Убираем сообщение через несколько секунд
+              setTimeout(() => {
+                successMessage.remove();
+              }, 3000); // Удаляем сообщение через 3 секунды
+            }
+          }
+        } catch(error) {
+          console.error("Ошибка при загрузке фонового изображения:", error);
+        }
       };
       reader.readAsDataURL(file);
     }
   });
 
-  const submit = document.createElement("button");
-  submit.type = "submit";
-  submit.textContent = "Загрузить";
+  // const submit = document.createElement("button");
+  // submit.type = "submit";
+  // submit.textContent = "Загрузить";
 
   // Добавляем обработчик события для формы
-  profilePicDiv.addEventListener("submit", async (e: any) => {
-    e.preventDefault();
+  // profilePicDiv.addEventListener("submit", async (e: any) => {
+  //   e.preventDefault();
 
-    const formData = new FormData(profilePicDiv);
 
     // Проверка наличия файла в FormData
-    if (formData.has("file")) {
-      console.log("Файл загружен:", formData.get("file"));
-
-      const ok: any = await saveAvatar(formData);
-
-      // Проверяем, успешно ли сохранен аватар
-      if (ok) {
-        // Создаем элемент для сообщения об успешной загрузке
-        const successMessage = document.createElement("div");
-        successMessage.textContent = "Аватар успешно загружен!";
-        successMessage.style.color = "green";
-        successMessage.style.marginTop = "10px";
-        successMessage.style.fontWeight = "bold";
-
-        // Добавляем сообщение в профильный div
-        profilePicDiv.appendChild(successMessage);
-
-        // Убираем сообщение через несколько секунд
-        setTimeout(() => {
-          successMessage.remove();
-        }, 3000); // Удаляем сообщение через 3 секунды
-      } else {
-        if (!document.querySelector(`.error-msg`)) {
-          const successMessage = document.createElement("div");
-          successMessage.textContent = "Ошибка при сохранении аватара";
-          successMessage.style.color = "red";
-          successMessage.style.marginTop = "10px";
-          successMessage.className = "error-msg";
-          // Добавляем сообщение в профильный div
-          profilePicDiv.appendChild(successMessage);
-          // Убираем сообщение через несколько секунд
-          setTimeout(() => {
-            successMessage.remove();
-          }, 3000); // Удаляем сообщение через 3 секунды
-        }
-      }
-    } else {
-      const successMessage = document.createElement("div");
-      successMessage.textContent = "Ошибка при сохранении аватара";
-      successMessage.style.color = "red";
-      successMessage.style.marginTop = "10px";
-
-      // Добавляем сообщение в профильный div
-      profilePicDiv.appendChild(successMessage);
-
-      // Убираем сообщение через несколько секунд
-      setTimeout(() => {
-        successMessage.remove();
-      }, 3000); // Удаляем сообщение через 3 секунды
-    }
-  });
+   
   profilePicDiv.appendChild(profilePic);
   profilePicDiv.appendChild(profilePicInput);
   profilePicDiv.appendChild(uploadButton);
-  profilePicDiv.appendChild(submit);
 
   return profilePicDiv;
 }
