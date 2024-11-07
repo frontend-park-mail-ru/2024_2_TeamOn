@@ -7,7 +7,7 @@ import { fetchAjax } from "../../utils/fetchAjax";
 import { route } from "../../utils/routing";
 import { modifierSidebar } from "../feed/feed";
 import { getAccount, renderSidebar } from "../feed/feedView";
-import { controlLogout } from "../profile/profile";
+import { controlLogout, getAvatar } from "../profile/profile";
 import { validateSettingsPassword, validateMainInfo } from "./settings";
 
 export async function renderSettings() {
@@ -176,7 +176,7 @@ async function createProfileForm(userdata: any): Promise<HTMLDivElement> {
   formContainer.appendChild(formTitle);
 
   const profilePicRow = createPhoto();
-  formContainer.appendChild(profilePicRow);
+  formContainer.appendChild(await profilePicRow);
 
   const usernameRow = document.createElement("div");
   usernameRow.className = "form-row";
@@ -467,7 +467,8 @@ async function createButtonSetAuthor() {
   return button;
 }
 
-function createPhoto(): any {
+async function createPhoto(): Promise<any> {
+  const avatar: any = await getAvatar("/profile");
   const profilePicDiv = document.createElement("form");
   profilePicDiv.className = "profile-pic-container";
   profilePicDiv.enctype = "multipart/form-data";
@@ -475,6 +476,7 @@ function createPhoto(): any {
 
   const profilePic = document.createElement("img");
   profilePic.className = "profile-pic";
+  profilePic.src = avatar;
 
   const profilePicInput = document.createElement("input");
   profilePicInput.type = "file";

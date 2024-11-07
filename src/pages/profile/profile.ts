@@ -128,7 +128,7 @@ async function getPayments(link: string) {
     });
   });
 }
-export async function getAvatarAuthor(link: string, authorID: any) {
+export async function getAvatar(link: string, authorID: any = null) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "GET",
@@ -982,7 +982,7 @@ export async function renderProfile() {
     let authorPosts: any = await getUserPosts(window.location.pathname, offset);
 
     let allUserPosts: any = [];
-    const avatar: any = await getAvatarAuthor(
+    const avatar: any = await getAvatar(
       window.location.pathname,
       sessionStorage.getItem("authorid"),
     );

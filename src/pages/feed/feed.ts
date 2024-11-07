@@ -6,7 +6,7 @@ import {
   sidebarLinks,
   state,
 } from "../../consts";
-import { controlLogout, getAvatarAuthor } from "../profile/profile";
+import { controlLogout, getAvatar } from "../profile/profile";
 import {
   renderSidebar,
   createContainerPost,
@@ -224,7 +224,7 @@ export async function customizePost(container: any, post: any = null) {
   if (avatar) {
     avatar.alt = "Аватар автора";
     avatar.height = 50;
-    const avatarload: any = await getAvatarAuthor(
+    const avatarload: any = await getAvatar(
       window.location.pathname,
       post.authorId,
     );
