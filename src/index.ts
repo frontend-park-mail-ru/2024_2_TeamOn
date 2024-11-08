@@ -161,3 +161,14 @@ if (flag) {
   root?.appendChild(pageContainer);
   route(LINKS.HOME.HREF, window.location.pathname);
 }
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("/src/sw.js", { scope: "/src/" })
+    .then((reg) => {
+      console.log("sw registered", reg);
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+}

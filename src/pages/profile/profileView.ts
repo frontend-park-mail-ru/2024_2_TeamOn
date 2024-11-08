@@ -270,7 +270,7 @@ function renderAbout(authorData: any, isEdit = false, newValue?: any) {
         {
           class: "about-input",
           value: newValue == undefined ? "" : newValue,
-          placeholder: authorData.info == null ? "Изменить статус..." : "", // Плейсхолдер, если нет информации
+          placeholder: authorData.info == null ? "Изменить статус..." : "",
         },
         [],
       ),
@@ -278,7 +278,7 @@ function renderAbout(authorData: any, isEdit = false, newValue?: any) {
         createText(
           authorData.info == null
             ? newValue == undefined
-              ? "" // Пустое значение, если нет информации
+              ? ""
               : newValue
             : authorData.info,
         ),
@@ -295,7 +295,6 @@ function renderAbout(authorData: any, isEdit = false, newValue?: any) {
 
   return container;
 }
-
 
 /**
  * Рендер информации о профиле для десктопа
