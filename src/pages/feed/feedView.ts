@@ -91,10 +91,7 @@ async function renderSidebar(userdata: any) {
             "a",
             {
               class: "referens profile",
-              style:
-                userdata.role === "Reader"
-                  ? "display: none;"
-                  : "display: block;",
+              style: userdata.role === "Reader" ? "display: none;" : "",
             },
             [
               createElement("i", { class: "icon-profile" }, []),

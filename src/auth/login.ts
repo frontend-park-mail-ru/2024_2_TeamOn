@@ -4,8 +4,8 @@ import { fetchAjax } from "../utils/fetchAjax";
 import { goToPage } from "../index";
 import { attempts } from "./loginView";
 import { addItemLocalStorage } from "../utils/storages";
-import * as DOMPurify from "dompurify";
 import { route } from "../utils/routing";
+import * as DOMPurify from "dompurify";
 
 /**
  * Валидирует форму входа, проверяя корректность ввода логина и пароля.

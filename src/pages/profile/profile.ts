@@ -19,8 +19,8 @@ import { VNode } from "../../lib/vdom/src/source";
 import { createElement, createText, update } from "../../lib/vdom/lib";
 import { pageContainer } from "../../index";
 import { AddLikeOnPost, modifierSidebar } from "../feed/feed";
-import DOMPurify from "dompurify";
 import { convertISOToRussianDate } from "../../utils/parsedate";
+import DOMPurify from "dompurify";
 
 /**
  * Получаем посты пользователя через объект типа промис
@@ -458,8 +458,8 @@ async function modifierModalEditPost(
   const buttonCancel: any = modalsEdit.querySelector(`.cancel`);
   const buttonConfirm: any = modalsEdit.querySelector(`.save`);
 
-  const edittitle: any = document.querySelector(".input-group");
-  const editcontent: any = document.querySelector(".textarea-group");
+  const edittitle: any = modalsEdit.querySelector(".input-group");
+  const editcontent: any = modalsEdit.querySelector(".textarea-group");
 
   modalsEdit.style.display = "block";
   profileForm.classList.add("blur");
@@ -615,6 +615,35 @@ function customizePostProfile(container: any, post: any, postId: any = null) {
     }
   });
 }
+export function renderModalStatusUpload(ok: any, media: any) {
+  const modal: any = document.querySelector(`.push-modal`);
+  modal.classList.add(`active`);
+  if (ok) {
+    modal.textContent = `${media} успешно применен`;
+    modal.style.color = "green";
+  } else {
+    modal.textContent = "Произошла ошибка";
+    modal.style.color = "red";
+  }
+
+  const hideModal = () => {
+    modal.classList.remove("active");
+    clearTimeout(timeoutId);
+  };
+
+  let timeoutId: any = setTimeout(hideModal, 3000);
+
+  modal.addEventListener("mouseenter", () => {
+    clearTimeout(timeoutId);
+  });
+
+  modal.addEventListener("mouseleave", () => {
+    timeoutId = setTimeout(hideModal, 3000);
+  });
+  modal.addEventListener("click", () => {
+    modal.classList.remove("active");
+  });
+}
 /**
  * Загрузка бекграунда
  */
@@ -640,6 +669,8 @@ function handleImageUpload() {
         // Отправляем данные на сервер
         try {
           const ok: any = await saveBackground(formData);
+          const media = "Фон";
+          renderModalStatusUpload(ok, media);
         } catch (error) {
           console.error("Ошибка при загрузке фонового изображения:", error);
         }
@@ -703,6 +734,8 @@ function handleImageUploadMobile() {
         // Отправляем данные на сервер
         try {
           const ok: any = await saveBackground(formData);
+          const media = "Фон";
+          renderModalStatusUpload(ok, media);
         } catch (error) {
           console.error("Ошибка при загрузке фонового изображения:", error);
         }

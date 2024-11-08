@@ -8,8 +8,8 @@ import {
 import { removeError, showError } from "../utils/errors";
 import { fetchAjax } from "../utils/fetchAjax";
 import { addItemLocalStorage } from "../utils/storages";
-import * as DOMPurify from "dompurify";
 import { route } from "../utils/routing";
+import * as DOMPurify from "dompurify";
 
 export function validateSettings(
   inputPassword: any,
@@ -185,6 +185,19 @@ export function validateSignupForm(
   // Проверка логина
   if (!DOMPurify.sanitize(inputUsername.value)) {
     showError(inputUsername, "Пожалуйста, введите логин");
+    hasError = true;
+  } else {
+    removeError(inputUsername);
+  }
+
+  if (DOMPurify.sanitize(inputUsername.value).length < 4) {
+    showError(inputUsername, "Логин должен иметь не менее 4 символов");
+    hasError = true;
+  } else {
+    removeError(inputUsername);
+  }
+  if (DOMPurify.sanitize(inputUsername.value).length > 11) {
+    showError(inputUsername, "Логин должен иметь не более 10 символов");
     hasError = true;
   } else {
     removeError(inputUsername);
