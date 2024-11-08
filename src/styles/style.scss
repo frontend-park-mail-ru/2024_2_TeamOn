@@ -1,4 +1,3 @@
-@charset "UTF-8";
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -11,16 +10,13 @@ body {
   height: 100%;
   width: 100%;
 }
-
 .blur {
   filter: blur(8px); /* Значение размытия */
 }
-
 :root {
   --main-color: #d9534f;
   --main-background-color: #f5f5f5;
 }
-
 main {
   flex: 1;
   padding: 0px;
@@ -39,7 +35,6 @@ form {
   float: right;
   margin-top: -2%;
 }
-
 .form-login,
 .form-signup {
   flex-direction: column;
@@ -53,7 +48,6 @@ form {
   align-content: stretch;
   width: 100%;
 }
-
 @media (max-width: 768px) {
   form {
     float: none;
@@ -61,27 +55,27 @@ form {
     margin-bottom: 30px;
   }
 }
-form button[type=submit] {
+form button[type="submit"] {
   margin-top: 1px;
   width: 152.14px;
 }
 
-form button[type=submit]:hover,
+form button[type="submit"]:hover,
 .profile-pic-container.custom-upload-button:hover {
   background-color: #3e8e41;
 }
 
-form input[type=email],
-form input[type=password],
-form input[type=text] {
+form input[type="email"],
+form input[type="password"],
+form input[type="text"] {
   padding: 10px;
   margin: 10px;
   border: 1px solid #ccc;
 }
 
-form input[type=email]:focus,
-form input[type=password],
-form input[type=text]:focus {
+form input[type="email"]:focus,
+form input[type="password"],
+form input[type="text"]:focus {
   border-color: #aaa;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -100,7 +94,6 @@ form input[type=text]:focus {
 .close__hover:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
-
 /* Стили для обработки ошибок */
 .error {
   color: red;
@@ -108,11 +101,10 @@ form input[type=text]:focus {
   margin-bottom: 10px;
 }
 
-.error-input ~ input[type=password] {
+.error-input ~ input[type="password"] {
   border-color: red;
   box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
 }
-
 .error-input {
   border-color: red;
   box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
@@ -141,7 +133,6 @@ form input[type=text]:focus {
 .defs {
   display: block;
 }
-
 .home-overlay {
   position: absolute;
   top: 0;
@@ -150,7 +141,6 @@ form input[type=text]:focus {
   height: 100%;
   background: rgba(0, 0, 0, 0.3);
 }
-
 .home-header {
   padding: 20pt 20pt;
   position: absolute;
@@ -162,9 +152,7 @@ form input[type=text]:focus {
   font-weight: bold;
   cursor: default;
   pointer-events: none;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  user-select: none;
   opacity: 0.4;
 }
 
@@ -175,16 +163,13 @@ form input[type=text]:focus {
   display: flex;
   gap: 10px;
 }
-
 .donate-container {
   position: absolute;
   left: 50%;
 }
-
 .create-posts {
   position: relative;
 }
-
 .home-buttons__button,
 .logout__button,
 .donate__button,
@@ -200,16 +185,16 @@ form input[type=text]:focus {
   background: white;
   color: gray;
   cursor: pointer;
-  transition: background 0.3s, color 0.3s;
+  transition:
+    background 0.3s,
+    color 0.3s;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .save__button {
   color: green;
 }
-
 .delete__button {
   color: red;
 }
@@ -223,11 +208,9 @@ form input[type=text]:focus {
   margin-bottom: 5%;
   margin-top: 5%;
 }
-
 .home-buttons__button {
   font-size: 28px;
 }
-
 .logout {
   margin-top: 10%;
   width: 250px;
@@ -235,7 +218,6 @@ form input[type=text]:focus {
   justify-content: center;
   align-items: center;
 }
-
 .logout__button {
   font-size: 18px;
 }
@@ -248,22 +230,18 @@ form input[type=text]:focus {
   background: var(--main-color);
   color: white;
 }
-
 .cancel__button__effects:hover {
   background-color: gray;
   color: white;
 }
-
 .delete__button__effects:hover {
   background: red;
   color: white;
 }
-
 .save__button__effects:hover {
   background: green;
   color: white;
 }
-
 .home-buttons__button__effects.primary,
 .logout__button__effects.primary,
 .donate__button__effects.primary,
@@ -277,7 +255,6 @@ form input[type=text]:focus {
   color: black;
   border: none;
 }
-
 .home-buttons__button__effects.primary:hover,
 .logout__button__effects.primary:hover,
 .donate__button__effects.primary:hover,
@@ -327,9 +304,8 @@ form input[type=text]:focus {
   font-size: 24px;
   color: #333;
 }
-
-.login__container input[type=text],
-.login__container input[type=password] {
+.login__container input[type="text"],
+.login__container input[type="password"] {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -337,8 +313,7 @@ form input[type=text]:focus {
   border-radius: 20px;
   box-sizing: border-box;
 }
-
-.login__container input[type=submit] {
+.login__container input[type="submit"] {
   width: 100%;
   padding: 10px;
   margin: 20px 0 0;
@@ -349,24 +324,20 @@ form input[type=text]:focus {
   font-size: 16px;
   cursor: pointer;
 }
-
-.login__container input[type=submit]:hover {
+.login__container input[type="submit"]:hover {
   background-color: #555;
 }
-
 .login__container .signup-link {
   display: block;
   margin-top: 10px;
   font-size: 14px;
   color: #333;
 }
-
 .login__container .signup-link__a {
   color: #007bff;
   text-decoration: none;
   cursor: pointer;
 }
-
 .login__container .signup-link__a__hover:hover {
   text-decoration: underline;
 }
@@ -381,7 +352,6 @@ form input[type=text]:focus {
   left: 0; /* Закрепление левого края */
   margin-bottom: 10%;
 }
-
 .password-strength::before {
   content: "";
   position: absolute;
@@ -389,9 +359,12 @@ form input[type=text]:focus {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: repeating-linear-gradient(to right, #fff 2px, transparent 2px);
+  background-image: repeating-linear-gradient(
+    to right,
+    #fff 2px,
+    transparent 2px
+  );
 }
-
 .signup {
   position: fixed;
   top: 0;
@@ -403,7 +376,6 @@ form input[type=text]:focus {
   background-position: center center;
   z-index: 10;
 }
-
 .signup__container {
   position: absolute;
   top: 50%;
@@ -418,14 +390,12 @@ form input[type=text]:focus {
   justify-content: center;
   background-size: cover;
 }
-
 .signup__container h2 {
   margin-bottom: 20px;
   font-size: 24px;
 }
-
-.signup__container input[type=text],
-.signup__container input[type=password] {
+.signup__container input[type="text"],
+.signup__container input[type="password"] {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -433,8 +403,7 @@ form input[type=text]:focus {
   border-radius: 20px;
   box-sizing: border-box;
 }
-
-.signup__container input[type=submit] {
+.signup__container input[type="submit"] {
   width: 100%;
   padding: 10px;
   border: none;
@@ -444,24 +413,20 @@ form input[type=text]:focus {
   font-size: 16px;
   cursor: pointer;
 }
-
-.signup__container input[type=submit]:hover {
+.signup__container input[type="submit"]:hover {
   background-color: #333;
 }
-
 .signup__container .login-link {
   display: block;
   margin-top: 10px;
   font-size: 14px;
   color: #333;
 }
-
 .signup__container .login-link__a {
   color: #007bff;
   text-decoration: none;
   cursor: pointer;
 }
-
 .signup__container .login-link__a__hover:hover {
   text-decoration: underline;
 }
@@ -519,7 +484,6 @@ form input[type=text]:focus {
   width: 100%;
   flex-direction: row-reverse;
 }
-
 /* Стили для поля ввода */
 .about-input {
   width: 90%;
@@ -528,7 +492,9 @@ form input[type=text]:focus {
   border-radius: 4px;
   font-size: 14px;
   margin-bottom: 15px;
-  transition: border-color 0.3s, box-shadow 0.3s; /* Плавный переход для фокуса */
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s; /* Плавный переход для фокуса */
 }
 
 /* Эффекты при фокусе на поле ввода */
@@ -540,18 +506,15 @@ form input[type=text]:focus {
 .active-profile.active {
   font-weight: bold;
 }
-
 .active-profile {
   cursor: pointer;
 }
-
 .container-profile {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   margin-top: 20px;
 }
-
 .left-column,
 .right-column {
   background-color: white;
@@ -562,7 +525,6 @@ form input[type=text]:focus {
   position: relative;
   top: -200px;
 }
-
 .left-column {
   width: 100%;
   max-width: 250px;
@@ -570,23 +532,20 @@ form input[type=text]:focus {
   display: block;
   margin-right: 20px;
 }
-
 .right-column {
   width: 100%;
   max-width: 300px;
 }
-
 .center-column-profile {
   flex: 1;
+  // margin: 10px;
   width: 100%;
   max-width: 600px;
 }
-
 .profile-avatar {
   width: 100%;
   border-radius: 10px;
 }
-
 .loader {
   width: 40px;
   height: 40px;
@@ -619,20 +578,18 @@ form input[type=text]:focus {
     transform: rotate(360deg);
   }
 }
+
 .stats {
   text-align: center;
   margin: 20px 0;
 }
-
 .stats p {
   margin: 5px 0;
   font-size: 18px;
 }
-
 .buttons-profile {
   text-align: center;
 }
-
 .buttons-profile button {
   display: block;
   width: 100%;
@@ -645,23 +602,19 @@ form input[type=text]:focus {
   font-size: 16px;
   cursor: pointer;
 }
-
 .buttons-profile button i {
   margin-right: 10px;
 }
-
 .social-icons {
   text-align: center;
   margin-top: 20px;
 }
-
 .social-icons i {
   font-size: 24px;
   margin: 0 10px;
   color: #d9534f;
   cursor: pointer;
 }
-
 .posts-mobile__button,
 .about-mobile__button {
   background-color: white;
@@ -670,7 +623,6 @@ form input[type=text]:focus {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
 .about {
   background-color: white;
   padding: 20px;
@@ -678,21 +630,18 @@ form input[type=text]:focus {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
 }
-
 .about h2,
 .posts-mobile__button h2,
 .about-mobile__button h2 {
   font-size: 18px;
   margin-bottom: 10px;
 }
-
 .about p,
 .posts-mobile__button p,
 .about-mobile__button p {
   font-size: 14px;
   line-height: 1.6;
 }
-
 .subscription-levels {
   background-color: white;
   padding: 20px;
@@ -700,26 +649,21 @@ form input[type=text]:focus {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
 .subscription-levels h2 {
   font-size: 18px;
   margin-bottom: 10px;
 }
-
 .subscription-level {
   margin-bottom: 20px;
 }
-
 .subscription-level h3 {
   font-size: 16px;
   margin-bottom: 5px;
 }
-
 .subscription-level p {
   font-size: 14px;
   margin-bottom: 10px;
 }
-
 .subscription-level button {
   width: 100%;
   padding: 10px;
@@ -730,42 +674,35 @@ form input[type=text]:focus {
   font-size: 16px;
   cursor: pointer;
 }
-
 .feed-profile {
   background-color: white;
   padding: 20px;
+  // margin: 10px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
 .feed-profile h2 {
   font-size: 18px;
   margin-bottom: 10px;
 }
-
 .feed-item {
   margin-bottom: 20px;
 }
-
 .feed-item h3 {
   font-size: 16px;
   margin-bottom: 5px;
 }
-
 .feed-item p {
   font-size: 14px;
 }
-
 .feed-item time {
   font-size: 12px;
   color: gray;
 }
-
 .nav-tabs-profile {
   display: flex;
   justify-content: space-around;
 }
-
 .nav-tabs-profile a {
   text-decoration: none;
   color: #d9534f;
@@ -773,18 +710,19 @@ form input[type=text]:focus {
   padding: 10px;
   border-bottom: 2px solid transparent;
 }
-
 .nav-tabs-profile a.active {
   border-bottom: 2px solid #d9534f;
 }
-
 @media (max-width: 1024px) {
+  // .left-column,
   .right-column,
   .center-column-profile {
     width: 100%;
     max-width: none;
   }
   .header-profile {
+    // height: 0px;
+    // opacity: 0;
     display: none;
   }
   .left-column {
@@ -794,22 +732,19 @@ form input[type=text]:focus {
     display: block;
   }
 }
+
 .background-image {
   position: absolute; /* Позволяет изображению занимать всю площадь родителя */
   top: 0;
   left: 0;
   width: 100%; /* Занимает всю ширину */
   height: 100%; /* Занимает всю высоту */
-  -o-object-fit: cover;
-     object-fit: cover; /* Обеспечивает обрезку изображения, чтобы оно заполнило контейнер */
+  object-fit: cover; /* Обеспечивает обрезку изображения, чтобы оно заполнило контейнер */
 }
-
 .profile-avatar {
   height: 250px; /* Установите желаемую высоту */
-  -o-object-fit: cover;
-     object-fit: cover; /* Обеспечивает обрезку изображения, чтобы оно заполнило контейнер */
+  object-fit: cover; /* Обеспечивает обрезку изображения, чтобы оно заполнило контейнер */
 }
-
 .posts {
   background-color: white;
   border-radius: 10px;
@@ -831,7 +766,7 @@ form input[type=text]:focus {
 .post {
   margin: 0;
 }
-
+// MOBILE
 .change-cover-button-mobile {
   position: absolute;
   bottom: 10px;
@@ -842,16 +777,16 @@ form input[type=text]:focus {
   padding: 10px 20px;
   cursor: pointer;
   right: 0%;
+
   background-color: black;
   border-radius: 35px;
   transition: background-color 0.3s;
 }
-
 .buttons-profile button:hover {
+  // background-color: red;
   color: rgb(252, 225, 225);
   transition: color 0.3s ease;
 }
-
 .profile-header-mobile {
   text-align: center;
   background-size: cover;
@@ -862,7 +797,6 @@ form input[type=text]:focus {
   margin-right: -5px;
   margin-left: -5px;
 }
-
 .profile-header-mobile .profile-avatar {
   width: 90px;
   height: 90px;
@@ -874,7 +808,6 @@ form input[type=text]:focus {
   transform: translate(-50%, -50%);
   z-index: 2;
 }
-
 .profile-header-mobile .background-image-mobile {
   position: absolute;
   top: 0;
@@ -884,27 +817,23 @@ form input[type=text]:focus {
   -o-object-fit: cover;
   object-fit: cover;
 }
-
 .profile-header-mobile h1 {
   margin: 0;
   padding-top: 50px;
   color: white;
   font-size: 24px;
 }
-
 .profile-header-mobile p {
   margin: 5px 0;
   color: white;
   font-size: 16px;
 }
-
 .tabs-mobile {
   display: flex;
   justify-content: center;
   background-color: white;
   border-bottom: 1px solid #ddd;
 }
-
 .tabs-mobile div {
   padding: 10px 20px;
   cursor: pointer;
@@ -917,12 +846,12 @@ form input[type=text]:focus {
   background-color: white;
 }
 
+// -------
 .date {
   text-align: right;
   color: gray;
   margin-top: 10px;
 }
-
 .menu-icon {
   top: 0;
   left: 98%;
@@ -931,7 +860,6 @@ form input[type=text]:focus {
   cursor: pointer;
   display: inline-block;
 }
-
 .dropdown-menu {
   display: none; /* Скрываем по умолчанию */
   position: absolute; /* Фиксируем элемент относительно окна браузера */
@@ -958,7 +886,6 @@ form input[type=text]:focus {
 .dropdown-menu .interaction-post:hover {
   background-color: #f0f0f0; /* Цвет фона при наведении */
 }
-
 /* EYE */
 .password-eye {
   position: relative;
@@ -967,21 +894,19 @@ form input[type=text]:focus {
   cursor: pointer;
   font-size: 18px;
   color: #666;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  user-select: none;
   background-image: url("photos/eye_nsee.png");
   width: 20px;
   height: 20px;
   background-size: cover;
 }
-
 .password-eye.active {
   background-image: url("photos/eye_see.png");
   cursor: pointer;
 }
 
 /* FEED */
+
 .sidebar {
   display: block;
   flex-direction: column;
@@ -997,12 +922,10 @@ form input[type=text]:focus {
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
 }
-
 .sidebar.active {
   display: flex;
   transition: transform 0.3s ease;
 }
-
 .icon-home,
 .icon-notification,
 .icon-settings,
@@ -1014,39 +937,31 @@ form input[type=text]:focus {
   height: 30px;
   background-size: contain;
 }
-
 .icon-notification-big {
   width: 60px;
   height: 60px;
 }
-
 .icon-edit-background {
   width: 15px;
   height: 15px;
   float: left;
 }
-
 .icon-edit-background {
   background-image: url("photos/icon_edit.png");
 }
-
 .icon-home {
   background-image: url("photos/icon_home.png");
 }
-
 .icon-notification,
 .icon-notification-big {
   background-image: url("photos/icon_notification.png");
 }
-
 .icon-settings {
   background-image: url("photos/icon_settings.png");
 }
-
 .icon-profile {
   background-image: url("photos/icon_profile.png");
 }
-
 .media-post {
   flex: 1 1 calc(33.333% - 10px);
   max-width: 1000px;
@@ -1056,7 +971,6 @@ form input[type=text]:focus {
   background-size: cover;
   background-position: center;
 }
-
 .sidebar a {
   display: block;
   padding: 15px 20px;
@@ -1064,7 +978,6 @@ form input[type=text]:focus {
   text-decoration: none;
   transition: background-color 0.3s;
 }
-
 .sidebar a.active {
   background-color: #e0e0e0;
   font-weight: bold;
@@ -1074,23 +987,19 @@ form input[type=text]:focus {
   font-size: 16px;
   font-weight: 500;
 }
-
 .main-content {
   margin-left: 250px;
 }
-
 .right-content {
   margin-right: 10px;
   margin-left: 300px;
   width: 700px;
   margin-top: 5%;
 }
-
 .main-container {
   height: 100%;
   width: 100%;
 }
-
 .search-bar {
   display: flex;
   align-items: center;
@@ -1099,7 +1008,6 @@ form input[type=text]:focus {
   right: 0;
   width: 400px;
 }
-
 .search-bar input {
   width: 100%;
   padding: 10px;
@@ -1107,13 +1015,11 @@ form input[type=text]:focus {
   border-radius: 5px;
   font-size: 16px;
 }
-
 .categories {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
 }
-
 .burger {
   display: none;
   position: absolute;
@@ -1129,7 +1035,6 @@ form input[type=text]:focus {
   background-color: #333;
   margin: 5px 0;
 }
-
 .side {
   position: fixed;
   top: 0;
@@ -1153,18 +1058,15 @@ form input[type=text]:focus {
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
 .categories button.active {
   background-color: #000;
   color: #fff;
 }
-
 .section-title {
   font-size: 28px;
   font-weight: 600;
   margin: 20px 0;
 }
-
 .post-container {
   background-color: #ffffff;
   padding: 20px;
@@ -1175,50 +1077,42 @@ form input[type=text]:focus {
   display: flex;
   flex-direction: column;
 }
-
 .author-section {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
 }
-
 .avatar {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   margin-right: 10px;
 }
-
 .author-name {
   font-size: 16px;
   font-weight: bold;
 }
-
 .title {
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 10px;
 }
-
 .content {
   font-size: 14px;
   color: #333;
   margin-bottom: 20px;
 }
-
 .date {
   font-size: 12px;
   color: #999;
   text-align: right;
 }
-
 .interaction-section {
   bottom: 10px;
   right: 20px;
   display: flex;
   align-items: center;
 }
-
 .interaction-section .likes,
 .interaction-section .comments {
   font-size: 20px;
@@ -1246,7 +1140,6 @@ form input[type=text]:focus {
   max-width: auto;
   height: 40px;
 }
-
 .likes,
 .comments {
   display: inline-block;
@@ -1255,31 +1148,28 @@ form input[type=text]:focus {
   background-size: cover;
   background-position: center;
 }
-
 .likes {
   background-image: url("photos/icon_like.png");
 }
-
 .comments {
   background-image: url("photos/icon_comment.png");
 }
-
 .likes-container:hover .amount-likes,
 .comments-container:hover .amount-comments,
 .likes-container:hover .likes,
 .comments-container:hover .comments,
 .author-name:hover {
   cursor: pointer;
-  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(100%) contrast(100%);
+  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%)
+    hue-rotate(0deg) brightness(100%) contrast(100%);
   transition: filter 0.3s ease; /* Плавный переход */
 }
-
 .likes-container.active {
   cursor: pointer;
-  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(100%) contrast(100%);
+  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%)
+    hue-rotate(0deg) brightness(100%) contrast(100%);
   transition: filter 0.3s ease; /* Плавный переход */
 }
-
 /* ДОНАТ */
 .modal__createpost,
 .modal__tip,
@@ -1298,28 +1188,23 @@ form input[type=text]:focus {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
 .modal__deletepost {
   width: 500px;
 }
-
 .edit {
   display: none;
 }
-
 .modal-header {
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
 }
-
 .modal-header h2 {
   margin: 0;
   font-size: 24px;
   text-align: center;
 }
-
 .modal-header p {
   margin: 5px 0 20px;
   text-align: center;
@@ -1329,13 +1214,11 @@ form input[type=text]:focus {
 .form-group {
   margin-bottom: 30px;
 }
-
 .form-group label {
   display: block;
   margin-bottom: 5px;
   color: #333;
 }
-
 .form-group input,
 .form-group textarea {
   width: 97%;
@@ -1344,19 +1227,16 @@ form input[type=text]:focus {
   border-radius: 5px;
   font-size: 16px;
 }
-
 .textarea-group,
 .textarea-group-delete {
   height: 100px;
   resize: none;
 }
-
 .textarea-group-delete {
   text-align: center;
   top: 40px;
   position: relative;
 }
-
 .input-group {
   height: 30px;
   resize: none;
@@ -1367,29 +1247,24 @@ form input[type=text]:focus {
   color: #999;
   font-size: 14px;
 }
-
 .form-group .char-count,
 .form-group .amount-count {
   float: right;
   color: #999;
   font-size: 14px;
 }
-
 .form-group .amount-count {
   float: left;
 }
-
 .form-group .min-tip {
   color: #999;
   font-size: 14px;
   margin-top: 5px;
 }
-
 .form-actions {
   display: flex;
   justify-content: space-between;
 }
-
 .form-actions button {
   padding: 10px 20px;
   border: none;
@@ -1397,11 +1272,9 @@ form input[type=text]:focus {
   font-size: 16px;
   cursor: pointer;
 }
-
 span {
   vertical-align: top;
 }
-
 .container-notification {
   flex-grow: 1;
   padding: 50px;
@@ -1409,28 +1282,25 @@ span {
   /* margin-left: 20%; */
   height: 100%;
 }
-
 .container-notification h1 {
   font-size: 24px;
   margin-bottom: 20px;
 }
-
 .container-notification .notification-icon {
   font-size: 50px;
   margin-bottom: 20px;
 }
-
 .container-notification .no-notifications {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 10px;
 }
-
 .container-notification .notification-text {
   color: #666;
 }
 
 /*SETTING*/
+
 .main-content {
   flex-grow: 1;
   padding: 40px;
@@ -1469,7 +1339,6 @@ span {
   z-index: 1;
   position: relative;
 }
-
 .tabs {
   display: flex;
   gap: 15px;
@@ -1515,7 +1384,9 @@ span {
   width: 0;
   height: 2px;
   background-color: #000;
-  transition: width 0.3s ease, left 0.3s ease;
+  transition:
+    width 0.3s ease,
+    left 0.3s ease;
 }
 
 .tabs a.active::after {
@@ -1583,25 +1454,23 @@ span {
   font-size: 16px;
   width: 150px;
 }
-
 input,
 select {
   flex-grow: 1;
 }
 
-.form-container input[type=text],
-.form-container input[type=email],
-.form-container input[type=password],
-.form-container-security input[type=text],
-.form-container-security input[type=email],
-.form-container-security input[type=password] {
+.form-container input[type="text"],
+.form-container input[type="email"],
+.form-container input[type="password"],
+.form-container-security input[type="text"],
+.form-container-security input[type="email"],
+.form-container-security input[type="password"] {
   width: 50%;
   padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #000;
   border-radius: 20px;
 }
-
 .form-container select,
 .form-container-security select {
   width: 51.5%;
@@ -1609,9 +1478,7 @@ select {
   margin-bottom: 20px;
   border: 1px solid #000;
   border-radius: 20px;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
+  appearance: none;
 }
 
 .form-container .profile-pic,
@@ -1623,7 +1490,6 @@ select {
   border-radius: 10px;
   margin-bottom: 20px;
 }
-
 .custom-file-upload {
   display: inline-block;
   padding: 10px 20px;
@@ -1637,7 +1503,6 @@ select {
 .custom-file-upload:hover {
   background-color: #45a049; /* Темнее при наведении */
 }
-
 .form-container button,
 .form-container-security button {
   background-color: #000;
@@ -1649,7 +1514,6 @@ select {
   cursor: pointer;
   width: 152.14px;
 }
-
 @media (max-width: 768px) {
   .form-container button {
     float: left;
@@ -1662,7 +1526,6 @@ select {
 .form-container .send-tip {
   float: left;
 }
-
 .become-author-button.active {
   background-color: gray;
   cursor: not-allowed;
@@ -1674,22 +1537,20 @@ select {
   margin-top: -10px;
   text-align: center;
 }
-
 .hidden {
   display: none;
 }
-
 .about-mobile__button.active,
 .posts-mobile__button.active {
   border: 2px solid var(--main-color);
-  transition: border 0.3s ease, background-color 0.3s ease;
+  transition:
+    border 0.3s ease,
+    background-color 0.3s ease;
 }
-
 .about-mobile__button,
 .posts-mobile__button {
   border: 2px solid white;
 }
-
 @media (min-width: 1025px) {
   .mobile-profile {
     display: none;
@@ -1697,12 +1558,12 @@ select {
 }
 /* Адаптивность */
 @media (max-width: 768px) {
-  .form-container input[type=text],
-  .form-container input[type=email],
-  .form-container input[type=password],
-  .form-container-security input[type=text],
-  .form-container-security input[type=email],
-  .form-container-security input[type=password] {
+  .form-container input[type="text"],
+  .form-container input[type="email"],
+  .form-container input[type="password"],
+  .form-container-security input[type="text"],
+  .form-container-security input[type="email"],
+  .form-container-security input[type="password"] {
     width: 100%;
   }
   .defs {
@@ -1738,6 +1599,7 @@ select {
     margin-left: 0;
     margin-right: 0;
   }
+
   .profile .left-bar {
     width: 100%;
     margin-left: 0;
@@ -1802,5 +1664,3 @@ select {
     border-bottom: none;
   }
 }
-
-/*# sourceMappingURL=style.css.map */
