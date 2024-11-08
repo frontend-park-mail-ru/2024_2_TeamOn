@@ -22,7 +22,7 @@ import { convertISOToRussianDate } from "../../utils/parsedate";
 /**
  * Функция получения популярных постов
  * @param offsetPopular Оффсет для популярных постов
- * @returns 
+ * @returns
  */
 async function getPopularPosts(offsetPopular: any) {
   return new Promise((resolve, reject) => {
@@ -48,7 +48,7 @@ async function getPopularPosts(offsetPopular: any) {
 /**
  * Функция получения недавних постов
  * @param offsetRecently Оффсет для недавних
- * @returns 
+ * @returns
  */
 async function getRecentlyPosts(offsetRecently: any) {
   return new Promise((resolve, reject) => {
@@ -159,8 +159,8 @@ async function renderRecentlyPosts(recentlyPosts: any) {
 }
 /**
  * Функция добавления лайка
- * @param postId 
- * @returns 
+ * @param postId
+ * @returns
  */
 export async function AddLikeOnPost(postId: any) {
   return new Promise((resolve, reject) => {
@@ -403,7 +403,7 @@ export async function paginate(
 }
 /**
  * Функция рендера ленты
- * @returns 
+ * @returns
  */
 export async function renderFeed() {
   try {

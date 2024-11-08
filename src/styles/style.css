@@ -1464,6 +1464,7 @@ span {
   font-weight: bold;
   position: relative;
   transition: color 0.3s ease;
+  cursor: pointer;
 }
 
 .tabs a::after {

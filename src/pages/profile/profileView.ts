@@ -8,7 +8,7 @@ import { convertISOToRussianDate } from "../../utils/parsedate";
 /**
  * Рендер контейнера поста
  * @param post Пост
- * @returns 
+ * @returns
  */
 function renderUserPosts(post: any) {
   const container: any = document.createElement("div");
@@ -155,7 +155,7 @@ export function renderDeletePost(post: any) {
 }
 /**
  * Функция рендера модального окна пожертвования
- * @returns 
+ * @returns
  */
 export function renderTip() {
   const feedRegex = /^\/profile\/[0-9a-zA-Z-]+$/;
@@ -194,7 +194,7 @@ export function renderTip() {
 }
 /**
  * Рендер модального окна создания поста
- * @returns 
+ * @returns
  */
 export function renderCreatePost() {
   if (window.location.pathname !== "/profile") {
@@ -233,7 +233,7 @@ export function renderCreatePost() {
  * @param authorData Информация об авторе
  * @param isEdit Флаг для перехода в режим редактирования
  * @param newValue Новое значение
- * @returns 
+ * @returns
  */
 function renderAbout(authorData: any, isEdit = false, newValue?: any) {
   const container: any = document.querySelector(`.place-edit-info`);
@@ -300,7 +300,7 @@ function renderAbout(authorData: any, isEdit = false, newValue?: any) {
  * @param authorData Информация об авторе
  * @param avatar Аватар
  * @param payments Выплаты
- * @returns 
+ * @returns
  */
 async function renderDesktopProfileInfo(
   authorData: any,
@@ -323,7 +323,7 @@ async function renderDesktopProfileInfo(
 /**
  * Рендер бекграунда профиля для десктопа
  * @param background Бекграунд
- * @returns 
+ * @returns
  */
 function renderDesktopProfileHeader(background: any) {
   const vdom: VNode = createElement("div", { class: "header-profile" }, [
@@ -365,7 +365,7 @@ function renderDesktopProfileHeader(background: any) {
  * @param avatar Аватар
  * @param background Бекграунд
  * @param payments Выплаты
- * @returns 
+ * @returns
  */
 async function mobileProfile(
   user: any,

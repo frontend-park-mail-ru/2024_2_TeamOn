@@ -1,7 +1,7 @@
 /**
  * Функция парсинга даты
- * @param isoString 
- * @returns 
+ * @param isoString
+ * @returns
  */
 export function convertISOToRussianDate(isoString: string): any {
   const date = new Date(isoString);

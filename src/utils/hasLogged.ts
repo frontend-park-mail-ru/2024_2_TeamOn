@@ -2,7 +2,7 @@ import { getItemLocalStorage } from "./storages";
 
 /**
  * Флаг логина
- * @returns 
+ * @returns
  */
 export function hasLogged() {
   return Array.from({ length: localStorage.length }).some((_, i) => {
@@ -12,7 +12,7 @@ export function hasLogged() {
 }
 /**
  * Поиск имени
- * @returns 
+ * @returns
  */
 export function findUsername() {
   return (

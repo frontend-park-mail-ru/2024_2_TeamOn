@@ -189,6 +189,12 @@ export function validateSignupForm(
   } else {
     removeError(inputUsername);
   }
+
+  // Проверка логина
+  if (inputPassword.value !== inputRepeatPassword.value) {
+    hasError = true;
+  }
+
   var check = true;
   validatePasswords(
     inputPassword,

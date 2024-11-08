@@ -51,7 +51,7 @@ export function validateSettingsPassword(
  * Валидация основной информации
  * @param username Имя
  * @param email Почта
- * @returns 
+ * @returns
  */
 export function validateMainInfo(
   username: string,

@@ -11,7 +11,7 @@ import { controlLogout, getAvatar } from "../profile/profile";
 import { validateSettingsPassword, validateMainInfo } from "./settings";
 /**
  * Рендер настроек
- * @returns 
+ * @returns
  */
 export async function renderSettings() {
   try {
@@ -60,7 +60,7 @@ export async function renderSettings() {
 }
 /**
  * Функция стать автором
- * @returns 
+ * @returns
  */
 async function setAuthor() {
   return new Promise((resolve, reject) => {
@@ -80,7 +80,7 @@ async function setAuthor() {
  * @param username Имя
  * @param email Почта
  * @param password Пароль
- * @returns 
+ * @returns
  */
 async function saveSettings(username: string, email: string, password: string) {
   return new Promise((resolve, reject) => {
@@ -105,7 +105,7 @@ async function saveSettings(username: string, email: string, password: string) {
 /**
  * Функция сохранения аватара
  * @param avatar Аватар
- * @returns 
+ * @returns
  */
 async function saveAvatar(avatar: FormData) {
   return new Promise((resolve, reject) => {
@@ -170,7 +170,7 @@ let buttonPassword: any;
  * @param contentContainer Основной контейнер
  * @param index Индекс в таблице
  * @param userdata Информация о пользователе
- * @returns 
+ * @returns
  */
 async function updateContent(
   contentContainer: HTMLDivElement,
@@ -202,7 +202,7 @@ async function updateContent(
 /**
  * Функция создания формы профиля
  * @param userdata Информация о юзере
- * @returns 
+ * @returns
  */
 async function createProfileForm(userdata: any): Promise<HTMLDivElement> {
   const formContainer = document.createElement("div");
@@ -310,7 +310,7 @@ async function createProfileForm(userdata: any): Promise<HTMLDivElement> {
  * Валидация основной информации
  * @param username Имя
  * @param email Почта
- * @returns 
+ * @returns
  */
 export function validationMainInfoSave(
   username: string,
@@ -458,7 +458,7 @@ function validationSecuritySave(
  * Функция создания лейбла
  * @param text Текст
  * @param htmlFor Значение
- * @returns 
+ * @returns
  */
 function createLabel(text: string, htmlFor: string): HTMLLabelElement {
   const label = document.createElement("label");
@@ -471,7 +471,7 @@ function createLabel(text: string, htmlFor: string): HTMLLabelElement {
  * @param type Тип
  * @param id Айди
  * @param initialtext Изначальный текст
- * @returns 
+ * @returns
  */
 function createInput(
   type: string,
@@ -486,7 +486,7 @@ function createInput(
 }
 /**
  * Функция рендера кнопки "СТАТЬ АВТОРОМ"
- * @returns 
+ * @returns
  */
 async function createButtonSetAuthor() {
   const button: any = document.createElement("button");
@@ -511,7 +511,7 @@ async function createButtonSetAuthor() {
 }
 /**
  * Создания аватара
- * @returns 
+ * @returns
  */
 async function createPhoto(): Promise<any> {
   const avatar: any = await getAvatar("/profile");
@@ -599,7 +599,7 @@ async function createPhoto(): Promise<any> {
 }
 /**
  * Создание сообщения об ошибке
- * @returns 
+ * @returns
  */
 function createErrorMessage(): HTMLDivElement {
   const errorMessage = document.createElement("div");
@@ -609,7 +609,7 @@ function createErrorMessage(): HTMLDivElement {
 }
 /**
  * Создание длины ошибок
- * @returns 
+ * @returns
  */
 function createErrorMessageStrength(): HTMLDivElement {
   const errorMessage = document.createElement("div");

@@ -3,7 +3,7 @@ const parser = new JSXParser();
 /**
  * Создание элемента JSX
  * @param jsx Синтаксис HTML
- * @returns 
+ * @returns
  */
 function createElementJSX(jsx: string) {
   return parser.createElementFromJSX(jsx);

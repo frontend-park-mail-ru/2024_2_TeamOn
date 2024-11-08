@@ -145,10 +145,9 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
   const routeConfig = config.menu[sectionKey];
 
   const renderPromise = Promise.resolve(routeConfig.render());
-  renderPromise
-    .catch((error) => {
-      console.error("ERROR:", error);
-    });
+  renderPromise.catch((error) => {
+    console.error("ERROR:", error);
+  });
 }
 var root: HTMLElement | null = startA(config.menu, state);
 

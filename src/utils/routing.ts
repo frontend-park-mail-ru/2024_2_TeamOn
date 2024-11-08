@@ -43,7 +43,7 @@ interface MenuElements {
 /**
  * Функция обновления контента на странице
  * @param render Ссылка на страницу
- * @returns 
+ * @returns
  */
 function updatePageContent(render: string): void {
   const feedRegex = /^\/profile\/[0-9a-zA-Z-]+$/;

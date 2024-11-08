@@ -1,4 +1,3 @@
-
 /**
  * Ручки для получения токена CSRF
  */
@@ -10,7 +9,7 @@ const tokenEndpoints: any = {
 };
 /**
  * Функция получения токена к сервису "посты"
- * @returns 
+ * @returns
  */
 async function getCSRFTokenForPosts() {
   const response = await fetch("/api/posts/token-endpoint");
@@ -20,7 +19,7 @@ async function getCSRFTokenForPosts() {
 
 /**
  * Функция получения токена к сервису "логина и регистрации"
- * @returns 
+ * @returns
  */
 async function getCSRFTokenForAuth() {
   const response = await fetch("/api/auth/token-endpoint");
@@ -30,7 +29,7 @@ async function getCSRFTokenForAuth() {
 
 /**
  * Функция получения токена к сервису "аккаунт"
- * @returns 
+ * @returns
  */
 async function getCSRFTokenForAccounts() {
   const response = await fetch("/api/accounts/token-endpoint");
@@ -40,7 +39,7 @@ async function getCSRFTokenForAccounts() {
 
 /**
  * Функция получения токена к сервису "автор"
- * @returns 
+ * @returns
  */
 async function getCSRFTokenForAuthor() {
   const response = await fetch("/api/danya/token-endpoint");

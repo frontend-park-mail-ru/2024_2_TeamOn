@@ -21,7 +21,7 @@ export function setActiveLink(link: any) {
 
 /**
  * Рендер бургера
- * @returns 
+ * @returns
  */
 function renderBurger() {
   const vdom: VNode = createElement(
@@ -38,7 +38,7 @@ function renderBurger() {
 }
 /**
  * Функция получения аккаунта
- * @returns 
+ * @returns
  */
 export async function getAccount() {
   return new Promise((resolve, reject) => {
@@ -63,7 +63,7 @@ export async function getAccount() {
 /**
  * Функция рендера сайдбара
  * @param userdata Информация о юзере
- * @returns 
+ * @returns
  */
 async function renderSidebar(userdata: any) {
   sessionStorage.setItem("account", userdata.username);
@@ -111,7 +111,7 @@ async function renderSidebar(userdata: any) {
 /**
  * Рендер медиа контента к постам (в разработке)
  * @param mediaContent  Медиа контент
- * @returns 
+ * @returns
  */
 function rendermediaContent(mediaContent: any[]) {
   var result: any = [];
@@ -129,7 +129,7 @@ function rendermediaContent(mediaContent: any[]) {
  * Рендер контейнера поста
  * @param post Пост
  * @param mediaContent Медиа-контент у поста
- * @returns 
+ * @returns
  */
 async function createContainerPost(post: any, mediaContent: any[]) {
   const container = document.createElement("div");
