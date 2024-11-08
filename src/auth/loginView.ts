@@ -46,14 +46,16 @@ export function renderLogin() {
   closeBtn.innerHTML = "x";
 
   const passwordEye: any = container.querySelector(".password-eye");
-  passwordEye.innerHTML = "&#128064;";
+  // passwordEye.innerHTML = "&#128064;";
   passwordEye.addEventListener("click", () => {
     if (inputPassword.type === "password") {
       inputPassword.type = "text";
-      passwordEye.innerHTML = "&#128065;";
+      passwordEye.classList.add("active");
+      // passwordEye.innerHTML = "&#128065;";
     } else {
       inputPassword.type = "password";
-      passwordEye.innerHTML = "&#128064;";
+      passwordEye.classList.remove("active");
+      // passwordEye.innerHTML = "&#128064;";
     }
   });
 

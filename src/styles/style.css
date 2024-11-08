@@ -240,7 +240,11 @@ form input[type=text]:focus {
   font-size: 18px;
 }
 
-.home-buttons__button__effects:hover,
+.home-buttons__button__effects:hover {
+  background: gray;
+  color: white;
+}
+
 .logout__button__effects:hover,
 .donate__button__effects:hover,
 .send-tip__button__effects:hover,
@@ -931,14 +935,22 @@ form input[type=text]:focus {
 /* EYE */
 .password-eye {
   position: relative;
-  left: 80pt;
-  top: 30pt;
+  left: 120px;
+  top: 39px;
   cursor: pointer;
   font-size: 18px;
   color: #666;
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
+  background-image: url("photos/eye_nsee.png");
+  background-size: cover;
+  width: 20px;
+  height: 20px;
+}
+
+.password-eye.active {
+  background-image: url("photos/eye_see.png");
 }
 
 /* FEED */
@@ -956,6 +968,41 @@ form input[type=text]:focus {
   z-index: 10;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
+  transition: left 0.3s ease;
+}
+
+.push-modal {
+  position: fixed;
+  top: 80%;
+  width: 100px;
+  height: 40px;
+  z-index: 5000;
+  background-color: var(--main-background-color);
+  color: white;
+  text-align: center;
+  padding: 20px;
+  border-radius: 8px;
+  transition: opacity 0.5s ease;
+  opacity: 0;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border: 1px solid gray;
+  border-radius: 8px;
+  left: 1%;
+  font-size: bold;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+.push-modal:hover {
+  pointer-events: auto;
+  background-color: #e7e7e7;
+}
+
+.push-modal.active {
+  opacity: 1; /* Делаем его видимым */
 }
 
 .sidebar.active {
@@ -1023,6 +1070,9 @@ form input[type=text]:focus {
   color: #555;
   text-decoration: none;
   transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .sidebar a.active {
@@ -1519,7 +1569,7 @@ span {
   max-width: 1000px;
   margin: 0 auto;
   display: none;
-  height: 300px;
+  height: 400px;
 }
 
 .form-container h2,
@@ -1608,6 +1658,7 @@ select {
   font-size: 15px;
   cursor: pointer;
   width: 152.14px;
+  margin-top: 10px;
 }
 
 @media (max-width: 768px) {
@@ -1635,6 +1686,11 @@ select {
   text-align: center;
 }
 
+@media (min-width: 768px) {
+  .error-message {
+    margin-right: 60%;
+  }
+}
 .hidden {
   display: none;
 }
@@ -1685,9 +1741,6 @@ select {
   .modal__deletepost,
   .modal__editpost {
     max-width: 90%;
-  }
-  .profile {
-    flex-direction: column;
   }
   .profile .left {
     width: 100%;

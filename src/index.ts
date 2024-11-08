@@ -149,15 +149,18 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
     console.error("ERROR:", error);
   });
 }
-var root: HTMLElement | null = startA(config.menu, state);
+let root: HTMLElement | null = startA(config.menu, state);
 
 export const Virtual: any = new VirtualDOM();
 export const pageContainer = document.createElement("main");
+const pushmodal = document.createElement("div");
+pushmodal.className = "push-modal";
 if (flag) {
-  var root: HTMLElement | null = startA(config.menu, state);
+  let root: HTMLElement | null = startA(config.menu, state);
 
   render(Virtual);
 
   root?.appendChild(pageContainer);
+  root?.append(pushmodal);
   route(LINKS.HOME.HREF, window.location.pathname);
 }

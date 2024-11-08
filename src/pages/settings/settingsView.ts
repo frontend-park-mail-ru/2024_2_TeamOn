@@ -7,7 +7,11 @@ import { fetchAjax } from "../../utils/fetchAjax";
 import { route } from "../../utils/routing";
 import { modifierSidebar } from "../feed/feed";
 import { getAccount, renderSidebar } from "../feed/feedView";
-import { controlLogout, getAvatar } from "../profile/profile";
+import {
+  controlLogout,
+  getAvatar,
+  renderModalStatusUpload,
+} from "../profile/profile";
 import { validateSettingsPassword, validateMainInfo } from "./settings";
 /**
  * Рендер настроек
@@ -551,36 +555,8 @@ async function createPhoto(): Promise<any> {
         formData.append("file", file);
         try {
           const ok: any = await saveAvatar(formData);
-          if (ok) {
-            // Создаем элемент для сообщения об успешной загрузке
-            const successMessage = document.createElement("div");
-            successMessage.textContent = "Аватар успешно загружен!";
-            successMessage.style.color = "green";
-            successMessage.style.marginTop = "10px";
-            successMessage.style.fontWeight = "bold";
-
-            // Добавляем сообщение в профильный div
-            profilePicDiv.appendChild(successMessage);
-
-            // Убираем сообщение через несколько секунд
-            setTimeout(() => {
-              successMessage.remove();
-            }, 3000); // Удаляем сообщение через 3 секунды
-          } else {
-            if (!document.querySelector(`.error-msg`)) {
-              const successMessage = document.createElement("div");
-              successMessage.textContent = "Ошибка при сохранении аватара";
-              successMessage.style.color = "red";
-              successMessage.style.marginTop = "10px";
-              successMessage.className = "error-msg";
-              // Добавляем сообщение в профильный div
-              profilePicDiv.appendChild(successMessage);
-              // Убираем сообщение через несколько секунд
-              setTimeout(() => {
-                successMessage.remove();
-              }, 3000); // Удаляем сообщение через 3 секунды
-            }
-          }
+          const media = "Аватар";
+          renderModalStatusUpload(ok, media);
         } catch (error) {
           console.error("Ошибка при загрузке фонового изображения:", error);
         }
