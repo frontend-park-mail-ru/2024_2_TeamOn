@@ -2,11 +2,11 @@ import { Virtual } from "../../index";
 import { VirtualDOM } from "./src/source";
 import { VNode } from "./src/source";
 /**
- * Создание элемента 
+ * Создание элемента
  * @param type Тип
  * @param props Свойства
  * @param children Дети
- * @returns 
+ * @returns
  */
 function createElement(
   type: string,
@@ -18,7 +18,7 @@ function createElement(
 /**
  * Создание текста
  * @param text Текст
- * @returns 
+ * @returns
  */
 function createText(text: string): VNode {
   return { type: "text", props: { text }, children: [] };
@@ -26,8 +26,8 @@ function createText(text: string): VNode {
 
 /**
  * Рендер виртуального дома
- * @param vdom 
- * @returns 
+ * @param vdom
+ * @returns
  */
 function render(vdom: VirtualDOM): any {
   return vdom.render();
@@ -37,7 +37,7 @@ function render(vdom: VirtualDOM): any {
  * @param parent Родитель
  * @param content То, что хотим внести в родителя
  * @param vdom Переменная виртуального дома
- * @returns 
+ * @returns
  */
 function update(parent: any, content: VNode, vdom: VirtualDOM = Virtual): any {
   return vdom.update(parent, content);
@@ -48,7 +48,7 @@ function update(parent: any, content: VNode, vdom: VirtualDOM = Virtual): any {
  * @param parent Родитель
  * @param newChild Новый контейнер, который хотим присоеденить в родителя
  * @param vdom Виртуальный дом
- * @returns 
+ * @returns
  */
 function append(
   parent: VNode,

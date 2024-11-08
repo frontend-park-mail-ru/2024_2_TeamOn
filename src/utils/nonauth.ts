@@ -4,7 +4,7 @@ import { route } from "./routing";
 
 /**
  * Проверка неавторизованности
- * @returns 
+ * @returns
  */
 export function nonauth() {
   if (!hasLogged()) {

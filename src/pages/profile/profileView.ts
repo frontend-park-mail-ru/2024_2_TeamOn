@@ -8,7 +8,7 @@ import { convertISOToRussianDate } from "../../utils/parsedate";
 /**
  * Рендер контейнера поста
  * @param post Пост
- * @returns 
+ * @returns
  */
 function renderUserPosts(post: any) {
   const container: any = document.createElement("div");
@@ -155,7 +155,7 @@ export function renderDeletePost(post: any) {
 }
 /**
  * Функция рендера модального окна пожертвования
- * @returns 
+ * @returns
  */
 export function renderTip() {
   const feedRegex = /^\/profile\/[0-9a-zA-Z-]+$/;
@@ -194,7 +194,7 @@ export function renderTip() {
 }
 /**
  * Рендер модального окна создания поста
- * @returns 
+ * @returns
  */
 export function renderCreatePost() {
   if (window.location.pathname !== "/profile") {
@@ -233,7 +233,7 @@ export function renderCreatePost() {
  * @param authorData Информация об авторе
  * @param isEdit Флаг для перехода в режим редактирования
  * @param newValue Новое значение
- * @returns 
+ * @returns
  */
 function renderAbout(authorData: any, isEdit = false, newValue?: any) {
   const container: any = document.querySelector(`.place-edit-info`);
@@ -262,15 +262,15 @@ function renderAbout(authorData: any, isEdit = false, newValue?: any) {
       ]),
     ]);
   } else {
-    // Обычный режим
+    // Обычный режим (не редактирование)
     vdom = createElement("div", { class: "about" }, [
       createElement("h2", {}, [createText("ОБО МНЕ")]),
       createElement(
         "input",
         {
           class: "about-input",
-          value: newValue == undefined ? "ну ладно" : newValue,
-          style: "display: none;", // Скрываем инпут в обычном режиме
+          value: newValue == undefined ? "" : newValue,
+          placeholder: authorData.info == null ? "Изменить статус..." : "", // Плейсхолдер, если нет информации
         },
         [],
       ),
@@ -278,7 +278,7 @@ function renderAbout(authorData: any, isEdit = false, newValue?: any) {
         createText(
           authorData.info == null
             ? newValue == undefined
-              ? "Изменить статус..."
+              ? "" // Пустое значение, если нет информации
               : newValue
             : authorData.info,
         ),
@@ -295,35 +295,62 @@ function renderAbout(authorData: any, isEdit = false, newValue?: any) {
 
   return container;
 }
+
+
 /**
  * Рендер информации о профиле для десктопа
  * @param authorData Информация об авторе
  * @param avatar Аватар
  * @param payments Выплаты
- * @returns 
+ * @returns
  */
+
 async function renderDesktopProfileInfo(
   authorData: any,
   avatar: any,
   payments: any,
 ) {
-  const vdom: VNode = createElement("div", { class: "left-column" }, [
-    createElement(
-      "img",
-      {
-        src: avatar,
-        class: "profile-avatar",
+  let isLoadingAvatar = true;
+
+  //  лоадер
+  const loader = createElement(
+    "div",
+    {
+      class: "loader",
+    },
+    [],
+  );
+  const avatarImage = createElement(
+    "img",
+    {
+      src: avatar,
+      class: "profile-avatar",
+      onLoad: () => {
+        isLoadingAvatar = false;
       },
-      [],
-    ),
+      onError: () => {
+        console.error("Ошибка загрузки аватарки");
+        isLoadingAvatar = false;
+      },
+    },
+    [],
+  );
+
+  const vdom: VNode = createElement("div", { class: "left-column" }, [
+    createElement("div", { class: "avatar-container" }, [
+      avatarImage,
+      isLoadingAvatar ? loader : createElement("div", {}, []),
+    ]),
     ...(await renderUserInfo(authorData, payments)),
   ]);
+
   return vdom;
 }
+
 /**
  * Рендер бекграунда профиля для десктопа
  * @param background Бекграунд
- * @returns 
+ * @returns
  */
 function renderDesktopProfileHeader(background: any) {
   const vdom: VNode = createElement("div", { class: "header-profile" }, [
@@ -365,7 +392,7 @@ function renderDesktopProfileHeader(background: any) {
  * @param avatar Аватар
  * @param background Бекграунд
  * @param payments Выплаты
- * @returns 
+ * @returns
  */
 async function mobileProfile(
   user: any,

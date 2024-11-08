@@ -1,7 +1,6 @@
-
 /**
  * Создание маски
- * @returns 
+ * @returns
  */
 function createMask() {
   const mask = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -20,7 +19,7 @@ function createMask() {
  * @param container Контейнер
  * @param containerSecond Второй контейнер
  * @param mask Маска
- * @returns 
+ * @returns
  */
 function controllerMask(container: any, containerSecond: any, mask: any) {
   // Добавляем обработчик события для движения мыши

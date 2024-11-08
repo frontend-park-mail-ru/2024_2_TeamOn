@@ -27,7 +27,7 @@ import { convertISOToRussianDate } from "../../utils/parsedate";
  * @param link Ссылка на страницу
  * @param offset Оффсет
  * @param limit Лимит
- * @returns 
+ * @returns
  */
 export async function getUserPosts(
   link: string,
@@ -62,7 +62,7 @@ export async function getUserPosts(
  * @param containerCreatePost Контейнер добавления
  * @param title Заголовок
  * @param content Содержание
- * @returns 
+ * @returns
  */
 async function addUserPost(
   containerCreatePost: any,
@@ -127,7 +127,7 @@ export async function getPageAuthor(link: string) {
 /**
  * Получение выплат через объект типа промис
  * @param link Ссылка на страницу
- * @returns 
+ * @returns
  */
 async function getPayments(link: string) {
   return new Promise((resolve, reject) => {
@@ -152,7 +152,7 @@ async function getPayments(link: string) {
  * Функция получения аватара через объект типа промис
  * @param link Ссылка на страницу
  * @param authorID Автор айди
- * @returns 
+ * @returns
  */
 export async function getAvatar(link: string, authorID: any = null) {
   return new Promise((resolve, reject) => {
@@ -183,7 +183,7 @@ export async function getAvatar(link: string, authorID: any = null) {
  * Получение фона на странице автора через объект типа промис
  * @param link Ссылка на страницу
  * @param authorID Автор айди
- * @returns 
+ * @returns
  */
 export async function getBackgroundAuthor(link: string, authorID: any) {
   return new Promise((resolve, reject) => {
@@ -232,7 +232,7 @@ export function renderLogoutButton() {
  * @param postIdEdit Айди редактируемого поста
  * @param titleEdit Заголовок редактирования
  * @param contentEdit Контент редактирования
- * @returns 
+ * @returns
  */
 async function editPost(
   modalEdit: any,
@@ -270,7 +270,7 @@ async function editPost(
 /**
  * Функция удаления поста через объект типа промис
  * @param postId Айди поста
- * @returns 
+ * @returns
  */
 async function deletePost(postId: any) {
   return new Promise((resolve, reject) => {
@@ -293,7 +293,7 @@ async function deletePost(postId: any) {
 /**
  * Функция рендера постов
  * @param authorPosts Массив постов у текущего юзера
- * @returns 
+ * @returns
  */
 function renderPosts(authorPosts: any[]) {
   var posts: any = [];
@@ -308,7 +308,7 @@ function renderPosts(authorPosts: any[]) {
  * @param containerPosts Контейнер с постами
  * @param posts Посты
  * @param postId Пост айди. Нужен для создания поста
- * @returns 
+ * @returns
  */
 async function modifireMyPosts(
   containerPosts: any,
@@ -458,7 +458,6 @@ async function modifierModalEditPost(
   const buttonCancel: any = modalsEdit.querySelector(`.cancel`);
   const buttonConfirm: any = modalsEdit.querySelector(`.save`);
 
-
   const edittitle: any = document.querySelector(".input-group");
   const editcontent: any = document.querySelector(".textarea-group");
 
@@ -586,7 +585,14 @@ function customizePostProfile(container: any, post: any, postId: any = null) {
   if (!menu) return;
   menu.addEventListener("click", async (event: any) => {
     if (event.target.classList.contains("button-edit-post")) {
-      modifierModalEditPost(dropdownmenu, profileForm, title, content, post, postId);
+      modifierModalEditPost(
+        dropdownmenu,
+        profileForm,
+        title,
+        content,
+        post,
+        postId,
+      );
       return;
     }
 
@@ -649,7 +655,7 @@ function handleImageUpload() {
 /**
  * Сохранения бекграунда после загрузки
  * @param background Файл картинка
- * @returns 
+ * @returns
  */
 async function saveBackground(background: FormData) {
   return new Promise((resolve, reject) => {
@@ -763,7 +769,7 @@ async function controlAdaptiveProfile(container: any) {
   const feedProfile: any = container.querySelector(".feed-profile");
   const aboutProfile: any = container.querySelector(".place-edit-info");
   const data: any = await getPageAuthor(window.location.pathname);
-  
+
   /**
    * Функция показа ленты в профиле
    */
@@ -775,7 +781,7 @@ async function controlAdaptiveProfile(container: any) {
       feedProfile.classList.remove("hidden");
     }
   }
-  
+
   /**
    * Функция показа контейнера "ПРОФИЛЬ"
    */
@@ -825,9 +831,9 @@ export function controlLogout(container: any, authorData: any) {
 }
 /**
  * Функция отправки пожертвования
- * @param authorId 
- * @param body 
- * @returns 
+ * @param authorId
+ * @param body
+ * @returns
  */
 async function sendTip(authorId: any, body: any) {
   return new Promise((resolve, reject) => {
@@ -987,7 +993,7 @@ async function controlAdaptivePageAuthors(
 /**
  * Функция подписки
  * @param authorId Автор айди
- * @returns 
+ * @returns
  */
 async function following(authorId: any) {
   return new Promise((resolve, reject) => {
@@ -1013,7 +1019,7 @@ async function following(authorId: any) {
  * @param avatar Аватар
  * @param background Бекграунд
  * @param payments Выплаты
- * @returns 
+ * @returns
  */
 async function renderProfileForm(
   authorData: any,
@@ -1061,7 +1067,7 @@ async function renderProfileForm(
 /**
  * Изменение информации "О СЕБЕ"
  * @param info Информация
- * @returns 
+ * @returns
  */
 async function setInfo(info: any) {
   return new Promise((resolve, reject) => {
@@ -1086,7 +1092,7 @@ async function setInfo(info: any) {
  * УПравление информацией "О СЕБЕ"
  * @param authorData Данные об авторе
  * @param container Контейнер "О СЕБЕ"
- * @returns 
+ * @returns
  */
 function controlInfo(authorData: any, container: any) {
   if (window.location.pathname !== "/profile") {
@@ -1141,7 +1147,7 @@ async function paginateProfile(allPosts: any, containerPosts: any) {
   };
   /**
    * Загрузка постов в профиле
-   * @returns 
+   * @returns
    */
   async function loadProfilePost() {
     if (isLoading) return; // Если загрузка уже идет, выходим из функции
@@ -1188,7 +1194,7 @@ async function paginateProfile(allPosts: any, containerPosts: any) {
  * @param background Бекграунд
  * @param userdata Данные о пользователе
  * @param payments Выплаты
- * @returns 
+ * @returns
  */
 async function renderMainContent(
   authorData: any,

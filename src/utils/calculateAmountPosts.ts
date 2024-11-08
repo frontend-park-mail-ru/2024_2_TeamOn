@@ -1,7 +1,7 @@
 /**
  * ПОдсчет количества постов
  * @param posts Массив постов
- * @returns 
+ * @returns
  */
 function calculateAmountPosts(posts: any) {
   if (posts.length < 0) {

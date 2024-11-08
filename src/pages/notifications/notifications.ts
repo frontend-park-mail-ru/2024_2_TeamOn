@@ -8,7 +8,7 @@ import { modifierSidebar } from "../feed/feed";
 import { getAccount, renderSidebar } from "../feed/feedView";
 /**
  * Функция рендера уведомлений (в обработке)
- * @returns 
+ * @returns
  */
 export async function renderNotifications() {
   try {
