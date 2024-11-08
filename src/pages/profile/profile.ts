@@ -489,6 +489,8 @@ async function modifierModalEditPost(
       }
       return;
     }
+    console.log(edittitle.value);
+    console.log(editcontent.value);
     await editPost(
       modalsEdit,
       postId ? postId : post.postId,
@@ -926,7 +928,7 @@ async function controlAdaptivePageAuthors(
           const place: any = profileForm.querySelector(".place-posts");
           place.prepend(...(await renderPosts(newposts.slice(0, 1))));
           modifireMyPosts(place, newposts.slice(0, 1), post.postId);
-
+          console.log(newposts.slice(0, 1));
           const placeStats: any = document.querySelector(`.stats`);
           const payments: any = await getPayments(window.location.pathname);
 
