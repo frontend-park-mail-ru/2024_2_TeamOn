@@ -13,7 +13,7 @@ const CACHE_URLS = [
   //"/styles/style.css",
 ];
 
-self.addEventListener("install", (event: ExtendableEvent) => {
+self.addEventListener("install", (event: any) => {
   console.log("Service Worker installing");
   event.waitUntil(
     caches
@@ -28,7 +28,7 @@ self.addEventListener("install", (event: ExtendableEvent) => {
   );
 });
 
-self.addEventListener("activate", (event: ExtendableEvent) => {
+self.addEventListener("activate", (event: any) => {
   console.log("Service Worker activated");
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -41,7 +41,7 @@ self.addEventListener("activate", (event: ExtendableEvent) => {
   );
 });
 
-self.addEventListener("fetch", (event: FetchEvent) => {
+self.addEventListener("fetch", (event: any) => {
   console.log("Trying to fetch:", event.request.url);
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
