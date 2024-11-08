@@ -18,6 +18,7 @@ export function renderSignup() {
       createElement("form", { class: "form-signup" }, [
         createElement("input", { class: "input-username" }, []),
         createElement("input", { class: "input-password" }, []),
+        createElement("i", { class: ELEMENTS_CLASS.PASSWORD_EYE }, []),
         createElement("input", { class: "input-repeatPassword" }, []),
         createElement("div", { class: "password-strength" }, []),
         createElement("input", { class: "button-signup" }, []),
@@ -38,7 +39,16 @@ export function renderSignup() {
   const inputRepeatPassword: any = container.querySelector(
     `.input-repeatPassword`,
   );
-
+  const passwordEye: any = container.querySelector(".password-eye");
+  passwordEye.addEventListener("click", () => {
+    if (inputRepeatPassword.type === "password") {
+      inputRepeatPassword.type = "text";
+      passwordEye.classList.add("active");
+    } else {
+      passwordEye.classList.remove("active");
+      inputRepeatPassword.type = "password";
+    }
+  });
   inputUsername.type = "text";
   inputUsername.placeholder = "Введите имя пользователя";
 

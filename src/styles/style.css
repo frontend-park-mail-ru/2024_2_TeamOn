@@ -939,14 +939,23 @@ form input[type="text"]:focus {
 /* EYE */
 .password-eye {
   position: relative;
-  left: 80pt;
-  top: 30pt;
+  left: 40%;
+  top: 40px;
   cursor: pointer;
   font-size: 18px;
   color: #666;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  background-image: url("photos/eye_nsee.png");
+  width: 20px;
+  height: 20px;
+  background-size: cover;
+}
+
+.password-eye.active {
+  background-image: url("photos/eye_see.png");
+  cursor: pointer;
 }
 
 /* FEED */
