@@ -190,8 +190,6 @@ export function renderTip() {
     ]),
   ]);
   const container = document.querySelector(`.div-send-tip`);
-  console.log(container);
-  console.log("vot");
   update(container, vdom);
 }
 /**

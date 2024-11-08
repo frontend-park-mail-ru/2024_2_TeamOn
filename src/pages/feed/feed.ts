@@ -196,7 +196,6 @@ export function modifierSidebar(mainContainer: any) {
     sidebar.classList.toggle(ELEMENTS_CLASS.ACTIVE);
   });
   const sidebarReferenses = sidebar.querySelectorAll(".referens");
-  console.log(sidebarReferenses);
   sidebarLinks.forEach((link: any, index: any) => {
     sidebarReferenses[index]?.addEventListener("click", (event: any) => {
       event.preventDefault();

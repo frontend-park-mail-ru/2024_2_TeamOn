@@ -416,6 +416,12 @@ async function modifierModalDeletePost(
 
     await deletePost(foundPost.postId);
     container.style.display = "none";
+
+    const placeStats: any = document.querySelector(`.stats`);
+    const payments: any = await getPayments(window.location.pathname);
+    const authorData: any = await getPageAuthor(window.location.pathname);
+    const arrayStats: VNode = await renderUserStats(authorData, payments);
+    update(placeStats, arrayStats);
     return;
   });
 }
@@ -443,10 +449,7 @@ async function modifierModalEditPost(
 
   if (postId) {
     post = alluserpost[0];
-    alert("sss");
   }
-  console.log(post);
-  console.log(post);
   dropdownmenu.classList.remove(ELEMENTS_CLASS.ACTIVE);
 
   renderEditPost(post);
@@ -914,7 +917,6 @@ async function controlAdaptivePageAuthors(
             0,
             300,
           );
-          console.log(newposts);
           const place: any = profileForm.querySelector(".place-posts");
           place.prepend(...(await renderPosts(newposts.slice(0, 1))));
           modifireMyPosts(place, newposts.slice(0, 1), post.postId);
@@ -924,7 +926,6 @@ async function controlAdaptivePageAuthors(
 
           const arrayStats: VNode = await renderUserStats(authorData, payments);
           update(placeStats, arrayStats);
-          console.log(arrayStats);
         });
       });
     });
@@ -1151,7 +1152,6 @@ async function paginateProfile(allPosts: any, containerPosts: any) {
         // Загружаем популярные посты
         const posts: any = await getUserPosts(window.location.pathname, offset);
         const nextPosts = posts.slice(0, QUERY.LIMIT);
-        console.log(posts);
         if (nextPosts.length > 0) {
           allPosts.push(...nextPosts);
           offset += QUERY.LIMIT;

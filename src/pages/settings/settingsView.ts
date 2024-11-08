@@ -51,7 +51,6 @@ export async function renderSettings() {
     const profilePicForm: any = document.querySelector(
       `.profile-pic-container`,
     );
-    console.log(profilePicForm);
 
     return container;
   } catch (error) {
@@ -239,7 +238,6 @@ async function createProfileForm(userdata: any): Promise<HTMLDivElement> {
   formContainer.append(emailRow, emailError, saveButton, buttonSetAuthor);
   const username: any = usernameInput;
   const email: any = emailInput;
-  console.log(username);
   saveButton.addEventListener("click", async (event: any) => {
     const { usernameError: usernameErrorMsg, emailError: emailErrorMsg } =
       validationMainInfoSave(usernameInput.value, emailInput.value);
