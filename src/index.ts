@@ -164,7 +164,7 @@ if (flag) {
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
-    .register("/src/sw.js", { scope: "/src/" })
+    .register("/sw.js", { scope: "/" })
     .then((reg) => {
       console.log("sw registered", reg);
     })

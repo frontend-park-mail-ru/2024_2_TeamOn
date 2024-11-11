@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require("path");
 
 module.exports = {
@@ -28,6 +29,9 @@ module.exports = {
       filename: "index.html",
       inject: true,
     }),
+    new CopyWebpackPlugin({
+      patterns: [{ from: "src/sw.js", to: "sw.js" }],
+    }),
   ],
   resolve: {
     extensions: [".ts", ".js"],
@@ -36,7 +40,9 @@ module.exports = {
     static: path.join(__dirname, "dist"),
     open: true,
     port: 8090,
-    historyApiFallback: true,
+    historyApiFallback: {
+      rewrites: [{ from: /^\/sw\.js$/, to: "/sw.js" }],
+    },
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers":
