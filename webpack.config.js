@@ -16,8 +16,8 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
-        test: /\.ts$/,
-        use: "ts-loader",
+        test: /\.(ts|tsx)$/,
+        use: "babel-loader",
         exclude: /node_modules/,
       },
     ],
@@ -30,7 +30,8 @@ module.exports = {
     }),
   ],
   resolve: {
-    extensions: [".ts", ".js"],
+    extensions: [".ts", ".js", ".tsx", ".jsx"],
+    preferRelative: true,
   },
   devServer: {
     static: path.join(__dirname, "dist"),

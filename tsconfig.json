@@ -1,12 +1,24 @@
 {
   "compilerOptions": {
     "jsx": "react",
-    "target": "es2017",
+    "target": "es2019",
     "module": "ESNext",
     "sourceMap": true,
     "outDir": "./dist",
-    "types": ["jest"],
+    "types": ["jest", "vdom"],
+    "lib": ["es2019", "dom"],
     "strict": true,
-    "esModuleInterop": true
-  }
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "jsxFactory": "VDom.createElement",
+    "jsxFragmentFactory": "VDom.Fragment",
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "isolatedModules": true,
+    "typeRoots": ["./node_modules/@types", "./@types/vdom"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }

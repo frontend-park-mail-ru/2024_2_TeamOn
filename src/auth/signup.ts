@@ -9,7 +9,7 @@ import { removeError, showError } from "../utils/errors";
 import { fetchAjax } from "../utils/fetchAjax";
 import { addItemLocalStorage } from "../utils/storages";
 import { route } from "../utils/routing";
-import * as DOMPurify from "dompurify";
+import DOMPurify from 'dompurify';
 
 export function validateSettings(
   inputPassword: any,

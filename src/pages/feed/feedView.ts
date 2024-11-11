@@ -4,6 +4,8 @@ import { createElement, createText, update } from "../../lib/vdom/lib";
 import { VNode } from "../../lib/vdom/src/source";
 import { fetchAjax } from "../../utils/fetchAjax";
 import { route } from "../../utils/routing";
+import { removeItemLocalStorage } from "../../utils/storages";
+import { findUsername } from "../../utils/hasLogged";
 
 /**
  * Функция установки активной ссылки
@@ -51,8 +53,10 @@ export async function getAccount() {
           response.json().then((data) => {
             resolve(data);
           });
-        } else if (response.status === 404) {
-          route(LINKS.ERROR.HREF);
+        } else if (response.status === 401) {
+          const name = findUsername();
+          removeItemLocalStorage(name);
+          route(LINKS.HOME.HREF);
         } else {
           reject(new Error("Внутреняя ошибка сервера"));
         }

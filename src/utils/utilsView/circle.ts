@@ -26,7 +26,7 @@ function controllerMask(container: any, containerSecond: any, mask: any) {
   if (container == undefined) {
     return 0;
   }
-  container.addEventListener("mousemove", (e: any) => {
+  container.addEventListener("mousemove", (e: MouseEvent) => {
     containerSecond.style.mask = "url(#circle-mask)";
     containerSecond.style.webkitmask = "url(#circle-mask)";
     const rect = container.getBoundingClientRect();
