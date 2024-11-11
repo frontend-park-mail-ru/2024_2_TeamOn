@@ -11,10 +11,23 @@ import { VNode } from "./src/source";
 function createElement(
   type: string,
   props: { [key: string]: any },
-  children: VNode[],
+  children: (VNode | string)[]
 ): VNode {
-  return { type, props, children };
+  const vdomChildren = children.map(child => 
+    typeof child === 'string' ? createText(child) : child
+  );
+  return { type, props, children: vdomChildren };
 }
+// function createElement(
+//   type: string,
+//   props: { class?: string; style?: string; children?: any }, // Add style if needed
+//   children: (VNode | string)[]
+// ): VNode {
+//   const vdomChildren = children.map(child => 
+//       typeof child === 'string' ? createText(child) : child
+//   );
+//   return { type, props: { ...props, children: vdomChildren }, children: vdomChildren };
+// }
 /**
  * Создание текста
  * @param text Текст
@@ -58,3 +71,6 @@ function append(
   return vdom.append(parent, newChild);
 }
 export { createElement, createText, render, update, append };
+export const Fragment = ({ children }: { children: (VNode | string)[] }) => {
+  return createElement("div", {}, children); // Создаем div, который будет содержать дочерние элементы
+};

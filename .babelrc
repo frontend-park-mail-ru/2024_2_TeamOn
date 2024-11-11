@@ -1,13 +1,26 @@
 {
-  "plugins": ["babel-plugin-rewire"],
   "presets": [
-    "@babel/preset-typescript",
+    "@babel/preset-env",
     [
-      "@babel/preset-env",
+      "@babel/preset-typescript",
       {
-        "targets": {
-          "node": "current"
-        }
+        "jsxPragma": "VDom.createElement"
+      }
+    ]
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-transform-react-jsx",
+      {
+        "runtime": "classic",
+        "pragma": "VDom.createElement",
+        "pragmaFrag": "VDom.Fragment"
+      }
+    ],
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
       }
     ]
   ]

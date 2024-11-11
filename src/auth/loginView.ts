@@ -7,7 +7,7 @@ import { pageContainer } from "../index";
 import { findUsername } from "../utils/hasLogged";
 import { removeItemLocalStorage } from "../utils/storages";
 import { VNode } from "../lib/vdom/src/source";
-
+import DOMPurify from "dompurify";
 export let attempts: any;
 
 /**

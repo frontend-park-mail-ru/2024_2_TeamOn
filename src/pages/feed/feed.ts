@@ -18,7 +18,7 @@ import { pageContainer } from "../../index";
 import { route } from "../../utils/routing";
 import { fetchAjax } from "../../utils/fetchAjax";
 import { convertISOToRussianDate } from "../../utils/parsedate";
-
+import { createAppVNode } from "./f";
 /**
  * Функция получения популярных постов
  * @param offsetPopular Оффсет для популярных постов
@@ -409,7 +409,6 @@ export async function renderFeed() {
   try {
     const allPopularPosts: any = []; // Массив для хранения всех загруженных популярных постов
     const allRecentlyPosts: any = []; // Массив для хранения всех загруженных недавних постов
-    const userdata = await getAccount();
 
     const user: any = state.currentUser;
     if (!user) {
@@ -422,19 +421,7 @@ export async function renderFeed() {
     const doc = document.body;
     doc.style.height = "100%";
 
-    const vdom = createElement("div", { class: "main-content" }, [
-      await renderSidebar(userdata),
-      createElement("div", { class: "right-content" }, [
-        createElement("div", { class: "section-title" }, [
-          createText("Популярное"),
-        ]),
-        createElement("div", { class: "main-container-popular" }, []),
-        createElement("div", { class: "section-title" }, [
-          createText("Недавние"),
-        ]),
-        createElement("div", { class: "main-container-recently" }, []),
-      ]),
-    ]);
+    const vdom = await createAppVNode();
 
     const container = update(pageContainer, vdom);
     state.currentUser = user;
@@ -461,7 +448,7 @@ export async function renderFeed() {
 
     return container;
   } catch (error) {
-    console.log("ERROR");
+    console.log("ERROR in feed");
     throw error;
   }
 }
