@@ -1,5 +1,5 @@
 import * as VDom from "vdom";
-import { Sidebar } from "../feed/f";
+import { Sidebar } from "../feed/view";
 import { getAccount } from "../feed/feedView";
 
 export async function notificationContainer() {

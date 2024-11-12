@@ -7,7 +7,7 @@ import { fetchAjax } from "../../utils/fetchAjax";
 import { route } from "../../utils/routing";
 import { modifierSidebar } from "../feed/feed";
 import { getAccount } from "../feed/feedView";
-import { Sidebar } from "../feed/f";
+import { Sidebar } from "../feed/view";
 import {
   controlLogout,
   getAvatar,
