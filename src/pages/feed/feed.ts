@@ -7,18 +7,14 @@ import {
   state,
 } from "../../consts";
 import { controlLogout, getAvatar } from "../profile/profile";
-import {
-  renderSidebar,
-  createContainerPost,
-  setActiveLink,
-  getAccount,
-} from "../feed/feedView";
-import { createElement, createText, update } from "../../lib/vdom/lib";
+import { setActiveLink } from "../feed/feedView";
+import { renderTo, update } from "../../lib/vdom/lib";
 import { pageContainer } from "../../index";
 import { route } from "../../utils/routing";
 import { fetchAjax } from "../../utils/fetchAjax";
 import { convertISOToRussianDate } from "../../utils/parsedate";
 import { createAppVNode } from "./f";
+import { Post } from "./f";
 /**
  * Функция получения популярных постов
  * @param offsetPopular Оффсет для популярных постов
@@ -130,11 +126,12 @@ async function modifirePosts(
  * Рендерит скелет популярных постов
  * @returns
  */
-function renderPopularPosts(popularPosts: any) {
+async function renderPopularPosts(popularPosts: any) {
   var posts: any = [];
-  popularPosts.forEach(async (post: any) => {
-    const container: any = await createContainerPost(post, []);
-    posts.push(container);
+  popularPosts.forEach(async () => {
+    const container = await Post();
+    const div = renderTo(container);
+    posts.push(div);
   });
   return posts;
 }
@@ -147,7 +144,7 @@ async function renderRecentlyPosts(recentlyPosts: any) {
   try {
     var posts: any = [];
     recentlyPosts.forEach((post: any) => {
-      const container: any = createContainerPost(post, []);
+      const container: any = Post();
       posts.append(container);
     });
 

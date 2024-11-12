@@ -5,7 +5,7 @@ import { goToPage } from "../index";
 import { attempts } from "./loginView";
 import { addItemLocalStorage } from "../utils/storages";
 import { route } from "../utils/routing";
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 
 /**
  * Валидирует форму входа, проверяя корректность ввода логина и пароля.

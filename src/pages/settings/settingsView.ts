@@ -6,7 +6,8 @@ import { VNode } from "../../lib/vdom/src/source";
 import { fetchAjax } from "../../utils/fetchAjax";
 import { route } from "../../utils/routing";
 import { modifierSidebar } from "../feed/feed";
-import { getAccount, renderSidebar } from "../feed/feedView";
+import { getAccount } from "../feed/feedView";
+import { Sidebar } from "../feed/f";
 import {
   controlLogout,
   getAvatar,
@@ -25,7 +26,7 @@ export async function renderSettings() {
     const userdata: any = await getAccount();
 
     const vdom: VNode = createElement("div", { class: "main-content" }, [
-      await renderSidebar(userdata),
+      await Sidebar(userdata),
       createElement("div", { class: "container" }, [
         createElement("h1", {}, [createText("Настройки")]),
         createElement("div", { class: "tabs" }, []),
