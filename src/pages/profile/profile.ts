@@ -5,12 +5,14 @@ import { route } from "../../utils/routing";
 import { getAccount } from "../feed/feedView";
 
 import {
-  renderCreatePost,
-  renderDeletePost,
-  renderEditPost,
-  renderTip,
-} from "./profileView";
-import { renderAbou, renderUserPost, renderUserSt } from "./view";
+  renderAbou,
+  renderCreatePos,
+  renderDelPos,
+  renderEditPos,
+  renderTi,
+  renderUserPost,
+  renderUserSt,
+} from "./view";
 import { VNode } from "../../lib/vdom/src/source";
 import {
   createElement,
@@ -395,7 +397,10 @@ async function modifierModalDeletePost(
     (afteruserpost: any) => afteruserpost.postId === post.postId,
   );
 
-  renderDeletePost(foundPost);
+  const place = document.querySelector(`.div-delete-posts`);
+  const modal: any = renderDelPos(foundPost);
+  update(place, modal);
+
   const modalsDelete: any = document.querySelector(".modal__deletepost");
   const buttonCancel: any = modalsDelete.querySelector(`.cancel`);
   const buttonConfirm: any = modalsDelete.querySelector(`.delete`);
@@ -454,7 +459,9 @@ async function modifierModalEditPost(
   }
   dropdownmenu.classList.remove(ELEMENTS_CLASS.ACTIVE);
 
-  renderEditPost(post);
+  const place = document.querySelector(`.div-edit-posts`);
+  const modal: any = renderEditPos(post);
+  update(place, modal);
 
   const modalsEdit: any = document.querySelector(".modal__editpost");
   const buttonCancel: any = modalsEdit.querySelector(`.cancel`);
@@ -908,7 +915,9 @@ async function controlAdaptivePageAuthors(
     );
     buttonCreatePost.forEach((button: any) => {
       button.addEventListener("click", () => {
-        renderCreatePost();
+        const place = document.querySelector(`.div-create-post`);
+        const modal: any = renderCreatePos();
+        update(place, modal);
         const containerCreatePost =
           container.querySelector(".modal__createpost");
 
@@ -978,7 +987,10 @@ async function controlAdaptivePageAuthors(
     const buttonSubs: any = document.querySelector(`.follow`);
 
     buttonTip.addEventListener("click", () => {
-      renderTip();
+      const place = document.querySelector(`.div-send-tip`);
+      const modal: any = renderTi();
+      update(place, modal);
+
       const buttonCancel: any = document.querySelector(
         `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
       );

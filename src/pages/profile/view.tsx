@@ -1,4 +1,4 @@
-import { Sidebar } from "../feed/f";
+import { Sidebar } from "../feed/view";
 import { getPageAuthor, getUserPosts } from "./profile";
 import * as VDom from "vdom";
 import { createText } from "./vdom";
@@ -316,4 +316,128 @@ export function renderAbou(authorData: any, isEdit = false, newValue?: any) {
     </div>
   );
   return isEdit ? editModeValue : defaultModeValue;
+}
+
+export function renderEditPos(post: any) {
+  return (
+    <div class="modal__editpost">
+      <div class="modal-header">
+        <h2>Редактирование</h2>
+      </div>
+      <div class="form-group">
+        <label class="label-tip">Заголовок</label>
+        <textarea class="input-group">{post.title}</textarea>
+      </div>
+      <div class="form-group">
+        <label class="label-group">Содержание</label>
+        <textarea class="textarea-group">{post.content}</textarea>
+        <div class="char-count"></div>
+      </div>
+      <div class="form-actions">
+        <button class="cancel cancel__button cancel__button__effects">
+          Закрыть
+        </button>
+        <button class="save save__button save__button__effects">
+          Сохранить
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Рендер удаления поста
+ * @param post Пост
+ */
+export function renderDelPos(post: any) {
+  return (
+    <div class="modal__deletepost">
+      <div class="modal-header">
+        <h2>Удаление поста</h2>
+      </div>
+      <div class="form-group">
+        <p class="textarea-group-delete">
+          Вы действительно хотите удалить пост{post.title} ?
+        </p>
+      </div>
+      <div class="form-actions">
+        <button class="cancel cancel__button cancel__button__effects">
+          Закрыть
+        </button>
+        <button class="delete delete__button delete__button__effects">
+          Удалить
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Функция рендера модального окна пожертвования
+ * @returns
+ */
+export function renderTi() {
+  const feedRegex = /^\/profile\/[0-9a-zA-Z-]+$/;
+  if (!feedRegex.test(window.location.pathname)) {
+    return <></>;
+  }
+
+  return (
+    <div class="modal__tip">
+      <div class="modal-header">
+        <h2>Пожертвование</h2>
+      </div>
+      <div class="form-group">
+        <label class="label-tip">Сумма</label>
+        <textarea class="input-group">360</textarea>
+        <div class="amount-count">Минимум 360 рублей</div>
+      </div>
+      <div class="form-group">
+        <label class="label-group">Сообщение</label>
+        <textarea class="textarea-group"></textarea>
+      </div>
+      <div class="form-actions">
+        <button class="cancel cancel__button cancel__button__effects">
+          Закрыть
+        </button>
+        <button class="send-tip send-tip__button send-tip__button__effects">
+          Отправить
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Рендер модального окна создания поста
+ * @returns
+ */
+export function renderCreatePos() {
+  if (window.location.pathname !== "/profile") {
+    return <></>;
+  }
+
+  return (
+    <div class="modal__createpost">
+      <div class="modal-header">
+        <h2>Создание поста</h2>
+      </div>
+      <div class="form-group">
+        <label class="label-tip">Заголовок</label>
+        <textarea class="input-group"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="label-group">Содержание</label>
+        <textarea class="textarea-group"></textarea>
+      </div>
+      <div class="form-actions">
+        <button class="cancel cancel__button cancel__button__effects">
+          Закрыть
+        </button>
+        <button class="send-tip send-tip__button send-tip__button__effects">
+          Создать
+        </button>
+      </div>
+    </div>
+  );
 }

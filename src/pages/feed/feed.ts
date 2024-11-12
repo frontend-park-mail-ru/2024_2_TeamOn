@@ -13,8 +13,8 @@ import { pageContainer } from "../../index";
 import { route } from "../../utils/routing";
 import { fetchAjax } from "../../utils/fetchAjax";
 import { convertISOToRussianDate } from "../../utils/parsedate";
-import { createAppVNode } from "./f";
-import { Post } from "./f";
+import { createAppVNode } from "./view";
+import { Post } from "./view";
 /**
  * Функция получения популярных постов
  * @param offsetPopular Оффсет для популярных постов

@@ -26,6 +26,7 @@ declare module "vdom" {
       h4: { [key: string]: any };
       input: { [key: string]: any };
       button: { [key: string]: any };
+      textarea: { [key: string]: any };
     }
   }
 }
