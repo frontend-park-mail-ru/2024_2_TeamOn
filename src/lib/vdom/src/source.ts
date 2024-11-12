@@ -30,7 +30,15 @@ export class VirtualDOM {
   public render(): string {
     return this._render(this.root);
   }
-
+  public renderTo(container: VNode, className: any = null): string {
+    const parent: any = document.createElement("div");
+    if (className) {
+      parent.className = className;
+    }
+    const content: string = this._render(container);
+    parent.innerHTML = content;
+    return parent;
+  }
   private _render(node: VNode): string {
     if (node.type === "text") {
       return node.props.text;

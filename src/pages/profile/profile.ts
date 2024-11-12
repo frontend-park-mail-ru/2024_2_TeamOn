@@ -2,26 +2,27 @@ import { ELEMENTS_CLASS, LINKS, QUERY, state } from "../../consts";
 import { fetchAjax } from "../../utils/fetchAjax";
 import { removeItemLocalStorage } from "../../utils/storages";
 import { route } from "../../utils/routing";
-import { getAccount, renderSidebar } from "../feed/feedView";
+import { getAccount } from "../feed/feedView";
+
 import {
-  mobileProfile,
-  renderAbout,
   renderCreatePost,
   renderDeletePost,
-  renderDesktopProfileHeader,
-  renderDesktopProfileInfo,
   renderEditPost,
   renderTip,
-  renderUserPosts,
-  renderUserStats,
 } from "./profileView";
+import { renderAbou, renderUserPost, renderUserSt } from "./view";
 import { VNode } from "../../lib/vdom/src/source";
-import { createElement, createText, update } from "../../lib/vdom/lib";
+import {
+  createElement,
+  createText,
+  renderTo,
+  update,
+} from "../../lib/vdom/lib";
 import { pageContainer } from "../../index";
 import { AddLikeOnPost, modifierSidebar } from "../feed/feed";
 import { convertISOToRussianDate } from "../../utils/parsedate";
 import DOMPurify from "dompurify";
-
+import { mobilepr, profileContent } from "./view";
 /**
  * Получаем посты пользователя через объект типа промис
  * @param link Ссылка на страницу
@@ -129,7 +130,7 @@ export async function getPageAuthor(link: string) {
  * @param link Ссылка на страницу
  * @returns
  */
-async function getPayments(link: string) {
+export async function getPayments(link: string) {
   return new Promise((resolve, reject) => {
     if (link !== "/profile") {
       resolve(false);
@@ -295,11 +296,12 @@ async function deletePost(postId: any) {
  * @param authorPosts Массив постов у текущего юзера
  * @returns
  */
-function renderPosts(authorPosts: any[]) {
+async function renderPosts(authorPosts: any[]) {
   var posts: any = [];
   authorPosts.forEach(async (post: any) => {
-    const container: any = renderUserPosts(post);
-    posts.push(container);
+    const container: any = await renderUserPost(post);
+    const div = renderTo(container);
+    posts.push(div);
   });
   return posts;
 }
@@ -420,7 +422,7 @@ async function modifierModalDeletePost(
     const placeStats: any = document.querySelector(`.stats`);
     const payments: any = await getPayments(window.location.pathname);
     const authorData: any = await getPageAuthor(window.location.pathname);
-    const arrayStats: VNode = await renderUserStats(authorData, payments);
+    const arrayStats: VNode = await renderUserSt(authorData, payments);
     update(placeStats, arrayStats);
     return;
   });
@@ -965,7 +967,7 @@ async function controlAdaptivePageAuthors(
           const placeStats: any = document.querySelector(`.stats`);
           const payments: any = await getPayments(window.location.pathname);
 
-          const arrayStats: VNode = await renderUserStats(authorData, payments);
+          const arrayStats: VNode = await renderUserSt(authorData, payments);
           update(placeStats, arrayStats);
         });
       });
@@ -1005,11 +1007,12 @@ async function controlAdaptivePageAuthors(
     });
     buttonSubs.addEventListener("click", async () => {
       const userdata: any = await getUserPosts(window.location.pathname, 0);
+      console.log(userdata[0].authorId);
       const ok: any = await following(userdata[0].authorId);
 
       const placeStats: any = document.querySelector(`.stats`);
       const user: any = await getPageAuthor(window.location.pathname);
-      const arrayStats: VNode = await renderUserStats(user);
+      const arrayStats: VNode = await renderUserSt(user);
       update(placeStats, arrayStats);
 
       const userdataSec: any = await getPageAuthor(window.location.pathname);
@@ -1048,57 +1051,7 @@ async function following(authorId: any) {
     );
   });
 }
-/**
- * Рендер формы профиля
- * @param authorData Данные об авторе
- * @param avatar Аватар
- * @param background Бекграунд
- * @param payments Выплаты
- * @returns
- */
-async function renderProfileForm(
-  authorData: any,
-  avatar: any,
-  background: any,
-  payments: any,
-): Promise<VNode> {
-  return createElement("div", { class: "profile-form" }, [
-    createElement("div", { class: "div-mobile" }, []),
-    renderDesktopProfileHeader(background),
-    createElement("div", { class: "container-profile" }, [
-      await renderDesktopProfileInfo(authorData, avatar, payments),
-      createElement("div", { class: "center-column-profile" }, [
-        createElement("div", { class: "place-edit-info" }, []),
-        window.location.pathname === "/profile"
-          ? createElement("div", { class: "feed-profile" }, [
-              createElement("div", { class: "nav-tabs-profile" }, [
-                createElement("a", { class: "active-profile active" }, [
-                  createText("Лента"),
-                ]),
-              ]),
-              createElement("div", { class: "place-posts" }, []),
-            ])
-          : createElement("div", { class: "feed-profile" }, [
-              createElement("div", { class: "nav-tabs-profile" }, [
-                createElement("a", { class: "active-profile active" }, [
-                  createText("Лента"),
-                ]),
-              ]),
-              createElement(
-                "div",
-                {
-                  class: "place-posts",
-                  style: authorData.isSubscribe
-                    ? "display: block"
-                    : "display: none",
-                },
-                [],
-              ),
-            ]),
-      ]),
-    ]),
-  ]);
-}
+
 /**
  * Изменение информации "О СЕБЕ"
  * @param info Информация
@@ -1139,7 +1092,9 @@ function controlInfo(authorData: any, container: any) {
     if (event.target.classList.contains("edit-info-button")) {
       const currentText: any = container.querySelector(".about-profile");
       const text = currentText.textContent;
-      renderAbout(authorData, true, text);
+      const content = renderAbou(authorData, true, text);
+      const place: any = document.querySelector(`.place-edit-info`);
+      update(place, content);
     }
 
     if (event.target.classList.contains("save-info-button")) {
@@ -1150,7 +1105,9 @@ function controlInfo(authorData: any, container: any) {
       try {
         const response = await setInfo(newValue);
         const newdataUser = await getPageAuthor(window.location.pathname);
-        renderAbout(newdataUser, false, newValue);
+        const content = renderAbou(newdataUser, false, newValue);
+        const place: any = document.querySelector(`.place-edit-info`);
+        update(place, content);
       } catch (error) {
         console.error("Ошибка при обновлении информации:", error);
       }
@@ -1162,7 +1119,9 @@ function controlInfo(authorData: any, container: any) {
       if (!DOMPurify.sanitize(currentText)) {
         return;
       }
-      renderAbout(authorData, false, currentText);
+      const content = renderAbou(authorData, false, currentText);
+      const place: any = document.querySelector(`.place-edit-info`);
+      update(place, content);
     }
   });
 }
@@ -1222,31 +1181,7 @@ async function paginateProfile(allPosts: any, containerPosts: any) {
     }
   });
 }
-/**
- * Рендер основного контента
- * @param authorData Данные об авторе
- * @param avatar Аватар
- * @param background Бекграунд
- * @param userdata Данные о пользователе
- * @param payments Выплаты
- * @returns
- */
-async function renderMainContent(
-  authorData: any,
-  avatar: any,
-  background: any,
-  userdata: any,
-  payments: any,
-): Promise<VNode> {
-  return createElement("div", { class: "main-content" }, [
-    await renderSidebar(userdata),
-    await renderProfileForm(authorData, avatar, background, payments),
-    createElement("div", { class: "div-create-post" }, []),
-    createElement("div", { class: "div-send-tip" }, []),
-    createElement("div", { class: "div-edit-posts" }, []),
-    createElement("div", { class: "div-delete-posts" }, []),
-  ]);
-}
+
 /**
  * Асинхронная функция рендеринга профиля пользователя.
  * @returns созданный элемент профиля пользователя или 0,
@@ -1275,37 +1210,41 @@ export async function renderProfile() {
       throw new Error("Пользователь не найден");
     }
 
-    const vdom = await renderMainContent(
+    const vdom: any = await profileContent(
+      userdata,
       authorData,
       avatar,
       background,
-      userdata,
       payments,
     );
-
+    const container = update(pageContainer, vdom);
     if (!vdom) {
       throw new Error("VirtualDOM не построился");
     }
 
-    const container = update(pageContainer, vdom);
+    // const container = update(pageContainer, vdom);
     if (window.innerWidth <= 1024) {
-      const mobileContaine = await mobileProfile(
+      const mobileContaine2: any = await mobilepr(
         authorData,
         avatar,
         background,
         payments,
       );
+      const mobile: any = document.querySelector(`.div-mobile`);
+      update(mobile, await mobileContaine2);
       controlAdaptiveProfile(container);
     }
 
     // Отрисовка информации о пользователе
-    renderAbout(authorData);
+    const content = renderAbou(authorData);
+    const place: any = document.querySelector(`.place-edit-info`);
+    update(place, content);
 
     const mainContent = container.querySelector(".main-content");
     const profileForm = container.querySelector(`.profile-form`);
 
     modifierSidebar(mainContent);
-    controlAdaptivePageAuthors(authorData, container, profileForm);
+    await controlAdaptivePageAuthors(authorData, container, profileForm);
 
     controlLogout(container, authorData);
     controlMediaProfile(container);
@@ -1318,7 +1257,7 @@ export async function renderProfile() {
 
     return container;
   } catch (error) {
-    console.log("ERROR");
+    console.log("ERROR in profile");
     throw error;
   }
 }
