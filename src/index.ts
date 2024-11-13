@@ -1,16 +1,16 @@
 import { state, ELEMENTS_CLASS, LINKS, REGEXP } from "./consts";
-import { renderLogin } from "./auth/loginView";
-import { renderSignup } from "./auth/signupView";
-import { renderProfile } from "./pages/profile/profile";
+import { renderSignup } from "./pages/signup";
+import { renderProfile } from "./pages/profile";
 import { renderHome } from "./pages/home";
-import { startA } from "./menu/menu";
+import { startA } from "./app/providers/menu";
 import "./styles/style.css";
-import { renderFeed } from "./pages/feed/feed";
+import { renderFeed } from "./pages/feed";
 import { route } from "./utils/routing";
-import { renderNotifications } from "./pages/notifications/notifications";
-import { renderSettings } from "./pages/settings/settingsView";
-import { VirtualDOM } from "./lib/vdom/src/source";
-import { render } from "./lib/vdom/lib";
+import { renderNotifications } from "./pages/notifications";
+import { renderSettings } from "./pages/settings";
+import { VirtualDOM } from "../lib/vdom/src/source";
+import { render } from "../lib/vdom/lib";
+import { renderLogin } from "./pages/login";
 
 /**
  * Объект, содержащий конфигурацию меню приложения.
