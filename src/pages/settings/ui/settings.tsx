@@ -1,6 +1,6 @@
 import * as VDom from "vdom";
 import { createText } from "jsxteamon2/dist/jsxteamon";
-import { Sidebar } from "../../feed/ui/view";
+import { Sidebar } from "../../feed/ui/feed";
 
 export async function settingsContainer(userdata: any) {
   return (

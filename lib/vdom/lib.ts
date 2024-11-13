@@ -57,7 +57,7 @@ function update(parent: any, content: VNode, vdom: VirtualDOM = Virtual): any {
  * @param container Контейнер для рендера
  * @param className Имя класса
  * @param vdom Переменная виртуального дома
- * @returns 
+ * @returns
  */
 function renderTo(
   container: VNode,
@@ -86,4 +86,12 @@ const Fragment = ({ children }: { children: (VNode | string)[] }) => {
   return createElement("div", {}, ...children);
 };
 
-export { createElement, createText, render, update, append, renderTo, Fragment };
+export {
+  createElement,
+  createText,
+  render,
+  update,
+  append,
+  renderTo,
+  Fragment,
+};

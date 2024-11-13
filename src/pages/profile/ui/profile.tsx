@@ -1,4 +1,4 @@
-import { Sidebar } from "../../feed/ui/view";
+import { Sidebar } from "../../feed/ui/feed";
 import { getPageAuthor, getUserPosts } from "..";
 
 import * as VDom from "vdom";

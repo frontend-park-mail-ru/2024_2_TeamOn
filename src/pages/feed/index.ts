@@ -14,7 +14,7 @@ import { pageContainer } from "../../index";
 import { route } from "../../utils/routing";
 import { fetchAjax } from "../../utils/fetchAjax";
 import { convertISOToRussianDate } from "../../utils/parsedate";
-import { createAppVNode } from "./ui/view";
+import { createAppVNode } from "./ui/feed";
 
 /**
  * Функция получения популярных постов
