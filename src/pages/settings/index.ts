@@ -7,7 +7,7 @@ import { fetchAjax } from "../../utils/fetchAjax";
 import { route } from "../../utils/routing";
 import { modifierSidebar } from "../feed";
 import { getAccount } from "../../auth/fsdfeed";
-import { Sidebar } from "../feed/ui/view";
+import { Sidebar } from "../feed/ui/feed";
 import { controlLogout, getAvatar, renderModalStatusUpload } from "../profile";
 import {
   validateSettingsPassword,
