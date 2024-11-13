@@ -31,6 +31,9 @@ module.exports = {
   ],
   resolve: {
     extensions: [".ts", ".js", ".tsx", ".jsx"],
+    alias: {
+      vdom: path.resolve(__dirname, "src/lib/vdom/vdom"),
+    },
     preferRelative: true,
   },
   devServer: {

@@ -1,8 +1,8 @@
 import { Sidebar } from "../feed/view";
 import { getPageAuthor, getUserPosts } from "./profile";
+
 import * as VDom from "vdom";
-import { createText } from "./vdom";
-import { convertISOToRussianDate } from "src/utils/parsedate";
+import { createText } from "jsxteamon2/dist/jsxteamon";
 /**
  * Рендер основного контента
  * @param authorData Данные об авторе

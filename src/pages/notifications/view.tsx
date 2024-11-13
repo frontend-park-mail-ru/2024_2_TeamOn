@@ -1,6 +1,8 @@
-import * as VDom from "vdom";
+// import * as VDom from "vdom";
 import { Sidebar } from "../feed/view";
 import { getAccount } from "../feed/feedView";
+import * as VDom from "vdom";
+import { createText } from "jsxteamon2/dist/jsxteamon";
 
 export async function notificationContainer() {
   const userdata: any | null = await getAccount();

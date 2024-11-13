@@ -1,5 +1,7 @@
-import * as VDom from "vdom";
+// import * as VDom from "vdom";
 import { getAccount } from "./feedView";
+import * as VDom from "vdom";
+import { createText } from "jsxteamon2/dist/jsxteamon";
 
 export async function createAppVNode() {
   const userdata = await getAccount();
