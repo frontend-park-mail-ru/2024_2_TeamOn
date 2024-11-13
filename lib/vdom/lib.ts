@@ -1,6 +1,7 @@
 import { Virtual } from "../../src/index";
 import { VirtualDOM } from "./src/source";
 import { VNode } from "./src/source";
+
 /**
  * Создание элемента
  * @param type Тип
@@ -8,16 +9,6 @@ import { VNode } from "./src/source";
  * @param children Дети
  * @returns
  */
-// function createElement(
-//   type: string,
-//   props: { [key: string]: any },
-//   children: (VNode | string)[],
-// ): VNode {
-//   const vdomChildren = children.map((child) =>
-//     typeof child === "string" ? createText(child) : child,
-//   );
-//   return { type, props, children: vdomChildren };
-// }
 function createElement(
   type: string,
   props: { [key: string]: any },
@@ -38,9 +29,6 @@ function createElement(
  * @param text Текст
  * @returns
  */
-// function createText(text: string): VNode {
-//   return { type: "text", props: { text }, children: [] };
-// }
 function createText(text: string): VNode {
   return { type: "text", props: { text }, children: [] };
 }
@@ -53,6 +41,7 @@ function createText(text: string): VNode {
 function render(vdom: VirtualDOM): any {
   return vdom.render();
 }
+
 /**
  * Функция обновление контейнера
  * @param parent Родитель
@@ -63,7 +52,13 @@ function render(vdom: VirtualDOM): any {
 function update(parent: any, content: VNode, vdom: VirtualDOM = Virtual): any {
   return vdom.update(parent, content);
 }
-
+/**
+ * Функция рендера jsx
+ * @param container Контейнер для рендера
+ * @param className Имя класса
+ * @param vdom Переменная виртуального дома
+ * @returns 
+ */
 function renderTo(
   container: VNode,
   className: any = null,
@@ -71,6 +66,7 @@ function renderTo(
 ): any {
   return vdom.renderTo(container, className);
 }
+
 /**
  * Функция вставки в родителя
  * @param parent Родитель
@@ -85,11 +81,9 @@ function append(
 ): any {
   return vdom.append(parent, newChild);
 }
-// export const Fragment = ({ children }: { children: (VNode | string)[] }) => {
-//   return createElement("div", {}, children); // Создаем div, который будет содержать дочерние элементы
-// };
-export const Fragment = ({ children }: { children: (VNode | string)[] }) => {
+
+const Fragment = ({ children }: { children: (VNode | string)[] }) => {
   return createElement("div", {}, ...children);
 };
 
-export { createElement, createText, render, update, append, renderTo };
+export { createElement, createText, render, update, append, renderTo, Fragment };
