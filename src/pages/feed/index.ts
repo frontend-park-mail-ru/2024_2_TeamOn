@@ -2,7 +2,7 @@ import { state } from "../../shared/consts/consts";
 import { controlLogout } from "../../features/controlLogout/controlLogout";
 import { update } from "../../../lib/vdom/lib";
 import { pageContainer } from "../../app/index";
-import { createAppVNode } from "./ui/feed";
+import { renderFeedForm } from "./ui/feed";
 import { paginate } from "../../features/paginateFeed/paginateFeed";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 
@@ -26,9 +26,10 @@ export async function renderFeed() {
     const doc = document.body;
     doc.style.height = "100%";
 
-    const vdom = await createAppVNode();
+    const vdom = await renderFeedForm();
 
     const container = update(pageContainer, vdom);
+
     state.currentUser = user;
 
     const containerPopularPosts = container.querySelector(
@@ -40,6 +41,10 @@ export async function renderFeed() {
 
     const mainContent = container.querySelector(`.main-content`);
 
+    modifierSidebar(mainContent);
+
+    controlLogout(container, user);
+    
     await paginate(
       allPopularPosts,
       allRecentlyPosts,
@@ -47,9 +52,6 @@ export async function renderFeed() {
       containerRecentlyPosts,
     );
 
-    modifierSidebar(mainContent);
-
-    controlLogout(container, user);
 
     return container;
   } catch (error) {
