@@ -11,6 +11,7 @@ import { renderSettings } from "../pages/settings";
 import { VirtualDOM } from "../../lib/vdom/src/source";
 import { render } from "../../lib/vdom/lib";
 import { renderLogin } from "../pages/login";
+import { modifierSidebar } from "../shared/sidebar/modifire";
 
 /**
  * Объект, содержащий конфигурацию меню приложения.
@@ -149,12 +150,12 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
     console.error("ERROR:", error);
   });
 }
-let root: HTMLElement | null = startA(config.menu, state);
 
 export const Virtual: any = new VirtualDOM();
 export const pageContainer = document.createElement("main");
 const pushmodal = document.createElement("div");
 pushmodal.className = "push-modal";
+
 if (flag) {
   let root: HTMLElement | null = startA(config.menu, state);
 
@@ -163,6 +164,7 @@ if (flag) {
   root?.appendChild(pageContainer);
   root?.append(pushmodal);
   route(LINKS.HOME.HREF, window.location.pathname);
+  modifierSidebar(document.querySelector("#main"))
 }
 
 if ("serviceWorker" in navigator) {
