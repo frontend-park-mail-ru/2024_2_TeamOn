@@ -1,6 +1,5 @@
-import { updatePasswordStrengthBar } from "./fsdsignup";
-import { REGEXP, validatePassword } from "../shared/consts/consts";
-
+import { REGEXP, validatePassword } from "../consts/consts";
+import { updatePasswordStrengthBar } from "../strengthBar/strengthBar";
 /**
  * Валидация пароля для настроек
  * @param inputPassword Входящий пароль

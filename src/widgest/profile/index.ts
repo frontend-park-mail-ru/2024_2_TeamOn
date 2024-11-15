@@ -4,4 +4,4 @@ import { editpostForm } from "./ui/editpost/editpost";
 import { tipForm } from "./ui/tip/tip";
 import { profileForm } from "./ui/profileform/profileform";
 
-export { addpostForm, editpostForm, deletepostForm, profileForm, tipForm }
+export { addpostForm, editpostForm, deletepostForm, profileForm, tipForm };

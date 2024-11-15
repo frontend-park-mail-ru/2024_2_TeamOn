@@ -1,6 +1,6 @@
 // import * as VDom from "vdom";
 import { Sidebar } from "../../../shared/sidebar/sidebar";
-import { getAccount } from "../../../auth/fsdfeed";
+import { getAccount } from "../../../features/getAccount/getAccount";
 import * as VDom from "vdom";
 import { createText } from "jsxteamon2/dist/jsxteamon";
 

@@ -1,9 +1,8 @@
 import { state } from "../../shared/consts/consts";
-import { getAccount } from "../../auth/fsdfeed";
+import { getAccount } from "../../features/getAccount/getAccount";
 import { renderAbout } from "../../entities/profileabout/index";
 import { update } from "../../../lib/vdom/lib";
-import { pageContainer } from "../../index";
-import { modifierSidebar } from "../feed";
+import { pageContainer } from "../../app/index";
 import { mobilepr, profileContent } from "./ui/profile";
 import { getBackgroundAuthor } from "../../entities/profileDesktopHeader";
 import { getPageAuthor } from "../../features/getpageauthor/getpageauthor";
@@ -15,7 +14,7 @@ import { controlLogout } from "../../features/controlLogout/controlLogout";
 import { controlInfo } from "../../features/controlInfo/controlInfo";
 import { controlMediaProfile } from "../../features/controlMediaProfile/controlMediaProfile";
 import { paginateProfile } from "../../features/paginateprofile/paginateprofile";
-
+import { modifierSidebar } from "../../shared/sidebar/modifire";
 /**
  * Асинхронная функция рендеринга профиля пользователя.
  * @returns созданный элемент профиля пользователя или 0,

@@ -9,23 +9,23 @@ import { route } from "../../../shared/routing/routing";
  * @returns
  */
 async function sendTip(authorId: any, body: any) {
-    return new Promise((resolve, reject) => {
-      fetchAjax(
-        "POST",
-        `/api/danya/author/${authorId}/tip`,
-        { message: body.message, cost: body.cost },
-        (response) => {
-          if (response.ok) {
-            resolve(true);
-          } else if (response.status === 401) {
-            localStorage.clear();
-            route(LINKS.HOME.HREF);
-          } else {
-            reject(new Error("Ответ от фетча с ошибкой"));
-          }
-        },
-      );
-    });
-  }
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "POST",
+      `/api/danya/author/${authorId}/tip`,
+      { message: body.message, cost: body.cost },
+      (response) => {
+        if (response.ok) {
+          resolve(true);
+        } else if (response.status === 401) {
+          localStorage.clear();
+          route(LINKS.HOME.HREF);
+        } else {
+          reject(new Error("Ответ от фетча с ошибкой"));
+        }
+      },
+    );
+  });
+}
 
-  export { sendTip }
+export { sendTip };

@@ -8,22 +8,22 @@ import { route } from "../../../shared/routing/routing";
  * @returns
  */
 async function following(authorId: any) {
-    return new Promise((resolve, reject) => {
-      fetchAjax(
-        "POST",
-        `/api/danya/author/${authorId}/following`,
-        null,
-        (response) => {
-          if (response.ok) {
-            resolve(true);
-          } else if (response.status === 400) {
-            route(LINKS.ERROR.HREF);
-          } else {
-            reject(new Error("Ответ от фетча с ошибкой"));
-          }
-        },
-      );
-    });
-  }
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "POST",
+      `/api/danya/author/${authorId}/following`,
+      null,
+      (response) => {
+        if (response.ok) {
+          resolve(true);
+        } else if (response.status === 400) {
+          route(LINKS.ERROR.HREF);
+        } else {
+          reject(new Error("Ответ от фетча с ошибкой"));
+        }
+      },
+    );
+  });
+}
 
-  export { following }
+export { following };

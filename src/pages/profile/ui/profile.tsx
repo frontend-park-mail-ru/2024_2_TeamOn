@@ -1,6 +1,12 @@
 import { Sidebar } from "../../../shared/sidebar/sidebar";
 import * as VDom from "vdom";
-import { addpostForm, editpostForm, deletepostForm, tipForm, profileForm } from "../../../widgest/profile";
+import {
+  addpostForm,
+  editpostForm,
+  deletepostForm,
+  tipForm,
+  profileForm,
+} from "../../../widgest/profile";
 import { renderUserInfo } from "../../../entities/profileInfo/index";
 
 /**
@@ -24,10 +30,10 @@ export async function profileContent(
     <div class="main-content">
       {await Sidebar(userdata)}
       {await profileForm(authorData, avatar, background, payments)}
-      { addpostForm() }
-      { tipForm() }
-      { editpostForm() }
-      { deletepostForm() }
+      {addpostForm()}
+      {tipForm()}
+      {editpostForm()}
+      {deletepostForm()}
     </div>
   );
 }

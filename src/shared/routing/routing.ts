@@ -1,6 +1,6 @@
 import { LINKS, state } from "../consts/consts";
-import { goToPage } from "../../index";
-import { nonauth } from "../../utils/nonauth";
+import { goToPage } from "../../app/index";
+import { nonauth } from "../utils/nonauth";
 
 class Routing {
   public history: string[] = [];

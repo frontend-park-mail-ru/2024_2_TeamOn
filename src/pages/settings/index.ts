@@ -1,21 +1,19 @@
-import { Container } from "postcss";
 import { ELEMENTS_CLASS, LINKS, state } from "../../shared/consts/consts";
-import { pageContainer } from "../../index";
-import { createElement, createText, update } from "../../../lib/vdom/lib";
+import { pageContainer } from "../../app/index";
+import { update } from "../../../lib/vdom/lib";
 import { VNode } from "../../../lib/vdom/src/source";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { route } from "../../shared/routing/routing";
-import { modifierSidebar } from "../feed";
-import { getAccount } from "../../auth/fsdfeed";
-import { Sidebar } from "../../shared/sidebar/sidebar";
+import { getAccount } from "../../features/getAccount/getAccount";
 import { controlLogout } from "../../features/controlLogout/controlLogout";
 import { renderModalStatusUpload } from "../../shared/pushstatus/pushstatus";
 import {
   validateSettingsPassword,
   validateMainInfo,
-} from "../../auth/fsdsettings";
+} from "../../shared/validateSettingsForm/validateSettingsForm";
 import { settingsContainer } from "./ui/settings";
 import { getAvatar } from "../../features/getavatar/getavatar";
+import { modifierSidebar } from "../../shared/sidebar/modifire";
 /**
  * Рендер настроек
  * @returns
