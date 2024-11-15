@@ -1,4 +1,4 @@
-import { ELEMENTS, ELEMENTS_CLASS } from "../../consts";
+import { ELEMENTS, ELEMENTS_CLASS } from "../../shared/consts/consts";
 
 /**
  * Функция инициализирует приложение.

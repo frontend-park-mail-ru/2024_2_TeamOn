@@ -1,11 +1,11 @@
-import { state, ELEMENTS_CLASS, LINKS, REGEXP } from "./consts";
+import { state, ELEMENTS_CLASS, LINKS, REGEXP } from "./shared/consts/consts";
 import { renderSignup } from "./pages/signup";
 import { renderProfile } from "./pages/profile";
 import { renderHome } from "./pages/home";
 import { startA } from "./app/providers/menu";
 import "./styles/style.css";
 import { renderFeed } from "./pages/feed";
-import { route } from "./utils/routing";
+import { route } from "./shared/routing/routing";
 import { renderNotifications } from "./pages/notifications";
 import { renderSettings } from "./pages/settings";
 import { VirtualDOM } from "../lib/vdom/src/source";

@@ -5,17 +5,18 @@ import {
   QUERY,
   sidebarLinks,
   state,
-} from "../../consts";
-import { controlLogout, getAvatar } from "../profile";
+} from "../../shared/consts/consts";
+import { controlLogout } from "../../features/controlLogout/controlLogout";
 import { containerPost } from "../../widgest/feed/index";
 import { setActiveLink } from "../../auth/fsdfeed";
 import { renderTo, update } from "../../../lib/vdom/lib";
 import { pageContainer } from "../../index";
-import { route } from "../../utils/routing";
-import { fetchAjax } from "../../utils/fetchAjax";
+import { route } from "../../shared/routing/routing";
+import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { convertISOToRussianDate } from "../../utils/parsedate";
 import { createAppVNode } from "./ui/feed";
-
+import { getAvatar } from "../../features/getavatar/getavatar";
+import { AddLikeOnPost } from "../../entities/likes";
 /**
  * Функция получения популярных постов
  * @param offsetPopular Оффсет для популярных постов
@@ -155,31 +156,31 @@ async function renderRecentlyPosts(recentlyPosts: any) {
     throw error;
   }
 }
-/**
- * Функция добавления лайка
- * @param postId
- * @returns
- */
-export async function AddLikeOnPost(postId: any) {
-  return new Promise((resolve, reject) => {
-    fetchAjax(
-      LOCATIONS.POSTS.LIKE.METHOD,
-      LOCATIONS.POSTS.LIKE.HREF,
-      { postId: postId },
-      (response) => {
-        if (response.ok) {
-          response.json().then((data) => {
-            resolve(data);
-          });
-        } else if (response.status === 404) {
-          route(LINKS.ERROR.HREF);
-        } else {
-          reject(new Error("Внутреняя ошибка сервера"));
-        }
-      },
-    );
-  });
-}
+// /**
+//  * Функция добавления лайка
+//  * @param postId
+//  * @returns
+//  */
+// export async function AddLikeOnPost(postId: any) {
+//   return new Promise((resolve, reject) => {
+//     fetchAjax(
+//       LOCATIONS.POSTS.LIKE.METHOD,
+//       LOCATIONS.POSTS.LIKE.HREF,
+//       { postId: postId },
+//       (response) => {
+//         if (response.ok) {
+//           response.json().then((data) => {
+//             resolve(data);
+//           });
+//         } else if (response.status === 404) {
+//           route(LINKS.ERROR.HREF);
+//         } else {
+//           reject(new Error("Внутреняя ошибка сервера"));
+//         }
+//       },
+//     );
+//   });
+// }
 /**
  * Кастомизирует сайдбар
  * @param sidebar

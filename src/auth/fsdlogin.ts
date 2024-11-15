@@ -1,10 +1,10 @@
-import { state, maxAttempts, LINKS, LOCATIONS, sidebarLinks } from "../consts";
+import { state, maxAttempts, LINKS, LOCATIONS, sidebarLinks } from "../shared/consts/consts";
 import { removeError, showError } from "../utils/errors";
-import { fetchAjax } from "../utils/fetchAjax";
+import { fetchAjax } from "../shared/fetch/fetchAjax";
 import { goToPage } from "../index";
 import { attempts } from "../pages/login";
 import { addItemLocalStorage } from "../utils/storages";
-import { route } from "../utils/routing";
+import { route } from "../shared/routing/routing";
 import DOMPurify from "dompurify";
 
 /**

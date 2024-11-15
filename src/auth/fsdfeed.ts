@@ -1,8 +1,8 @@
-import { ELEMENTS_CLASS, LINKS, LOCATIONS, sidebarLinks } from "../consts";
+import { ELEMENTS_CLASS, LINKS, LOCATIONS, sidebarLinks } from "../shared/consts/consts";
 import { createElement, createText, update } from "../../lib/vdom/lib";
 import { VNode } from "../../lib/vdom/src/source";
-import { fetchAjax } from "../utils/fetchAjax";
-import { route } from "../utils/routing";
+import { fetchAjax } from "../shared/fetch/fetchAjax";
+import { route } from "../shared/routing/routing";
 import { removeItemLocalStorage } from "../utils/storages";
 import { findUsername } from "../utils/hasLogged";
 
