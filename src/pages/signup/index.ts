@@ -1,8 +1,8 @@
-import { LINKS, state } from "../../consts";
+import { LINKS, state } from "../../shared/consts/consts";
 import { goToPage, pageContainer } from "../../index";
 import { authSignup, validateSignupForm } from "../../auth/fsdsignup";
-import { ELEMENTS_CLASS } from "../../consts";
-import { route } from "../../utils/routing";
+import { ELEMENTS_CLASS } from "../../shared/consts/consts";
+import { route } from "../../shared/routing/routing";
 import { createElement, createText, update } from "../../../lib/vdom/lib";
 import { VNode } from "../../../lib/vdom/src/source";
 import { containerSignup } from "./ui/signup";

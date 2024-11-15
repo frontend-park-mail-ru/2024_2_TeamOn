@@ -1,7 +1,7 @@
-import { LINKS } from "../../consts";
+import { LINKS } from "../../shared/consts/consts";
 import { authLogin, validateLoginForm } from "../../auth/fsdlogin";
-import { ELEMENTS_CLASS } from "../../consts";
-import { route } from "../../utils/routing";
+import { ELEMENTS_CLASS } from "../../shared/consts/consts";
+import { route } from "../../shared/routing/routing";
 import { update } from "../../../lib/vdom/lib";
 import { pageContainer } from "../../index";
 import { findUsername } from "../../utils/hasLogged";

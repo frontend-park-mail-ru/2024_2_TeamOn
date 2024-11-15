@@ -79,7 +79,7 @@ export class VirtualDOM {
   }
 
   public update(parent: any, newVNode: VNode) {
-    const patches = this.diff(this.root, newVNode);
+    // const patches = this.diff(this.root, newVNode);
     this.root = newVNode;
     return this.applyPatches(parent);
   }

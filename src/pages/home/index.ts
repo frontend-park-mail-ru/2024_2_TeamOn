@@ -1,5 +1,5 @@
-import { ELEMENTS_CLASS, LINKS } from "../../consts";
-import { route } from "../../utils/routing";
+import { ELEMENTS_CLASS, LINKS } from "../../shared/consts/consts";
+import { route } from "../../shared/routing/routing";
 import { hasLogged } from "../../utils/hasLogged";
 import { clearHistoryBrowser } from "../../utils/clearHistory";
 import { pageContainer } from "../../index";

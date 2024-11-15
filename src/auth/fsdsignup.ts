@@ -4,11 +4,11 @@ import {
   LINKS,
   LOCATIONS,
   sidebarLinks,
-} from "../consts";
+} from "../shared/consts/consts";
 import { removeError, showError } from "../utils/errors";
-import { fetchAjax } from "../utils/fetchAjax";
+import { fetchAjax } from "../shared/fetch/fetchAjax";
 import { addItemLocalStorage } from "../utils/storages";
-import { route } from "../utils/routing";
+import { route } from "../shared/routing/routing";
 import DOMPurify from "dompurify";
 
 export function validateSettings(

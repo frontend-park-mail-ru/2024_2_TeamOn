@@ -1,5 +1,5 @@
-import { LINKS } from "../consts";
-import { routing } from "./routing";
+import { LINKS } from "../shared/consts/consts";
+import { routing } from "../shared/routing/routing";
 import { getItemLocalStorage } from "./storages";
 /**
  * Удаление истории

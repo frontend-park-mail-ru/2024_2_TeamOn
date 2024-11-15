@@ -1,6 +1,6 @@
-import { LINKS } from "../consts";
+import { LINKS } from "../shared/consts/consts";
 import { hasLogged } from "./hasLogged";
-import { route } from "./routing";
+import { route } from "../shared/routing/routing";
 
 /**
  * Проверка неавторизованности
