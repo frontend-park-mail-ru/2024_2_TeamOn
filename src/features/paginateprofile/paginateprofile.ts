@@ -4,22 +4,21 @@ import { getUserPosts } from "../getuserposts/getUserPosts";
 import { renderUserPost } from "../../entities/userPost/index";
 import { renderTo } from "../../../lib/vdom/lib";
 
-
 /**
  * Функция рендера постов
  * @param authorPosts Массив постов у текущего юзера
  * @returns
  */
 async function renderPosts(authorPosts: any[]) {
-    var posts: any = [];
-    authorPosts.forEach(async (post: any) => {
-      const container: any = await renderUserPost(post);
-      const div = renderTo(container);
-      posts.push(div);
-    });
-    return posts;
-  }
-  
+  var posts: any = [];
+  authorPosts.forEach(async (post: any) => {
+    const container: any = await renderUserPost(post);
+    const div = renderTo(container);
+    posts.push(div);
+  });
+  return posts;
+}
+
 /**
  * Функция модифицирования каждого поста
  * @param containerPosts Контейнер с постами
@@ -28,93 +27,92 @@ async function renderPosts(authorPosts: any[]) {
  * @returns
  */
 async function modifireMyPosts(
-    containerPosts: any,
-    posts: any,
-    postId: any = null,
-  ) {
-    try {
-      // Обработка популярных постов
-      if (posts.length > 1) {
-        const containersPost = containerPosts.querySelectorAll(`.posts`);
-  
-        // Используем Promise.all для обработки популярных постов параллельно
-        await Promise.all(
-          Array.from(containersPost)
-            .slice(-posts.length)
-            .map((container: any, index: any) => {
-              return customizePostProfile(
-                container,
-                posts[posts.length - 1 - index],
-                postId,
-              );
-            }),
-        );
-        return;
-      }
+  containerPosts: any,
+  posts: any,
+  postId: any = null,
+) {
+  try {
+    // Обработка популярных постов
+    if (posts.length > 1) {
       const containersPost = containerPosts.querySelectorAll(`.posts`);
-      return customizePostProfile(containersPost[0], posts[0], postId);
-    } catch (error) {
-      console.log("ERROR");
-      throw error;
+
+      // Используем Promise.all для обработки популярных постов параллельно
+      await Promise.all(
+        Array.from(containersPost)
+          .slice(-posts.length)
+          .map((container: any, index: any) => {
+            return customizePostProfile(
+              container,
+              posts[posts.length - 1 - index],
+              postId,
+            );
+          }),
+      );
+      return;
     }
+    const containersPost = containerPosts.querySelectorAll(`.posts`);
+    return customizePostProfile(containersPost[0], posts[0], postId);
+  } catch (error) {
+    console.log("ERROR");
+    throw error;
   }
-  
+}
+
+/**
+ * Функция пагинации на странице автора
+ * @param allPosts Все посты
+ * @param containerPosts Контейнер с постами
+ */
+async function paginateProfile(allPosts: any, containerPosts: any) {
+  let stopLoad: boolean = false;
+  let offset = 0;
+  // Объект для предотвращения повторной загрузки
+  let isLoading = false;
+  const cache: any = {
+    popular: [],
+    recently: [],
+  };
   /**
-   * Функция пагинации на странице автора
-   * @param allPosts Все посты
-   * @param containerPosts Контейнер с постами
+   * Загрузка постов в профиле
+   * @returns
    */
-  async function paginateProfile(allPosts: any, containerPosts: any) {
-    let stopLoad: boolean = false;
-    let offset = 0;
-    // Объект для предотвращения повторной загрузки
-    let isLoading = false;
-    const cache: any = {
-      popular: [],
-      recently: [],
-    };
-    /**
-     * Загрузка постов в профиле
-     * @returns
-     */
-    async function loadProfilePost() {
-      if (isLoading) return; // Если загрузка уже идет, выходим из функции
-      isLoading = true; // Устанавливаем флаг загрузки
-  
-      try {
-        if (!stopLoad) {
-          // Загружаем популярные посты
-          const posts: any = await getUserPosts(window.location.pathname, offset);
-          const nextPosts = posts.slice(0, QUERY.LIMIT);
-          if (nextPosts.length > 0) {
-            allPosts.push(...nextPosts);
-            offset += QUERY.LIMIT;
-  
-            containerPosts.append(...(await renderPosts(nextPosts)));
-            modifireMyPosts(containerPosts, nextPosts.reverse());
-            cache.popular.push(...nextPosts);
-          } else {
-            stopLoad = true;
-          }
+  async function loadProfilePost() {
+    if (isLoading) return; // Если загрузка уже идет, выходим из функции
+    isLoading = true; // Устанавливаем флаг загрузки
+
+    try {
+      if (!stopLoad) {
+        // Загружаем популярные посты
+        const posts: any = await getUserPosts(window.location.pathname, offset);
+        const nextPosts = posts.slice(0, QUERY.LIMIT);
+        if (nextPosts.length > 0) {
+          allPosts.push(...nextPosts);
+          offset += QUERY.LIMIT;
+
+          containerPosts.append(...(await renderPosts(nextPosts)));
+          modifireMyPosts(containerPosts, nextPosts.reverse());
+          cache.popular.push(...nextPosts);
+        } else {
+          stopLoad = true;
         }
-      } finally {
-        isLoading = false;
       }
+    } finally {
+      isLoading = false;
     }
-  
-    // Инициализируем загрузку первых постов
-    await loadProfilePost();
-  
-    // Обработчик события прокрутки
-    window.addEventListener("scroll", async () => {
-      const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-  
-      // Проверяем, достиг ли пользователь нижней части страницы
-      if (scrollTop + clientHeight >= scrollHeight - 500) {
-        await loadProfilePost();
-      }
-    });
   }
 
-  export { paginateProfile }
-  
+  // Инициализируем загрузку первых постов
+  await loadProfilePost();
+
+  // Обработчик события прокрутки
+  window.addEventListener("scroll", async () => {
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+
+    // Проверяем, достиг ли пользователь нижней части страницы
+    if (scrollTop + clientHeight >= scrollHeight - 500) {
+      await loadProfilePost();
+    }
+  });
+}
+
+export { paginateProfile };

@@ -1,22 +1,20 @@
 import { LINKS } from "../../shared/consts/consts";
-import { authLogin, validateLoginForm } from "../../auth/fsdlogin";
 import { ELEMENTS_CLASS } from "../../shared/consts/consts";
 import { route } from "../../shared/routing/routing";
 import { update } from "../../../lib/vdom/lib";
-import { pageContainer } from "../../index";
-import { findUsername } from "../../utils/hasLogged";
-import { removeItemLocalStorage } from "../../utils/storages";
+import { pageContainer } from "../../app/index";
+import { findUsername } from "../../shared/utils/hasLogged";
+import { removeItemLocalStorage } from "../../shared/utils/storages";
 import { VNode } from "../../../lib/vdom/src/source";
 import { containerLogin } from "./ui/login";
-
-export let attempts: any;
-
+import { authLogin } from "../../features/authLogin/authLogin";
+import { validateLoginForm } from "../../shared/validateLoginForm/validateLoginForm";
 /**
  * Рендерит форму входа на страницу.
  * @returns
  */
 export function renderLogin() {
-  attempts = 0;
+  let attempts = 0;
 
   const vdom: VNode = containerLogin();
 
@@ -65,14 +63,14 @@ export function renderLogin() {
   submitButton.addEventListener("click", (e: any) => {
     e.preventDefault();
     attempts++;
-    authLogin(form, inputLogin, inputPassword);
+    authLogin(form, inputLogin, inputPassword, attempts);
   });
 
   submitButton.addEventListener("keydown", (e: any) => {
     if (e.key === "Enter") {
       e.preventDefault();
       attempts++;
-      authLogin(form, inputLogin, inputPassword);
+      authLogin(form, inputLogin, inputPassword, attempts);
     }
   });
   form.addEventListener("input", (e: any) => {

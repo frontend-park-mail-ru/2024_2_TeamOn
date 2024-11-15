@@ -1,8 +1,8 @@
-import { getAccount } from "../../../auth/fsdfeed";
 import {
   containerPopularposts,
   containerRecentlyposts,
 } from "../../../widgest/feed/index";
+import { getAccount } from "../../../features/getAccount/getAccount";
 import { Sidebar } from "../../../shared/sidebar/sidebar";
 
 import * as VDom from "vdom";

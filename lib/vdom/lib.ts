@@ -1,4 +1,4 @@
-import { Virtual } from "../../src/index";
+import { Virtual } from "../../src/app/index";
 import { VirtualDOM } from "./src/source";
 import { VNode } from "./src/source";
 

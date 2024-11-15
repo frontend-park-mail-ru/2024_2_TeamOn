@@ -1,84 +1,7 @@
-import {
-  REGEXP,
-  validatePassword,
-  LINKS,
-  LOCATIONS,
-  sidebarLinks,
-} from "../shared/consts/consts";
 import { removeError, showError } from "../utils/errors";
-import { fetchAjax } from "../shared/fetch/fetchAjax";
-import { addItemLocalStorage } from "../utils/storages";
-import { route } from "../shared/routing/routing";
+import { REGEXP, validatePassword } from "../consts/consts";
 import DOMPurify from "dompurify";
-
-export function validateSettings(
-  inputPassword: any,
-  inputRepeatPassword: any,
-  passwordStrength: any,
-  newPasswordError: any,
-  confirmPasswordError: any,
-) {
-  if (!inputPassword.value) {
-    newPasswordError.innerHTML = "Пожалуйста, введите пароль";
-    updatePasswordStrengthBar(passwordStrength);
-  } else {
-    // Проверка длины пароля
-    if (inputPassword.value.length >= validatePassword.MIN_SYMBOLS) {
-      passwordStrength++;
-      // Изменение цвета шкалы
-      newPasswordError.innerHTML = "";
-      updatePasswordStrengthBar(passwordStrength);
-    } else {
-      newPasswordError.innerHTML = `Пароль должен быть минимум ${validatePassword.MIN_SYMBOLS} символов`;
-      updatePasswordStrengthBar(passwordStrength);
-      return;
-    }
-    if (inputPassword.value.length <= validatePassword.MAX_SYMBOLS) {
-      newPasswordError.innerHTML = "";
-      updatePasswordStrengthBar(passwordStrength);
-    } else {
-      passwordStrength--;
-      newPasswordError.innerHTML = `Пароль должен быть максимум ${validatePassword.MAX_SYMBOLS} символов`;
-      updatePasswordStrengthBar(passwordStrength);
-      return;
-    }
-    if (REGEXP.REGEXP_PASSWORD_ONE_NUMBER.test(inputPassword.value)) {
-      passwordStrength++;
-      newPasswordError.innerHTML = "";
-      updatePasswordStrengthBar(passwordStrength);
-    } else {
-      newPasswordError.innerHTML = `В пароле должна быть одна цифра`;
-      updatePasswordStrengthBar(passwordStrength);
-      return;
-    }
-    if (REGEXP.REGEX_SPEC_SYMBOL.test(inputPassword.value)) {
-      passwordStrength++;
-      newPasswordError.innerHTML = "";
-      updatePasswordStrengthBar(passwordStrength);
-    } else {
-      newPasswordError.innerHTML = `В пароле должен содержаться спец символ`;
-      updatePasswordStrengthBar(passwordStrength);
-      return;
-    }
-    if (REGEXP.REGEXP_UPPER_LOWER_CASE.test(inputPassword.value)) {
-      passwordStrength++;
-      newPasswordError.innerHTML = "";
-      updatePasswordStrengthBar(passwordStrength);
-    } else {
-      newPasswordError.innerHTML = `Не хватает: большой и маленькой буквы`;
-      updatePasswordStrengthBar(passwordStrength);
-      return;
-    }
-  }
-
-  // Проверка совпадения паролей
-
-  if (inputRepeatPassword.value !== inputPassword.value) {
-    newPasswordError.innerHTML = `Пароли должны совпадать`;
-  } else {
-    confirmPasswordError.innerHTML = "";
-  }
-}
+import { updatePasswordStrengthBar } from "../strengthBar/strengthBar";
 
 export function validatePasswords(
   inputPassword: any,
@@ -165,7 +88,7 @@ export function validatePasswords(
  * @returns true, если форма содержит ошибки, false - если форма корректна
  */
 
-export function validateSignupForm(
+function validateSignupForm(
   form: any,
   inputUsername: any,
   inputPassword: any,
@@ -219,27 +142,6 @@ export function validateSignupForm(
 
   return hasError;
 }
-
-// Функция для обновления шкалы силы пароля
-
-export function updatePasswordStrengthBar(strength: number) {
-  const strengthBar: any = document.querySelector(".password-strength");
-  const strengthPercentage = (strength / 5) * 100; // 5 - максимальное количество критериев
-
-  // Установка ширины и цвета в зависимости от силы пароля
-  strengthBar.style.width = strengthPercentage + "%";
-  if (strengthPercentage == 0) {
-    strengthBar.style.width = "10%";
-  }
-  // Изменение цвета в зависимости от силы пароля
-  if (strengthPercentage <= 40) {
-    strengthBar.style.backgroundColor = "red";
-  } else if (strengthPercentage < 80) {
-    strengthBar.style.backgroundColor = "yellow";
-  } else {
-    strengthBar.style.backgroundColor = "green";
-  }
-}
 /**
  * Выводит ошибку регистрации, если пользователь уже существует.
  * @param {*} inputLogin Поле ввода логина
@@ -254,41 +156,4 @@ function validationErrorSignupForm(
 ) {
   showError(inputPassword, message);
 }
-
-/**
- * Регистрирует нового пользователя, если форма регистрации корректна.
- * @param {*} form Форма регистрации
- * @param {*} username Поле ввода логина
- * @param {*} password Поле ввода пароля
- * @param {*} inputRepeatPassword Поле ввода повторного пароля
- */
-export function authSignup(
-  form: any,
-  username: any,
-  password: any,
-  inputRepeatPassword: any,
-) {
-  if (!validateSignupForm(form, username, password, inputRepeatPassword)) {
-    fetchAjax(
-      LOCATIONS.AUTH.SIGNUP.METHOD,
-      LOCATIONS.AUTH.SIGNUP.HREF,
-      { username: username.value, password: password.value },
-      (response) => {
-        if (response.ok) {
-          sidebarLinks[0].active = true;
-          addItemLocalStorage(DOMPurify.sanitize(username.value));
-          route(LINKS.FEED.HREF);
-        } else if (response.status === 400) {
-          response.json().then((data: any) => {
-            validationErrorSignupForm(
-              username,
-              password,
-              inputRepeatPassword,
-              data.message,
-            );
-          });
-        }
-      },
-    );
-  }
-}
+export { validateSignupForm, validationErrorSignupForm };

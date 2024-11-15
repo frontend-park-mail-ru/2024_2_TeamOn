@@ -1,10 +1,13 @@
 import { ELEMENTS_CLASS, LINKS } from "../../shared/consts/consts";
 import { route } from "../../shared/routing/routing";
-import { hasLogged } from "../../utils/hasLogged";
-import { clearHistoryBrowser } from "../../utils/clearHistory";
-import { pageContainer } from "../../index";
+import { hasLogged } from "../../shared/utils/hasLogged";
+import { clearHistoryBrowser } from "../../shared/utils/clearHistory";
+import { pageContainer } from "../../app/index";
 import { createElement, createText, update } from "../../../lib/vdom/lib";
-import { controllerMask, createMask } from "../../utils/utilsView/circle";
+import {
+  controllerMask,
+  createMask,
+} from "../../shared/utils/utilsView/circle";
 import { VNode } from "../../../lib/vdom/src/source";
 import { containerHome } from "./ui/home";
 

@@ -1,10 +1,10 @@
 import { ELEMENTS_CLASS, LINKS, state } from "../../shared/consts/consts";
-import { pageContainer } from "../../index";
+import { pageContainer } from "../../app/index";
 import { update } from "../../../lib/vdom/lib";
 import { route } from "../../shared/routing/routing";
-import { removeItemLocalStorage } from "../../utils/storages";
-import { modifierSidebar } from "../feed";
+import { removeItemLocalStorage } from "../../shared/utils/storages";
 import { notificationContainer } from "./ui/notifications";
+import { modifierSidebar } from "../../shared/sidebar/modifire";
 /**
  * Функция рендера уведомлений (в обработке)
  * @returns
