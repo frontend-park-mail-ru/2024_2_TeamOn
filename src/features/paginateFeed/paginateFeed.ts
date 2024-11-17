@@ -95,62 +95,118 @@ async function customizePost(container: any, post: any = null) {
   }
 
   const divPhotos = container.querySelector(`.container-image-photos`);
-  const modalPhotos: any = document.querySelector(`.modal-view-photos`);
+  const modalPhotos: any = document.querySelector(`.modal-view-photos`); //
   const rightContent: any = document.querySelector(`.right-content`);
-  const closeModal: any = document.querySelector(`.close-modal-view`);
+  const closeModal: any = document.querySelector(`.close-modal-view`); //
   const main: any = document.querySelector("main");
-  const slideshow: any = document.querySelector(".slideshow");
-  const imageModal: any = document.querySelector(".image-photos-modal");
-  const imgPhotos: any = Array.from(divPhotos.querySelectorAll(`.image-photo`));
+  const slideshow: any = modalPhotos.querySelector(".slideshow");
+  const imageModal: any = modalPhotos.querySelector(".image-photos-modal"); //
+  const imgPhotos: any = Array.from(divPhotos.querySelectorAll(`.image-photo`)); //
   const imgAvatar: any = container.querySelector(`.author-avatar`);
   const toggleButton: any = container.querySelector(".toggleButton");
 
   // Обработчики для кнопок переключения
-  const leftArrow: any = document.querySelector(".leftarrow-modal-view");
-  const rightArrow: any = document.querySelector(".rightarrow-modal-view");
+  const leftArrow: any = modalPhotos.querySelector(".leftarrow-modal-view"); //
+  const rightArrow: any = modalPhotos.querySelector(".rightarrow-modal-view"); //
+  var currentIndex = 0;
 
-  let currentIndex = 0;
-
-  const updateImage = (index: any) => {
-    imageModal.src = imgPhotos[index].src;
+  const updateImage = (currentIndex: any) => {
+    imageModal.src = imgPhotos[currentIndex].src;
   };
+
   const showAvatar = () => {
     imageModal.src = imgAvatar.src;
-    slideshow.style.display = "none";
-    slideshow.style.pointerEvents = 'none';
-slideshow.style.userSelect = 'none';
-imageModal.style.pointerEvents = 'none';
-imageModal.style.userSelect = 'none';
-
-leftArrow.style.display = "none";
-rightArrow.style.display = "none";
-leftArrow.style.pointerEvents = 'none';
-leftArrow.style.userSelect = 'none';
-rightArrow.style.pointerEvents = 'none';
-rightArrow.style.userSelect = 'none';
+    return;
   };
 
-  const handleOpenSlideshow = (event: any, callback: any, index: any = null) => {
+  const handleOpenSlideshow = (
+    event: any,
+    callback: any,
+    index: any = null,
+  ) => {
     event.stopPropagation();
     modalPhotos.style.display = "block";
     rightContent.classList.add("blackout");
     currentIndex = index;
     callback(currentIndex);
-    // updateImage(currentIndex);
-  };
+    if (leftArrow) {
+      leftArrow.addEventListener("click", touchLeftArrow);
+    }
 
+    if (rightArrow) {
+      rightArrow.addEventListener("click", touchRightArrow);
+    }
+
+    if (isMobile()) {
+      let startX = 0;
+      let endX = 0;
+      modalPhotos.addEventListener("touchstart", (event: any) => {
+        startX = event.touches[0].clientX;
+      });
+
+      modalPhotos.addEventListener("touchmove", (event: any) => {
+        endX = event.touches[0].clientX;
+      });
+
+      modalPhotos.addEventListener("touchend", (event: any) => {
+        if (startX > endX + 50) {
+          // Свайп влево
+          const oldIndex = currentIndex;
+
+          currentIndex = (currentIndex + 1) % imgPhotos.length; // Увеличиваем индекс
+          animateImageTransition(oldIndex, currentIndex, -100); // Сдвигаем влево
+        } else if (startX + 50 < endX) {
+          // Свайп вправо
+          const oldIndex = currentIndex;
+          currentIndex =
+            (currentIndex - 1 + imgPhotos.length) % imgPhotos.length; // Уменьшаем индекс
+          animateImageTransition(oldIndex, currentIndex, 100); // Сдвигаем вправо
+        }
+      });
+    }
+
+      if (!isMobile()) {
+    // Обработка кликов
+    modalPhotos.addEventListener("click", (event: any) => {
+      event.stopPropagation();
+      const width = modalPhotos.clientWidth; // Получаем ширину элемента slideshow
+      const midPoint = 1018; // Находим середину элемента
+      // Если клик был в правой половине
+      if (event.clientX > 1018) {
+        currentIndex = (currentIndex + 1) % imgPhotos.length;
+        updateImage(currentIndex);
+      }
+      // Если клик был в левой половине
+      else {
+        currentIndex = (currentIndex - 1 + imgPhotos.length) % imgPhotos.length;
+        updateImage(currentIndex);
+      }
+    });
+  }
+  if (closeModal) {
+    closeModal.addEventListener("click", () => {
+      modalPhotos.style.display = "none";
+      rightContent.classList.remove("blackout");
+    });
+  }
+
+  if (main) {
+    main.addEventListener("click", () => {
+      modalPhotos.style.display = "none";
+      rightContent.classList.remove("blackout");
+    });
+  }
+  };
   const touchRightArrow = (event: any) => {
     event.stopPropagation();
     currentIndex = (currentIndex + 1) % imgPhotos.length;
     updateImage(currentIndex);
-    // rightArrow.removeEventListener("click", touchRightArrow);
   };
 
   const touchLeftArrow = (event: any) => {
     event.stopPropagation();
     currentIndex = (currentIndex - 1 + imgPhotos.length) % imgPhotos.length;
     updateImage(currentIndex);
-    // leftArrow.removeEventListener("click", touchLeftArrow);
   };
 
   function isMobile() {
@@ -217,77 +273,42 @@ rightArrow.style.userSelect = 'none';
   });
 
   imgPhotos.forEach((img: any, index: any) => {
-    img.addEventListener("click", (event: any) =>
-      handleOpenSlideshow(event, updateImage, index),
-    );
+    img.addEventListener("click", (event: any) => {
+      handleOpenSlideshow(event, updateImage, index);
+    });
   });
-  imgAvatar.addEventListener('click', (event: any) => {
+
+  imgAvatar.addEventListener("click", (event: any) => {
     handleOpenSlideshow(event, showAvatar);
-  })
-  if (closeModal) {
-    closeModal.addEventListener("click", () => {
-      modalPhotos.style.display = "none";
-      rightContent.classList.remove("blackout");
-    });
-  }
-
-  if (main) {
-    main.addEventListener("click", () => {
-      modalPhotos.style.display = "none";
-      rightContent.classList.remove("blackout");
-    });
-  }
-
-  if (leftArrow) {
-    leftArrow.addEventListener("click", touchLeftArrow);
-  }
-
-  if (rightArrow) {
-    rightArrow.addEventListener("click", touchRightArrow);
-  }
-  // Добавляем обработчики для свайпов
-  let startX = 0;
-  let endX = 0;
-  if (!slideshow) {
-    alert("alo");
-  }
-  modalPhotos.addEventListener("touchstart", (event: any) => {
-    startX = event.touches[0].clientX;
   });
 
-  modalPhotos.addEventListener("touchmove", (event: any) => {
-    endX = event.touches[0].clientX;
-  });
 
-  modalPhotos.addEventListener("touchend", (event: any) => {
-    if (startX > endX + 50) {
-      // Свайп влево
-      currentIndex = (currentIndex + 1) % imgPhotos.length;
-      updateImage(currentIndex);
-    } else if (startX + 50 < endX) {
-      // Свайп вправо
-      currentIndex = (currentIndex - 1 + imgPhotos.length) % imgPhotos.length;
-      updateImage(currentIndex);
-    }
-  });
 
-  // Обработка кликов
-  modalPhotos.addEventListener("click", (event: any) => {
-    event.stopPropagation();
-    const width = modalPhotos.clientWidth; // Получаем ширину элемента slideshow
-    const midPoint = width / 2; // Находим середину элемента
 
-    // Если клик был в правой половине
-    if (event.clientX > midPoint) {
-      currentIndex = (currentIndex - 1 + imgPhotos.length) % imgPhotos.length; // Свайп вправо
-      updateImage(currentIndex);
-    }
-    // Если клик был в левой половине
-    else {
-      currentIndex = (currentIndex + 1) % imgPhotos.length; // Свайп влево
-      updateImage(currentIndex);
-    }
-  });
+  function animateImageTransition(
+    oldIndex: any,
+    newIndex: any,
+    direction: any,
+  ) {
+    const imageModal: any = document.querySelector(".image-photos-modal");
+
+    // Сдвинуть текущее изображение
+    imageModal.style.transform = `translateX(${direction}%)`;
+
+    // Обновить изображение через 500 мс (время анимации)
+    setTimeout(() => {
+      updateImage(newIndex); // Обновляем изображение
+
+      // Вернуть изображение на место
+      imageModal.style.transition = "none"; // Отключаем анимацию на время обновления
+      imageModal.style.transform = `translateX(${direction * -2}%)`; // Сдвигаем за границы
+      setTimeout(() => {
+        imageModal.style.transition = ""; // Включаем анимацию обратно
+        imageModal.style.transform = "translateX(0)"; // Возвращаем на место
+      }, 50); // Небольшая задержка для применения стиля
+    }, 500); // Время совпадает с временем анимации
+  }
+
 }
 
 /**
