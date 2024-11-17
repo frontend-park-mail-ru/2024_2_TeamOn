@@ -7,7 +7,7 @@ import { route } from "../../shared/routing/routing";
  * @param offsetPopular Оффсет для популярных постов
  * @returns
  */
-async function getPopularPosts(offsetPopular: any) {
+async function getPopularPosts(offsetPopular: number) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       LOCATIONS.POSTS.POPULAR_POSTS.METHOD,

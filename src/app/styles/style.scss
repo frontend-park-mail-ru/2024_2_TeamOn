@@ -1562,7 +1562,17 @@ select {
   border-radius: 20px;
   appearance: none;
 }
-
+.toggleButton {
+  font-weight: bold;
+  color: #007bffa6;
+  margin-bottom: 1%;
+  position: relative;
+  transition: color 0.3s ease;
+}
+.toggleButton:hover {
+  cursor: pointer;
+  color: #007bff;
+}
 .form-container .profile-pic,
 .form-container-security .profile-pic {
   display: block;

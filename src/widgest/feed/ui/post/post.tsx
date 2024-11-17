@@ -16,20 +16,22 @@ async function containerPost() {
         </div>
         <div class="title"></div>
         <div class="content"></div>
-        <button class="toggleButton" style="display: none;">Показать</button>
+        <div class="toggleButton" style="display: none;">
+          Показать...
+        </div>
         <div class="container-image-photos">
-          {/* <img
+          <img
             class="image-photo"
             src="https://img.freepik.com/free-photo/rainbow-end-road-landscape_23-2151596720.jpg"
-          ></img> */}
-           <img
+          ></img>
+          <img
             class="image-photo"
             src="https://static-cse.canva.com/blob/191106/00_verzosa_winterlandscapes_jakob-owens-tb-2640x1485.jpg"
           ></img>
           <img
             class="image-photo"
             src="https://fotoblik.ru/wp-content/uploads/2023/09/azorskie-ostrova-2.webp"
-            ></img> 
+          ></img>
         </div>
         <div class="date"></div>
         <div class="iteraction-section">

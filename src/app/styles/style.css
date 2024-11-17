@@ -1715,6 +1715,19 @@ select {
           appearance: none;
 }
 
+.toggleButton {
+  font-weight: bold;
+  color: rgba(0, 123, 255, 0.6509803922);
+  margin-bottom: 1%;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.toggleButton:hover {
+  cursor: pointer;
+  color: #007bff;
+}
+
 .form-container .profile-pic,
 .form-container-security .profile-pic {
   display: block;

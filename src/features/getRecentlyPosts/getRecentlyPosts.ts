@@ -7,7 +7,7 @@ import { route } from "../../shared/routing/routing";
  * @param offsetRecently Оффсет для недавних
  * @returns
  */
-async function getRecentlyPosts(offsetRecently: any) {
+async function getRecentlyPosts(offsetRecently: number) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       LOCATIONS.POSTS.RECENTLY_POSTS.METHOD,

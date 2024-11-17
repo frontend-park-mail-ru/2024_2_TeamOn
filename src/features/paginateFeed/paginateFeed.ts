@@ -102,8 +102,8 @@ async function customizePost(container: any, post: any = null) {
   const slideshow: any = document.querySelector(".slideshow");
   const imageModal: any = document.querySelector(".image-photos-modal");
   const imgPhotos: any = Array.from(divPhotos.querySelectorAll(`.image-photo`));
-
-  const toggleButton: any = container.querySelector('.toggleButton');
+  const imgAvatar: any = container.querySelector(`.author-avatar`);
+  const toggleButton: any = container.querySelector(".toggleButton");
 
   // Обработчики для кнопок переключения
   const leftArrow: any = document.querySelector(".leftarrow-modal-view");
@@ -114,13 +114,29 @@ async function customizePost(container: any, post: any = null) {
   const updateImage = (index: any) => {
     imageModal.src = imgPhotos[index].src;
   };
+  const showAvatar = () => {
+    imageModal.src = imgAvatar.src;
+    slideshow.style.display = "none";
+    slideshow.style.pointerEvents = 'none';
+slideshow.style.userSelect = 'none';
+imageModal.style.pointerEvents = 'none';
+imageModal.style.userSelect = 'none';
 
-  const handleOpenSlideshow = (event: any, index: any) => {
+leftArrow.style.display = "none";
+rightArrow.style.display = "none";
+leftArrow.style.pointerEvents = 'none';
+leftArrow.style.userSelect = 'none';
+rightArrow.style.pointerEvents = 'none';
+rightArrow.style.userSelect = 'none';
+  };
+
+  const handleOpenSlideshow = (event: any, callback: any, index: any = null) => {
     event.stopPropagation();
     modalPhotos.style.display = "block";
     rightContent.classList.add("blackout");
     currentIndex = index;
-    updateImage(currentIndex);
+    callback(currentIndex);
+    // updateImage(currentIndex);
   };
 
   const touchRightArrow = (event: any) => {
@@ -137,75 +153,77 @@ async function customizePost(container: any, post: any = null) {
     // leftArrow.removeEventListener("click", touchLeftArrow);
   };
 
-function isMobile() {
-  return window.innerWidth <= 768; 
-}
-let MAX_SIZE = 0;
-if (isMobile()) {
-  MAX_SIZE = 200;
-} else {
-  MAX_SIZE = 1000;
-}
+  function isMobile() {
+    return window.innerWidth <= 768;
+  }
+  let MAX_SIZE = 0;
+  if (isMobile()) {
+    MAX_SIZE = 200;
+  } else {
+    MAX_SIZE = 1000;
+  }
 
-function filterImages() {
-  let resheight = 0;
-  let limitExceeded = false; // Флаг для отслеживания превышения лимита
+  function filterImages() {
+    let resheight = 0;
+    let limitExceeded = false; // Флаг для отслеживания превышения лимита
 
-  imgPhotos.forEach((img: any) => {
+    imgPhotos.forEach((img: any) => {
       const imgHeight = img.clientHeight;
       if (resheight + imgHeight <= MAX_SIZE) {
-          img.style.display = "block";
-          resheight += imgHeight;
+        img.style.display = "block";
+        resheight += imgHeight;
       } else {
-          img.style.display = "none";
-          limitExceeded = true; // Устанавливаем флаг, если лимит превышен
+        img.style.display = "none";
+        limitExceeded = true; // Устанавливаем флаг, если лимит превышен
       }
-  });
+    });
 
-  // Показываем или скрываем кнопку в зависимости от превышения лимита
-  toggleButton.style.display = limitExceeded ? "block" : "none";
-}
-
-// Функция для обработки загрузки изображений
-function onImagesLoaded() {
-  filterImages();
-
-  toggleButton.addEventListener('click', () => {
-      const isHidden = toggleButton.textContent === 'Показать';
-      if (isHidden) {
-          imgPhotos.forEach((img: any) => {
-              img.style.display = "block"; // Показываем все изображения
-          });
-      } else {
-          filterImages(); // Применяем фильтрацию
-      }
-      toggleButton.textContent = isHidden ? 'Скрыть' : 'Показать'; // Меняем текст кнопки
-  });
-}
-
-// Добавляем обработчик события загрузки для каждого изображения
-let imagesLoaded = 0;
-imgPhotos.forEach((img: any) => {
-  img.onload = () => {
-      imagesLoaded++;
-      if (imagesLoaded === imgPhotos.length) {
-          onImagesLoaded(); // Все изображения загружены
-      }
-  };
-  if (img.complete) {
-      imagesLoaded++;
-      if (imagesLoaded === imgPhotos.length) {
-          onImagesLoaded(); // Все изображения загружены
-      }
+    // Показываем или скрываем кнопку в зависимости от превышения лимита
+    toggleButton.style.display = limitExceeded ? "block" : "none";
   }
-});
+
+  // Функция для обработки загрузки изображений
+  function onImagesLoaded() {
+    filterImages();
+
+    toggleButton.addEventListener("click", () => {
+      const isHidden = toggleButton.textContent === "Показать...";
+      if (isHidden) {
+        imgPhotos.forEach((img: any) => {
+          img.style.display = "block"; // Показываем все изображения
+        });
+      } else {
+        filterImages(); // Применяем фильтрацию
+      }
+      toggleButton.textContent = isHidden ? "Скрыть" : "Показать..."; // Меняем текст кнопки
+    });
+  }
+
+  // Добавляем обработчик события загрузки для каждого изображения
+  let imagesLoaded = 0;
+  imgPhotos.forEach((img: any) => {
+    img.onload = () => {
+      imagesLoaded++;
+      if (imagesLoaded === imgPhotos.length) {
+        onImagesLoaded(); // Все изображения загружены
+      }
+    };
+    if (img.complete) {
+      imagesLoaded++;
+      if (imagesLoaded === imgPhotos.length) {
+        onImagesLoaded(); // Все изображения загружены
+      }
+    }
+  });
 
   imgPhotos.forEach((img: any, index: any) => {
     img.addEventListener("click", (event: any) =>
-      handleOpenSlideshow(event, index),
+      handleOpenSlideshow(event, updateImage, index),
     );
   });
-  
+  imgAvatar.addEventListener('click', (event: any) => {
+    handleOpenSlideshow(event, showAvatar);
+  })
   if (closeModal) {
     closeModal.addEventListener("click", () => {
       modalPhotos.style.display = "none";
@@ -219,7 +237,6 @@ imgPhotos.forEach((img: any) => {
       rightContent.classList.remove("blackout");
     });
   }
-
 
   if (leftArrow) {
     leftArrow.addEventListener("click", touchLeftArrow);
@@ -253,25 +270,24 @@ imgPhotos.forEach((img: any) => {
       updateImage(currentIndex);
     }
   });
-  
+
   // Обработка кликов
   modalPhotos.addEventListener("click", (event: any) => {
     event.stopPropagation();
     const width = modalPhotos.clientWidth; // Получаем ширину элемента slideshow
     const midPoint = width / 2; // Находим середину элемента
-  
+
     // Если клик был в правой половине
     if (event.clientX > midPoint) {
       currentIndex = (currentIndex - 1 + imgPhotos.length) % imgPhotos.length; // Свайп вправо
       updateImage(currentIndex);
-    } 
+    }
     // Если клик был в левой половине
     else {
       currentIndex = (currentIndex + 1) % imgPhotos.length; // Свайп влево
       updateImage(currentIndex);
     }
   });
-
 }
 
 /**
@@ -350,11 +366,11 @@ async function renderPopularPosts(popularPosts: any) {
 async function renderRecentlyPosts(recentlyPosts: any) {
   try {
     var posts: any = [];
-    recentlyPosts.forEach(async (post: any) => {
+    recentlyPosts.forEach(async () => {
       const container: any = await containerPost();
-      posts.append(container);
+      const div = renderTo(container);
+      posts.push(div);
     });
-
     return posts;
   } catch (error) {
     console.error(error);
