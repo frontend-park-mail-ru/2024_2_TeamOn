@@ -129,6 +129,7 @@ async function customizePost(container: any, post: any = null) {
     rightContent.classList.add("blackout");
     currentIndex = index;
     callback(currentIndex);
+    document.body.style.overflow = "hidden";
     if (leftArrow) {
       leftArrow.addEventListener("click", touchLeftArrow);
     }
@@ -165,37 +166,40 @@ async function customizePost(container: any, post: any = null) {
       });
     }
 
-      if (!isMobile()) {
-    // Обработка кликов
-    modalPhotos.addEventListener("click", (event: any) => {
-      event.stopPropagation();
-      const width = modalPhotos.clientWidth; // Получаем ширину элемента slideshow
-      const midPoint = 1018; // Находим середину элемента
-      // Если клик был в правой половине
-      if (event.clientX > 1018) {
-        currentIndex = (currentIndex + 1) % imgPhotos.length;
-        updateImage(currentIndex);
-      }
-      // Если клик был в левой половине
-      else {
-        currentIndex = (currentIndex - 1 + imgPhotos.length) % imgPhotos.length;
-        updateImage(currentIndex);
-      }
-    });
-  }
-  if (closeModal) {
-    closeModal.addEventListener("click", () => {
-      modalPhotos.style.display = "none";
-      rightContent.classList.remove("blackout");
-    });
-  }
+    if (!isMobile()) {
+      // Обработка кликов
+      modalPhotos.addEventListener("click", (event: any) => {
+        event.stopPropagation();
+        const width = modalPhotos.clientWidth; // Получаем ширину элемента slideshow
+        const midPoint = 1018; // Находим середину элемента
+        // Если клик был в правой половине
+        if (event.clientX > midPoint) {
+          currentIndex = (currentIndex + 1) % imgPhotos.length;
+          updateImage(currentIndex);
+        }
+        // Если клик был в левой половине
+        else {
+          currentIndex =
+            (currentIndex - 1 + imgPhotos.length) % imgPhotos.length;
+          updateImage(currentIndex);
+        }
+      });
+    }
+    if (closeModal) {
+      closeModal.addEventListener("click", () => {
+        document.body.style.overflow = "auto";
+        modalPhotos.style.display = "none";
+        rightContent.classList.remove("blackout");
+      });
+    }
 
-  if (main) {
-    main.addEventListener("click", () => {
-      modalPhotos.style.display = "none";
-      rightContent.classList.remove("blackout");
-    });
-  }
+    if (main) {
+      main.addEventListener("click", () => {
+        document.body.style.overflow = "auto";
+        modalPhotos.style.display = "none";
+        rightContent.classList.remove("blackout");
+      });
+    }
   };
   const touchRightArrow = (event: any) => {
     event.stopPropagation();
@@ -282,9 +286,6 @@ async function customizePost(container: any, post: any = null) {
     handleOpenSlideshow(event, showAvatar);
   });
 
-
-
-
   function animateImageTransition(
     oldIndex: any,
     newIndex: any,
@@ -308,7 +309,6 @@ async function customizePost(container: any, post: any = null) {
       }, 50); // Небольшая задержка для применения стиля
     }, 500); // Время совпадает с временем анимации
   }
-
 }
 
 /**
