@@ -7,6 +7,7 @@ import { paginate } from "../../features/paginateFeed/paginateFeed";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { controlActiveLink } from "../../features/controlActiveLink/controlActiveLink";
 
+function controlModalView() {}
 /**
  * Функция рендера ленты
  * @returns
@@ -46,8 +47,9 @@ export async function renderFeed() {
       ".main-container-recently",
     );
     const mainContent = container.querySelector(`.main-content`);
-
-    modifierSidebar(mainContent);
+    if (mainContent) {
+      modifierSidebar(mainContent);
+    }
 
     controlLogout(container, user);
 

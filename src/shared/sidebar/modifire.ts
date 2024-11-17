@@ -7,9 +7,14 @@ import { setActiveLink } from "../setActiveLink/setActiveLink";
  * @returns
  */
 function modifierSidebar(mainContainer?: any) {
+  if (!mainContainer) {
+    return;
+  }
+
   const burger: any = mainContainer.querySelector(
     `.${ELEMENTS_CLASS.BURGER.BLOCK}`,
   );
+
   const sidebar = mainContainer.querySelector(".sidebar");
   burger.addEventListener("click", () => {
     sidebar.classList.toggle(ELEMENTS_CLASS.ACTIVE);
