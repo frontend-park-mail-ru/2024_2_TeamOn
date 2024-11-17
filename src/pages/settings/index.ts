@@ -137,8 +137,8 @@ function setupTabs(
 ) {
   [
     "Основная информация",
-    "Безопасность"
-     /** , "Получение дохода"*/,
+    "Безопасность",
+    /** , "Получение дохода"*/
   ].forEach((tabName, index) => {
     const tabLink = document.createElement("a");
     tabLink.textContent = tabName;
