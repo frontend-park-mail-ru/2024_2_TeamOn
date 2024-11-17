@@ -40,7 +40,7 @@ export async function renderSettings() {
     controlLogout(container, user);
 
     setupTabs(tabs, contentContainer, userdata);
-    const index: any = sessionStorage.getItem("active");
+    const index: any = sessionStorage.getItem("settings");
     updateContent(
       contentContainer,
       index == null ? 0 : Number(index),
@@ -135,30 +135,31 @@ function setupTabs(
   contentContainer: HTMLDivElement,
   userdata: any,
 ) {
-  ["Основная информация", "Безопасность" /** , "Получение дохода"*/].forEach(
-    (tabName, index) => {
-      const tabLink = document.createElement("a");
-      tabLink.textContent = tabName;
-      const initial: any =
-        sessionStorage.getItem("active") == null
-          ? 0
-          : sessionStorage.getItem("active");
-      tabLink.className =
-        index.toString() === initial.toString() ? "active" : "";
+  [
+    "Основная информация",
+    "Безопасность",
+    "ssds" /** , "Получение дохода"*/,
+  ].forEach((tabName, index) => {
+    const tabLink = document.createElement("a");
+    tabLink.textContent = tabName;
+    const initial: any =
+      sessionStorage.getItem("settings") == null
+        ? 0
+        : sessionStorage.getItem("settings");
+    tabLink.className = index.toString() === initial.toString() ? "active" : "";
 
-      // Обработчик события клика
-      tabLink.addEventListener("click", (event) => {
-        event.preventDefault();
-        tabs
-          .querySelectorAll("a")
-          .forEach((link) => link.classList.remove("active"));
-        tabLink.classList.add("active");
-        sessionStorage.setItem("active", index.toString());
-        updateContent(contentContainer, index, userdata);
-      });
-      tabs.appendChild(tabLink);
-    },
-  );
+    // Обработчик события клика
+    tabLink.addEventListener("click", (event) => {
+      event.preventDefault();
+      tabs
+        .querySelectorAll("a")
+        .forEach((link) => link.classList.remove("active"));
+      tabLink.classList.add("active");
+      sessionStorage.setItem("settings", index.toString());
+      updateContent(contentContainer, index, userdata);
+    });
+    tabs.appendChild(tabLink);
+  });
 }
 
 let buttonPersonalize: any;

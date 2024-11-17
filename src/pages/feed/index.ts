@@ -5,6 +5,7 @@ import { pageContainer } from "../../app/index";
 import { renderFeedForm } from "./ui/feed";
 import { paginate } from "../../features/paginateFeed/paginateFeed";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
+import { controlActiveLink } from "../../features/controlActiveLink/controlActiveLink";
 
 /**
  * Функция рендера ленты
@@ -32,26 +33,31 @@ export async function renderFeed() {
 
     state.currentUser = user;
 
+    const tabs = container.querySelector(".tabs");
+
+    const rightContent = container.querySelector(`.right-content`);
+
+    controlActiveLink(tabs, rightContent);
+
     const containerPopularPosts = container.querySelector(
       ".main-container-popular",
     );
     const containerRecentlyPosts = container.querySelector(
       ".main-container-recently",
     );
-
     const mainContent = container.querySelector(`.main-content`);
 
     modifierSidebar(mainContent);
 
     controlLogout(container, user);
-    
+
+    // controlModalPhotos(rightContent,)
     await paginate(
       allPopularPosts,
       allRecentlyPosts,
       containerPopularPosts,
       containerRecentlyPosts,
     );
-
 
     return container;
   } catch (error) {

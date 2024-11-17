@@ -55,7 +55,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "npx prettier --write . && webpack --config webpack.config.js && sass ./src/styles/style.scss ./src/styles/style.css && npx postcss ./src/styles/style.css -o ./src/styles/style.css",
+    "build": "npx prettier --write . && webpack --config webpack.config.js && sass ./src/app/styles/style.scss ./src/app/styles/style.css && npx postcss ./src/app/styles/style.css -o ./src/app/styles/style.css",
     "start": "webpack-dev-server --open"
   }
 }
