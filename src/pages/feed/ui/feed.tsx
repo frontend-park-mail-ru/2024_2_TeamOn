@@ -9,17 +9,30 @@ import * as VDom from "vdom";
 
 async function renderFeedForm() {
   const userdata = await getAccount();
+
   return (
     <div class="main-content">
       {await Sidebar(userdata)}
       <div class="right-content">
-        <div class="section-title">Популярное</div>
+        <div class="tabs feed">
+          <a class="active"> Популярное </a>
+          <a> Недавние </a>
+        </div>
         {containerPopularposts()}
-        <div class="section-title">Недавние</div>
         {containerRecentlyposts()}
+      </div>
+      <div class="modal-view-photos" style="display: none; z-index=10101010">
+        <div class="close-modal-view"></div>
+        <div class="modal-container-photos">
+          <img class="image-photos-modal"></img>
+        </div>
+        <div class="slideshow">
+          <div class="leftarrow-modal-view"></div>
+          <div class="rightarrow-modal-view"></div>
+        </div>
       </div>
     </div>
   );
 }
 
-export { renderFeedForm }
+export { renderFeedForm };

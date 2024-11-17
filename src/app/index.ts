@@ -164,5 +164,5 @@ if (flag) {
   root?.appendChild(pageContainer);
   root?.append(pushmodal);
   route(LINKS.HOME.HREF, window.location.pathname);
-  modifierSidebar(document.querySelector("#main"))
+  modifierSidebar(document.querySelector("#main"));
 }

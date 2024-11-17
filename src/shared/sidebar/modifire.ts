@@ -6,7 +6,7 @@ import { setActiveLink } from "../setActiveLink/setActiveLink";
  * @param sidebar
  * @returns
  */
-function modifierSidebar(mainContainer: any) {
+function modifierSidebar(mainContainer?: any) {
   const burger: any = mainContainer.querySelector(
     `.${ELEMENTS_CLASS.BURGER.BLOCK}`,
   );

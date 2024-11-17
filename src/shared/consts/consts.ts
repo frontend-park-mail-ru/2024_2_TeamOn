@@ -197,7 +197,7 @@ export const REGEXP = {
   REGEX_SPEC_SYMBOL: new RegExp("[!@#$%^&*]"),
   REGEXP_UPPER_LOWER_CASE: new RegExp("(?=.*[a-z])(?=.*[A-Z])"),
   REGEXT_ERROR_LINK: new RegExp("^/[a-z0-9]+/[a-z0-9]+$"),
-  REGEXP_EMAIL: new RegExp("^[^s@]+@[^s@]+.[^s@]+$"),
+  REGEXP_EMAIL: new RegExp("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"),
 };
 
 /**
