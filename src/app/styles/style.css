@@ -1,10 +1,16 @@
 @charset "UTF-8";
+@font-face {
+  font-family: "Roboto";
+  src: url("../styles/fonts/Roboto/Roboto-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   scrollbar-width: none;
   height: 100vh;
+  font-family: "Roboto", sans-serif;
 }
 
 #root {
@@ -1599,15 +1605,7 @@ span {
   border-bottom: 2px solid #ccc;
   overflow-x: auto;
   flex-wrap: nowrap;
-}
-
-.tabs {
-  display: flex;
-  gap: 15px;
-  padding: 10px;
-  border-bottom: 2px solid #ccc;
-  overflow-x: auto;
-  flex-wrap: nowrap;
+  left: 15%;
   border: 1px white;
 }
 
@@ -1629,12 +1627,15 @@ span {
   text-decoration: none;
   padding: 10px 20px;
   color: #333;
-  font-size: 16px;
   font-weight: bold;
   position: relative;
   transition: color 0.3s ease;
   cursor: pointer;
   font-size: 30px;
+}
+
+.tabs .settings {
+  font-size: 20px;
 }
 
 @media (max-width: 768px) {
@@ -1663,6 +1664,14 @@ span {
 .modal-container-photos img {
   height: auto;
   transition: transform 0.5s ease; /* Плавный переход */
+}
+
+.background-modal-view {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0%;
+  left: 0%;
 }
 
 .container-image-photos .image-photo {

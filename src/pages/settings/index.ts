@@ -147,7 +147,7 @@ function setupTabs(
         ? 0
         : sessionStorage.getItem("settings");
     tabLink.className = index.toString() === initial.toString() ? "active" : "";
-
+    tabLink.classList.add("settings");
     // Обработчик события клика
     tabLink.addEventListener("click", (event) => {
       event.preventDefault();
