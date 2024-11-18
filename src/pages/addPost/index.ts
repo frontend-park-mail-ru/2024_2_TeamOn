@@ -19,7 +19,6 @@ const buttonCancel = containerCreatePost?.querySelector(
 
 if (buttonCancel) {
   buttonCancel.addEventListener("click", () => {
-    // Переход обратно на страницу профиля
     window.history.back();
   });
 }
@@ -53,7 +52,6 @@ if (buttonSave) {
     }
 
     try {
-      // Создание поста
       const post = await addUserPost(containerCreatePost,sanitizedTitle, sanitizedContent);
 
       // Переход на страницу профиля
@@ -63,7 +61,6 @@ if (buttonSave) {
         placePosts.prepend(...(await renderPosts(newPosts.slice(0, 1))));
       }
 
-      // Обновление статистики на странице профиля
       const placeStats = document.querySelector(".stats");
       const payments = await getPayments(window.location.pathname);
       if (placeStats) {
@@ -71,7 +68,6 @@ if (buttonSave) {
         update(placeStats, statsVNode);
       }
 
-      // После успешного добавления поста возвращаем пользователя на страницу профиля
       window.history.back();
     } catch (error) {
       console.error("Ошибка создания поста:", error);
