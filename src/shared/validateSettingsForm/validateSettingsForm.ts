@@ -45,11 +45,11 @@ export function validateSettingsPassword(
   if (!newPasswordError.innerHTML) {
     newPasswordError.innerHTML = "";
   }
-  if ( inputPassword.value == "" ) {
+  if (inputPassword.value == "") {
     const strengthBar: any = document.querySelector(".password-strength");
     strengthBar.style.width = "0%";
     newPasswordError.textContent = "";
-  } 
+  }
 }
 /**
  * Валидация основной информации

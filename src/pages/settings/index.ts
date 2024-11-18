@@ -375,12 +375,12 @@ function createSecurityForm(): HTMLDivElement {
       newPasswordError,
       confirmPasswordError,
     );
-    if ( oldPasswordInput.value == "" ) {
+    if (oldPasswordInput.value == "") {
       oldPasswordError.textContent = "";
-    } 
-    if ( confirmPasswordInput.value == "" ) {
+    }
+    if (confirmPasswordInput.value == "") {
       confirmPasswordError.textContent = "";
-    } 
+    }
   });
 
   formContainer.append(
@@ -401,8 +401,8 @@ function createSecurityForm(): HTMLDivElement {
     if (newPasswordError.textContent == "") {
       const ok: any = await saveSettings("", "", password.value);
       // Проверяем, успешно ли сохранен аватар
-      if ( ok.message ) {
-        if ( ok.message.includes("старый")) {
+      if (ok.message) {
+        if (ok.message.includes("старый")) {
           oldPasswordError.textContent = ok.message;
         } else {
           newPasswordError.textContent = ok.message;
@@ -426,7 +426,7 @@ function createSecurityForm(): HTMLDivElement {
           confirmPasswordInput.value = "";
           const strengthBar: any = document.querySelector(".password-strength");
           strengthBar.style.width = "0%";
-          oldPasswordInput.value = '';
+          oldPasswordInput.value = "";
           // Добавляем сообщение в профильный div
           formContainer.appendChild(successMessage);
           // Убираем сообщение через несколько секунд
