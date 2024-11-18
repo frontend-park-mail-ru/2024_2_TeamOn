@@ -1,7 +1,7 @@
-import * as VDom from "vdom";
+/*import * as VDom from "vdom";
 
 function addpostForm() {
   return <div class="div-create-post"></div>;
 }
 
-export { addpostForm };
+export { addpostForm };*/

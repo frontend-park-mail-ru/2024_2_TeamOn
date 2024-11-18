@@ -117,20 +117,24 @@ async function customizePost(container: any, post: any = null) {
   const showAvatar = () => {
     imageModal.src = imgAvatar.src;
     slideshow.style.display = "none";
-    slideshow.style.pointerEvents = 'none';
-slideshow.style.userSelect = 'none';
-imageModal.style.pointerEvents = 'none';
-imageModal.style.userSelect = 'none';
+    slideshow.style.pointerEvents = "none";
+    slideshow.style.userSelect = "none";
+    imageModal.style.pointerEvents = "none";
+    imageModal.style.userSelect = "none";
 
-leftArrow.style.display = "none";
-rightArrow.style.display = "none";
-leftArrow.style.pointerEvents = 'none';
-leftArrow.style.userSelect = 'none';
-rightArrow.style.pointerEvents = 'none';
-rightArrow.style.userSelect = 'none';
+    leftArrow.style.display = "none";
+    rightArrow.style.display = "none";
+    leftArrow.style.pointerEvents = "none";
+    leftArrow.style.userSelect = "none";
+    rightArrow.style.pointerEvents = "none";
+    rightArrow.style.userSelect = "none";
   };
 
-  const handleOpenSlideshow = (event: any, callback: any, index: any = null) => {
+  const handleOpenSlideshow = (
+    event: any,
+    callback: any,
+    index: any = null,
+  ) => {
     event.stopPropagation();
     modalPhotos.style.display = "block";
     rightContent.classList.add("blackout");
@@ -173,7 +177,7 @@ rightArrow.style.userSelect = 'none';
         img.style.display = "block";
         resheight += imgHeight;
       } else {
-        img.style.display = "none";
+        //img.style.display = "none";
         limitExceeded = true; // Устанавливаем флаг, если лимит превышен
       }
     });
@@ -221,19 +225,19 @@ rightArrow.style.userSelect = 'none';
       handleOpenSlideshow(event, updateImage, index),
     );
   });
-  imgAvatar.addEventListener('click', (event: any) => {
+  imgAvatar.addEventListener("click", (event: any) => {
     handleOpenSlideshow(event, showAvatar);
-  })
+  });
   if (closeModal) {
     closeModal.addEventListener("click", () => {
-      modalPhotos.style.display = "none";
+      //modalPhotos.style.display = "none";
       rightContent.classList.remove("blackout");
     });
   }
 
   if (main) {
     main.addEventListener("click", () => {
-      modalPhotos.style.display = "none";
+      //modalPhotos.style.display = "none";
       rightContent.classList.remove("blackout");
     });
   }
@@ -248,9 +252,9 @@ rightArrow.style.userSelect = 'none';
   // Добавляем обработчики для свайпов
   let startX = 0;
   let endX = 0;
-  if (!slideshow) {
+  /*if (!slideshow) {
     alert("alo");
-  }
+  }*/
   modalPhotos.addEventListener("touchstart", (event: any) => {
     startX = event.touches[0].clientX;
   });

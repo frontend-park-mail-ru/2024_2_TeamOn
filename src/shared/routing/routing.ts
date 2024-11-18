@@ -39,6 +39,7 @@ interface MenuElements {
   home: HTMLElement;
   login: HTMLElement;
   signup: HTMLElement;
+  createPost: HTMLLIElement;
 }
 /**
  * Функция обновления контента на странице
@@ -66,6 +67,11 @@ function updatePageContent(render: string): void {
       [LINKS.NOTIFICATIONS.HREF]: "notifications",
     };
     goToPage(menuElements[pageMap[render]] || menuElements.profile);
+    return;
+  }
+  if (render === LINKS.CREATE_POST.HREF) {
+    if (nonauth()) return;
+    goToPage(state.menuElements.createPost); 
     return;
   }
 
