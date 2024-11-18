@@ -1,6 +1,7 @@
 function renderModalStatusUpload(ok: any, media: any) {
   const modal: any = document.querySelector(`.push-modal`);
   modal.classList.add(`active`);
+  modal.style.display = "block";
   if (ok) {
     modal.textContent = `${media} успешно применен`;
     modal.style.color = "green";
@@ -11,6 +12,7 @@ function renderModalStatusUpload(ok: any, media: any) {
 
   const hideModal = () => {
     modal.classList.remove("active");
+    modal.style.display = "none";
     clearTimeout(timeoutId);
   };
 
@@ -25,6 +27,7 @@ function renderModalStatusUpload(ok: any, media: any) {
   });
   modal.addEventListener("click", () => {
     modal.classList.remove("active");
+    modal.style.display = "none";
   });
 }
 
