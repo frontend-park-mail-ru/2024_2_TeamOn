@@ -95,26 +95,34 @@ async function customizePost(container: any, post: any = null) {
   }
 
   const divPhotos = container.querySelector(`.container-image-photos`);
+  // const containerModal: any = document.querySelector(`.background-modal-view`);
   const modalPhotos: any = document.querySelector(`.modal-view-photos`); //
   const rightContent: any = document.querySelector(`.right-content`);
   const closeModal: any = document.querySelector(`.close-modal-view`); //
   const main: any = document.querySelector("main");
-  const slideshow: any = modalPhotos.querySelector(".slideshow");
-  const imageModal: any = modalPhotos.querySelector(".image-photos-modal"); //
+  // const slideshow: any = modalPhotos.querySelector(".slideshow");
+  let imageModal: any = null;
+  let leftArrow: any = null;
+  let rightArrow: any = null;
+  if (modalPhotos) {
+    imageModal = modalPhotos.querySelector(".image-photos-modal"); //
+    // Обработчики для кнопок переключения
+    leftArrow = modalPhotos.querySelector(".leftarrow-modal-view"); //
+    rightArrow = modalPhotos.querySelector(".rightarrow-modal-view"); //
+  }
   const imgPhotos: any = Array.from(divPhotos.querySelectorAll(`.image-photo`)); //
   const imgAvatar: any = container.querySelector(`.author-avatar`);
   const toggleButton: any = container.querySelector(".toggleButton");
 
-  // Обработчики для кнопок переключения
-  const leftArrow: any = modalPhotos.querySelector(".leftarrow-modal-view"); //
-  const rightArrow: any = modalPhotos.querySelector(".rightarrow-modal-view"); //
   var currentIndex = 0;
 
   const updateImage = (currentIndex: any) => {
+    if (!imageModal) return;
     imageModal.src = imgPhotos[currentIndex].src;
   };
 
   const showAvatar = () => {
+    if (!imageModal) return;
     imageModal.src = imgAvatar.src;
     return;
   };
@@ -125,6 +133,7 @@ async function customizePost(container: any, post: any = null) {
     index: any = null,
   ) => {
     event.stopPropagation();
+    // containerModal.style.display = "block";
     modalPhotos.style.display = "block";
     rightContent.classList.add("blackout");
     currentIndex = index;
@@ -194,7 +203,9 @@ async function customizePost(container: any, post: any = null) {
     }
 
     if (main) {
-      main.addEventListener("click", () => {
+      main.addEventListener("click", (event: any) => {
+        event.stopImmediatePropagation();
+        event.stopPropagation();
         document.body.style.overflow = "auto";
         modalPhotos.style.display = "none";
         rightContent.classList.remove("blackout");
