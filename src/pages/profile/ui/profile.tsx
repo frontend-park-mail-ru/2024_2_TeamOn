@@ -1,7 +1,7 @@
 import { Sidebar } from "../../../shared/sidebar/sidebar";
 import * as VDom from "vdom";
 import {
-  addpostForm,
+  //addpostForm,       {addpostForm()}
   editpostForm,
   deletepostForm,
   tipForm,
@@ -30,7 +30,6 @@ export async function profileContent(
     <div class="main-content">
       {await Sidebar(userdata)}
       {await profileForm(authorData, avatar, background, payments)}
-      {addpostForm()}
       {tipForm()}
       {editpostForm()}
       {deletepostForm()}

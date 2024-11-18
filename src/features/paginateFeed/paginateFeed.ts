@@ -124,7 +124,18 @@ async function customizePost(container: any, post: any = null) {
   const showAvatar = () => {
     if (!imageModal) return;
     imageModal.src = imgAvatar.src;
-    return;
+    slideshow.style.display = "none";
+    slideshow.style.pointerEvents = "none";
+    slideshow.style.userSelect = "none";
+    imageModal.style.pointerEvents = "none";
+    imageModal.style.userSelect = "none";
+
+    leftArrow.style.display = "none";
+    rightArrow.style.display = "none";
+    leftArrow.style.pointerEvents = "none";
+    leftArrow.style.userSelect = "none";
+    rightArrow.style.pointerEvents = "none";
+    rightArrow.style.userSelect = "none";
   };
 
   const handleOpenSlideshow = (
@@ -244,7 +255,7 @@ async function customizePost(container: any, post: any = null) {
         img.style.display = "block";
         resheight += imgHeight;
       } else {
-        img.style.display = "none";
+        //img.style.display = "none";
         limitExceeded = true; // Устанавливаем флаг, если лимит превышен
       }
     });
@@ -288,9 +299,42 @@ async function customizePost(container: any, post: any = null) {
   });
 
   imgPhotos.forEach((img: any, index: any) => {
-    img.addEventListener("click", (event: any) => {
-      handleOpenSlideshow(event, updateImage, index);
+    img.addEventListener("click", (event: any) =>
+      handleOpenSlideshow(event, updateImage, index),
+    );
+  });
+  imgAvatar.addEventListener("click", (event: any) => {
+    handleOpenSlideshow(event, showAvatar);
+  });
+  if (closeModal) {
+    closeModal.addEventListener("click", () => {
+      //modalPhotos.style.display = "none";
+      rightContent.classList.remove("blackout");
     });
+  }
+
+  if (main) {
+    main.addEventListener("click", () => {
+      //modalPhotos.style.display = "none";
+      rightContent.classList.remove("blackout");
+    });
+  }
+
+  if (leftArrow) {
+    leftArrow.addEventListener("click", touchLeftArrow);
+  }
+
+  if (rightArrow) {
+    rightArrow.addEventListener("click", touchRightArrow);
+  }
+  // Добавляем обработчики для свайпов
+  let startX = 0;
+  let endX = 0;
+  /*if (!slideshow) {
+    alert("alo");
+  }*/
+  modalPhotos.addEventListener("touchstart", (event: any) => {
+    startX = event.touches[0].clientX;
   });
 
   imgAvatar.addEventListener("click", (event: any) => {

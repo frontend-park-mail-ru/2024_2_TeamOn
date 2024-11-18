@@ -6,7 +6,16 @@
  */
 export const state = {
   activePageLink: null,
-  menuElements: {},
+  menuElements: {
+    profile: document.querySelector("#profile"),
+    feed: document.querySelector("#feed"),
+    settings: document.querySelector("#settings"),
+    notifications: document.querySelector("#notifications"),
+    home: document.querySelector("#home"),
+    login: document.querySelector("#login"),
+    signup: document.querySelector("#signup"),
+    createPost: document.querySelector("#createPost"),
+  },
   currentUser: {
     author: null,
     reader: null,
@@ -72,6 +81,14 @@ export const LINKS = {
   NOTIFICATIONS: {
     HREF: "/notifications",
     TEXT: "Уведомления",
+  },
+  CREATE_POST: {
+    HREF: "/profile/createpost",
+    TEXT: "Создание поста",
+  },
+  UPDATE_POST: {
+    HREF: "/profile/updateepost",
+    TEXT: "Редактирование поста",
   },
 };
 export const QUERY = {

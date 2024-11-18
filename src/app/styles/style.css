@@ -1111,6 +1111,7 @@ form input[type="text"]:focus {
   font-size: bold;
   -webkit-user-select: none;
 <<<<<<< HEAD
+<<<<<<< HEAD
   -moz-user-select: none;
   user-select: none;
 =======
@@ -1118,6 +1119,10 @@ form input[type="text"]:focus {
           user-select: none;
   visibility: hidden;
 >>>>>>> Добавил старый пароль
+=======
+  -moz-user-select: none;
+  user-select: none;
+>>>>>>> attache
 }
 
 .push-modal:hover {
