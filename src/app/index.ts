@@ -155,6 +155,7 @@ export const Virtual: any = new VirtualDOM();
 export const pageContainer = document.createElement("main");
 const pushmodal = document.createElement("div");
 pushmodal.className = "push-modal";
+pushmodal.style.display = "none";
 
 if (flag) {
   let root: HTMLElement | null = startA(config.menu, state);

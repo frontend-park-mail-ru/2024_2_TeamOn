@@ -63,6 +63,7 @@ body {
 :root {
   --main-color: #d9534f;
   --main-background-color: #f5f5f5;
+  --main-color-hover: rgba(217, 84, 79, 0.7960784314);
 }
 main {
   flex: 1;
@@ -136,6 +137,7 @@ form input[type="text"]:focus {
   right: 2%;
   top: 3%;
   position: absolute;
+  transition: background-color 0.3s;
 }
 
 .close__hover:hover {
@@ -144,7 +146,7 @@ form input[type="text"]:focus {
 /* Стили для обработки ошибок */
 .error {
   color: red;
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 10px;
 }
 
@@ -225,7 +227,7 @@ form input[type="text"]:focus {
 .delete__button,
 .cancel__button,
 .create {
-  opacity: 0.85;
+  // opacity: 0.85;
   padding: 10px 20px;
   border-radius: 25px;
   border: 1px solid gray;
@@ -238,6 +240,12 @@ form input[type="text"]:focus {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.logout__button {
+  border-radius: 10px;
+  /* border: none; */
+  background-color: white;
+  color: gray;
 }
 .save__button {
   color: green;
@@ -267,6 +275,7 @@ form input[type="text"]:focus {
 }
 .logout__button {
   font-size: 18px;
+  transition: background 0.3s ease;
 }
 
 .home-buttons__button__effects:hover {
@@ -277,7 +286,7 @@ form input[type="text"]:focus {
 .donate__button__effects:hover,
 .send-tip__button__effects:hover,
 .create__button__effects:hover {
-  background: var(--main-color);
+  background: var(--main-color-hover);
   color: white;
 }
 .cancel__button__effects:hover {
@@ -400,7 +409,6 @@ form input[type="text"]:focus {
   transition: width 0.3s ease; /* Плавный переход при изменении ширины */
   position: relative; /* Относительное позиционирование */
   left: 0; /* Закрепление левого края */
-  margin-bottom: 10%;
 }
 .password-strength::before {
   content: "";
@@ -516,17 +524,25 @@ form input[type="text"]:focus {
   padding: 10px;
   border: none;
   border-radius: 5px;
-  background-color: #d9534f;
+  background-color: var(--main-color);
   color: white;
   font-size: 16px;
   cursor: pointer;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
-
-.edit-info-button:hover,
+.edit-info-button {
+  background-color: white;
+  color: gray;
+}
+.edit-info-button:hover {
+  background-color: gray;
+  color: white;
+}
 .save-info-button:hover,
 .cancel-info-button:hover {
-  color: rgb(252, 225, 225);
-  transition: color 0.3s ease;
+  background-color: var(--main-color-hover);
 }
 
 .interaction-place-info {
@@ -801,9 +817,7 @@ form input[type="text"]:focus {
   transition: background-color 0.3s;
 }
 .buttons-profile button:hover {
-  // background-color: red;
-  color: rgb(252, 225, 225);
-  transition: color 0.3s ease;
+  background-color: var(--main-color-hover);
 }
 .profile-header-mobile {
   text-align: center;
@@ -941,7 +955,7 @@ form input[type="text"]:focus {
 }
 .push-modal {
   position: fixed;
-  top: 80%;
+  top: 75%;
   width: 100px;
   height: 40px;
   z-index: 5000;
@@ -950,7 +964,9 @@ form input[type="text"]:focus {
   text-align: center;
   padding: 20px;
   border-radius: 8px;
-  transition: opacity 0.5s ease;
+  transition:
+    opacity 0.5s ease,
+    visibility 0.5s ease;
   opacity: 0;
   align-items: center;
   justify-content: center;
@@ -960,13 +976,16 @@ form input[type="text"]:focus {
   left: 1%;
   font-size: bold;
   user-select: none;
+  visibility: hidden;
 }
 .push-modal:hover {
   pointer-events: auto;
   background-color: #e7e7e7;
 }
 .push-modal.active {
+  display: block;
   opacity: 1; /* Делаем его видимым */
+  visibility: visible;
 }
 .sidebar.active {
   display: flex;
@@ -1483,6 +1502,58 @@ span {
 .container-image-photos .image-photo {
   width: 100%;
 }
+.become-a-creator {
+  background-color: #f9f9f9; /* Цвет фона */
+  padding: 20px; /* Отступы внутри блока */
+  border-radius: 8px; /* Скругление углов */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Эффект тени */
+  text-align: center; /* Выравнивание текста по центру */
+  margin: 20px; /* Отступы вокруг блока */
+  text-align: left;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 55%;
+  user-select: none;
+}
+.fade {
+  transition:
+    opacity 0.5s ease,
+    visibility 0.5s ease;
+  opacity: 1;
+  visibility: visible;
+}
+
+.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+@media (max-width: 768px) {
+  .become-a-creator {
+    top: 40%;
+  }
+}
+.notification-become {
+  font-weight: normal;
+}
+.join-button {
+  display: inline-block; /* Отображение как блочный элемент */
+  margin-top: 15px; /* Отступ сверху */
+  padding: 10px 20px; /* Отступы внутри кнопки */
+  background-color: var(--main-color); /* Цвет фона кнопки */
+  color: white; /* Цвет текста кнопки */
+  text-decoration: none; /* Убираем подчеркивание */
+  border-radius: 10px; /* Скругление углов кнопки */
+  transition: background-color 0.3s; /* Плавный переход цвета фона */
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.join-button:hover {
+  background-color: #d9544fcb; /* Цвет фона при наведении */
+}
 .tabs a::after {
   content: "";
   position: absolute;
@@ -1559,7 +1630,7 @@ span {
   margin-left: 0;
   margin-bottom: 10px;
   font-size: 16px;
-  width: 150px;
+  width: 250px;
 }
 input,
 select {
@@ -1631,11 +1702,12 @@ select {
   color: #fff;
   border: none;
   padding: 10px 20px;
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 15px;
   cursor: pointer;
   width: 152.14px;
   margin-top: 10px;
+  margin-left: 10px;
 }
 @media (max-width: 768px) {
   .form-container button {

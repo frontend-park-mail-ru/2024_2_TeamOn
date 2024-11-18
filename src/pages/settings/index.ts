@@ -61,7 +61,7 @@ export async function renderSettings() {
  * Функция стать автором
  * @returns
  */
-async function setAuthor() {
+export async function setAuthor() {
   return new Promise((resolve, reject) => {
     fetchAjax("POST", "/api/accounts/account/update/role", null, (response) => {
       if (response.ok) {
@@ -325,18 +325,25 @@ function createSecurityForm(): HTMLDivElement {
   formContainer.className = "form-container-security";
 
   const formTitle = document.createElement("h2");
-  formTitle.textContent = "Измените данные вашей страницы";
+  formTitle.textContent = "Изменить пароль";
   formContainer.appendChild(formTitle);
 
   const newPasswordRow = document.createElement("div");
   newPasswordRow.className = "form-row";
   const passwordStrength = document.createElement("div");
   passwordStrength.className = "password-strength";
-  const newPasswordLabel = createLabel("Введите новый пароль", "new-password");
+  const newPasswordLabel = createLabel(
+    "Придумайте новый пароль",
+    "new-password",
+  );
   const newPasswordInput = createInput("password", "new-password");
   const newPasswordError = createErrorMessage();
   newPasswordRow.append(newPasswordLabel, newPasswordInput);
   formContainer.append(newPasswordRow, newPasswordError);
+
+  const oldPasswordRow = document.createElement("div");
+  oldPasswordRow.className = "form-row";
+  const oldPasswordLabel = createLabel("Старый пароль", "old-password");
 
   const confirmPasswordRow = document.createElement("div");
   confirmPasswordRow.className = "form-row";
@@ -344,9 +351,15 @@ function createSecurityForm(): HTMLDivElement {
     "Повторите пароль",
     "confirm-password",
   );
+  const oldPasswordInput = createInput("password", "old-password");
+  const oldPasswordError = createErrorMessage();
+
   const confirmPasswordInput = createInput("password", "confirm-password");
   const confirmPasswordError = createErrorMessageStrength();
+
+  oldPasswordRow.append(oldPasswordLabel, oldPasswordInput);
   confirmPasswordRow.append(confirmPasswordLabel, confirmPasswordInput);
+  formContainer.append(oldPasswordRow, oldPasswordError);
   formContainer.append(confirmPasswordRow, confirmPasswordError);
 
   const saveButton = document.createElement("button");
@@ -355,12 +368,19 @@ function createSecurityForm(): HTMLDivElement {
   saveButton.id = "password-save";
   formContainer.addEventListener("input", (event) => {
     event.preventDefault();
+
     validationSecuritySave(
       newPasswordInput,
       confirmPasswordInput,
       newPasswordError,
       confirmPasswordError,
     );
+    if ( oldPasswordInput.value == "" ) {
+      oldPasswordError.textContent = "";
+    } 
+    if ( confirmPasswordInput.value == "" ) {
+      confirmPasswordError.textContent = "";
+    } 
   });
 
   formContainer.append(
@@ -381,26 +401,32 @@ function createSecurityForm(): HTMLDivElement {
     if (newPasswordError.textContent == "") {
       const ok: any = await saveSettings("", "", password.value);
       // Проверяем, успешно ли сохранен аватар
-      ok.message
-        ? (newPasswordError.textContent = ok.message)
-        : (newPasswordError.textContent = "");
+      if ( ok.message ) {
+        if ( ok.message.includes("старый")) {
+          oldPasswordError.textContent = ok.message;
+        } else {
+          newPasswordError.textContent = ok.message;
+        }
+      }
+      // ok.message
+      //   ? (newPasswordError.textContent = ok.message)
+      //   : (newPasswordError.textContent = "");
       if (ok && !ok.message) {
         if (!formContainer.querySelector(`.succcesful-title`)) {
           // Создаем элемент для сообщения об успешной загрузке
           const successMessage = document.createElement("div");
           successMessage.textContent = "Данные успешно сохранены";
+          newPasswordError.textContent = "";
+          oldPasswordError.textContent = "";
           successMessage.style.color = "green";
           successMessage.style.marginTop = "10px";
           successMessage.style.fontWeight = "bold";
           successMessage.className = "succcesful-title";
           newPasswordInput.value = "";
           confirmPasswordInput.value = "";
-          validationSecuritySave(
-            newPasswordInput,
-            confirmPasswordInput,
-            newPasswordError,
-            confirmPasswordError,
-          );
+          const strengthBar: any = document.querySelector(".password-strength");
+          strengthBar.style.width = "0%";
+          oldPasswordInput.value = '';
           // Добавляем сообщение в профильный div
           formContainer.appendChild(successMessage);
           // Убираем сообщение через несколько секунд
@@ -494,7 +520,6 @@ async function createButtonSetAuthor() {
   button.textContent = "Стать автором";
   const userdata: any = await getAccount();
   const role = userdata.role;
-  const mainContainer: any = document.querySelector(`.main-content`);
   if (role !== "Reader") {
     button.classList.add("active");
     return button;
