@@ -6,6 +6,7 @@ import * as VDom from "vdom";
  * @param post Пост
  * @returns
  */
+
 async function renderUserPost(post: any) {
   const flag: any =
     window.location.pathname === "/profile"
@@ -44,6 +45,7 @@ async function renderUserPost(post: any) {
  * Рендер модального окна создания поста
  * @returns
  */
+/*
 function renderAddPost() {
   if (window.location.pathname !== "/profile") {
     return <></>;
@@ -99,7 +101,7 @@ function renderEditPost(post: any) {
     </div>
   );
 }
-
+*/
 /**
  * Рендер удаления поста
  * @param post Пост
@@ -126,5 +128,28 @@ function renderDeletePost(post: any) {
     </div>
   );
 }
+/*
+function renderCreatePost(){
+    return (
+            <div className="container">
+                <div className="post-container">
+                <h1>Добавление поста</h1>
+                <input type="text" placeholder="Введите заголовок поста" />
+                <textarea placeholder="Начните писать пост"></textarea>
+                <i className="fas fa-paperclip attachment-icon"></i>
+                <button className="save-button">Сохранить</button>
+                </div>
+                <div className="visibility-container">
+                <h2>Кто может смотреть</h2>
+                <label>
+                    <input type="radio" name="visibility" checked /> Только подписчики
+                </label>
+                <p>Выберите уровень</p>
+                </div>
+            </div>
+            );
+        }
 
-export { renderUserPost, renderEditPost, renderDeletePost, renderAddPost };
+export default renderCreatePost;
+*/
+export { renderUserPost, /*renderEditPost, renderAddPost*/ renderDeletePost };
