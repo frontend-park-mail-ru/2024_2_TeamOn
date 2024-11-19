@@ -13,6 +13,8 @@ async function controlAdaptiveProfile(container: any) {
 
   const feedProfile: any = container.querySelector(".feed-profile");
   const aboutProfile: any = container.querySelector(".place-edit-info");
+  const placeSubsLevel: any = container.querySelector(`.right-column`);
+
   const data: any = await getPageAuthor(window.location.pathname);
 
   /**
@@ -25,6 +27,9 @@ async function controlAdaptiveProfile(container: any) {
     if (feedProfile) {
       feedProfile.classList.remove("hidden");
     }
+    if (placeSubsLevel) {
+      placeSubsLevel.classList.add("hidden");
+    }
   }
 
   /**
@@ -34,6 +39,9 @@ async function controlAdaptiveProfile(container: any) {
     aboutProfile.classList.remove("hidden");
     if (feedProfile) {
       feedProfile.classList.add("hidden");
+    }
+    if (placeSubsLevel) {
+      placeSubsLevel.classList.remove("hidden");
     }
     buttonMobilePosts.classList.remove(ELEMENTS_CLASS.ACTIVE);
     buttonMobileAbout.classList.add(ELEMENTS_CLASS.ACTIVE);
