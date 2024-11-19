@@ -4,12 +4,12 @@ import {
   addUserPost,
   deletePost,
   editPost,
-  renderAddPost,
+  //renderAddPost,
   renderDeletePost,
-  renderEditPost,
+  //renderEditPost,
   renderUserPost,
 } from "../../entities/userPost";
-import { ELEMENTS_CLASS } from "../../shared/consts/consts";
+import { ELEMENTS_CLASS, LINKS } from "../../shared/consts/consts";
 import { getUserPosts } from "../getuserposts/getUserPosts";
 import DOMPurify from "dompurify";
 import { getPayments } from "../getpayments/getpayments";
@@ -19,7 +19,7 @@ import { renderTip, sendTip } from "../../entities/tip";
 import { getPageAuthor } from "../getpageauthor/getpageauthor";
 import { setLike } from "../../entities/likes";
 import { following } from "../../entities/profileInfo";
-
+import { route } from "../../shared/routing/routing";
 /**
  * Управление адаптивностью на странице автора
  * @param authorData Данные автора
@@ -37,9 +37,13 @@ async function controlAdaptivePageAuthors(
     );
     buttonCreatePost.forEach((button: any) => {
       button.addEventListener("click", () => {
-        const place = document.querySelector(`.div-create-post`);
-        const modal: any = renderAddPost();
-        update(place, modal);
+        route(LINKS.CREATE_POST.HREF)
+      });
+    });
+  }
+  /*const place = document.querySelector(`.div-create-post`);
+        //const modal: any = renderAddPost();
+        //update(place, modal);
         const containerCreatePost =
           container.querySelector(".modal__createpost");
 
@@ -103,7 +107,7 @@ async function controlAdaptivePageAuthors(
         });
       });
     });
-  }
+  }*/
   if (window.location.pathname !== "/profile") {
     const buttonTip = container.querySelector(`.send-tip__button-new`);
     const buttonSubs: any = document.querySelector(`.follow`);
@@ -185,6 +189,7 @@ async function renderPosts(authorPosts: any[]) {
  * @param postId Пост айди. Нужен для создания поста
  * @returns
  */
+/*
 async function modifireMyPosts(
   containerPosts: any,
   posts: any,
@@ -216,7 +221,7 @@ async function modifireMyPosts(
     throw error;
   }
 }
-
+*/
 /**
  * Кастомизация одного поста профиля
  * @param container Контейнер поста
@@ -335,8 +340,8 @@ async function modifierModalEditPost(
   dropdownmenu.classList.remove(ELEMENTS_CLASS.ACTIVE);
 
   const place = document.querySelector(`.div-edit-posts`);
-  const modal: any = renderEditPost(post);
-  update(place, modal);
+  //const modal: any = renderEditPost(post);
+  // update(place, modal);
 
   const modalsEdit: any = document.querySelector(".modal__editpost");
   const buttonCancel: any = modalsEdit.querySelector(`.cancel`);
@@ -464,4 +469,4 @@ async function modifierModalDeletePost(
   });
 }
 
-export { controlAdaptivePageAuthors };
+export { renderPosts, controlAdaptivePageAuthors };

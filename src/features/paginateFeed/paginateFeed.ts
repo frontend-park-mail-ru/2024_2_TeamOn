@@ -124,7 +124,9 @@ async function customizePost(container: any, post: any = null) {
   const showAvatar = () => {
     if (!imageModal) return;
     imageModal.src = imgAvatar.src;
+
     return;
+
   };
 
   const handleOpenSlideshow = (
@@ -244,7 +246,7 @@ async function customizePost(container: any, post: any = null) {
         img.style.display = "block";
         resheight += imgHeight;
       } else {
-        img.style.display = "none";
+        //img.style.display = "none";
         limitExceeded = true; // Устанавливаем флаг, если лимит превышен
       }
     });
@@ -288,9 +290,11 @@ async function customizePost(container: any, post: any = null) {
   });
 
   imgPhotos.forEach((img: any, index: any) => {
-    img.addEventListener("click", (event: any) => {
-      handleOpenSlideshow(event, updateImage, index);
-    });
+
+  img.addEventListener("click", (event: any) => {
+    handleOpenSlideshow(event, updateImage, index);
+  });
+
   });
 
   imgAvatar.addEventListener("click", (event: any) => {
