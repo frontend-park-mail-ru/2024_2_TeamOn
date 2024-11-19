@@ -1,15 +1,11 @@
-import {
-  renderUserPost,
-  //renderEditPost,
-  renderDeletePost,
-  //renderAddPost,
-} from "./ui/ui";
+import { renderUserPost, renderDeletePost } from "./ui/ui";
 import { renderCreatePost } from "../../pages/addPost/ui/ui";
+import { renderUpdatePost } from "../../pages/updatePost/ui/ui";
 import { deletePost, editPost, addUserPost } from "./api/api";
 
 export {
   renderUserPost,
-  //renderEditPost,
+  renderUpdatePost,
   renderDeletePost,
   renderCreatePost,
   deletePost,

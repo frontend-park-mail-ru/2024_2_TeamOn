@@ -1,6 +1,4 @@
-import { route } from "../../../shared/routing/routing";
 import { fetchAjax } from "../../../shared/fetch/fetchAjax";
-import { LINKS } from "../../../shared/consts/consts";
 
 /**
  * Функция изменения поста через объект типа промис
