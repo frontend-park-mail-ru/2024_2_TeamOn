@@ -642,7 +642,6 @@ form input[type="text"]:focus {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: relative;
-  top: -200px;
 }
 
 .left-column {
@@ -651,11 +650,13 @@ form input[type="text"]:focus {
   height: 500px;
   display: block;
   margin-right: 20px;
+  top: -200px;
 }
 
 .right-column {
   width: 100%;
   max-width: 300px;
+  margin-left: 20px;
 }
 
 .center-column-profile {
@@ -726,6 +727,11 @@ form input[type="text"]:focus {
   color: white;
   font-size: 16px;
   cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.button-buy-subs:hover {
+  background-color: var(--main-color-hover);
 }
 
 .buttons-profile button i {
@@ -776,6 +782,10 @@ form input[type="text"]:focus {
 }
 
 .subscription-levels {
+  background-color: white;
+}
+
+.subscription-level {
   background-color: white;
   padding: 20px;
   margin: 10px;
@@ -895,9 +905,9 @@ form input[type="text"]:focus {
 .posts {
   background-color: white;
   border-radius: 10px;
-  margin-top: 2%;
+  margin-top: 5%;
   padding: 20px;
-  border: 1px solid #e0e0e0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .post {

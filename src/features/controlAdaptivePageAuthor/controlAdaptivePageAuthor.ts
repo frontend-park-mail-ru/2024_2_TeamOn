@@ -243,8 +243,10 @@ export function customizePostProfile(
   const title = container.querySelector(`.title`);
   const content = container.querySelector(`.content`);
   const place = document.querySelector(`.place-posts`);
+  const buttonedit: any = dropdownmenu.querySelector(`.button-edit-post`);
+  const buttondelete: any = dropdownmenu.querySelector(`.button-delete-post`);
   if (!menu) return;
-  menu.addEventListener("click", async (event: any) => {
+  const handleClickMenu = async (event: any) => {
     if (event.target.classList.contains("button-edit-post")) {
       modifierModalEditPost(
         dropdownmenu,
@@ -261,7 +263,6 @@ export function customizePostProfile(
       modifierModalDeletePost(dropdownmenu, profileForm, container, post);
       return;
     }
-
     event.stopPropagation();
 
     const isActive = dropdownmenu.classList.contains(ELEMENTS_CLASS.ACTIVE);
@@ -272,7 +273,8 @@ export function customizePostProfile(
     if (!isActive) {
       dropdownmenu.classList.toggle(ELEMENTS_CLASS.ACTIVE);
     }
-  });
+  };
+  menu.addEventListener("click", handleClickMenu);
 }
 
 /**
