@@ -1,10 +1,16 @@
 @charset "UTF-8";
+@font-face {
+  font-family: "Roboto";
+  src: url("../styles/fonts/Roboto/Roboto-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   scrollbar-width: none;
   height: 100vh;
+  font-family: "Roboto", sans-serif;
 }
 
 #root {
@@ -66,6 +72,7 @@ body {
 :root {
   --main-color: #d9534f;
   --main-background-color: #f5f5f5;
+  --main-color-hover: rgba(217, 84, 79, 0.7960784314);
 }
 
 main {
@@ -142,6 +149,7 @@ form input[type="text"]:focus {
   right: 2%;
   top: 3%;
   position: absolute;
+  transition: background-color 0.3s;
 }
 
 .close__hover:hover {
@@ -151,7 +159,7 @@ form input[type="text"]:focus {
 /* Стили для обработки ошибок */
 .error {
   color: red;
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 10px;
 }
 
@@ -240,7 +248,6 @@ form input[type="text"]:focus {
 .delete__button,
 .cancel__button,
 .create {
-  opacity: 0.85;
   padding: 10px 20px;
   border-radius: 25px;
   border: 1px solid gray;
@@ -253,6 +260,13 @@ form input[type="text"]:focus {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.logout__button {
+  border-radius: 10px;
+  /* border: none; */
+  background-color: white;
+  color: gray;
 }
 
 .save__button {
@@ -287,6 +301,7 @@ form input[type="text"]:focus {
 
 .logout__button {
   font-size: 18px;
+  transition: background 0.3s ease;
 }
 
 .home-buttons__button__effects:hover {
@@ -298,7 +313,7 @@ form input[type="text"]:focus {
 .donate__button__effects:hover,
 .send-tip__button__effects:hover,
 .create__button__effects:hover {
-  background: var(--main-color);
+  background: var(--main-color-hover);
   color: white;
 }
 
@@ -432,7 +447,6 @@ form input[type="text"]:focus {
   transition: width 0.3s ease; /* Плавный переход при изменении ширины */
   position: relative; /* Относительное позиционирование */
   left: 0; /* Закрепление левого края */
-  margin-bottom: 10%;
 }
 
 .password-strength::before {
@@ -558,17 +572,26 @@ form input[type="text"]:focus {
   padding: 10px;
   border: none;
   border-radius: 5px;
-  background-color: #d9534f;
+  background-color: var(--main-color);
   color: white;
   font-size: 16px;
   cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.edit-info-button:hover,
+.edit-info-button {
+  background-color: white;
+  color: gray;
+}
+
+.edit-info-button:hover {
+  background-color: gray;
+  color: white;
+}
+
 .save-info-button:hover,
 .cancel-info-button:hover {
-  color: rgb(252, 225, 225);
-  transition: color 0.3s ease;
+  background-color: var(--main-color-hover);
 }
 
 .interaction-place-info {
@@ -876,8 +899,7 @@ form input[type="text"]:focus {
 }
 
 .buttons-profile button:hover {
-  color: rgb(252, 225, 225);
-  transition: color 0.3s ease;
+  background-color: var(--main-color-hover);
 }
 
 .profile-header-mobile {
@@ -1028,7 +1050,7 @@ form input[type="text"]:focus {
 
 .push-modal {
   position: fixed;
-  top: 80%;
+  top: 75%;
   width: 100px;
   height: 40px;
   z-index: 5000;
@@ -1037,7 +1059,7 @@ form input[type="text"]:focus {
   text-align: center;
   padding: 20px;
   border-radius: 8px;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
   opacity: 0;
   align-items: center;
   justify-content: center;
@@ -1047,8 +1069,11 @@ form input[type="text"]:focus {
   left: 1%;
   font-size: bold;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
+
+   -moz-user-select: none;
+        user-select: none;
+  visibility: hidden;
+
 }
 
 .push-modal:hover {
@@ -1057,7 +1082,9 @@ form input[type="text"]:focus {
 }
 
 .push-modal.active {
+  display: block;
   opacity: 1; /* Делаем его видимым */
+  visibility: visible;
 }
 
 .sidebar.active {
@@ -1363,8 +1390,7 @@ form input[type="text"]:focus {
 .modal__createpost,
 .modal__tip,
 .modal__editpost,
-.modal__deletepost,
-.modal-view-photos {
+.modal__deletepost {
   display: none;
   background-color: white;
   width: 800px;
@@ -1372,6 +1398,18 @@ form input[type="text"]:focus {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   position: relative;
+  z-index: 2000;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.modal-view-photos {
+  width: 800px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
   z-index: 2000;
   position: fixed;
   top: 50%;
@@ -1557,15 +1595,7 @@ span {
   border-bottom: 2px solid #ccc;
   overflow-x: auto;
   flex-wrap: nowrap;
-}
-
-.tabs {
-  display: flex;
-  gap: 15px;
-  padding: 10px;
-  border-bottom: 2px solid #ccc;
-  overflow-x: auto;
-  flex-wrap: nowrap;
+  left: 15%;
   border: 1px white;
 }
 
@@ -1587,7 +1617,6 @@ span {
   text-decoration: none;
   padding: 10px 20px;
   color: #333;
-  font-size: 16px;
   font-weight: bold;
   position: relative;
   transition: color 0.3s ease;
@@ -1595,28 +1624,104 @@ span {
   font-size: 30px;
 }
 
+.tabs .settings {
+  font-size: 20px;
+}
+
 @media (max-width: 768px) {
   .tabs a {
     font-size: 14px;
   }
   .slideshow {
-    position: absolute;
-    display: flex;
-    gap: 70%;
-    width: 146%;
-    right: -24.4%;
-    top: 47%;
-    opacity: 0;
+    display: none;
   }
   .modal-view-photos {
-    width: 300px;
+    width: 390px;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0.1);
+    padding: 0;
   }
   .close-modal-view {
     opacity: 0;
   }
 }
+.modal-container-photos {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-container-photos img {
+  height: auto;
+  transition: transform 0.5s ease; /* Плавный переход */
+}
+
+.background-modal-view {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+}
+
 .container-image-photos .image-photo {
   width: 100%;
+}
+
+.become-a-creator {
+  background-color: #f9f9f9; /* Цвет фона */
+  padding: 20px; /* Отступы внутри блока */
+  border-radius: 8px; /* Скругление углов */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Эффект тени */
+  text-align: center; /* Выравнивание текста по центру */
+  margin: 20px; /* Отступы вокруг блока */
+  text-align: left;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 55%;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+.fade {
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  opacity: 1;
+  visibility: visible;
+}
+
+.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media (max-width: 768px) {
+  .become-a-creator {
+    top: 40%;
+  }
+}
+.notification-become {
+  font-weight: normal;
+}
+
+.join-button {
+  display: inline-block; /* Отображение как блочный элемент */
+  margin-top: 15px; /* Отступ сверху */
+  padding: 10px 20px; /* Отступы внутри кнопки */
+  background-color: var(--main-color); /* Цвет фона кнопки */
+  color: white; /* Цвет текста кнопки */
+  text-decoration: none; /* Убираем подчеркивание */
+  border-radius: 10px; /* Скругление углов кнопки */
+  transition: background-color 0.3s; /* Плавный переход цвета фона */
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.join-button:hover {
+  background-color: rgba(217, 84, 79, 0.7960784314); /* Цвет фона при наведении */
 }
 
 .tabs a::after {
@@ -1695,7 +1800,7 @@ span {
   margin-left: 0;
   margin-bottom: 10px;
   font-size: 16px;
-  width: 150px;
+  width: 250px;
 }
 
 input,
@@ -1776,11 +1881,12 @@ select {
   color: #fff;
   border: none;
   padding: 10px 20px;
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 15px;
   cursor: pointer;
   width: 152.14px;
   margin-top: 10px;
+  margin-left: 10px;
 }
 
 @media (max-width: 768px) {

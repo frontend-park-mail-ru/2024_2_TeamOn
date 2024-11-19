@@ -1,3 +1,4 @@
+import { controlBecomeCreator } from "../../pages/profile";
 import { ELEMENTS_CLASS, sidebarLinks } from "../consts/consts";
 import { route } from "../routing/routing";
 import { setActiveLink } from "../setActiveLink/setActiveLink";
@@ -10,9 +11,11 @@ function modifierSidebar(mainContainer?: any) {
   if (!mainContainer) {
     return;
   }
+
   const burger: any = mainContainer.querySelector(
     `.${ELEMENTS_CLASS.BURGER.BLOCK}`,
   );
+
   const sidebar = mainContainer.querySelector(".sidebar");
   burger.addEventListener("click", () => {
     sidebar.classList.toggle(ELEMENTS_CLASS.ACTIVE);
@@ -43,6 +46,9 @@ function modifierSidebar(mainContainer?: any) {
       });
     });
   });
+
+  const containerBecomeCreator = sidebar.querySelector(`.become-a-creator`);
+  controlBecomeCreator(containerBecomeCreator);
 }
 
 export { modifierSidebar };

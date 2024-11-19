@@ -21,6 +21,7 @@ async function renderFeedForm() {
         {containerPopularposts()}
         {containerRecentlyposts()}
       </div>
+      {/* <div class="background-modal-view" style="display: none; z-index=10101011"> */}
       <div class="modal-view-photos" style="display: none; z-index=10101010">
         <div class="close-modal-view"></div>
         <div class="modal-container-photos">
@@ -31,6 +32,7 @@ async function renderFeedForm() {
           <div class="rightarrow-modal-view"></div>
         </div>
       </div>
+      {/* </div> */}
     </div>
   );
 }

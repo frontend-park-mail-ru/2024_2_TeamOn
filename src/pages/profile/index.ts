@@ -15,6 +15,39 @@ import { controlInfo } from "../../features/controlInfo/controlInfo";
 import { controlMediaProfile } from "../../features/controlMediaProfile/controlMediaProfile";
 import { paginateProfile } from "../../features/paginateprofile/paginateprofile";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
+import { setAuthor } from "../settings";
+
+export async function controlBecomeCreator(div: any) {
+  const userdata: any = await getAccount();
+  const role = userdata.role;
+  const button: any = div.querySelector(`.join-button`);
+
+  if (role === "Reader") {
+    div.classList.add("fade"); // Добавляем класс для анимации
+    div.style.display = "flex";
+  } else {
+    div.style.display = "none";
+  }
+
+  const handleClick = async () => {
+    const setrole = await setAuthor();
+
+    // Запускаем анимацию
+    div.classList.add("fade-out");
+
+    // Ждем окончания анимации перед изменением display
+    setTimeout(() => {
+      div.style.display = "none";
+      const profile: any = document.querySelector(`.profile`);
+      profile.style.display = "flex";
+    }, 500); // Должно совпадать с длительностью анимации в CSS
+
+    button.removeEventListener("click", handleClick);
+  };
+
+  button.addEventListener("click", handleClick);
+  return;
+}
 /**
  * Асинхронная функция рендеринга профиля пользователя.
  * @returns созданный элемент профиля пользователя или 0,
