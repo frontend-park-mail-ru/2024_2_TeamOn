@@ -467,4 +467,4 @@ async function modifierModalDeletePost(
   });
 }
 
-export { controlAdaptivePageAuthors };
+export { renderPosts, controlAdaptivePageAuthors };
