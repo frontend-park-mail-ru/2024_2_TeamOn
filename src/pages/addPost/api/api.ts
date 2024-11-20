@@ -42,7 +42,6 @@ async function editPost(
   });
 }
 
-
 /**
  * Добавляем пост через объект типа промис
  * @param containerCreatePost Контейнер добавления
@@ -83,4 +82,4 @@ async function addUserPost(
     );
   });
 }
-export { addUserPost, editPost};
+export { addUserPost, editPost };

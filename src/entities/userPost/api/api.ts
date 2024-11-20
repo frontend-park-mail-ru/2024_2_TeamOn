@@ -27,10 +27,10 @@ async function editPost(
       },
       (response) => {
         if (response.ok) {
-          resolve(false);
+          resolve(true);
         } else if (response.status === 400) {
           response.json().then((data: any) => {
-            const input = modalEdit.querySelector(`.form-group`);
+            const input = modalEdit.querySelector(`.form-group-add`);
             const error = document.createElement("p");
             error.style.color = "red";
             error.textContent = data.message;
@@ -92,7 +92,7 @@ async function addUserPost(
           });
         } else if (response.status === 400) {
           response.json().then((data) => {
-            const input = containerCreatePost.querySelector(`.form-group`);
+            const input = containerCreatePost.querySelector(`.form-group-add`);
             const error = input.querySelector("p");
             if (!error) {
               const error = document.createElement("p");
@@ -101,6 +101,7 @@ async function addUserPost(
               input.appendChild(error);
             }
           });
+          reject(new Error("Присутствуют ошибки в полях"));
         } else {
           reject(new Error("Внутреняя ошибка сервера"));
         }

@@ -81,12 +81,22 @@ export async function setAuthor() {
  * @param password Пароль
  * @returns
  */
-async function saveSettings(username: string, email: string, password: string) {
+async function saveSettings(
+  username: string,
+  email: string,
+  oldPassword: any,
+  password: string,
+) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "POST",
       "/api/accounts/account/update",
-      { username: username, email: email, password: password },
+      {
+        username: username,
+        email: email,
+        oldPassword: oldPassword,
+        password: password,
+      },
       (response) => {
         if (response.ok) {
           resolve(true);
@@ -244,7 +254,7 @@ async function createProfileForm(userdata: any): Promise<HTMLDivElement> {
     usernameError.textContent = usernameErrorMsg || "";
     emailError.textContent = emailErrorMsg || "";
     if (!usernameError.textContent && !emailError.textContent) {
-      const ok: any = await saveSettings(username.value, email.value, "");
+      const ok: any = await saveSettings(username.value, email.value, "", "");
       ok.message
         ? (emailError.textContent = ok.message)
         : (emailError.textContent = "");
@@ -399,7 +409,12 @@ function createSecurityForm(): HTMLDivElement {
       confirmPasswordError,
     );
     if (newPasswordError.textContent == "") {
-      const ok: any = await saveSettings("", "", password.value);
+      const ok: any = await saveSettings(
+        "",
+        "",
+        oldPasswordInput.value,
+        password.value,
+      );
       // Проверяем, успешно ли сохранен аватар
       if (ok.message) {
         if (ok.message.includes("старый")) {

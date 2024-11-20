@@ -61,7 +61,7 @@ export async function mobilepr(
           class="image-upload-input-mobile"
           type="file"
           accept="image/*"
-          style="diplay: none;"
+          style="display: none;"
         ></input>
         <img class="background-image-mobile" src={background}></img>
         <button class="change-cover-button-mobile" style={flag}>

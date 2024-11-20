@@ -14,12 +14,13 @@ export const state = {
     home: document.querySelector("#home"),
     login: document.querySelector("#login"),
     signup: document.querySelector("#signup"),
-    createPost: document.querySelector("#createPost")
+    createPost: document.querySelector("#createPost"),
   },
   currentUser: {
     author: null,
     reader: null,
   },
+  currentPostId: null,
 };
 
 /**

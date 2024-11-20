@@ -16,13 +16,18 @@ function controlInfo(authorData: any, container: any) {
   }
 
   // Обработчик для кнопки "Редактировать"
-  container.addEventListener("click", async (event: any) => {
+  const handleClick = async (event: any) => {
     if (event.target.classList.contains("edit-info-button")) {
-      const currentText: any = container.querySelector(".about-profile");
-      const text = currentText.textContent;
-      const content = renderAbout(authorData, true, text);
-      const place: any = document.querySelector(`.place-edit-info`);
-      update(place, content);
+      try {
+        const currentText: any = container.querySelector(".about-profile");
+        const newdataUser = await getPageAuthor(window.location.pathname);
+        const content: any = renderAbout(newdataUser, true);
+        const place: any = document.querySelector(`.place-edit-info`);
+        update(place, content);
+        return;
+      } catch (error) {
+        console.error("Ошибка при обновлении информации:", error);
+      }
     }
 
     if (event.target.classList.contains("save-info-button")) {
@@ -36,6 +41,7 @@ function controlInfo(authorData: any, container: any) {
         const content = renderAbout(newdataUser, false, newValue);
         const place: any = document.querySelector(`.place-edit-info`);
         update(place, content);
+        return;
       } catch (error) {
         console.error("Ошибка при обновлении информации:", error);
       }
@@ -47,11 +53,15 @@ function controlInfo(authorData: any, container: any) {
       if (!DOMPurify.sanitize(currentText)) {
         return;
       }
-      const content = renderAbout(authorData, false, currentText);
+      const newdataUser = await getPageAuthor(window.location.pathname);
+      const content = renderAbout(newdataUser, false, currentText);
       const place: any = document.querySelector(`.place-edit-info`);
       update(place, content);
+      return;
     }
-  });
+    // container.removeEventListener("click", handleClick);
+  };
+  container.addEventListener("click", handleClick);
 }
 
 export { controlInfo };

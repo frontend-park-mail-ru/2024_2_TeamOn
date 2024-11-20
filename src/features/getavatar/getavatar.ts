@@ -10,7 +10,7 @@ export async function getAvatar(link: string, authorID: any = null) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "GET",
-      link == "/profile"
+      link == "/profile" || "/profile/createpost"
         ? "/api/accounts/account/me/avatar"
         : `/api/accounts/account/${authorID}/avatar`,
       null,

@@ -115,27 +115,27 @@ form {
     margin-bottom: 30px;
   }
 }
-form button[type="submit"] {
+form button[type=submit] {
   margin-top: 1px;
   width: 152.14px;
 }
 
-form button[type="submit"]:hover,
+form button[type=submit]:hover,
 .profile-pic-container.custom-upload-button:hover {
   background-color: #3e8e41;
 }
 
-form input[type="email"],
-form input[type="password"],
-form input[type="text"] {
+form input[type=email],
+form input[type=password],
+form input[type=text] {
   padding: 10px;
   margin: 10px;
   border: 1px solid #ccc;
 }
 
-form input[type="email"]:focus,
-form input[type="password"],
-form input[type="text"]:focus {
+form input[type=email]:focus,
+form input[type=password],
+form input[type=text]:focus {
   border-color: #aaa;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -163,7 +163,7 @@ form input[type="text"]:focus {
   margin-bottom: 10px;
 }
 
-.error-input ~ input[type="password"] {
+.error-input ~ input[type=password] {
   border-color: red;
   box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
 }
@@ -218,8 +218,8 @@ form input[type="text"]:focus {
   cursor: default;
   pointer-events: none;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   opacity: 0.4;
 }
 
@@ -254,9 +254,7 @@ form input[type="text"]:focus {
   background: white;
   color: gray;
   cursor: pointer;
-  transition:
-    background 0.3s,
-    color 0.3s;
+  transition: background 0.3s, color 0.3s;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -396,8 +394,8 @@ form input[type="text"]:focus {
   color: #333;
 }
 
-.login__container input[type="text"],
-.login__container input[type="password"] {
+.login__container input[type=text],
+.login__container input[type=password] {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -406,7 +404,7 @@ form input[type="text"]:focus {
   box-sizing: border-box;
 }
 
-.login__container input[type="submit"] {
+.login__container input[type=submit] {
   width: 100%;
   padding: 10px;
   margin: 20px 0 0;
@@ -418,7 +416,7 @@ form input[type="text"]:focus {
   cursor: pointer;
 }
 
-.login__container input[type="submit"]:hover {
+.login__container input[type=submit]:hover {
   background-color: #555;
 }
 
@@ -456,11 +454,7 @@ form input[type="text"]:focus {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: repeating-linear-gradient(
-    to right,
-    #fff 2px,
-    transparent 2px
-  );
+  background-image: repeating-linear-gradient(to right, #fff 2px, transparent 2px);
 }
 
 .signup {
@@ -495,8 +489,8 @@ form input[type="text"]:focus {
   font-size: 24px;
 }
 
-.signup__container input[type="text"],
-.signup__container input[type="password"] {
+.signup__container input[type=text],
+.signup__container input[type=password] {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -505,7 +499,7 @@ form input[type="text"]:focus {
   box-sizing: border-box;
 }
 
-.signup__container input[type="submit"] {
+.signup__container input[type=submit] {
   width: 100%;
   padding: 10px;
   margin-top: 20px;
@@ -517,7 +511,7 @@ form input[type="text"]:focus {
   cursor: pointer;
 }
 
-.signup__container input[type="submit"]:hover {
+.signup__container input[type=submit]:hover {
   background-color: #333;
 }
 
@@ -540,7 +534,6 @@ form input[type="text"]:focus {
 
 /* PROFILE */
 .header-profile {
-  background-color: var(--main-color);
   padding: 20px;
   text-align: center;
   color: white;
@@ -609,9 +602,7 @@ form input[type="text"]:focus {
   border-radius: 4px;
   font-size: 14px;
   margin-bottom: 15px;
-  transition:
-    border-color 0.3s,
-    box-shadow 0.3s; /* Плавный переход для фокуса */
+  transition: border-color 0.3s, box-shadow 0.3s; /* Плавный переход для фокуса */
 }
 
 /* Эффекты при фокусе на поле ввода */
@@ -856,19 +847,20 @@ form input[type="text"]:focus {
   }
 }
 .background-image {
-  position: absolute; /* Позволяет изображению занимать всю площадь родителя */
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100%; /* Занимает всю ширину */
-  height: 100%; /* Занимает всю высоту */
+  width: 100%;
+  height: 100%;
   -o-object-fit: cover;
-  object-fit: cover; /* Обеспечивает обрезку изображения, чтобы оно заполнило контейнер */
+     object-fit: cover;
+  border-radius: 10px;
 }
 
 .profile-avatar {
-  height: 250px; /* Установите желаемую высоту */
+  height: 250px;
   -o-object-fit: cover;
-  object-fit: cover; /* Обеспечивает обрезку изображения, чтобы оно заполнило контейнер */
+     object-fit: cover;
 }
 
 .posts {
@@ -1019,6 +1011,172 @@ form input[type="text"]:focus {
   background-color: #f0f0f0; /* Цвет фона при наведении */
 }
 
+@media (max-width: 768px) {
+  .container-createpost,
+  .container-updatepost {
+    display: flex;
+    justify-content: space-between;
+    min-width: 145%;
+    flex-direction: column;
+    right: 12%;
+    margin-top: 5%;
+    position: relative;
+  }
+  .visibility-container-createpost {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    min-width: 70%;
+    height: -moz-fit-content;
+    height: fit-content;
+    margin-left: 0px !important;
+    margin-top: 5%;
+  }
+}
+.container-createpost,
+.container-updatepost {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+}
+
+.post-container-createpost,
+.post-container-updatepost {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 70%;
+}
+
+.post-container-createpost h1,
+.post-container-updatepost h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.post-container-createpost input[type=text],
+.post-container-updatepost input[type=text] {
+  width: 97%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: none; /* Removed the border */
+  font-size: 16px;
+  color: #999999;
+  background-color: #f9f9f9; /* Added a background color to distinguish the input field */
+}
+
+.post-container-createpost textarea,
+.post-container-updatepost textarea {
+  width: 97%;
+  height: 300px;
+  padding: 10px;
+  border: none; /* Removed the border */
+  border-radius: 5px;
+  font-size: 16px;
+  color: #999999;
+  resize: none;
+  background-color: #f9f9f9; /* Added a background color to distinguish the text area */
+}
+
+.post-container-createpost .attachment-icon,
+.post-container-updatepost .attachment-icon {
+  font-size: 24px;
+  color: #999999;
+  margin-top: 10px;
+}
+
+.iteraction-container-createpost {
+  display: flex;
+  gap: 10px;
+  flex-direction: row-reverse;
+}
+
+.post-container-createpost .save-button,
+.post-container-updatepost .save-button,
+.cancel-button {
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  float: right;
+  margin-top: 10px;
+  transition: background 0.3s ease;
+}
+
+.cancel-button {
+  background-color: black;
+}
+
+.post-container-createpost .save-button,
+.post-container-updatepost .save-button {
+  background-color: var(--main-color);
+}
+
+.cancel-button:hover {
+  background-color: rgba(0, 0, 0, 0.432);
+}
+
+.save-button:hover {
+  background-color: var(--main-color-hover);
+}
+
+.post-container-createpost .save-button:hover .post-container-updatepost .save-button:hover {
+  background-color: var(--main-color-hover);
+}
+
+.visibility-container-createpost {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 25%;
+  height: -moz-fit-content;
+  height: fit-content;
+  margin-left: 20px; /* This will move the element to the right */
+}
+
+.visibility-container-createpost h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.visibility-container-createpost label {
+  font-size: 16px;
+  color: #000000;
+}
+
+.visibility-container-createpost p {
+  font-size: 14px;
+  color: #999999;
+}
+
+.visibility-container-createpost select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.form-add-media {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0px;
+  margin-top: 1%;
+}
+
 /* EYE */
 .password-eye {
   position: relative;
@@ -1028,8 +1186,8 @@ form input[type="text"]:focus {
   font-size: 18px;
   color: #666;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   background-image: url("photos/eye_nsee.png");
   background-size: cover;
   width: 20px;
@@ -1079,11 +1237,9 @@ form input[type="text"]:focus {
   left: 1%;
   font-size: bold;
   -webkit-user-select: none;
-
-   -moz-user-select: none;
-        user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   visibility: hidden;
-
 }
 
 .push-modal:hover {
@@ -1345,8 +1501,7 @@ form input[type="text"]:focus {
 .rightarrow-modal-view:hover,
 .leftarrow-modal-view:hover {
   cursor: pointer;
-  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%)
-    hue-rotate(0deg) brightness(100%) contrast(100%);
+  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(100%) contrast(100%);
   transition: filter 0.3s ease; /* Плавный переход */
 }
 
@@ -1378,21 +1533,40 @@ form input[type="text"]:focus {
   background-image: url("photos/icon_comment.png");
 }
 
+.icon-attache {
+  background-image: url("photos/paperclip.png");
+  width: 30px;
+  display: block;
+  height: 30px;
+  background-size: cover;
+  cursor: pointer;
+  transition: filter 0.3s ease;
+}
+
+.icon-attache:hover {
+  filter: brightness(1.2);
+}
+
+.container-image-photos {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .likes-container:hover .amount-likes,
 .comments-container:hover .amount-comments,
 .likes-container:hover .likes,
 .comments-container:hover .comments,
 .author-name:hover {
   cursor: pointer;
-  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%)
-    hue-rotate(0deg) brightness(100%) contrast(100%);
+  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(100%) contrast(100%);
   transition: filter 0.3s ease; /* Плавный переход */
 }
 
 .likes-container.active {
   cursor: pointer;
-  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%)
-    hue-rotate(0deg) brightness(100%) contrast(100%);
+  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(100%) contrast(100%);
   transition: filter 0.3s ease; /* Плавный переход */
 }
 
@@ -1742,9 +1916,7 @@ span {
   width: 0;
   height: 2px;
   background-color: #000;
-  transition:
-    width 0.3s ease,
-    left 0.3s ease;
+  transition: width 0.3s ease, left 0.3s ease;
 }
 
 .tabs a.active::after {
@@ -1818,12 +1990,12 @@ select {
   flex-grow: 1;
 }
 
-.form-container input[type="text"],
-.form-container input[type="email"],
-.form-container input[type="password"],
-.form-container-security input[type="text"],
-.form-container-security input[type="email"],
-.form-container-security input[type="password"] {
+.form-container input[type=text],
+.form-container input[type=email],
+.form-container input[type=password],
+.form-container-security input[type=text],
+.form-container-security input[type=email],
+.form-container-security input[type=password] {
   width: 50%;
   padding: 10px;
   margin-bottom: 20px;
@@ -1839,8 +2011,8 @@ select {
   border: 1px solid #000;
   border-radius: 20px;
   -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+     -moz-appearance: none;
+          appearance: none;
 }
 
 .toggleButton {
@@ -1936,9 +2108,7 @@ select {
 .about-mobile__button.active,
 .posts-mobile__button.active {
   border: 2px solid var(--main-color);
-  transition:
-    border 0.3s ease,
-    background-color 0.3s ease;
+  transition: border 0.3s ease, background-color 0.3s ease;
 }
 
 .about-mobile__button,
@@ -1953,12 +2123,12 @@ select {
 }
 /* Адаптивность */
 @media (max-width: 768px) {
-  .form-container input[type="text"],
-  .form-container input[type="email"],
-  .form-container input[type="password"],
-  .form-container-security input[type="text"],
-  .form-container-security input[type="email"],
-  .form-container-security input[type="password"] {
+  .form-container input[type=text],
+  .form-container input[type=email],
+  .form-container input[type=password],
+  .form-container-security input[type=text],
+  .form-container-security input[type=email],
+  .form-container-security input[type=password] {
     width: 100%;
   }
   .defs {

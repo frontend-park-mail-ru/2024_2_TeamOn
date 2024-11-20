@@ -108,6 +108,7 @@ export async function renderProfile() {
 
     const mainContent = container.querySelector(".main-content");
     const profileForm = container.querySelector(`.profile-form`);
+    const placeEditInfo = container.querySelector(`.place-edit-info`);
 
     modifierSidebar(mainContent);
     await controlAdaptivePageAuthors(authorData, container, profileForm);
@@ -115,7 +116,7 @@ export async function renderProfile() {
     controlLogout(container, authorData);
     controlMediaProfile(container);
 
-    controlInfo(authorData, container);
+    controlInfo(authorData, placeEditInfo);
 
     const placeposts: any = container.querySelector(`.place-posts`);
 

@@ -44,5 +44,4 @@ async function editPost(
   });
 }
 
-
 export { editPost };
