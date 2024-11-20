@@ -79,12 +79,13 @@ async function addUserPost(
   containerCreatePost: any,
   title: string,
   content: string,
+  layer: number = 0,
 ) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "POST",
       "/api/posts/post",
-      { title: title, content: content },
+      { title: title, content: content, layer: layer },
       (response) => {
         if (response.ok) {
           response.json().then((data) => {

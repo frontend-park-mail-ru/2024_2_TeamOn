@@ -601,6 +601,7 @@ form input[type="text"]:focus {
   width: 100%;
   max-width: 300px;
   margin-left: 20px;
+  height: 700px;
 }
 .center-column-profile {
   flex: 1;
@@ -1070,6 +1071,22 @@ form input[type="text"]:focus {
   .save-button:hover {
   background-color: var(--main-color-hover);
 }
+.add-customsubs {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  transition: filter 0.3s ease;
+  cursor: pointer;
+}
+.add-customsubs:hover {
+  filter: brightness(1.6);
+}
+.add-customsubs-icon {
+  background-image: url("photos/addsubs.png");
+  width: 100px;
+  display: block;
+  height: 100px;
+}
 .visibility-container-createpost {
   background-color: #ffffff;
   padding: 20px;
@@ -1077,7 +1094,9 @@ form input[type="text"]:focus {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 25%;
   height: fit-content;
-  margin-left: 20px; /* This will move the element to the right */
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
 }
 .visibility-container-createpost h2 {
   font-size: 18px;
@@ -1464,6 +1483,7 @@ form input[type="text"]:focus {
 .modal__createpost,
 .modal__tip,
 .modal__editpost,
+.modal__addsubs,
 .modal__deletepost {
   display: none;
   background-color: white;
@@ -1996,7 +2016,8 @@ select {
   .modal__tip,
   .modal__createpost,
   .modal__deletepost,
-  .modal__editpost {
+  .modal__editpost,
+  .modal__addsubs {
     max-width: 90%;
   }
   .profile .left {

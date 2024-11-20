@@ -6,93 +6,6 @@ import { getUserPosts } from "../../../features/getuserposts/getUserPosts";
 import { uploadMediaFiles } from "../../../features/uploadMediaFiles/uploadMediaFiles";
 import { controlSlideShow } from "../../../features/paginateFeed/paginateFeed";
 
-// async function modifireCreatePost() {
-//   const containerCreatePost: any = document.querySelector(
-//     ".container-createpost",
-//   );
-//   const buttonSave = containerCreatePost.querySelector(`.save-button`);
-//   const buttonCancel = containerCreatePost.querySelector(`.cancel-button`);
-
-//   if (buttonCancel) {
-//     buttonCancel.addEventListener("click", () => {
-//       route(LINKS.PROFILE.HREF);
-//     });
-//   }
-
-//   if (buttonSave) {
-//     buttonSave.addEventListener("click", async (event: any) => {
-//       event.preventDefault();
-//       const title: any = containerCreatePost.querySelector(`.input-group`);
-//       const content: any = containerCreatePost.querySelector(`.textarea-group`);
-//       const sanitizedTitle = DOMPurify.sanitize(title.value);
-//       const sanitizedContent = DOMPurify.sanitize(content.value);
-//       if (title.value == "" || content.value == "") {
-//         const input =
-//           containerCreatePost.querySelectorAll(`.form-group-add`)[1];
-//         const error = input.querySelector("p");
-//         if (!error) {
-//           const error = document.createElement("p");
-//           error.style.color = "red";
-//           error.textContent = "Ошибка. Поля не могут быть пустыми";
-//           input.appendChild(error);
-//         }
-//         return;
-//       }
-//       let input = containerCreatePost.querySelectorAll(`.form-group-add`)[1];
-//       let error = input.querySelector("p");
-//       if (error) {
-//         error.remove();
-//       }
-//       try {
-//         const post: any = await addUserPost(
-//           containerCreatePost,
-//           sanitizedTitle,
-//           sanitizedContent,
-//         );
-//         let postId: any = await getUserPosts("/profile", 0, 300);
-//         postId = postId[0].postId;
-
-//         try {
-//           if (selectedFiles.length != 0) {
-//             const ok: any = await uploadMediaFiles(postId, selectedFiles);
-//           }
-//         } catch (error) {
-//           console.error("Ошибка при загрузке фонового изображения:", error);
-//         }
-
-//         if (post) {
-//           route(LINKS.PROFILE.HREF);
-//         }
-//       } catch (error) {
-//         console.error(error);
-//       }
-//     });
-//   }
-
-//   const mediaForm: any = containerCreatePost.querySelector(`.form-add-media`);
-//   mediaForm.enctype = "multipart/form-data";
-//   mediaForm.method = "POST";
-
-//   const buttonUploadMedia: any =
-//     containerCreatePost.querySelector(`.media-upload-label`);
-//   const mediaInput: any =
-//     containerCreatePost.querySelector(`.media-upload-input`);
-
-//   let selectedFiles: File[] = []; // Массив для хранения выбранных файлов
-
-//   mediaInput.addEventListener("change", (event: any) => {
-//     const files = event.target.files;
-
-//     if (files.length) {
-//       selectedFiles = Array.from(files); // Преобразуем FileList в массив
-//     }
-//   });
-
-//   buttonUploadMedia.addEventListener("click", () => {
-//     mediaInput.click(); // Программно вызываем клик на input
-//   });
-// }
-
 async function modifireCreatePost() {
   const containerCreatePost: any = document.querySelector(
     ".container-createpost",
@@ -108,7 +21,15 @@ async function modifireCreatePost() {
       route(LINKS.PROFILE.HREF);
     });
   }
-
+  let layer = 0;
+  const radioButtons = containerCreatePost.querySelectorAll(
+    `input[name="visibility"]`,
+  );
+  radioButtons.forEach((radio: any) => {
+    radio.addEventListener("change", () => {
+      layer = radio.id;
+    });
+  });
   if (buttonSave) {
     buttonSave.addEventListener("click", async (event: any) => {
       event.preventDefault();
@@ -133,11 +54,13 @@ async function modifireCreatePost() {
       if (error) {
         error.remove();
       }
+
       try {
         const post: any = await addUserPost(
           containerCreatePost,
           sanitizedTitle,
           sanitizedContent,
+          layer,
         );
         let postId: any = await getUserPosts("/profile", 0, 300);
         postId = postId[0].postId;
@@ -170,44 +93,6 @@ async function modifireCreatePost() {
 
   let selectedFiles: File[] = []; // Массив для хранения выбранных файлов
 
-  // mediaInput.addEventListener("change", (event: any) => {
-  //   const files = event.target.files;
-
-  //   if (files.length) {
-  //     let loadedFilesCount: number = 0;
-  //     selectedFiles = Array.from(files); // Преобразуем FileList в массив
-  //     // previewContainer.innerHTML = ''; // Очищаем контейнер перед добавлением новых изображений
-  //     selectedFiles.forEach((file, index) => {
-  //       const reader = new FileReader();
-  //       reader.onload = (e: any) => {
-  //         const img = document.createElement("img");
-  //         img.src = e.target.result;
-  //         img.className = `image-photo`;
-  //         img.style.width = "100px"; // Устанавливаем ширину изображения
-  //         img.style.margin = "5px";
-  //         const removeButton = document.createElement("button");
-  //         removeButton.textContent = "Удалить";
-  //         removeButton.style.marginLeft = "5px";
-
-  //         // Обработчик для удаления изображения
-  //         removeButton.addEventListener("click", () => {
-  //           selectedFiles.splice(index, 1); // Удаляем файл из массива
-  //           previewContainer.removeChild(img); // Удаляем изображение из предпросмотра
-  //           previewContainer.removeChild(removeButton); // Удаляем кнопку удаления
-  //         });
-
-  //         previewContainer.appendChild(img);
-  //         previewContainer.appendChild(removeButton);
-  //         loadedFilesCount++;
-  //         if ( loadedFilesCount === selectedFiles.length ) {
-  //           controlSlideShow(containerCreatePost, containerCreatePost);
-  //         }
-  //       };
-  //       reader.readAsDataURL(file);
-  //     });
-
-  //   }
-  // });
   mediaInput.addEventListener("change", (event: any) => {
     const files = (event.target as HTMLInputElement).files;
 
