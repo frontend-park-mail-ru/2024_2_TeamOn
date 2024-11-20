@@ -1,14 +1,13 @@
 import * as VDom from "vdom";
 import { Sidebar } from "../../../shared/sidebar/sidebar";
 import { getAccount } from "../../../features/getAccount/getAccount";
-function containerAddhotos(src: any) {
+
+function containerLayer(layer: any) {
   return (
-    <div>
-      <img src={src} class="image-photo" style="width:100px; margin: 5px"></img>
-      <button class="change-file" style="margin-left: 5px;">
-        Удалить
-      </button>
-    </div>
+    <label>
+      <input id={layer.layer} type="radio" name="visibility" checked />{" "}
+      {layer.layerName}
+    </label>
   );
 }
 
@@ -62,11 +61,17 @@ async function containerCreatePost() {
 
         <div class="visibility-container-createpost">
           <h2>Кто может смотреть</h2>
+          <div class="layers"></div>
           <label>
-            <input type="radio" name="visibility" checked /> Только подписчики
+            <input id="1" type="radio" name="visibility" checked /> Name1
+          </label>
+          <label>
+            <input id="2" type="radio" name="visibility" checked /> Name2
+          </label>
+          <label>
+            <input id="3" type="radio" name="visibility" checked /> Name3
           </label>
           <p>Выберите уровень</p>
-          {/* Выпадающий список из уровней будет тут */}
         </div>
       </div>
       <div class="modal-view-photos" style="display: none; z-index=10101010">
@@ -83,4 +88,4 @@ async function containerCreatePost() {
   );
 }
 
-export { containerCreatePost, containerAddhotos };
+export { containerCreatePost, containerLayer };

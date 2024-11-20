@@ -110,6 +110,20 @@ module.exports = {
           "^/api/posts/(.*)": "/$1",
         },
       },
+      {
+        context: "/api/tech",
+        target: "http://localhost:8085",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api/tech/token-endpoint": "/token-endpoint",
+          "^/api/tech/subscription/(.*)/custom": "/subscription/$1/custom",
+          "^/api/tech/subscription/layer": "/subscription/layer",
+          "^/api/tech/subscription/custom": "/subscription/custom",
+          "^/api/tech/subscription/request": "/subscription/request",
+          "^/api/tech/subscription/realize": "/subscription/realize",
+          "^/api/tech/unsubscription": "/unsubscription",
+        },
+      },
     ],
   },
 };

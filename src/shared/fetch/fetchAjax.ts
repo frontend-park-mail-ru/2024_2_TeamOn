@@ -38,6 +38,16 @@ async function getCSRFTokenForAccounts() {
 }
 
 /**
+ * Функция получения токена к сервису "Технический"
+ * @returns
+ */
+async function getCSRFTokenForTech() {
+  const response = await fetch("/api/tech/token-endpoint");
+  const data = await response.json();
+  return data;
+}
+
+/**
  * Функция получения токена к сервису "автор"
  * @returns
  */
@@ -78,6 +88,8 @@ export async function fetchAjax(
       csrfToken = await getCSRFTokenForAccounts();
     } else if (url.startsWith("/api/danya")) {
       csrfToken = await getCSRFTokenForAuthor();
+    } else if (url.startsWith("/api/tech")) {
+      csrfToken = await getCSRFTokenForAccounts();
     }
 
     if (csrfToken) {

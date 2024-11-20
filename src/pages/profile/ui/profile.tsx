@@ -77,3 +77,13 @@ export async function mobilepr(
     </div>
   );
 }
+
+function renderContainerAddCustomSubs() {
+  return (
+    <div class="add-customsubs">
+      <i class="add-customsubs-icon"></i>
+    </div>
+  );
+}
+
+export { renderContainerAddCustomSubs };

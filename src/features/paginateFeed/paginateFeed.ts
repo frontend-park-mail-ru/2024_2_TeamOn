@@ -327,7 +327,7 @@ async function customizePost(container: any, post: any = null) {
       amountLike.innerHTML = `${post.likes}`; // Обновляем отображаемое количество лайков
     });
   }
-  const rightContainer = container.querySelector(`.right-content`);
+  const rightContainer = document.querySelector(`.right-content`);
   controlSlideShow(container, rightContainer);
 }
 
