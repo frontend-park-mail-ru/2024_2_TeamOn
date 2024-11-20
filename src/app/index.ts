@@ -12,7 +12,8 @@ import { VirtualDOM } from "../../lib/vdom/src/source";
 import { render } from "../../lib/vdom/lib";
 import { renderLogin } from "../pages/login";
 import { modifierSidebar } from "../shared/sidebar/modifire";
-
+import { renderCreatePost } from "../pages/addPost";
+import { renderUpdatePost } from "../entities/userPost";
 /**
  * Объект, содержащий конфигурацию меню приложения.
  */
@@ -36,6 +37,8 @@ interface MenuConfig {
   profile: AsyncLinkConfig;
   settings: AsyncLinkConfig;
   feed: AsyncLinkConfig;
+  createPost: AsyncLinkConfig;
+  updatePost: AsyncLinkConfig;
   // subscriptions: AsyncLinkConfig;
   notifications: AsyncLinkConfig;
 }
@@ -75,6 +78,16 @@ const config: Config = {
       href: LINKS.FEED.HREF,
       text: LINKS.FEED.TEXT,
       render: renderFeed,
+    },
+    createPost: {
+      href: LINKS.CREATE_POST.HREF,
+      text: LINKS.CREATE_POST.TEXT,
+      render: renderCreatePost,
+    },
+    updatePost: {
+      href: LINKS.UPDATE_POST.HREF,
+      text: LINKS.UPDATE_POST.TEXT,
+      render: renderUpdatePost,
     },
     // subscriptions: {
     //   href: LINKS.NOTIFICATIONS.HREF,

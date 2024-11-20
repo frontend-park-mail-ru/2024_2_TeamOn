@@ -53,7 +53,6 @@ export async function renderFeed() {
 
     controlLogout(container, user);
 
-    // controlModalPhotos(rightContent,)
     await paginate(
       allPopularPosts,
       allRecentlyPosts,

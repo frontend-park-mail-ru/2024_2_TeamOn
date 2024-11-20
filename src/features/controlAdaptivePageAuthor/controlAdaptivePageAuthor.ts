@@ -9,7 +9,7 @@ import {
   //renderEditPost,
   renderUserPost,
 } from "../../entities/userPost";
-import { ELEMENTS_CLASS, LINKS } from "../../shared/consts/consts";
+import { ELEMENTS_CLASS, LINKS, state } from "../../shared/consts/consts";
 import { getUserPosts } from "../getuserposts/getUserPosts";
 import DOMPurify from "dompurify";
 import { getPayments } from "../getpayments/getpayments";
@@ -253,14 +253,18 @@ export function customizePostProfile(
   if (!menu) return;
   const handleClickMenu = async (event: any) => {
     if (event.target.classList.contains("button-edit-post")) {
-      modifierModalEditPost(
-        dropdownmenu,
-        profileForm,
-        title,
-        content,
-        post,
-        postId,
-      );
+      state.currentPostId = post;
+      if (!state.currentPostId) return;
+      route(LINKS.UPDATE_POST.HREF);
+      // modifierModalEditPost(
+      //   dropdownmenu,
+      //   profileForm,
+      //   title,
+      //   content,
+      //   post,
+      //   postId,
+      // );
+      menu.removeEventListener("click", handleClickMenu);
       return;
     }
 
@@ -329,85 +333,73 @@ async function modifierModalEditPost(
   postbefore: any,
   postId: any = null,
 ) {
-  const alluserpost: any = await getUserPosts(window.location.pathname, 0, 300);
-  let post = alluserpost.find(
-    (userpost: any) => userpost.postId === postbefore.postId,
-  );
-
-  if (postId) {
-    post = alluserpost[0];
-  }
-  dropdownmenu.classList.remove(ELEMENTS_CLASS.ACTIVE);
-
-  const place = document.querySelector(`.div-edit-posts`);
-  //const modal: any = renderEditPost(post);
-  // update(place, modal);
-
-  const modalsEdit: any = document.querySelector(".modal__editpost");
-  const buttonCancel: any = modalsEdit.querySelector(`.cancel`);
-  const buttonConfirm: any = modalsEdit.querySelector(`.save`);
-
-  const edittitle: any = modalsEdit.querySelector(".input-group");
-  const editcontent: any = modalsEdit.querySelector(".textarea-group");
-
-  modalsEdit.style.display = "block";
-  profileForm.classList.add("blur");
-
-  buttonCancel.addEventListener("click", () => {
-    modalsEdit.style.display = "none";
-    profileForm.classList.remove("blur");
-
-    return;
-  });
-
-  buttonConfirm.addEventListener("click", async () => {
-    modalsEdit.style.display = "none";
-    profileForm.classList.remove("blur");
-
-    if (
-      !DOMPurify.sanitize(edittitle.value) ||
-      !DOMPurify.sanitize(editcontent.value)
-    ) {
-      const input = modalsEdit.querySelector(`.form-group`);
-      const error = input.querySelector("p");
-      if (!error) {
-        const error = document.createElement("p");
-        error.style.color = "red";
-        error.textContent = "Ошибка";
-        input.appendChild(error);
-      }
-      return;
-    }
-    console.log(edittitle.value);
-    console.log(editcontent.value);
-    await editPost(
-      modalsEdit,
-      postId ? postId : post.postId,
-      DOMPurify.sanitize(edittitle.value),
-      DOMPurify.sanitize(editcontent.value),
-    );
-
-    const afteruserPosts: any = await getUserPosts(
-      window.location.pathname,
-      0,
-      300,
-    );
-    const foundPost = afteruserPosts.find(
-      (afteruserpost: any) => afteruserpost.postId === post.postId,
-    );
-    title.textContent = foundPost.title;
-    content.textContent = foundPost.content;
-
-    if (postId) {
-      const foundPostPostid = afteruserPosts.find(
-        (afteruserpost: any) => afteruserpost.postId === postId,
-      );
-      title.textContent = foundPostPostid.title;
-      content.textContent = foundPostPostid.content;
-    }
-
-    return;
-  });
+  // const alluserpost: any = await getUserPosts(window.location.pathname, 0, 300);
+  // let post = alluserpost.find(
+  //   (userpost: any) => userpost.postId === postbefore.postId,
+  // );
+  // if (postId) {
+  //   post = alluserpost[0];
+  // }
+  // dropdownmenu.classList.remove(ELEMENTS_CLASS.ACTIVE);
+  // const place = document.querySelector(`.div-edit-posts`);
+  // //const modal: any = renderEditPost(post);
+  // // update(place, modal);
+  // const modalsEdit: any = document.querySelector(".modal__editpost");
+  // const buttonCancel: any = modalsEdit.querySelector(`.cancel`);
+  // const buttonConfirm: any = modalsEdit.querySelector(`.save`);
+  // const edittitle: any = modalsEdit.querySelector(".input-group");
+  // const editcontent: any = modalsEdit.querySelector(".textarea-group");
+  // modalsEdit.style.display = "block";
+  // profileForm.classList.add("blur");
+  // buttonCancel.addEventListener("click", () => {
+  //   modalsEdit.style.display = "none";
+  //   profileForm.classList.remove("blur");
+  //   return;
+  // });
+  // buttonConfirm.addEventListener("click", async () => {
+  //   modalsEdit.style.display = "none";
+  //   profileForm.classList.remove("blur");
+  //   if (
+  //     !DOMPurify.sanitize(edittitle.value) ||
+  //     !DOMPurify.sanitize(editcontent.value)
+  //   ) {
+  //     const input = modalsEdit.querySelector(`.form-group`);
+  //     const error = input.querySelector("p");
+  //     if (!error) {
+  //       const error = document.createElement("p");
+  //       error.style.color = "red";
+  //       error.textContent = "Ошибка";
+  //       input.appendChild(error);
+  //     }
+  //     return;
+  //   }
+  //   console.log(edittitle.value);
+  //   console.log(editcontent.value);
+  //   await editPost(
+  //     modalsEdit,
+  //     postId ? postId : post.postId,
+  //     DOMPurify.sanitize(edittitle.value),
+  //     DOMPurify.sanitize(editcontent.value),
+  //   );
+  //   const afteruserPosts: any = await getUserPosts(
+  //     window.location.pathname,
+  //     0,
+  //     300,
+  //   );
+  //   const foundPost = afteruserPosts.find(
+  //     (afteruserpost: any) => afteruserpost.postId === post.postId,
+  //   );
+  //   title.textContent = foundPost.title;
+  //   content.textContent = foundPost.content;
+  //   if (postId) {
+  //     const foundPostPostid = afteruserPosts.find(
+  //       (afteruserpost: any) => afteruserpost.postId === postId,
+  //     );
+  //     title.textContent = foundPostPostid.title;
+  //     content.textContent = foundPostPostid.content;
+  //   }
+  //   return;
+  // });
 }
 
 /**

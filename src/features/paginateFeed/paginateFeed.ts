@@ -8,96 +8,10 @@ import { convertISOToRussianDate } from "../../shared/utils/parsedate";
 import { route } from "../../shared/routing/routing";
 import { getAvatar } from "../getavatar/getavatar";
 
-/**
- * Кастомизирует каждый пост, который к нему пришел
- * @param container Контейнер ( популярных | недавних постов )
- * @param post Пост
- */
-async function customizePost(container: any, post: any = null) {
-  const authorSection: any = container.querySelector(
-    `.${ELEMENTS_CLASS.POST.AUTHOR.NAME}`,
-  );
-
-  const avatar: any = container.querySelector(
-    `.${ELEMENTS_CLASS.POST.AUTHOR.AVATAR}`,
-  );
-  if (avatar) {
-    avatar.alt = "Аватар автора";
-    avatar.height = 50;
-    const avatarload: any = await getAvatar(
-      window.location.pathname,
-      post.authorId,
-    );
-    avatar.src = avatarload;
-    avatar.width = 50;
-  }
-  const authorName: any = container.querySelector(
-    `.${ELEMENTS_CLASS.POST.AUTHOR.NAME}`,
-  );
-  if (authorName) {
-    authorName.textContent = post.authorUsername;
-  }
-  if (authorSection) {
-    authorSection.addEventListener("click", () => {
-      sessionStorage.setItem("authorid", post.authorId);
-      sessionStorage.setItem("author", post.authorUsername);
-      sessionStorage.getItem("account") == post.authorUsername
-        ? route(`/profile`)
-        : route(`/profile/${sessionStorage.getItem("authorid")}`);
-    });
-  }
-
-  const title: any = container.querySelector(`.${ELEMENTS_CLASS.POST.TITLE}`);
-  title.textContent = post.title;
-
-  const content: any = container.querySelector(
-    `.${ELEMENTS_CLASS.POST.CONTENT}`,
-  );
-  content.textContent = post.content;
-
-  const date: any = container.querySelector(`.${ELEMENTS_CLASS.POST.DATE}`);
-  date.textContent = convertISOToRussianDate(post.createdAt);
-
-  const divLikes: any = container.querySelector(`.likes-container`);
-  if (divLikes) {
-    const amountLike: any = container.querySelector(
-      `.${ELEMENTS_CLASS.POST.LIKES.AMOUNT}`,
-    );
-    amountLike.innerHTML = `${post.likes}`;
-
-    // Установка состояния лайка
-    if (post.isLiked) {
-      divLikes.classList.add("active");
-    } else {
-      divLikes.classList.remove("active");
-    }
-
-    const divLike: any = container.querySelector(
-      `.${ELEMENTS_CLASS.POST.LIKES.BLOCK}`,
-    );
-
-    divLike.addEventListener("click", async () => {
-      if (post.isLiked) {
-        // Удалить лайк
-        const likeCount: any = await AddLikeOnPost(post.postId);
-        post.isLiked = false; // Обновляем состояние
-        post.likes = likeCount.count; // Обновляем количество лайков
-        divLikes.classList.remove("active");
-      } else {
-        // Добавить лайк
-        const likeCount: any = await AddLikeOnPost(post.postId);
-        post.isLiked = true; // Обновляем состояние
-        post.likes = likeCount.count; // Обновляем количество лайков
-        divLikes.classList.add("active");
-      }
-      amountLike.innerHTML = `${post.likes}`; // Обновляем отображаемое количество лайков
-    });
-  }
-
+export function controlSlideShow(container: any, rightContainer: any) {
   const divPhotos = container.querySelector(`.container-image-photos`);
-  // const containerModal: any = document.querySelector(`.background-modal-view`);
   const modalPhotos: any = document.querySelector(`.modal-view-photos`); //
-  const rightContent: any = document.querySelector(`.right-content`);
+  const rightContent: any = rightContainer;
   const closeModal: any = document.querySelector(`.close-modal-view`); //
   const main: any = document.querySelector("main");
   // const slideshow: any = modalPhotos.querySelector(".slideshow");
@@ -110,7 +24,9 @@ async function customizePost(container: any, post: any = null) {
     leftArrow = modalPhotos.querySelector(".leftarrow-modal-view"); //
     rightArrow = modalPhotos.querySelector(".rightarrow-modal-view"); //
   }
-  const imgPhotos: any = Array.from(divPhotos.querySelectorAll(`.image-photo`)); //
+  const imgPhotos: any = Array.from(container.querySelectorAll(`.image-photo`)); //
+  console.log(divPhotos);
+  console.log(imgPhotos);
   const imgAvatar: any = container.querySelector(`.author-avatar`);
   const toggleButton: any = container.querySelector(".toggleButton");
 
@@ -124,18 +40,7 @@ async function customizePost(container: any, post: any = null) {
   const showAvatar = () => {
     if (!imageModal) return;
     imageModal.src = imgAvatar.src;
-    slideshow.style.display = "none";
-    slideshow.style.pointerEvents = "none";
-    slideshow.style.userSelect = "none";
-    imageModal.style.pointerEvents = "none";
-    imageModal.style.userSelect = "none";
-
-    leftArrow.style.display = "none";
-    rightArrow.style.display = "none";
-    leftArrow.style.pointerEvents = "none";
-    leftArrow.style.userSelect = "none";
-    rightArrow.style.pointerEvents = "none";
-    rightArrow.style.userSelect = "none";
+    return;
   };
 
   const handleOpenSlideshow = (
@@ -255,19 +160,22 @@ async function customizePost(container: any, post: any = null) {
         img.style.display = "block";
         resheight += imgHeight;
       } else {
-        //img.style.display = "none";
+        img.style.display = "none";
         limitExceeded = true; // Устанавливаем флаг, если лимит превышен
       }
     });
-
-    // Показываем или скрываем кнопку в зависимости от превышения лимита
-    toggleButton.style.display = limitExceeded ? "block" : "none";
+    if (toggleButton) {
+      // Показываем или скрываем кнопку в зависимости от превышения лимита
+      toggleButton.style.display = limitExceeded ? "block" : "none";
+    }
   }
 
   // Функция для обработки загрузки изображений
   function onImagesLoaded() {
     filterImages();
-
+    if (!toggleButton) {
+      return;
+    }
     toggleButton.addEventListener("click", () => {
       const isHidden = toggleButton.textContent === "Показать...";
       if (isHidden) {
@@ -299,6 +207,7 @@ async function customizePost(container: any, post: any = null) {
   });
 
   imgPhotos.forEach((img: any, index: any) => {
+<<<<<<< HEAD
     img.addEventListener("click", (event: any) =>
       handleOpenSlideshow(event, updateImage, index),
     );
@@ -339,7 +248,17 @@ async function customizePost(container: any, post: any = null) {
 
   imgAvatar.addEventListener("click", (event: any) => {
     handleOpenSlideshow(event, showAvatar);
+=======
+    img.addEventListener("click", (event: any) => {
+      handleOpenSlideshow(event, updateImage, index);
+    });
+>>>>>>> Добавил аттачи
   });
+  if (imgAvatar) {
+    imgAvatar.addEventListener("click", (event: any) => {
+      handleOpenSlideshow(event, showAvatar);
+    });
+  }
 
   function animateImageTransition(
     oldIndex: any,
@@ -364,6 +283,95 @@ async function customizePost(container: any, post: any = null) {
       }, 50); // Небольшая задержка для применения стиля
     }, 500); // Время совпадает с временем анимации
   }
+}
+
+/**
+ * Кастомизирует каждый пост, который к нему пришел
+ * @param container Контейнер ( популярных | недавних постов )
+ * @param post Пост
+ */
+async function customizePost(container: any, post: any = null) {
+  const authorSection: any = container.querySelector(
+    `.${ELEMENTS_CLASS.POST.AUTHOR.NAME}`,
+  );
+
+  const avatar: any = container.querySelector(
+    `.${ELEMENTS_CLASS.POST.AUTHOR.AVATAR}`,
+  );
+  if (avatar) {
+    avatar.alt = "Аватар автора";
+    avatar.height = 50;
+    const avatarload: any = await getAvatar(
+      window.location.pathname,
+      post.authorId,
+    );
+    avatar.src = avatarload;
+    avatar.width = 50;
+  }
+  const authorName: any = container.querySelector(
+    `.${ELEMENTS_CLASS.POST.AUTHOR.NAME}`,
+  );
+  if (authorName) {
+    authorName.textContent = post.authorUsername;
+  }
+  if (authorSection) {
+    authorSection.addEventListener("click", () => {
+      sessionStorage.setItem("authorid", post.authorId);
+      sessionStorage.setItem("author", post.authorUsername);
+      sessionStorage.getItem("account") == post.authorUsername
+        ? route(`/profile`)
+        : route(`/profile/${sessionStorage.getItem("authorid")}`);
+    });
+  }
+
+  const title: any = container.querySelector(`.${ELEMENTS_CLASS.POST.TITLE}`);
+  title.textContent = post.title;
+
+  const content: any = container.querySelector(
+    `.${ELEMENTS_CLASS.POST.CONTENT}`,
+  );
+  content.textContent = post.content;
+
+  const date: any = container.querySelector(`.${ELEMENTS_CLASS.POST.DATE}`);
+  date.textContent = convertISOToRussianDate(post.createdAt);
+
+  const divLikes: any = container.querySelector(`.likes-container`);
+  if (divLikes) {
+    const amountLike: any = container.querySelector(
+      `.${ELEMENTS_CLASS.POST.LIKES.AMOUNT}`,
+    );
+    amountLike.innerHTML = `${post.likes}`;
+
+    // Установка состояния лайка
+    if (post.isLiked) {
+      divLikes.classList.add("active");
+    } else {
+      divLikes.classList.remove("active");
+    }
+
+    const divLike: any = container.querySelector(
+      `.${ELEMENTS_CLASS.POST.LIKES.BLOCK}`,
+    );
+
+    divLike.addEventListener("click", async () => {
+      if (post.isLiked) {
+        // Удалить лайк
+        const likeCount: any = await AddLikeOnPost(post.postId);
+        post.isLiked = false; // Обновляем состояние
+        post.likes = likeCount.count; // Обновляем количество лайков
+        divLikes.classList.remove("active");
+      } else {
+        // Добавить лайк
+        const likeCount: any = await AddLikeOnPost(post.postId);
+        post.isLiked = true; // Обновляем состояние
+        post.likes = likeCount.count; // Обновляем количество лайков
+        divLikes.classList.add("active");
+      }
+      amountLike.innerHTML = `${post.likes}`; // Обновляем отображаемое количество лайков
+    });
+  }
+  const rightContainer = container.querySelector(`.right-content`);
+  controlSlideShow(container, rightContainer);
 }
 
 /**
@@ -427,8 +435,8 @@ async function modifirePosts(
  */
 async function renderPopularPosts(popularPosts: any) {
   var posts: any = [];
-  popularPosts.forEach(async () => {
-    const container = await containerPost();
+  popularPosts.forEach(async (post: any) => {
+    const container = await containerPost(post.postId);
     const div = renderTo(container);
     posts.push(div);
   });
@@ -442,8 +450,8 @@ async function renderPopularPosts(popularPosts: any) {
 async function renderRecentlyPosts(recentlyPosts: any) {
   try {
     var posts: any = [];
-    recentlyPosts.forEach(async () => {
-      const container: any = await containerPost();
+    recentlyPosts.forEach(async (post: any) => {
+      const container: any = await containerPost(post.postId);
       const div = renderTo(container);
       posts.push(div);
     });

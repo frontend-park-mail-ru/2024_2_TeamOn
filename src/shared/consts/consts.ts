@@ -20,6 +20,7 @@ export const state = {
     author: null,
     reader: null,
   },
+  currentPostId: null,
 };
 
 /**

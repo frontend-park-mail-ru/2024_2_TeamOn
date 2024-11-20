@@ -12,7 +12,7 @@ async function getBackgroundAuthor(link: string, authorID: any) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "GET",
-      link == "/profile"
+      link == "/profile" || "/profile/createpost"
         ? "/api/danya/author/me/background"
         : `/api/danya/author/${authorID}/background`,
       null,

@@ -32,7 +32,6 @@ async function renderFeedForm() {
           <div class="rightarrow-modal-view"></div>
         </div>
       </div>
-      {/* </div> */}
     </div>
   );
 }
