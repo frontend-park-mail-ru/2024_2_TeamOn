@@ -33,7 +33,7 @@ async function renderUserPost(post: any) {
         </div>
         <p class="content">{createText(post.content)}</p>
         <div class="container-image-photos">
-          {/* {containerMediaPost(post.postId)} */}
+          {containerMediaPost(post.postId)}
         </div>
         <div class="date">{createText(post.createdAt)}</div>
         <div class="interaction-section">

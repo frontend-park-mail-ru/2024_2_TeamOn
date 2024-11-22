@@ -14,10 +14,7 @@ async function renderPosts(authorPosts: any[]) {
   let posts: any = [];
   authorPosts.forEach(async (post: any) => {
     const container: any = await renderUserPost(post);
-    const containerPhotos: any[] = await containerMediaPost(post.postId);
     const div = renderTo(container);
-    const placePhotos: any = div.querySelector(`.container-image-photos`);
-    placePhotos.append(...containerPhotos);
     posts.push(div);
   });
   return posts;
@@ -36,24 +33,27 @@ async function modifireMyPosts(
   postId: any = null,
 ) {
   try {
+    
     // Обработка популярных постов
-    if (posts.length > 1) {
-      const containersPost = containerPosts.querySelectorAll(`.posts`);
-
+    const containersPost = containerPosts.querySelectorAll(`.posts`);
+    if (posts.length > 1 && containersPost.length > 1) {
+      if ( !containersPost ) return;
       // Используем Promise.all для обработки популярных постов параллельно
       await Promise.all(
         Array.from(containersPost)
-          .slice(-posts.length)
-          .map((container: any, index: any) => {
+        .slice(-posts.length)
+        .map((container: any, index: any) => {
             return customizePostProfile(
               container,
               posts[posts.length - 1 - index],
               postId,
             );
           }),
-      );
-      return;
-    }
+        );
+        return;
+      }
+      alert(posts.length)
+      return 0;
     // const containersPost = containerPosts.querySelectorAll(`.posts`);
     // return customizePostProfile(containersPost[0], posts[0], postId);
   } catch (error) {
@@ -95,7 +95,8 @@ async function paginateProfile(allPosts: any, containerPosts: any) {
 
           containerPosts.append(...(await renderPosts(nextPosts)));
           modifireMyPosts(containerPosts, nextPosts.reverse());
-          cache.popular.push(...nextPosts);
+          // alert(2)
+          // cache.popular.push(...nextPosts);
         } else {
           stopLoad = true;
         }
@@ -107,7 +108,6 @@ async function paginateProfile(allPosts: any, containerPosts: any) {
 
   // Инициализируем загрузку первых постов
   await loadProfilePost();
-
   // Обработчик события прокрутки
   window.addEventListener("scroll", async () => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
