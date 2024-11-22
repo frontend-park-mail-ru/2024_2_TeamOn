@@ -20,9 +20,7 @@ async function uploadMediaFiles(postId: number, files: File[]) {
       formData, // Передаем formData напрямую
       (response) => {
         if (response.ok) {
-          response.json().then((data) => {
-            resolve(data);
-          });
+          resolve(true);
         } else if (response.status === 400) {
           resolve(false);
         } else {

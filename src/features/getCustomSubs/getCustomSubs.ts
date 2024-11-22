@@ -5,11 +5,11 @@ import { fetchAjax } from "../../shared/fetch/fetchAjax";
  * @param offsetPopular Оффсет для популярных постов
  * @returns
  */
-async function getCustomSubscription(authorId: any) {
+async function getCustomSubscription(link: any) {
   // return new Promise((resolve, reject) => {
   //   fetchAjax(
   //     "GET",
-  //     `/api/tech/subscription/${authorId}/custom`,
+  // link === "/profile" ? `/api/tech/subscription/me/custom` : `/api/tech/subscription/${sessionStorage.getItem("authorid")}/custom`,
   //     null,
   //     (response) => {
   //       if (response.ok) {
@@ -56,10 +56,6 @@ async function getCustomSubscription(authorId: any) {
       //   layer: 3
       // }
     ];
-
-    // Здесь вы можете добавить условие для reject в случае ошибки
-    // Например, если произошла ошибка, вы можете вызвать reject
-    // reject(new Error("Ошибка при получении подписок"));
 
     // Возвращаем данные
     resolve(subscriptions);

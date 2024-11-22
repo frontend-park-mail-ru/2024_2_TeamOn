@@ -3,6 +3,7 @@ import { customizePostProfile } from "../controlAdaptivePageAuthor/controlAdapti
 import { getUserPosts } from "../getuserposts/getUserPosts";
 import { renderUserPost } from "../../entities/userPost/index";
 import { renderTo } from "../../../lib/vdom/lib";
+import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 
 /**
  * Функция рендера постов
@@ -10,10 +11,13 @@ import { renderTo } from "../../../lib/vdom/lib";
  * @returns
  */
 async function renderPosts(authorPosts: any[]) {
-  var posts: any = [];
+  let posts: any = [];
   authorPosts.forEach(async (post: any) => {
     const container: any = await renderUserPost(post);
+    const containerPhotos: any[] = await containerMediaPost(post.postId);
     const div = renderTo(container);
+    const placePhotos: any = div.querySelector(`.container-image-photos`);
+    placePhotos.append(...containerPhotos);
     posts.push(div);
   });
   return posts;
@@ -50,8 +54,8 @@ async function modifireMyPosts(
       );
       return;
     }
-    const containersPost = containerPosts.querySelectorAll(`.posts`);
-    return customizePostProfile(containersPost[0], posts[0], postId);
+    // const containersPost = containerPosts.querySelectorAll(`.posts`);
+    // return customizePostProfile(containersPost[0], posts[0], postId);
   } catch (error) {
     console.log("ERROR");
     throw error;

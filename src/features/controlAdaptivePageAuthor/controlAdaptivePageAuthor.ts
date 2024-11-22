@@ -20,6 +20,7 @@ import { getPageAuthor } from "../getpageauthor/getpageauthor";
 import { setLike } from "../../entities/likes";
 import { following } from "../../entities/profileInfo";
 import { route } from "../../shared/routing/routing";
+import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 /**
  * Управление адаптивностью на странице автора
  * @param authorData Данные автора
@@ -183,52 +184,12 @@ async function renderPosts(authorPosts: any[]) {
 }
 
 /**
- * Функция модифицирования каждого поста
- * @param containerPosts Контейнер с постами
- * @param posts Посты
- * @param postId Пост айди. Нужен для создания поста
- * @returns
- */
-/*
-async function modifireMyPosts(
-  containerPosts: any,
-  posts: any,
-  postId: any = null,
-) {
-  try {
-    // Обработка популярных постов
-    if (posts.length > 1) {
-      const containersPost = containerPosts.querySelectorAll(`.posts`);
-
-      // Используем Promise.all для обработки популярных постов параллельно
-      await Promise.all(
-        Array.from(containersPost)
-          .slice(-posts.length)
-          .map((container: any, index: any) => {
-            return customizePostProfile(
-              container,
-              posts[posts.length - 1 - index],
-              postId,
-            );
-          }),
-      );
-      return;
-    }
-    const containersPost = containerPosts.querySelectorAll(`.posts`);
-    return customizePostProfile(containersPost[0], posts[0], postId);
-  } catch (error) {
-    console.log("ERROR");
-    throw error;
-  }
-}
-*/
-/**
  * Кастомизация одного поста профиля
  * @param container Контейнер поста
  * @param post Пост
  * @param postId Айди поста
  */
-export function customizePostProfile(
+export async function customizePostProfile(
   container: any,
   post: any,
   postId: any = null,
@@ -240,6 +201,7 @@ export function customizePostProfile(
   setDate(container, post);
 
   setLike(container, post);
+  const key = new Set();
 
   const menu = container.querySelector(`.menu-icon`);
   const alldropdownMenu = document.querySelectorAll(`.dropdown-menu`);
@@ -250,20 +212,15 @@ export function customizePostProfile(
   const place = document.querySelector(`.place-posts`);
   const buttonedit: any = dropdownmenu.querySelector(`.button-edit-post`);
   const buttondelete: any = dropdownmenu.querySelector(`.button-delete-post`);
+  const mediaPlace: any = container.querySelector(`.container-image-photos`);
+
+  // mediaPlace.append(...await containerMediaPost(post.postId));
   if (!menu) return;
   const handleClickMenu = async (event: any) => {
     if (event.target.classList.contains("button-edit-post")) {
       state.currentPostId = post;
       if (!state.currentPostId) return;
       route(LINKS.UPDATE_POST.HREF);
-      // modifierModalEditPost(
-      //   dropdownmenu,
-      //   profileForm,
-      //   title,
-      //   content,
-      //   post,
-      //   postId,
-      // );
       menu.removeEventListener("click", handleClickMenu);
       return;
     }

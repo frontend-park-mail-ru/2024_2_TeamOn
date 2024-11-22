@@ -1,3 +1,4 @@
+import { containerMediaPost } from "../../../widgest/feed/ui/post/post";
 import { createText } from "../../../../lib/vdom/lib";
 import * as VDom from "vdom";
 
@@ -12,6 +13,7 @@ async function renderUserPost(post: any) {
     window.location.pathname === "/profile"
       ? "display: block;"
       : "display: none;";
+
   return (
     <div class="posts">
       <div class="post">
@@ -30,6 +32,9 @@ async function renderUserPost(post: any) {
           <h4 class="title">{createText(post.title)}</h4>
         </div>
         <p class="content">{createText(post.content)}</p>
+        <div class="container-image-photos">
+          {/* {containerMediaPost(post.postId)} */}
+        </div>
         <div class="date">{createText(post.createdAt)}</div>
         <div class="interaction-section">
           <div class="likes-container">

@@ -1,7 +1,7 @@
 import * as VDom from "vdom";
 
-function editpostForm() {
-  return <div class="div-edit-posts"></div>;
+function addCustomSubsForm() {
+  return <div class="div-add-custom-subs"></div>;
 }
 
-export { editpostForm };
+export { addCustomSubsForm };
