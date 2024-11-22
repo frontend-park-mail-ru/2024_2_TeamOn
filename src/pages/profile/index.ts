@@ -28,7 +28,7 @@ import {
 } from "../../entities/customsubs";
 import DOMPurify from "dompurify";
 import { getSubsLayer } from "../../features/getSubsLayer/getSubsLayer";
-import { paginateSubscription } from "../../features/subscriptionsList/subcriptionsList";
+import { modifireSubscriptions, paginateSubscription, renderContainerSubs } from "../../features/subscriptionsList/subcriptionsList";
 import { renderContainersLayer } from "../../entities/customsubs/ui/ui";
 
 async function controlCustomSubscriptions(container: any) {
@@ -39,13 +39,15 @@ async function controlCustomSubscriptions(container: any) {
   const profileForm: any = container.querySelector(`.profile-form`);
   const div: any = container.querySelector(`.add-customsubs`);
   if (!div) return;
+
   const handleClickAddSubs = async () => {
     const modalAddCustomSubscription: any =
       container.querySelector(`.div-add-custom-subs`);
     update(modalAddCustomSubscription, renderModalAddCustomSubs());
+
     const layerList: any =
       modalAddCustomSubscription.querySelector(`.layer-list`);
-    layerList.append(...(await renderContainersLayer()));
+
     const modalAddSubs: any = document.querySelector(`.modal__addsubs`);
     const buttonCancel: any = modalAddSubs.querySelector(`.cancel`);
     const buttonConfirm: any = modalAddSubs.querySelector(`.save`);
@@ -54,9 +56,21 @@ async function controlCustomSubscriptions(container: any) {
     const cost = inputs[1];
     const description: any = modalAddSubs.querySelector(".textarea-group");
     const layers: any = await getSubsLayer();
-
     modalAddSubs.style.display = "block";
 
+    layerList.append(...(await renderContainersLayer(layers)));
+    const radioButtons: any = modalAddSubs.querySelectorAll(`.modal-layers`);
+    let selectedLayer: any = 1;
+    radioButtons.forEach((button: any) => {
+      button.addEventListener("change", () => {
+        if (button.checked) {
+          selectedLayer = button.id;
+        }
+      });
+      if (button.checked) {
+        selectedLayer = button.id;
+      }
+    });
     const handleClickCancel = (e: any) => {
       modalAddSubs.style.display = "none";
       profileForm.classList.remove("blur");
@@ -88,12 +102,20 @@ async function controlCustomSubscriptions(container: any) {
         }
         return;
       }
+
       await addCustomSubs(
         title.value,
         description.value,
         Number(cost.value),
-        layers ? layers : 1,
+        Number(selectedLayer),
       );
+      const newsubs: any = await getCustomSubscription(
+        window.location.pathname,
+      );
+      if ( newsubs.length == 0 ) return;
+      const place: any = modalAddSubs.querySelector(".subscription-levels");
+      place.prepend(...(await renderContainerSubs(newsubs.slice(0, 1))));
+      modifireSubscriptions(place, newsubs.reverse());
     });
   };
 

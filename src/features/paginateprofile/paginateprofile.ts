@@ -33,27 +33,25 @@ async function modifireMyPosts(
   postId: any = null,
 ) {
   try {
-    
     // Обработка популярных постов
     const containersPost = containerPosts.querySelectorAll(`.posts`);
     if (posts.length > 1 && containersPost.length > 1) {
-      if ( !containersPost ) return;
+      if (!containersPost) return;
       // Используем Promise.all для обработки популярных постов параллельно
       await Promise.all(
         Array.from(containersPost)
-        .slice(-posts.length)
-        .map((container: any, index: any) => {
+          .slice(-posts.length)
+          .map((container: any, index: any) => {
             return customizePostProfile(
               container,
               posts[posts.length - 1 - index],
               postId,
             );
           }),
-        );
-        return;
-      }
-      alert(posts.length)
-      return 0;
+      );
+      return;
+    }
+    return 0;
     // const containersPost = containerPosts.querySelectorAll(`.posts`);
     // return customizePostProfile(containersPost[0], posts[0], postId);
   } catch (error) {

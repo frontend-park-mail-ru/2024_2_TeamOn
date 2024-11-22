@@ -27,9 +27,16 @@ async function modifireCreatePost() {
   );
   radioButtons.forEach((radio: any) => {
     radio.addEventListener("change", () => {
-      layer = radio.id;
+      if (radio.checked) {
+        layer = radio.id;
+      }
     });
+    if (radio.checked) {
+      layer = radio.id;
+    }
+    alert(layer)
   });
+  alert(layer)
   if (buttonSave) {
     buttonSave.addEventListener("click", async (event: any) => {
       event.preventDefault();
@@ -60,7 +67,7 @@ async function modifireCreatePost() {
           containerCreatePost,
           sanitizedTitle,
           sanitizedContent,
-          layer,
+          Number(layer),
         );
         let postId: any = await getUserPosts("/profile", 0, 300);
         postId = postId[0].postId;

@@ -293,7 +293,7 @@ function customizeSubscription(container: any, subscription: any) {
     modifireModalConfirmSubscription(profileForm, container, subscription);
   });
 }
-async function renderContainerSubs(allSubcriptions: any) {
+export async function renderContainerSubs(allSubcriptions: any) {
   let subs: any = [];
   allSubcriptions.forEach(async (subscription: any) => {
     const container: any = containerCustomSubscribe(subscription);
@@ -302,12 +302,12 @@ async function renderContainerSubs(allSubcriptions: any) {
   });
   return subs;
 }
-async function modifireSubscriptions(
+export async function modifireSubscriptions(
   placeSubscriptions: any,
   allSubcriptions: any,
 ) {
   try {
-    if (allSubcriptions.length > 1 && allSubcriptions.length < 4) {
+    if (allSubcriptions.length < 4 && allSubcriptions.length > 0) {
       const containersSubscriptions =
         placeSubscriptions.querySelectorAll(`.subscription-level`);
 
@@ -319,10 +319,6 @@ async function modifireSubscriptions(
         ),
       );
       return;
-    } else {
-      const buttonAddCustomSubs: any =
-        document.querySelector(`.add-customsubs`);
-      buttonAddCustomSubs.style.display = "none";
     }
   } catch (error) {
     console.error(error);

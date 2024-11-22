@@ -89,7 +89,6 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           "^/api/danya/token-endpoint": "/token-endpoint",
-          // "^/api/danya/author/me": "/author/me",
           "^/api/danya/author/(.*)/following": "/author/$1/following",
           "^/api/danya/author/(.*)/tip": "/author/$1/tip",
           "^/api/danya/author/(.*)/background": "/author/$1/background",
@@ -97,8 +96,13 @@ module.exports = {
           "^/api/danya/author/payments": "/author/payments",
           "^/api/danya/author/update/background": "/author/update/background",
           "^/api/danya/author/update/info": "/author/update/info",
+
+          "^/api/danya/subscription/request": "/subscription/request",
+          "^/api/danya/subscription/realize": "/subscription/realize",
+          "^/api/danya/unsubscription": "/unsubscription",
         },
       },
+
       {
         context: "/api/posts",
         target: "http://localhost:8084",
@@ -125,12 +129,10 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           "^/api/tech/token-endpoint": "/token-endpoint",
-          "^/api/tech/subscription/layer": "/subscription/layer",
+
           "^/api/tech/subscription/custom": "/subscription/custom",
-          "^/api/tech/subscription/request": "/subscription/request",
-          "^/api/tech/subscription/realize": "/subscription/realize",
+          "^/api/tech/subscription/layer": "/subscription/layer",
           "^/api/tech/subscription/(.*)/custom": "/subscription/$1/custom",
-          "^/api/tech/unsubscription": "/unsubscription",
         },
       },
     ],
