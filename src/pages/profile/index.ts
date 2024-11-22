@@ -28,7 +28,11 @@ import {
 } from "../../entities/customsubs";
 import DOMPurify from "dompurify";
 import { getSubsLayer } from "../../features/getSubsLayer/getSubsLayer";
-import { modifireSubscriptions, paginateSubscription, renderContainerSubs } from "../../features/subscriptionsList/subcriptionsList";
+import {
+  modifireSubscriptions,
+  paginateSubscription,
+  renderContainerSubs,
+} from "../../features/subscriptionsList/subcriptionsList";
 import { renderContainersLayer } from "../../entities/customsubs/ui/ui";
 
 async function controlCustomSubscriptions(container: any) {
@@ -112,7 +116,7 @@ async function controlCustomSubscriptions(container: any) {
       const newsubs: any = await getCustomSubscription(
         window.location.pathname,
       );
-      if ( newsubs.length == 0 ) return;
+      if (newsubs.length == 0) return;
       const place: any = modalAddSubs.querySelector(".subscription-levels");
       place.prepend(...(await renderContainerSubs(newsubs.slice(0, 1))));
       modifireSubscriptions(place, newsubs.reverse());

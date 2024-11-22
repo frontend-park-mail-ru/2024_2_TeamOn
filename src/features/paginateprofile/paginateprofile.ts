@@ -4,6 +4,7 @@ import { getUserPosts } from "../getuserposts/getUserPosts";
 import { renderUserPost } from "../../entities/userPost/index";
 import { renderTo } from "../../../lib/vdom/lib";
 import { containerMediaPost } from "../../widgest/feed/ui/post/post";
+import { getUrlFiles } from "../getUrlFiles/getUrlFiiles";
 
 /**
  * Функция рендера постов
@@ -11,12 +12,27 @@ import { containerMediaPost } from "../../widgest/feed/ui/post/post";
  * @returns
  */
 async function renderPosts(authorPosts: any[]) {
-  let posts: any = [];
-  authorPosts.forEach(async (post: any) => {
+
+  const postsPromises = authorPosts.map(async (post: any) => {
+
     const container: any = await renderUserPost(post);
+
     const div = renderTo(container);
-    posts.push(div);
+
+    const containerMedia: any = await containerMediaPost(post.postId);
+    
+    let arrayMedia: any = [];
+    containerMedia.forEach( (media: any) => {
+      const divMedia = renderTo(media);
+      arrayMedia.push(divMedia)
+    })
+    const place: any = div.querySelector(`.container-image-photos`);
+    place.append(...arrayMedia);
+
+    return div; 
+
   });
+  const posts = await Promise.all(postsPromises);
   return posts;
 }
 
