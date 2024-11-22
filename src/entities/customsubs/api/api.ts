@@ -38,7 +38,7 @@ async function requestPay(authorId: any, monthCount: any, layer: any) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "POST",
-      `/api/tech/subscription/request`,
+      `/api/danya/subscription/request`,
       { authorId: authorId, monthCount: monthCount, layer: layer },
       (response) => {
         if (response.ok) {

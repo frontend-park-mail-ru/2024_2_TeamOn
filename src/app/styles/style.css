@@ -961,6 +961,12 @@ form input[type=text]:focus {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: white;
   border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: nowrap;
+  margin-top: 10px;
 }
 
 .modal-label-layers:hover {

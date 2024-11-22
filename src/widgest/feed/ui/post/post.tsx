@@ -22,9 +22,7 @@ async function containerPost(postId: any) {
         <div class="toggleButton" style="display: none;">
           Показать...
         </div>
-        <div class="container-image-photos">
-          {containerMediaPost(postId)}
-        </div>
+        <div class="container-image-photos">{containerMediaPost(postId)}</div>
         <div class="date"></div>
         <div class="iteraction-section">
           <div class="likes-container">

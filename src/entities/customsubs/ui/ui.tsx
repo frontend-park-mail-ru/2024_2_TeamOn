@@ -3,8 +3,9 @@ import { getCustomSubscription } from "../../../features/getCustomSubs/getCustom
 import { containerLayer } from "../../../pages/addPost/ui/ui";
 import * as VDom from "vdom";
 
-async function renderContainersLayer() {
-  const layers: any = await getCustomSubscription(window.location.pathname);
+async function renderContainersLayer(layers: any) {
+  // const layers: any = await getCustomSubscription(window.location.pathname);
+  console.log(layers);
   let containersLayers: any = [];
   layers.forEach((layer: any) => {
     const container: any = containerLayer(layer);

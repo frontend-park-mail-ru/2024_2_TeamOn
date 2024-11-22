@@ -12,7 +12,7 @@ function containerLayer(layer: any) {
         name="visibility"
         checked
       />
-      <h4>{layer.title}</h4>
+      <h4>{layer.layerName}</h4>
     </label>
   );
 }
@@ -68,7 +68,7 @@ async function containerCreatePost() {
         <div class="visibility-container-createpost">
           <h2>Кто может смотреть</h2>
           <div class="layers"></div>
-          <label>
+          {/* <label>
             <input id="1" type="radio" name="visibility" checked /> Name1
           </label>
           <label>
@@ -76,7 +76,7 @@ async function containerCreatePost() {
           </label>
           <label>
             <input id="3" type="radio" name="visibility" checked /> Name3
-          </label>
+          </label> */}
           <p>Выберите уровень</p>
         </div>
       </div>
