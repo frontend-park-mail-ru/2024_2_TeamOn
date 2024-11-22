@@ -89,9 +89,8 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           "^/api/danya/token-endpoint": "/token-endpoint",
-          "^/api/danya/author/(.*)/following": "/author/$1/following",
-          "^/api/danya/author/(.*)/tip": "/author/$1/tip",
           "^/api/danya/author/(.*)/background": "/author/$1/background",
+          "^/api/danya/author/(.*)/tip": "/author/$1/tip",
           "^/api/danya/author/(.*)": "/author/$1",
           "^/api/danya/author/payments": "/author/payments",
           "^/api/danya/author/update/background": "/author/update/background",
