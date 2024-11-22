@@ -4,6 +4,7 @@ import {
 } from "../../../widgest/feed/index";
 import { getAccount } from "../../../features/getAccount/getAccount";
 import { Sidebar } from "../../../shared/sidebar/sidebar";
+import { renderSearchbar } from "../../../entities/searchbar/index";
 
 import * as VDom from "vdom";
 
@@ -14,6 +15,7 @@ async function renderFeedForm() {
     <div class="main-content">
       {await Sidebar(userdata)}
       <div class="right-content">
+      {renderSearchbar()}
         <div class="tabs feed">
           <a class="active"> Популярное </a>
           <a> Недавние </a>

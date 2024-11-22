@@ -11,6 +11,8 @@ import {
 import { VNode } from "../../../lib/vdom/src/source";
 import { containerHome } from "./ui/home";
 
+//убрать локалстораж на профиль
+
 /**
  * Обработка домашней страницы
  */
@@ -30,6 +32,12 @@ export function renderHome() {
     );
     button.addEventListener("click", () => {
       route(LINKS.LOGIN.HREF);
+    });
+    const buttonFeed: any = container.querySelector(
+      `.${ELEMENTS_CLASS.FEED_BUTTONS.BLOCK}`,
+    );
+    buttonFeed.addEventListener("click", () => {
+      route(LINKS.FEED.HREF);
     });
 
     if (window.location.pathname !== LINKS.HOME.HREF) {
