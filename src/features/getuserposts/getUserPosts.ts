@@ -16,7 +16,7 @@ export async function getUserPosts(
   return new Promise((resolve, reject) => {
     fetchAjax(
       "GET",
-      link === "/profile" || "/profile/createpost"
+      link === "/profile" 
         ? `/api/posts/author/post/me?limit=${limit === null ? QUERY.LIMIT : limit}&offset=${offset}`
         : `/api/posts/author/post/${sessionStorage.getItem("authorid")}?limit=${limit === null ? QUERY.LIMIT : limit}&offset=${offset}`,
       null,

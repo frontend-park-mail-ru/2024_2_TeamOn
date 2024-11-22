@@ -23,7 +23,7 @@ async function containerPost(postId: any) {
           Показать...
         </div>
         <div class="container-image-photos">
-          {/* {containerMediaPost(postId)} */}
+          {containerMediaPost(postId)}
         </div>
         <div class="date"></div>
         <div class="iteraction-section">

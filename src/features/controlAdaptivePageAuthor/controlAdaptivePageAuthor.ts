@@ -194,6 +194,7 @@ export async function customizePostProfile(
   post: any,
   postId: any = null,
 ) {
+  alert("alo")
   setTitle(container, post);
 
   setContent(container, post);
