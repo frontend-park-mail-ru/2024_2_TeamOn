@@ -20,14 +20,16 @@ async function renderPosts(authorPosts: any[]) {
     const div = renderTo(container);
 
     const containerMedia: any = await containerMediaPost(post.postId);
-    
-    let arrayMedia: any = [];
-    containerMedia.forEach( (media: any) => {
-      const divMedia = renderTo(media);
-      arrayMedia.push(divMedia)
-    })
-    const place: any = div.querySelector(`.container-image-photos`);
-    place.append(...arrayMedia);
+    if (containerMedia) { 
+      let arrayMedia: any = [];
+      containerMedia.forEach( (media: any) => {
+        const divMedia = renderTo(media);
+        arrayMedia.push(divMedia)
+      })
+      const place: any = div.querySelector(`.container-image-photos`);
+      place.append(...arrayMedia);
+
+    }
 
     return div; 
 
