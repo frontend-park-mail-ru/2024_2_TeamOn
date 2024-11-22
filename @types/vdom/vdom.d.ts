@@ -28,6 +28,8 @@ declare module "vdom" {
       input: { [key: string]: any };
       button: { [key: string]: any };
       textarea: { [key: string]: any };
+      select: { [key: string]: any };
+      option: { [key: string]: any };
     }
   }
 }

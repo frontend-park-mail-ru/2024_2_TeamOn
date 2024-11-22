@@ -37,7 +37,15 @@ module.exports = {
     preferRelative: true,
   },
   devServer: {
-    static: path.join(__dirname, "dist"),
+    static: [
+      {
+        directory: path.join(__dirname, "dist"),
+      },
+      {
+        directory: path.join(__dirname, "myback"),
+        publicPath: "/myback/",
+      },
+    ],
     open: true,
     port: 8090,
     historyApiFallback: true,
@@ -107,7 +115,8 @@ module.exports = {
           "^/api/posts/post": "/post",
           "^/api/posts/delete/post/(.*)": "/delete/post/$1",
           "^/api/posts/author/post/(.*)": "/author/post/$1",
-          "^/api/posts/(.*)": "/$1",
+          // "^/api/posts/static/(.*)": "/static/$1",
+          // "^/api/posts/(.*)": "/$1",
         },
       },
       {
@@ -116,11 +125,11 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           "^/api/tech/token-endpoint": "/token-endpoint",
-          "^/api/tech/subscription/(.*)/custom": "/subscription/$1/custom",
           "^/api/tech/subscription/layer": "/subscription/layer",
           "^/api/tech/subscription/custom": "/subscription/custom",
           "^/api/tech/subscription/request": "/subscription/request",
           "^/api/tech/subscription/realize": "/subscription/realize",
+          "^/api/tech/subscription/(.*)/custom": "/subscription/$1/custom",
           "^/api/tech/unsubscription": "/unsubscription",
         },
       },

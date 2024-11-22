@@ -39,7 +39,6 @@ interface MenuConfig {
   feed: AsyncLinkConfig;
   createPost: AsyncLinkConfig;
   updatePost: AsyncLinkConfig;
-  // subscriptions: AsyncLinkConfig;
   notifications: AsyncLinkConfig;
 }
 
@@ -89,11 +88,6 @@ const config: Config = {
       text: LINKS.UPDATE_POST.TEXT,
       render: renderUpdatePost,
     },
-    // subscriptions: {
-    //   href: LINKS.NOTIFICATIONS.HREF,
-    //   text: LINKS.NOTIFICATIONS.TEXT,
-    //   render: renderSubscriptions,
-    // },
     notifications: {
       href: LINKS.NOTIFICATIONS.HREF,
       text: LINKS.NOTIFICATIONS.TEXT,

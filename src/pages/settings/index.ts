@@ -591,8 +591,8 @@ async function createPhoto(): Promise<any> {
         formData.append("file", file);
         try {
           const ok: any = await saveAvatar(formData);
-          const media = "Аватар";
-          renderModalStatusUpload(ok, media);
+          const message = "Аватар успешно применен";
+          renderModalStatusUpload(ok, message);
         } catch (error) {
           console.error("Ошибка при загрузке фонового изображения:", error);
         }

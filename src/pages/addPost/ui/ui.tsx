@@ -4,9 +4,15 @@ import { getAccount } from "../../../features/getAccount/getAccount";
 
 function containerLayer(layer: any) {
   return (
-    <label>
-      <input id={layer.layer} type="radio" name="visibility" checked />{" "}
-      {layer.layerName}
+    <label class="modal-label-layers">
+      <input
+        class="modal-layers"
+        id={layer.layer}
+        type="radio"
+        name="visibility"
+        checked
+      />
+      <h4>{layer.title}</h4>
     </label>
   );
 }

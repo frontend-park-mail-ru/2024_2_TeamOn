@@ -22,107 +22,89 @@ import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { setAuthor } from "../settings";
 import { getCustomSubscription } from "../../features/getCustomSubs/getCustomSubs";
 import { containerCustomSubscribe } from "../../widgest/profile/ui/profileform/profileform";
-import { addCustomSubs, renderAddCustomSubs } from "../../entities/customsubs";
+import {
+  addCustomSubs,
+  renderModalAddCustomSubs,
+} from "../../entities/customsubs";
 import DOMPurify from "dompurify";
 import { getSubsLayer } from "../../features/getSubsLayer/getSubsLayer";
+import { paginateSubscription } from "../../features/subscriptionsList/subcriptionsList";
+import { renderContainersLayer } from "../../entities/customsubs/ui/ui";
+
 async function controlCustomSubscriptions(container: any) {
   if (window.location.pathname !== "/profile") return;
 
-  // const authorId = sessionStorage.getItem("authorid") || "me";
   const containersCustomSubs: any =
     container.querySelectorAll(`.subscription-level`);
-  const containersCustomSubsHeader: any =
-    container.querySelector(`.subscription-levels`);
   const profileForm: any = container.querySelector(`.profile-form`);
   const div: any = container.querySelector(`.add-customsubs`);
   if (!div) return;
-  if (containersCustomSubs.length <= 3 && containersCustomSubs.length > 0) {
-    // const containerAddCustomSubs: any = renderContainerAddCustomSubs();
-    // const div: any = renderTo(containerAddCustomSubs);
-    // containersCustomSubsHeader.prepend(div);
-    div.addEventListener("click", async () => {
-      const modalAddCustomSubscription: any =
-        container.querySelector(`.div-edit-posts`);
-      update(modalAddCustomSubscription, renderAddCustomSubs());
-      const modalAddSubs: any = document.querySelector(`.modal__addsubs`);
-      const buttonCancel: any = modalAddSubs.querySelector(`.cancel`);
-      const buttonConfirm: any = modalAddSubs.querySelector(`.save`);
-      const inputs: any = modalAddSubs.querySelectorAll(".input-group");
-      const title = inputs[0];
-      const cost = inputs[1];
-      const description: any = modalAddSubs.querySelector(".textarea-group");
-      const layers: any = await getSubsLayer();
+  const handleClickAddSubs = async () => {
+    const modalAddCustomSubscription: any =
+      container.querySelector(`.div-add-custom-subs`);
+    update(modalAddCustomSubscription, renderModalAddCustomSubs());
+    const layerList: any =
+      modalAddCustomSubscription.querySelector(`.layer-list`);
+    layerList.append(...(await renderContainersLayer()));
+    const modalAddSubs: any = document.querySelector(`.modal__addsubs`);
+    const buttonCancel: any = modalAddSubs.querySelector(`.cancel`);
+    const buttonConfirm: any = modalAddSubs.querySelector(`.save`);
+    const inputs: any = modalAddSubs.querySelectorAll(".input-group");
+    const title = inputs[0];
+    const cost = inputs[1];
+    const description: any = modalAddSubs.querySelector(".textarea-group");
+    const layers: any = await getSubsLayer();
 
-      modalAddSubs.style.display = "block";
-      profileForm.classList.add("blur");
+    modalAddSubs.style.display = "block";
 
-      buttonCancel.addEventListener("click", () => {
-        modalAddSubs.style.display = "none";
-        profileForm.classList.remove("blur");
+    const handleClickCancel = (e: any) => {
+      modalAddSubs.style.display = "none";
+      profileForm.classList.remove("blur");
 
-        return;
-      });
+      return;
+    };
 
-      buttonConfirm.addEventListener("click", async () => {
-        modalAddSubs.style.display = "none";
-        profileForm.classList.remove("blur");
+    profileForm.classList.add("blur");
 
-        if (
-          !DOMPurify.sanitize(title.value) ||
-          !DOMPurify.sanitize(cost.value) ||
-          !DOMPurify.sanitize(description.value)
-        ) {
-          const input = modalAddSubs.querySelector(`.form-group`);
-          const error = input.querySelector("p");
-          if (!error) {
-            const error = document.createElement("p");
-            error.style.color = "red";
-            error.textContent = "Ошибка";
-            input.appendChild(error);
-          }
-          return;
+    buttonCancel.addEventListener("click", handleClickCancel);
+    profileForm.addEventListener("click", handleClickCancel);
+
+    buttonConfirm.addEventListener("click", async () => {
+      modalAddSubs.style.display = "none";
+      profileForm.classList.remove("blur");
+
+      if (
+        !DOMPurify.sanitize(title.value) ||
+        !DOMPurify.sanitize(cost.value) ||
+        !DOMPurify.sanitize(description.value)
+      ) {
+        const input = modalAddSubs.querySelector(`.form-group`);
+        const error = input.querySelector("p");
+        if (!error) {
+          const error = document.createElement("p");
+          error.style.color = "red";
+          error.textContent = "Ошибка";
+          input.appendChild(error);
         }
-        await addCustomSubs(
-          title.value,
-          description.value,
-          cost.value,
-          layers ? layers : 1,
-        );
-        controlCustomSubscriptions(container);
-      });
+        return;
+      }
+      await addCustomSubs(
+        title.value,
+        description.value,
+        Number(cost.value),
+        layers ? layers : 1,
+      );
     });
+  };
+
+  if (
+    (containersCustomSubs.length <= 3 && containersCustomSubs.length > 0) ||
+    !document.querySelector(`.modal__addsubs`)
+  ) {
+    div.addEventListener("click", handleClickAddSubs);
   }
 }
 
-async function renderContainerSubs() {
-  try {
-    const containers: any = [];
-    const authorId = sessionStorage.getItem("authorid") || "me";
-    const subscriptions: any = await getCustomSubscription(authorId);
-    console.log(subscriptions);
-    if (!subscriptions) return;
-
-    const containerAddCustomSubs: any = renderContainerAddCustomSubs();
-
-    if (
-      subscriptions.length < 3 &&
-      subscriptions.length >= 0 &&
-      window.location.pathname === "/profile"
-    ) {
-      const div: any = renderTo(containerAddCustomSubs);
-      containers.push(div);
-    }
-
-    subscriptions.forEach((subscription: any) => {
-      const container: any = containerCustomSubscribe(subscription);
-      const div = renderTo(container);
-      containers.push(div);
-    });
-    return containers;
-  } catch (error) {
-    console.error("Error renderContainerSubs");
-  }
-}
 export async function controlBecomeCreator(div: any) {
   const userdata: any = await getAccount();
   const role = userdata.role;
@@ -162,6 +144,7 @@ export async function controlBecomeCreator(div: any) {
 export async function renderProfile() {
   try {
     const posts: any = [];
+    const subcriptions: any = [];
     const authorData: any = await getPageAuthor(window.location.pathname);
 
     const avatar: any = await getAvatar(
@@ -225,14 +208,21 @@ export async function renderProfile() {
     controlInfo(authorData, placeEditInfo);
 
     const placeposts: any = container.querySelector(`.place-posts`);
+    const placeSubscriptions = container.querySelector(`.subscription-levels`);
 
     await paginateProfile(posts, placeposts);
 
-    const containerSubs: any = container.querySelector(`.subscription-levels`);
-    containerSubs.append(...(await renderContainerSubs()));
+    await paginateSubscription(subcriptions, placeSubscriptions);
 
     controlCustomSubscriptions(container);
 
+    // const authorPayRegex = /^\/profile\/[0-9a-zA-Z-]+$/; // Проверка только пути
+    // const queryRegex = /^\?act=payments$/; // Проверка строки запроса
+
+    // if (authorPayRegex.test(window.location.pathname) && queryRegex.test(window.location.search)) {
+    //   await paginateSubscription(subcriptions, placeSubscriptions);
+
+    // }
     return container;
   } catch (error) {
     console.log("ERROR in profile");
