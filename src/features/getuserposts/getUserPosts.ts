@@ -14,6 +14,9 @@ export async function getUserPosts(
   limit: any = null,
 ) {
   return new Promise((resolve, reject) => {
+    if (link != "/profile" && !sessionStorage.getItem("authorid")) {
+      return 0;
+    }
     fetchAjax(
       "GET",
       link === "/profile"

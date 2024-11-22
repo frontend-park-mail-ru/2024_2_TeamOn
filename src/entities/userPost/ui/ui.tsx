@@ -32,8 +32,10 @@ async function renderUserPost(post: any) {
           <h4 class="title">{createText(post.title)}</h4>
         </div>
         <p class="content">{createText(post.content)}</p>
+        <div class="toggleButton" style="display: none;">
+          Показать...
+        </div>
         <div class="container-image-photos">
-          {containerMediaPost(post.postId)}
         </div>
         <div class="date">{createText(post.createdAt)}</div>
         <div class="interaction-section">

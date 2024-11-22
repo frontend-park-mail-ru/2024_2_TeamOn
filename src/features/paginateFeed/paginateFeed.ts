@@ -7,6 +7,7 @@ import { AddLikeOnPost } from "../../entities/likes";
 import { convertISOToRussianDate } from "../../shared/utils/parsedate";
 import { route } from "../../shared/routing/routing";
 import { getAvatar } from "../getavatar/getavatar";
+import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 
 export function controlSlideShow(container: any, rightContainer: any) {
   const divPhotos = container.querySelector(`.container-image-photos`);
@@ -25,8 +26,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
     rightArrow = modalPhotos.querySelector(".rightarrow-modal-view"); //
   }
   const imgPhotos: any = Array.from(container.querySelectorAll(`.image-photo`)); //
-  console.log(divPhotos);
-  console.log(imgPhotos);
+
   const imgAvatar: any = container.querySelector(`.author-avatar`);
   const toggleButton: any = container.querySelector(".toggleButton");
 
@@ -391,15 +391,60 @@ async function modifirePosts(
  * @returns
  */
 async function renderPopularPosts(popularPosts: any) {
-  var posts: any = [];
-  popularPosts.forEach(async (post: any) => {
+  // var posts: any = [];
+  // popularPosts.forEach(async (post: any) => {
+  //   const container = await containerPost(post.postId);
+  //   const div = renderTo(container);
+  //   posts.push(div);
+  // });
+  // return posts;
+  const postsPromises = popularPosts.map(async (post: any) => {
     const container = await containerPost(post.postId);
+
     const div = renderTo(container);
-    posts.push(div);
-  });
+
+    const containerMedia: any = await containerMediaPost(post.postId);
+    if (containerMedia) {
+      let arrayMedia: any = [];
+      containerMedia.forEach( (media: any) => {
+        const divMedia = renderTo(media);
+        arrayMedia.push(divMedia);
+      })
+      const place: any = div.querySelector(`.container-image-photos`);
+      place.append(...arrayMedia);
+      
+
+    }
+    return div;
+  })
+
+  const posts = await Promise.all(postsPromises);
   return posts;
 }
+// async function renderPosts(authorPosts: any[]) {
 
+//   const postsPromises = authorPosts.map(async (post: any) => {
+
+//     const container: any = await renderUserPost(post);
+
+//     const div = renderTo(container);
+
+//     const containerMedia: any = await containerMediaPost(post.postId);
+
+//     let arrayMedia: any = [];
+//     containerMedia.forEach( (media: any) => {
+//       const divMedia = renderTo(media);
+//       arrayMedia.push(divMedia)
+//     })
+//     const place: any = div.querySelector(`.container-image-photos`);
+//     place.append(...arrayMedia);
+
+//     return div; 
+
+//   });
+//   const posts = await Promise.all(postsPromises);
+//   return posts;
+// }
 /**
  * Рендерит скелет недавних постов
  * @returns

@@ -21,6 +21,7 @@ import { setLike } from "../../entities/likes";
 import { following } from "../../entities/profileInfo";
 import { route } from "../../shared/routing/routing";
 import { containerMediaPost } from "../../widgest/feed/ui/post/post";
+import { controlSlideShow } from "../paginateFeed/paginateFeed";
 /**
  * Управление адаптивностью на странице автора
  * @param authorData Данные автора
@@ -241,6 +242,8 @@ export async function customizePostProfile(
     }
   };
   menu.addEventListener("click", handleClickMenu);
+  const rightContainer = document.querySelector(`.profile-form`);
+  controlSlideShow(container, rightContainer);
 }
 
 /**

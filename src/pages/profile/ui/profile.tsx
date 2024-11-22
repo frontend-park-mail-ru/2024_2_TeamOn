@@ -30,6 +30,16 @@ export async function profileContent(
     <div class="main-content">
       {await Sidebar(userdata)}
       {await profileForm(authorData, avatar, background, payments)}
+      <div class="modal-view-photos" style="display: none; z-index=10101010">
+        <div class="close-modal-view"></div>
+        <div class="modal-container-photos">
+          <img class="image-photos-modal"></img>
+        </div>
+        <div class="slideshow">
+          <div class="leftarrow-modal-view"></div>
+          <div class="rightarrow-modal-view"></div>
+        </div>
+      </div>
       {tipForm()}
       {addCustomSubsForm()}
       {deletepostForm()}

@@ -92,9 +92,9 @@ async function modifireCreatePost() {
   mediaForm.method = "POST";
 
   const buttonUploadMedia: any =
-  containerCreatePost.querySelector(`.media-upload-label`);
+    containerCreatePost.querySelector(`.media-upload-label`);
   const mediaInput: any =
-  containerCreatePost.querySelector(`.media-upload-input`);
+    containerCreatePost.querySelector(`.media-upload-input`);
 
   let selectedFiles: File[] = []; // Массив для хранения выбранных файлов
 
