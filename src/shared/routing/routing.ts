@@ -74,14 +74,6 @@ function updatePageContent(render: string): void {
     goToPage(menuElements[pageMap[render]] || menuElements.profile);
     return;
   }
-<<<<<<< HEAD
-  if (render === LINKS.CREATE_POST.HREF) {
-    if (nonauth()) return;
-    goToPage(state.menuElements.createPost);
-    return;
-  }
-=======
->>>>>>> Добавил аттачи
 
   const defaultPages: Record<string, keyof MenuElements> = {
     [LINKS.HOME.HREF]: "home",

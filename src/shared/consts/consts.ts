@@ -259,6 +259,12 @@ export const ELEMENTS_CLASS = {
     MODIFIER: "home-buttons__button__effects",
     COMBINE: "home-buttons home-buttons__button home-buttons__button__effects",
   },
+  FEED_BUTTONS: {
+    BLOCK: "feed-buttons",
+    ELEMENT: "feed-buttons__button",
+    MODIFIER: "feede-buttons__button__effects",
+    COMBINE: "feed-buttons feed-buttons__button feed-buttons__button__effects",
+  },
   LOGOUT: {
     BLOCK: "logout",
     ELEMENT: "logout__button",

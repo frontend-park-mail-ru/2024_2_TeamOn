@@ -207,52 +207,9 @@ export function controlSlideShow(container: any, rightContainer: any) {
   });
 
   imgPhotos.forEach((img: any, index: any) => {
-<<<<<<< HEAD
-    img.addEventListener("click", (event: any) =>
-      handleOpenSlideshow(event, updateImage, index),
-    );
-  });
-  imgAvatar.addEventListener("click", (event: any) => {
-    handleOpenSlideshow(event, showAvatar);
-  });
-  if (closeModal) {
-    closeModal.addEventListener("click", () => {
-      //modalPhotos.style.display = "none";
-      rightContent.classList.remove("blackout");
-    });
-  }
-
-  if (main) {
-    main.addEventListener("click", () => {
-      //modalPhotos.style.display = "none";
-      rightContent.classList.remove("blackout");
-    });
-  }
-
-  if (leftArrow) {
-    leftArrow.addEventListener("click", touchLeftArrow);
-  }
-
-  if (rightArrow) {
-    rightArrow.addEventListener("click", touchRightArrow);
-  }
-  // Добавляем обработчики для свайпов
-  let startX = 0;
-  let endX = 0;
-  /*if (!slideshow) {
-    alert("alo");
-  }*/
-  modalPhotos.addEventListener("touchstart", (event: any) => {
-    startX = event.touches[0].clientX;
-  });
-
-  imgAvatar.addEventListener("click", (event: any) => {
-    handleOpenSlideshow(event, showAvatar);
-=======
     img.addEventListener("click", (event: any) => {
       handleOpenSlideshow(event, updateImage, index);
     });
->>>>>>> Добавил аттачи
   });
   if (imgAvatar) {
     imgAvatar.addEventListener("click", (event: any) => {
