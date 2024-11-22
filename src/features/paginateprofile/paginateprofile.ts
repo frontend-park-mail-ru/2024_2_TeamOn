@@ -35,7 +35,7 @@ async function modifireMyPosts(
   try {
     // Обработка популярных постов
     const containersPost = containerPosts.querySelectorAll(`.posts`);
-    if (posts.length > 1 && containersPost.length > 1) {
+    if (posts.length > 0 && containersPost.length > 0) {
       if (!containersPost) return;
       // Используем Promise.all для обработки популярных постов параллельно
       await Promise.all(
