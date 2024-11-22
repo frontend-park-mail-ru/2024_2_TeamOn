@@ -34,9 +34,7 @@ async function modifireCreatePost() {
     if (radio.checked) {
       layer = radio.id;
     }
-    alert(layer)
   });
-  alert(layer)
   if (buttonSave) {
     buttonSave.addEventListener("click", async (event: any) => {
       event.preventDefault();
@@ -67,7 +65,7 @@ async function modifireCreatePost() {
           containerCreatePost,
           sanitizedTitle,
           sanitizedContent,
-          Number(layer),
+          Number(0),
         );
         let postId: any = await getUserPosts("/profile", 0, 300);
         postId = postId[0].postId;
@@ -94,9 +92,9 @@ async function modifireCreatePost() {
   mediaForm.method = "POST";
 
   const buttonUploadMedia: any =
-    containerCreatePost.querySelector(`.media-upload-label`);
+  containerCreatePost.querySelector(`.media-upload-label`);
   const mediaInput: any =
-    containerCreatePost.querySelector(`.media-upload-input`);
+  containerCreatePost.querySelector(`.media-upload-input`);
 
   let selectedFiles: File[] = []; // Массив для хранения выбранных файлов
 

@@ -32,7 +32,6 @@ export async function renderCreatePost() {
     console.log(layers);
 
     placeLayers.append(...(await renderLayers(layers)));
-    // layers.append(...(await renderLayers()));
 
     await modifireCreatePost();
     modifierSidebar(mainContent);

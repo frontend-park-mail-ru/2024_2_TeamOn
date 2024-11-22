@@ -45,10 +45,10 @@ export async function containerMediaPost(postId: any) {
 
     try {
       // const file = await getMediaFiles(url);
-      // const response = await fetch(url);
-      // const fileBlob = await response.blob();
+      const response = await fetch("/" + url);
+      const file = await response.blob();
       // const file = URL.createObjectURL(fileBlob);
-      const file = "../myback/" + url;
+      // const file = "../myback/" + url;
       const containerFile = <img class="image-photo" src={file}></img>;
       const div: any = renderTo(containerFile);
       arrayMedia.push(div);
