@@ -44,4 +44,31 @@ async function editPost(
   });
 }
 
-export { editPost };
+/**
+ * Функция изменения поста через объект типа промис
+ * @param modalEdit Модальное окно редактирования
+ * @param postIdEdit Айди редактируемого поста
+ * @param titleEdit Заголовок редактирования
+ * @param contentEdit Контент редактирования
+ * @returns
+ */
+async function deleteMediaInPost(postId: any, mediaId: any) {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "DELETE",
+      `/api/posts/post/media/${postId}?mediaID=${mediaId}`,
+      null,
+      (response) => {
+        if (response.ok) {
+          resolve(true);
+        } else if (response.status === 404) {
+          reject(new Error("Пост не найден"));
+        } else {
+          reject(new Error("Ответ от фетча с ошибкой"));
+        }
+      },
+    );
+  });
+}
+
+export { editPost, deleteMediaInPost };
