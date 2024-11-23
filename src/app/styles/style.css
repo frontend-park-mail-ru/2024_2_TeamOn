@@ -2482,7 +2482,7 @@ select {
 /* Правая иконка (крестик) */
 .searchbar-icon--right {
   right: 10px; /* Расположение крестика */
-  cursor: pointer; /* Указатель на крестике */
+  cursor: pointer; 
 }
 
 .author-dropdown {
