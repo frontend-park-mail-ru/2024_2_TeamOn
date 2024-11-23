@@ -4,7 +4,12 @@ import { pageContainer } from "../../app";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { modifireCreatePost } from "./modal/modal";
 import { containerCustomSubscribe } from "src/widgest/profile/ui/profileform/profileform";
-import { getSubsLayer } from "../../features/getSubsLayer/getSubsLayer";
+import {
+  getAllowedSubsLayer,
+  getSubsLayer,
+} from "../../features/getSubsLayer/getSubsLayer";
+import { getCustomSubscription } from "../../features/getCustomSubs/getCustomSubs";
+import { renderContainerSubs } from "../../features/subscriptionsList/subcriptionsList";
 
 async function renderLayers(layers: any) {
   try {
@@ -29,10 +34,8 @@ export async function renderCreatePost() {
 
     const placeLayers: any = container.querySelector(`.layers`);
     const layers: any = await getSubsLayer();
-    console.log(layers);
-
+    // const layers: any = await getAllowedSubsLayer();
     placeLayers.append(...(await renderLayers(layers)));
-
     await modifireCreatePost();
     modifierSidebar(mainContent);
 

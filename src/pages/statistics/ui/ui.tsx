@@ -18,8 +18,6 @@ function renderTableTitle() {
             <td class="rating-output">sdsd</td>
           </tr> */}
         </div>
-
-        
       </tbody>
     </table>
   );
@@ -34,6 +32,6 @@ function renderStatics(theme: any, rating: any) {
   );
 }
 function createDiv() {
-    return (<div></div>)
+  return <div></div>;
 }
 export { renderTableTitle, renderStatics, createDiv };

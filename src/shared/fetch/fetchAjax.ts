@@ -42,7 +42,7 @@ async function getCSRFTokenForAccounts() {
  * @returns
  */
 async function getCSRFTokenForTech() {
-  const response = await fetch("/api/tech/token-endpoint");
+  const response = await fetch("/api/csat/token-endpoint");
   const data = await response.json();
   return data;
 }
@@ -56,6 +56,7 @@ async function getCSRFTokenForAuthor() {
   const data = await response.json();
   return data;
 }
+
 /**
  * Функция получения токена к сервису "автор"
  * @returns
@@ -88,7 +89,6 @@ export async function fetchAjax(
   // Получаем CSRF-токен в зависимости от URL
   if (method === "POST" || method === "DELETE") {
     let csrfToken;
-
     if (url.startsWith("/api/posts")) {
       csrfToken = await getCSRFTokenForPosts();
     } else if (url.startsWith("/api/auth")) {
@@ -100,7 +100,7 @@ export async function fetchAjax(
     } else if (url.startsWith("/api/tech")) {
       csrfToken = await getCSRFTokenForAccounts();
     } else if (url.startsWith("/api/csat")) {
-      csrfToken = await getCSRFTokenForAccounts();
+      csrfToken = await getCSRFTokenForAuthor();
     }
 
     if (csrfToken) {

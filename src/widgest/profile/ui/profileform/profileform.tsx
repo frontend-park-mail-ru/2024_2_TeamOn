@@ -9,11 +9,12 @@ function containerCustomSubscribe(subscription: any) {
     window.location.pathname === "/profile"
       ? "display: none"
       : "display: block;";
+
   return (
     <div class="subscription-level">
       <h3 class="title-level">{subscription.title}</h3>
-      <p class="count-level">{subscription.cost} ₽ в месяц</p>
-      <p class="content-level">{subscription.description}</p>
+      <p class="count-level">{String(subscription.cost)} ₽ в месяц</p>
+      <p class="content-level">{String(subscription.description)}</p>
       <button class="button-buy-subs" style={flag}>
         Оформить
       </button>

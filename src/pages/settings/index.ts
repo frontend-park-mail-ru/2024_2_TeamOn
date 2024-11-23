@@ -499,7 +499,7 @@ async function createStatistics() {
 
   let themes: any[] = [];
   let ratings: any = [];
-  
+
   let time = "1";
   const responseTableDay: any = await getDataTable(time);
   titleDay.textContent = "За последний день";
@@ -527,26 +527,34 @@ async function createStatistics() {
   containerInfinity.appendChild(titleInfinity);
   containerInfinity.appendChild(tableInfinity);
   formContainer.appendChild(containerInfinity);
-  modifierTable(formContainer, responseTableDay, responseTableWeek, responseTableInfinity );
+  modifierTable(
+    formContainer,
+    responseTableDay,
+    responseTableWeek,
+    responseTableInfinity,
+  );
   return formContainer;
 }
 
-function modifierTable(formContainer: any, responseTableDay: any, responseTableWeek: any, responseTableInfinity: any) {
+function modifierTable(
+  formContainer: any,
+  responseTableDay: any,
+  responseTableWeek: any,
+  responseTableInfinity: any,
+) {
   const divTables: any = formContainer.querySelectorAll(`.my-table`);
-  console.log(divTables)
+  console.log(divTables);
   let response: any;
-  divTables.forEach( (div: any, index: number) => {
-    
-    if ( index === 0) {
+  divTables.forEach((div: any, index: number) => {
+    if (index === 0) {
       response = responseTableDay;
-    } else if ( index === 1 ) {
+    } else if (index === 1) {
       response = responseTableWeek;
     } else {
       response = responseTableInfinity;
     }
-    customizeTable(div, response );
-  })
-
+    customizeTable(div, response);
+  });
 }
 
 function customizeTable(div: any, response: any) {
@@ -564,8 +572,8 @@ function customizeTable(div: any, response: any) {
     td2.textContent = resp.rating;
     container.append(td1, td2);
 
-    tbody.appendChild(container)
-  })
+    tbody.appendChild(container);
+  });
 }
 function renderTable() {
   const jsx: any = renderTableTitle();
@@ -584,57 +592,67 @@ export async function getDataTable(time: any) {
         // reject("Пока рано");
       } else {
         // reject(new Error("Внутреняя ошибка сервера"));
-        resolve( time === "1" ? [ {theme: "Тема1", rating: "1"}, {theme: "Тема1", rating: "1"}]: [ {theme: "Тема1", rating: "1"}, {theme: "Тема7", rating: "7"}]);
+        resolve(
+          time === "1"
+            ? [
+                { theme: "Тема1", rating: "1" },
+                { theme: "Тема1", rating: "1" },
+              ]
+            : [
+                { theme: "Тема1", rating: "1" },
+                { theme: "Тема7", rating: "7" },
+              ],
+        );
       }
     });
   });
 }
-// export async function checkShowIFrame() {
-//   return new Promise((resolve, reject) => {
-//     fetchAjax("GET", "api/csat/check", null, (response) => {
-//       if (response.ok) {
-//         resolve(true);
-//       } else if (response.status === 400) {
-//         reject("Пока рано");
-//       } else {
-//         reject(new Error("Внутреняя ошибка сервера"));
-//       }
-//     });
-//   });
-// }
-// export async function getQuestion(question: any, questionID: any) {
-//   return new Promise((resolve, reject) => {
-//     fetchAjax(
-//       "GET",
-//       "api/csat/question",
-//       { question: question, questionID: questionID },
-//       (response) => {
-//         if (response.ok) {
-//           response.json().then((data) => {
-//             resolve(data);
-//           });
-//         } else if (response.status === 400) {
-//           reject("Внутреняя ошибка сервера");
-//         } else {
-//           reject(new Error("Внутреняя ошибка сервера"));
-//         }
-//       },
-//     );
-//   });
-// }
-// export async function addResult(questionID: any) {
-//   return new Promise((resolve, reject) => {
-//     fetchAjax("GET", `api/csat/result/${questionID}`, null, (response) => {
-//       if (response.ok) {
-//         resolve(true);
-//       } else if (response.status === 400) {
-//         reject("Пока рано");
-//       } else {
-//         reject(new Error("Внутреняя ошибка сервера"));
-//       }
-//     });
-//   });
-// }
+export async function checkShowIFrame() {
+  return new Promise((resolve, reject) => {
+    fetchAjax("GET", "/api/csat/check", null, (response) => {
+      if (response.ok) {
+        resolve(true);
+      } else if (response.status === 400) {
+        reject("Пока рано");
+      } else {
+        reject(new Error("Внутреняя ошибка сервера"));
+      }
+    });
+  });
+}
+export async function getQuestion() {
+  return new Promise((resolve, reject) => {
+    fetchAjax("GET", "api/csat/question", null, (response) => {
+      if (response.ok) {
+        response.json().then((data) => {
+          resolve(data);
+        });
+      } else if (response.status === 400) {
+        reject("Внутреняя ошибка сервера");
+      } else {
+        reject(new Error("Внутреняя ошибка сервера"));
+      }
+    });
+  });
+}
+export async function addResult(questionID: any, rating: any) {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "POST",
+      `/api/csat/result/${questionID}`,
+      { rating: rating },
+      (response) => {
+        if (response.ok) {
+          resolve(true);
+        } else if (response.status === 400) {
+          reject("Пока рано");
+        } else {
+          reject(new Error("Внутреняя ошибка сервера"));
+        }
+      },
+    );
+  });
+}
 /**
  * Валидация окна с безопасностью
  * @param newPasswordInput Новый пароль

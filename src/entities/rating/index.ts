@@ -1,3 +1,3 @@
-import { renderRating } from "./ui/ui";
+import { renderRating, renderFrame } from "./ui/ui";
 
-export { renderRating };
+export { renderRating, renderFrame };
