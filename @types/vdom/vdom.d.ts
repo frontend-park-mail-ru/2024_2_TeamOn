@@ -30,6 +30,11 @@ declare module "vdom" {
       textarea: { [key: string]: any };
       select: { [key: string]: any };
       option: { [key: string]: any };
+      table: { [key: string]: any };
+      thead: { [key: string]: any };
+      tr: { [key: string]: any };
+      td: { [key: string]: any };
+      tbody: { [key: string]: any };
     }
   }
 }

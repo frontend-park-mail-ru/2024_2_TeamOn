@@ -26,6 +26,28 @@ body {
   filter: blur(80px);
 }
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table td {
+  padding: 12px 16px;
+}
+
+table thead tr {
+  font-weight: bold;
+  border-top: 1px solid #e8e9eb;
+}
+
+table tr {
+  border-bottom: 1px solid #e8e9eb;
+}
+
+table tbody tr:hover {
+  background: #e8f6ff;
+}
+
 .close-modal-view {
   background-image: url("../styles/photos/close.png");
   width: 20px;
@@ -2045,7 +2067,8 @@ span {
 }
 
 .form-container,
-.form-container-security {
+.form-container-security,
+.form-container-statistics {
   background-color: #fff;
   padding: 40px;
   border-radius: 10px;
@@ -2056,8 +2079,13 @@ span {
   height: 400px;
 }
 
+.form-container-statistics {
+  height: 100%;
+}
+
 .form-container h2,
-.form-container-security h2 {
+.form-container-security h2,
+.form-container-statistics h2 {
   font-size: 20px;
   margin-bottom: 20px;
 }
@@ -2070,7 +2098,8 @@ span {
 }
 
 .form-container label,
-.form-container-security label {
+.form-container-security label,
+.form-container-statistics label {
   display: block;
   margin-left: 0;
   margin-bottom: 10px;
@@ -2097,7 +2126,8 @@ select {
 }
 
 .form-container select,
-.form-container-security select {
+.form-container-security select,
+.form-container-statistics select {
   width: 51.5%;
   padding: 10px;
   margin-bottom: 20px;
@@ -2122,7 +2152,8 @@ select {
 }
 
 .form-container .profile-pic,
-.form-container-security .profile-pic {
+.form-container-security .profile-pic,
+.form-container-statistics .profile-pic {
   display: block;
   width: 100px;
   height: 100px;
