@@ -1,11 +1,12 @@
 import { state } from "../../shared/consts/consts";
 import { controlLogout } from "../../features/controlLogout/controlLogout";
-import { update } from "../../../lib/vdom/lib";
+import { renderTo, update } from "../../../lib/vdom/lib";
 import { pageContainer } from "../../app/index";
 import { renderFeedForm } from "./ui/feed";
 import { paginate } from "../../features/paginateFeed/paginateFeed";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { controlActiveLink } from "../../features/controlActiveLink/controlActiveLink";
+import { renderRating } from "../../entities/rating";
 
 function controlModalView() {}
 /**
@@ -31,7 +32,9 @@ export async function renderFeed() {
     const vdom = await renderFeedForm();
 
     const container = update(pageContainer, vdom);
-
+    const rating: any = await renderRating();
+    const divrating: any = renderTo(rating);
+    container.append(divrating);
     state.currentUser = user;
 
     const tabs = container.querySelector(".tabs");

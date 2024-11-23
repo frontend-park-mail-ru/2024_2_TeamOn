@@ -35,6 +35,7 @@ declare module "vdom" {
       tr: { [key: string]: any };
       td: { [key: string]: any };
       tbody: { [key: string]: any };
+    iframe: { [key: string]: any };
     }
   }
 }
