@@ -45,7 +45,17 @@ async function containerCreatePost() {
               accept="image/*"
               htmlFor="media-upload"
             >
-              <i class="icon-attache"></i>
+              <div class="attache-info">
+                <i class="icon-attache"></i>
+                <h4>Поддерживаемые форматы:</h4>
+              </div>
+              <div class="formats">
+                <h5 class="format">mp3</h5>
+                <h5 class="format">mp4</h5>
+                <h5 class="format">jpeg</h5>
+                <h5 class="format">png</h5>
+                <h5 class="format">pdf</h5>
+              </div>
             </label>
 
             <input

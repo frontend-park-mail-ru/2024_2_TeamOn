@@ -1,4 +1,4 @@
-import { LINKS } from "../../../shared/consts/consts";
+import { allowedExtensions, LINKS } from "../../../shared/consts/consts";
 import { route } from "../../../shared/routing/routing";
 import DOMPurify from "dompurify";
 import { addUserPost } from "../../../entities/userPost";
@@ -15,7 +15,23 @@ async function modifireCreatePost() {
   const previewContainer: any = containerCreatePost.querySelector(
     `.container-image-photos`,
   ); // Контейнер для предпросмотра изображений
+  const title: any = containerCreatePost.querySelector(`.input-group`);
+  const content: any = containerCreatePost.querySelector(`.textarea-group`);
 
+  title.addEventListener("input", () => {
+    let input = containerCreatePost.querySelectorAll(`.form-group-add`)[1];
+    let error = input.querySelector("p");
+    if (error) {
+      error.remove();
+    }
+  });
+  content.addEventListener("input", () => {
+    let input = containerCreatePost.querySelectorAll(`.form-group-add`)[1];
+    let error = input.querySelector("p");
+    if (error) {
+      error.remove();
+    }
+  });
   if (buttonCancel) {
     buttonCancel.addEventListener("click", () => {
       route(LINKS.PROFILE.HREF);
@@ -38,10 +54,7 @@ async function modifireCreatePost() {
   if (buttonSave) {
     buttonSave.addEventListener("click", async (event: any) => {
       event.preventDefault();
-      const title: any = containerCreatePost.querySelector(`.input-group`);
-      const content: any = containerCreatePost.querySelector(`.textarea-group`);
-      const sanitizedTitle = DOMPurify.sanitize(title.value);
-      const sanitizedContent = DOMPurify.sanitize(content.value);
+
       if (title.value == "" || content.value == "") {
         const input =
           containerCreatePost.querySelectorAll(`.form-group-add`)[1];
@@ -54,12 +67,14 @@ async function modifireCreatePost() {
         }
         return;
       }
+
       let input = containerCreatePost.querySelectorAll(`.form-group-add`)[1];
       let error = input.querySelector("p");
       if (error) {
         error.remove();
       }
-
+      const sanitizedTitle = DOMPurify.sanitize(title.value);
+      const sanitizedContent = DOMPurify.sanitize(content.value);
       try {
         const post: any = await addUserPost(
           containerCreatePost,
@@ -72,6 +87,7 @@ async function modifireCreatePost() {
 
         try {
           if (selectedFiles.length != 0) {
+            console.log(selectedFiles);
             const ok: any = await uploadMediaFiles(postId, selectedFiles);
           }
         } catch (error) {
@@ -95,7 +111,6 @@ async function modifireCreatePost() {
     containerCreatePost.querySelector(`.media-upload-label`);
   const mediaInput: any =
     containerCreatePost.querySelector(`.media-upload-input`);
-
   let selectedFiles: File[] = []; // Массив для хранения выбранных файлов
 
   mediaInput.addEventListener("change", (event: any) => {
@@ -103,10 +118,29 @@ async function modifireCreatePost() {
 
     if (files && files.length) {
       const newFiles = Array.from(files);
-      selectedFiles.push(...newFiles); // Преобразуем FileList в массив
-      previewContainer.innerHTML = ""; // Очищаем контейнер перед добавлением новых изображений
+
+      // Фильтруем валидные файлы
+      const validFiles = newFiles.filter((file) => {
+        const extension: any = file.name.split(".").pop()?.toLowerCase(); // Получаем расширение файла
+        return allowedExtensions.includes(extension); // Проверяем, допустимо ли расширение
+      });
+
+      // Удаляем невалидные файлы из нового выбора
+      const invalidFiles = newFiles.filter(
+        (file) => !validFiles.includes(file),
+      );
+
+      previewContainer.innerHTML = "";
       let loadedFilesCount = 0;
 
+      // Добавляем валидные файлы в массив selectedFiles, исключая дубликаты
+      validFiles.forEach((file) => {
+        if (!selectedFiles.includes(file)) {
+          selectedFiles.push(file);
+        }
+      });
+
+      // Отображаем превью для всех выбранных файлов
       selectedFiles.forEach((file, index) => {
         const reader = new FileReader();
         reader.onload = (e: ProgressEvent<FileReader>) => {
@@ -120,87 +154,39 @@ async function modifireCreatePost() {
         };
         reader.readAsDataURL(file);
       });
+
+      // Обработка недопустимых файлов
+      if (invalidFiles.length > 0) {
+        const input =
+          containerCreatePost.querySelectorAll(`.form-group-add`)[1];
+        let error = input.querySelector("p");
+        if (!error) {
+          error = document.createElement("p");
+          error.style.color = "red";
+          input.appendChild(error);
+        }
+        error.textContent =
+          "Ошибка. Неподдерживаемый формат файла: " +
+          invalidFiles.map((file) => file.name).join(", ");
+      }
     }
   });
 
-  // function createFileDiv(src: string, index: number): HTMLDivElement {
-  //   const fileDiv = document.createElement("div");
-  //   fileDiv.className = "file-preview"; // Класс для стилизации
-  //   fileDiv.style.display = "flex"; // Выравнивание элементов по горизонтали
-  //   fileDiv.style.alignItems = "center"; // Центрирование по вертикали
-  //   fileDiv.style.margin = "10px"; // Отступ между элементами
-  //   fileDiv.style.border = "1px solid #ccc"; // Рамка для div
-  //   fileDiv.style.borderRadius = "5px"; // Закругление углов
-  //   fileDiv.style.padding = "5px"; // Отступ внутри div
-
-  //   const img = document.createElement("img");
-  //   img.src = src;
-  //   img.className = "image-photo";
-  //   img.style.width = "100px"; // Устанавливаем ширину изображения
-  //   img.style.marginRight = "10px"; // Отступ между изображением и кнопкой
-
-  //   const removeButton = createRemoveButton(index, fileDiv);
-
-  //   fileDiv.appendChild(img);
-  //   fileDiv.appendChild(removeButton);
-
-  //   return fileDiv;
-  // }
-
-  // function createRemoveButton(index: number, fileDiv: HTMLDivElement): HTMLButtonElement {
-  //   const removeButton = document.createElement("button");
-  //   removeButton.textContent = "Удалить";
-  //   removeButton.style.marginLeft = "5px";
-  //   removeButton.style.padding = "5px 10px"; // Отступы для кнопки
-  //   removeButton.style.border = "none"; // Убираем рамку
-  //   removeButton.style.backgroundColor = "#ff4d4d"; // Цвет фона кнопки
-  //   removeButton.style.color = "white"; // Цвет текста
-  //   removeButton.style.cursor = "pointer"; // Курсор при наведении
-  //   removeButton.style.borderRadius = "3px"; // Закругление углов кнопки
-
-  //   // Обработчик для удаления изображения
-  //   removeButton.addEventListener("click", () => {
-  //       selectedFiles.splice(index, 1); // Удаляем файл из массива
-  //       previewContainer.removeChild(fileDiv); // Удаляем div с изображением и кнопкой
-
-  //       // Обновляем индексы для кнопок удаления
-  //       updateRemoveButtonIndices();
-  //   });
-
-  //   return removeButton;
-  // }
-
-  // function updateRemoveButtonIndices() {
-  //   const filePreviews = previewContainer.getElementsByClassName("file-preview");
-  //   for (let i = 0; i < filePreviews.length; i++) {
-  //       const removeButton = filePreviews[i].querySelector("button");
-  //       if (removeButton) {
-  //           removeButton.removeEventListener("click", removeButtonClickHandler);
-  //           removeButton.addEventListener("click", () => removeButtonClickHandler(i, filePreviews[i]));
-  //       }
-  //   }
-  // }
-
-  // function removeButtonClickHandler(index: number, fileDiv: HTMLDivElement) {
-  //   selectedFiles.splice(index, 1); // Удаляем файл из массива
-  //   previewContainer.removeChild(fileDiv); // Удаляем div с изображением и кнопкой
-  //   updateRemoveButtonIndices(); // Обновляем индексы для кнопок удаления
-  // }
   function createFileDiv(src: string, index: number): HTMLDivElement {
     const fileDiv = document.createElement("div");
-    fileDiv.className = "file-preview"; // Класс для стилизации
-    fileDiv.style.display = "flex"; // Выравнивание элементов по горизонтали
-    fileDiv.style.alignItems = "center"; // Центрирование по вертикали
-    fileDiv.style.margin = "10px"; // Отступ между элементами
-    fileDiv.style.border = "1px solid #ccc"; // Рамка для div
-    fileDiv.style.borderRadius = "5px"; // Закругление углов
-    fileDiv.style.padding = "5px"; // Отступ внутри div
+    fileDiv.className = "file-preview";
+    fileDiv.style.display = "flex";
+    fileDiv.style.alignItems = "center";
+    fileDiv.style.margin = "10px";
+    fileDiv.style.border = "1px solid #ccc";
+    fileDiv.style.borderRadius = "5px";
+    fileDiv.style.padding = "5px";
 
     const img = document.createElement("img");
     img.src = src;
     img.className = "image-photo";
-    img.style.width = "100px"; // Устанавливаем ширину изображения
-    img.style.marginRight = "10px"; // Отступ между изображением и кнопкой
+    img.style.width = "100px";
+    img.style.marginRight = "10px";
 
     const removeButton = createRemoveButton(index, fileDiv);
 
@@ -217,17 +203,17 @@ async function modifireCreatePost() {
     const removeButton = document.createElement("button");
     removeButton.textContent = "Удалить";
     removeButton.style.marginLeft = "5px";
-    removeButton.style.padding = "5px 10px"; // Отступы для кнопки
-    removeButton.style.border = "none"; // Убираем рамку
-    removeButton.style.backgroundColor = "#ff4d4d"; // Цвет фона кнопки
-    removeButton.style.color = "white"; // Цвет текста
-    removeButton.style.cursor = "pointer"; // Курсор при наведении
-    removeButton.style.borderRadius = "3px"; // Закругление углов кнопки
+    removeButton.style.padding = "5px 10px";
+    removeButton.style.border = "none";
+    removeButton.style.backgroundColor = "#ff4d4d";
+    removeButton.style.color = "white";
+    removeButton.style.cursor = "pointer";
+    removeButton.style.borderRadius = "3px";
 
     // Обработчик для удаления изображения
     removeButton.addEventListener("click", () => {
-      selectedFiles.splice(index, 1); // Удаляем файл из массива
-      previewContainer.removeChild(fileDiv); // Удаляем div с изображением и кнопкой
+      selectedFiles.splice(index, 1);
+      previewContainer.removeChild(fileDiv);
     });
 
     return removeButton;
@@ -235,6 +221,11 @@ async function modifireCreatePost() {
 
   buttonUploadMedia.addEventListener("click", () => {
     mediaInput.click(); // Программно вызываем клик на input
+    let input = containerCreatePost.querySelectorAll(`.form-group-add`)[1];
+    let error = input.querySelector("p");
+    if (error) {
+      error.remove();
+    }
   });
 }
 
