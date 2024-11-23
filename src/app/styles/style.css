@@ -1724,7 +1724,13 @@ form input[type="text"]:focus {
 
 .likes,
 .comments {
-  display: inline-block;
+  font-size: 20px;
+  color: #666;
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  height: 30px;
+  margin-right: 5px;
   min-width: 30px;
   min-height: 30px;
   background-size: cover;
@@ -2459,6 +2465,41 @@ select {
     border-bottom: none;
   }
 }
+.formats {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+
+.attache-info {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.format {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 15px;
+  background-color: var(--main-color);
+  width: 30px;
+  height: 20px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.format:hover {
+  background-color: var(--main-color-hover);
+}
+
 .modal-overlay {
   position: fixed;
   width: 100px;
@@ -2525,6 +2566,26 @@ select {
 
 .fas.fa-star.inactive {
   color: #ccc;
+}
+
+.remove-button-files {
+  background-image: url("photos/closefile.png");
+  background-size: cover;
+  width: 20px;
+  height: 20px;
+  margin-left: -25px;
+  position: relative;
+  margin-top: 5px;
+  transition: filter 0.3s ease;
+}
+
+.div-files {
+  display: flex;
+  cursor: pointer;
+}
+
+.remove-button-files:hover {
+  filter: brightness(0) invert(0%) sepia(138%) saturate(1000%) brightness(100%) contrast(2%);
 }
 
 /*# sourceMappingURL=style.css.map */

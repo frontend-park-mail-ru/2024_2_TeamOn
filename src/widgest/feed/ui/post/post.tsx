@@ -34,11 +34,24 @@ async function containerPost(postId: any) {
     </div>
   );
 }
-
+export async function fetchFileFromImage(postId: any) {
+  const propertiesPost: any = await getUrlFiles(postId);
+  const result: any = [];
+  for (const content of propertiesPost.mediaContent) {
+    const url: any = content.mediaURL;
+    const src = "/" + url;
+    const response = await fetch(src);
+    const blob = await response.blob();
+    const fileName: any = src.split('/').pop(); 
+    const fileBlob = new File([blob], fileName, { type: blob.type });
+    result.push(fileBlob);
+  }
+  return result;
+}
 export async function containerMediaPost(postId: any) {
   const propertiesPost: any = await getUrlFiles(postId);
   let arrayMedia: any = [];
-  const imageExtensions = [".jpg", ".jpeg", ".png"];
+  const imageExtensions = [".jpeg", ".png"];
   if (propertiesPost.mediaContent.length <= 0) return;
   for (const content of propertiesPost.mediaContent) {
     const url: any = content.mediaURL;
