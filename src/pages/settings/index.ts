@@ -1,6 +1,6 @@
 import { ELEMENTS_CLASS, LINKS, state } from "../../shared/consts/consts";
 import { pageContainer } from "../../app/index";
-import { update } from "../../../lib/vdom/lib";
+import { renderTo, update } from "../../../lib/vdom/lib";
 import { VNode } from "../../../lib/vdom/src/source";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { route } from "../../shared/routing/routing";
@@ -14,6 +14,7 @@ import {
 import { settingsContainer } from "./ui/settings";
 import { getAvatar } from "../../features/getavatar/getavatar";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
+import { renderStatics, renderTableTitle } from "../statistics/ui/ui";
 /**
  * Рендер настроек
  * @returns
@@ -148,6 +149,7 @@ function setupTabs(
   [
     "Основная информация",
     "Безопасность",
+    "Статистика",
     /** , "Получение дохода"*/
   ].forEach((tabName, index) => {
     const tabLink = document.createElement("a");
@@ -190,10 +192,14 @@ async function updateContent(
   contentContainer.innerHTML = "";
   contentContainer.appendChild(await createProfileForm(userdata));
   contentContainer.appendChild(createSecurityForm());
+  contentContainer.appendChild(await createStatistics());
   let containerPersonalize: any =
     contentContainer.querySelector(`.form-container`);
   let containerPassword: any = contentContainer.querySelector(
     `.form-container-security`,
+  );
+  let containerStatistics: any = contentContainer.querySelector(
+    `.form-container-statistics`,
   );
 
   switch (index) {
@@ -204,6 +210,10 @@ async function updateContent(
     case 1:
       containerPersonalize.style.display = "none";
       containerPassword.style.display = "block";
+      break;
+    case 2:
+      containerPersonalize.style.display = "none";
+      containerStatistics.style.display = "block";
       break;
     default:
       return [buttonPersonalize, buttonPassword];
@@ -470,6 +480,179 @@ function createSecurityForm(): HTMLDivElement {
   });
   return formContainer;
 }
+async function createStatistics() {
+  const formContainer = document.createElement("div");
+  formContainer.className = "form-container-statistics";
+
+  const formTitle = document.createElement("h2");
+  formTitle.textContent = "Статистика";
+  formContainer.appendChild(formTitle);
+  let titleDay = document.createElement("h4");
+  let titleWeek = document.createElement("h4");
+  let titleInfinity = document.createElement("h4");
+  const containerDay: any = document.createElement("div");
+  const containerWeek: any = document.createElement("div");
+  const containerInfinity: any = document.createElement("div");
+  containerDay.classList.add("container-table");
+  containerWeek.classList.add("container-table");
+  containerInfinity.classList.add("container-table");
+
+  let themes: any[] = [];
+  let ratings: any = [];
+
+  let time = "1";
+  const responseTableDay: any = await getDataTable(time);
+  titleDay.textContent = "За последний день";
+  formContainer.appendChild(titleDay);
+  const tableDay: any = renderTable();
+
+  time = "7";
+  const responseTableWeek = await getDataTable(time);
+  titleWeek.textContent = "За последнюю неделю";
+  const tableWeek: any = renderTable();
+
+  time = "infinity";
+  const responseTableInfinity = await getDataTable(time);
+  titleInfinity.textContent = "За последнюю неделю";
+  const tableInfinity: any = renderTable();
+
+  containerDay.appendChild(titleDay);
+  containerDay.append(tableDay);
+  formContainer.appendChild(containerDay);
+
+  containerWeek.appendChild(titleWeek);
+  containerWeek.appendChild(tableWeek);
+  formContainer.appendChild(containerWeek);
+
+  containerInfinity.appendChild(titleInfinity);
+  containerInfinity.appendChild(tableInfinity);
+  formContainer.appendChild(containerInfinity);
+  modifierTable(
+    formContainer,
+    responseTableDay,
+    responseTableWeek,
+    responseTableInfinity,
+  );
+  return formContainer;
+}
+
+function modifierTable(
+  formContainer: any,
+  responseTableDay: any,
+  responseTableWeek: any,
+  responseTableInfinity: any,
+) {
+  const divTables: any = formContainer.querySelectorAll(`.my-table`);
+  console.log(divTables);
+  let response: any;
+  divTables.forEach((div: any, index: number) => {
+    if (index === 0) {
+      response = responseTableDay;
+    } else if (index === 1) {
+      response = responseTableWeek;
+    } else {
+      response = responseTableInfinity;
+    }
+    customizeTable(div, response);
+  });
+}
+
+function customizeTable(div: any, response: any) {
+  const tbody: any = div.querySelector("tbody");
+  console.log(tbody);
+  let array: any = [];
+  response.forEach((resp: any, index: number) => {
+    // const jsxContainer: any = renderStatics(resp.theme, resp.rating);
+    const container = document.createElement("tr");
+    const td1 = document.createElement("td");
+    td1.className = "theme-output";
+    td1.textContent = resp.theme;
+    const td2 = document.createElement("td");
+    td2.className = "rating-output";
+    td2.textContent = resp.rating;
+    container.append(td1, td2);
+
+    tbody.appendChild(container);
+  });
+}
+function renderTable() {
+  const jsx: any = renderTableTitle();
+  const div: any = renderTo(jsx, "my-table");
+
+  return div;
+}
+export async function getDataTable(time: any) {
+  return new Promise((resolve, reject) => {
+    fetchAjax("GET", `api/csat/table?time=${time}`, null, (response) => {
+      if (response.ok) {
+        response.json().then((data) => {
+          resolve(data);
+        });
+      } else if (response.status === 400) {
+        // reject("Пока рано");
+      } else {
+        // reject(new Error("Внутреняя ошибка сервера"));
+        resolve(
+          time === "1"
+            ? [
+                { theme: "Тема1", rating: "1" },
+                { theme: "Тема1", rating: "1" },
+              ]
+            : [
+                { theme: "Тема1", rating: "1" },
+                { theme: "Тема7", rating: "7" },
+              ],
+        );
+      }
+    });
+  });
+}
+// export async function checkShowIFrame() {
+//   return new Promise((resolve, reject) => {
+//     fetchAjax("GET", "api/csat/check", null, (response) => {
+//       if (response.ok) {
+//         resolve(true);
+//       } else if (response.status === 400) {
+//         reject("Пока рано");
+//       } else {
+//         reject(new Error("Внутреняя ошибка сервера"));
+//       }
+//     });
+//   });
+// }
+// export async function getQuestion(question: any, questionID: any) {
+//   return new Promise((resolve, reject) => {
+//     fetchAjax(
+//       "GET",
+//       "api/csat/question",
+//       { question: question, questionID: questionID },
+//       (response) => {
+//         if (response.ok) {
+//           response.json().then((data) => {
+//             resolve(data);
+//           });
+//         } else if (response.status === 400) {
+//           reject("Внутреняя ошибка сервера");
+//         } else {
+//           reject(new Error("Внутреняя ошибка сервера"));
+//         }
+//       },
+//     );
+//   });
+// }
+// export async function addResult(questionID: any) {
+//   return new Promise((resolve, reject) => {
+//     fetchAjax("GET", `api/csat/result/${questionID}`, null, (response) => {
+//       if (response.ok) {
+//         resolve(true);
+//       } else if (response.status === 400) {
+//         reject("Пока рано");
+//       } else {
+//         reject(new Error("Внутреняя ошибка сервера"));
+//       }
+//     });
+//   });
+// }
 /**
  * Валидация окна с безопасностью
  * @param newPasswordInput Новый пароль
