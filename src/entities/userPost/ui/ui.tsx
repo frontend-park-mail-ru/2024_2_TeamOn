@@ -35,8 +35,7 @@ async function renderUserPost(post: any) {
         <div class="toggleButton" style="display: none;">
           Показать...
         </div>
-        <div class="container-image-photos">
-        </div>
+        <div class="container-image-photos"></div>
         <div class="date">{createText(post.createdAt)}</div>
         <div class="interaction-section">
           <div class="likes-container">

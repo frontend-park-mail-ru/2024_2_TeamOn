@@ -30,6 +30,7 @@ declare module "vdom" {
       textarea: { [key: string]: any };
       select: { [key: string]: any };
       option: { [key: string]: any };
+      iframe: { [key: string]: any };
     }
   }
 }

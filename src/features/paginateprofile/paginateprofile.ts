@@ -12,27 +12,23 @@ import { getUrlFiles } from "../getUrlFiles/getUrlFiiles";
  * @returns
  */
 async function renderPosts(authorPosts: any[]) {
-
   const postsPromises = authorPosts.map(async (post: any) => {
-
     const container: any = await renderUserPost(post);
 
     const div = renderTo(container);
 
     const containerMedia: any = await containerMediaPost(post.postId);
-    if (containerMedia) { 
+    if (containerMedia) {
       let arrayMedia: any = [];
-      containerMedia.forEach( (media: any) => {
+      containerMedia.forEach((media: any) => {
         const divMedia = renderTo(media);
-        arrayMedia.push(divMedia)
-      })
+        arrayMedia.push(divMedia);
+      });
       const place: any = div.querySelector(`.container-image-photos`);
       place.append(...arrayMedia);
-
     }
 
-    return div; 
-
+    return div;
   });
   const posts = await Promise.all(postsPromises);
   return posts;
