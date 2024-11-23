@@ -130,7 +130,9 @@ module.exports = {
           "^/api/tech/token-endpoint": "/token-endpoint",
 
           "^/api/tech/subscription/custom": "/subscription/custom",
-          "^/api/tech/subscription/layer": "/subscription/layer",
+          "^/api/tech/subscription/layers": "/subscription/layers",
+          "^/api/tech/subscription/allowed/layers":
+            "/subscription/allowed/layers",
           "^/api/tech/subscription/(.*)/custom": "/subscription/$1/custom",
         },
       },

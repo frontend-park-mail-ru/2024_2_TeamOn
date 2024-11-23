@@ -37,13 +37,19 @@ import { renderContainersLayer } from "../../entities/customsubs/ui/ui";
 
 async function controlCustomSubscriptions(container: any) {
   if (window.location.pathname !== "/profile") return;
-
   const containersCustomSubs: any =
     container.querySelectorAll(`.subscription-level`);
   const profileForm: any = container.querySelector(`.profile-form`);
   const div: any = container.querySelector(`.add-customsubs`);
   if (!div) return;
 
+  const currentSubs: any = await getCustomSubscription(
+    window.location.pathname,
+  );
+  if (currentSubs.length === 3) {
+    div.style.display = "none";
+    return;
+  }
   const handleClickAddSubs = async () => {
     const modalAddCustomSubscription: any =
       container.querySelector(`.div-add-custom-subs`);
@@ -116,9 +122,10 @@ async function controlCustomSubscriptions(container: any) {
       const newsubs: any = await getCustomSubscription(
         window.location.pathname,
       );
+
       if (newsubs.length == 0) return;
-      const place: any = modalAddSubs.querySelector(".subscription-levels");
-      place.prepend(...(await renderContainerSubs(newsubs.slice(0, 1))));
+      const place: any = document.querySelector(".subscription-levels");
+      place.append(...(await renderContainerSubs(newsubs.slice(-1))));
       modifireSubscriptions(place, newsubs.reverse());
     });
   };

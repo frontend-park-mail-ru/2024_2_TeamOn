@@ -14,7 +14,6 @@ import { renderLogin } from "../pages/login";
 import { modifierSidebar } from "../shared/sidebar/modifire";
 import { renderCreatePost } from "../pages/addPost";
 import { renderUpdatePost } from "../entities/userPost";
-import { renderRating } from "../entities/rating";
 /**
  * Объект, содержащий конфигурацию меню приложения.
  */

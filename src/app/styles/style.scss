@@ -2184,16 +2184,63 @@ select {
   }
 }
 
-.searchbar-container {
+.modal-overlay {
+  position: fixed;
+  width: 100px;
+  height: 20px;
+  left: 5%;
+  top: 80%;
+  z-index: 10000000;
+}
+.rating-widget {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  width: 300px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+.rating-widget .close {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999; /* Убедитесь, что элемент отображается поверх других */
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 0.3s ease,
-    visibility 0.3s ease;
-  background-color: red;
+  top: 10px;
+  right: 10px;
+  color: #ccc;
+  cursor: pointer;
+}
+.rating-widget h3 {
+  font-size: 16px;
+  margin: 0 0 10px 0;
+  color: #333;
+}
+.rating-widget .stars {
+  margin-bottom: 20px;
+}
+.rating-widget .stars i {
+  font-size: 24px;
+  color: #ffc107;
+}
+.rating-widget .stars i.inactive {
+  color: #e0e0e0;
+}
+.rating-widget button {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.fas.fa-star {
+  color: #ccc;
+}
+
+.fas.fa-star.active {
+  color: #d9534f;
+}
+
+.fas.fa-star.inactive {
+  color: #ccc;
 }

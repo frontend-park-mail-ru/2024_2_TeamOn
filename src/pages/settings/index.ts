@@ -607,52 +607,52 @@ export async function getDataTable(time: any) {
     });
   });
 }
-// export async function checkShowIFrame() {
-//   return new Promise((resolve, reject) => {
-//     fetchAjax("GET", "api/csat/check", null, (response) => {
-//       if (response.ok) {
-//         resolve(true);
-//       } else if (response.status === 400) {
-//         reject("Пока рано");
-//       } else {
-//         reject(new Error("Внутреняя ошибка сервера"));
-//       }
-//     });
-//   });
-// }
-// export async function getQuestion(question: any, questionID: any) {
-//   return new Promise((resolve, reject) => {
-//     fetchAjax(
-//       "GET",
-//       "api/csat/question",
-//       { question: question, questionID: questionID },
-//       (response) => {
-//         if (response.ok) {
-//           response.json().then((data) => {
-//             resolve(data);
-//           });
-//         } else if (response.status === 400) {
-//           reject("Внутреняя ошибка сервера");
-//         } else {
-//           reject(new Error("Внутреняя ошибка сервера"));
-//         }
-//       },
-//     );
-//   });
-// }
-// export async function addResult(questionID: any) {
-//   return new Promise((resolve, reject) => {
-//     fetchAjax("GET", `api/csat/result/${questionID}`, null, (response) => {
-//       if (response.ok) {
-//         resolve(true);
-//       } else if (response.status === 400) {
-//         reject("Пока рано");
-//       } else {
-//         reject(new Error("Внутреняя ошибка сервера"));
-//       }
-//     });
-//   });
-// }
+export async function checkShowIFrame() {
+  return new Promise((resolve, reject) => {
+    fetchAjax("GET", "/api/csat/check", null, (response) => {
+      if (response.ok) {
+        resolve(true);
+      } else if (response.status === 400) {
+        reject("Пока рано");
+      } else {
+        reject(new Error("Внутреняя ошибка сервера"));
+      }
+    });
+  });
+}
+export async function getQuestion() {
+  return new Promise((resolve, reject) => {
+    fetchAjax("GET", "api/csat/question", null, (response) => {
+      if (response.ok) {
+        response.json().then((data) => {
+          resolve(data);
+        });
+      } else if (response.status === 400) {
+        reject("Внутреняя ошибка сервера");
+      } else {
+        reject(new Error("Внутреняя ошибка сервера"));
+      }
+    });
+  });
+}
+export async function addResult(questionID: any, rating: any) {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "POST",
+      `/api/csat/result/${questionID}`,
+      { rating: rating },
+      (response) => {
+        if (response.ok) {
+          resolve(true);
+        } else if (response.status === 400) {
+          reject("Пока рано");
+        } else {
+          reject(new Error("Внутреняя ошибка сервера"));
+        }
+      },
+    );
+  });
+}
 /**
  * Валидация окна с безопасностью
  * @param newPasswordInput Новый пароль

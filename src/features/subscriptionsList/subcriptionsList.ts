@@ -134,7 +134,6 @@ function modifireModalConfirmSubscription(
     `#subscription-duration`,
   );
   const handleClickPayment = () => {
-    alert("da");
     const media = "Оплата успешно проведена";
     renderModalStatusUpload(true, media);
     // modalConfirm.style.display = "none";

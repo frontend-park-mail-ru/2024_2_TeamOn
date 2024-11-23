@@ -38,26 +38,36 @@ async function containerPost(postId: any) {
 export async function containerMediaPost(postId: any) {
   const propertiesPost: any = await getUrlFiles(postId);
   let arrayMedia: any = [];
-  console.log(propertiesPost);
+  const imageExtensions = [".jpg", ".jpeg", ".png"];
   if (propertiesPost.mediaContent.length <= 0) return;
   for (const content of propertiesPost.mediaContent) {
     const url: any = content.mediaURL;
     console.log(url);
 
     try {
-      // const file = await getMediaFiles(url);
       const response = await fetch("/" + url);
-      // const file = await response.blob();
+      const isImage = imageExtensions.some((extension) =>
+        response.url.toLowerCase().endsWith(extension),
+      );
+      let containerFile = 0;
+      let parts = response.url.split(".");
+      const extension = parts.pop();
 
-      const containerFile = <img class={response}></img>;
-      // const div: any = renderTo(containerFile);
+      if (isImage) {
+        containerFile = <img class="image-photo" src={response.url}></img>;
+      } else {
+        containerFile = (
+          <a style="margin-left: 5px;" href={response.url}>
+            Файл.{extension}
+          </a>
+        );
+      }
       arrayMedia.push(containerFile);
     } catch (error) {
       console.error("Ошибка при запросе к URL:", url, error);
     }
   }
-  // console.log(arrayMedia);
-  // return `<div>${arrayMedia.join('')}</div>`
+  console.log(arrayMedia);
   return arrayMedia;
 }
 export { containerPost };

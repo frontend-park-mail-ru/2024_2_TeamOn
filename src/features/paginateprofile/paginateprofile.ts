@@ -104,11 +104,8 @@ async function paginateProfile(allPosts: any, containerPosts: any) {
         if (nextPosts.length > 0) {
           allPosts.push(...nextPosts);
           offset += QUERY.LIMIT;
-
           containerPosts.append(...(await renderPosts(nextPosts)));
           modifireMyPosts(containerPosts, nextPosts.reverse());
-          // alert(2)
-          // cache.popular.push(...nextPosts);
         } else {
           stopLoad = true;
         }

@@ -92,6 +92,7 @@ export async function mobilepr(
 function renderContainerAddCustomSubs() {
   const flag: any =
     window.location.pathname === "/profile" ? "display: flex" : "display: none";
+
   return (
     <div class="add-customsubs" style={flag}>
       <i class="add-customsubs-icon"></i>
