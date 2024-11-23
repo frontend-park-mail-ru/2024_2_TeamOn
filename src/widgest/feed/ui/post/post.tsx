@@ -22,9 +22,7 @@ async function containerPost(postId: any) {
         <div class="toggleButton" style="display: none;">
           Показать...
         </div>
-        <div class="container-image-photos">
-          
-        </div>
+        <div class="container-image-photos"></div>
         <div class="date"></div>
         <div class="iteraction-section">
           <div class="likes-container">
@@ -40,7 +38,7 @@ async function containerPost(postId: any) {
 export async function containerMediaPost(postId: any) {
   const propertiesPost: any = await getUrlFiles(postId);
   let arrayMedia: any = [];
-  console.log(propertiesPost)
+  console.log(propertiesPost);
   if (propertiesPost.mediaContent.length <= 0) return;
   for (const content of propertiesPost.mediaContent) {
     const url: any = content.mediaURL;
@@ -50,7 +48,7 @@ export async function containerMediaPost(postId: any) {
       // const file = await getMediaFiles(url);
       const response = await fetch("/" + url);
       // const file = await response.blob();
-      
+
       const containerFile = <img class={response}></img>;
       // const div: any = renderTo(containerFile);
       arrayMedia.push(containerFile);
@@ -60,6 +58,6 @@ export async function containerMediaPost(postId: any) {
   }
   // console.log(arrayMedia);
   // return `<div>${arrayMedia.join('')}</div>`
-  return arrayMedia
+  return arrayMedia;
 }
 export { containerPost };

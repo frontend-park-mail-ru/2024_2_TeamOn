@@ -406,17 +406,15 @@ async function renderPopularPosts(popularPosts: any) {
     const containerMedia: any = await containerMediaPost(post.postId);
     if (containerMedia) {
       let arrayMedia: any = [];
-      containerMedia.forEach( (media: any) => {
+      containerMedia.forEach((media: any) => {
         const divMedia = renderTo(media);
         arrayMedia.push(divMedia);
-      })
+      });
       const place: any = div.querySelector(`.container-image-photos`);
       place.append(...arrayMedia);
-      
-
     }
     return div;
-  })
+  });
 
   const posts = await Promise.all(postsPromises);
   return posts;
@@ -439,7 +437,7 @@ async function renderPopularPosts(popularPosts: any) {
 //     const place: any = div.querySelector(`.container-image-photos`);
 //     place.append(...arrayMedia);
 
-//     return div; 
+//     return div;
 
 //   });
 //   const posts = await Promise.all(postsPromises);

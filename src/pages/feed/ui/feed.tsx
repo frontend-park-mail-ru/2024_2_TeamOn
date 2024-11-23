@@ -4,7 +4,7 @@ import {
 } from "../../../widgest/feed/index";
 import { getAccount } from "../../../features/getAccount/getAccount";
 import { Sidebar } from "../../../shared/sidebar/sidebar";
-
+import { renderRating } from "../../../entities/rating/index";
 import * as VDom from "vdom";
 
 async function renderFeedForm() {
