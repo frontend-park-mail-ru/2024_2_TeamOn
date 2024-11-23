@@ -20,7 +20,7 @@ async function renderPosts(authorPosts: any[]) {
     const containerMedia: any = await containerMediaPost(post.postId);
     if (containerMedia) {
       let arrayMedia: any = [];
-      containerMedia.forEach((media: any) => {
+      containerMedia[0].forEach((media: any) => {
         const divMedia = renderTo(media);
         arrayMedia.push(divMedia);
       });

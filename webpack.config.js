@@ -118,6 +118,8 @@ module.exports = {
           "^/api/posts/post": "/post",
           "^/api/posts/delete/post/(.*)": "/delete/post/$1",
           "^/api/posts/author/post/(.*)": "/author/post/$1",
+          "^/api/posts/post/media/(.*)": "/post/media/$1",
+
           // "^/api/posts/static/(.*)": "/static/$1",
           // "^/api/posts/(.*)": "/$1",
         },

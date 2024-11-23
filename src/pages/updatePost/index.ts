@@ -8,9 +8,13 @@ import DOMPurify from "dompurify";
 import { addUserPost, editPost } from "../../entities/userPost";
 import { uploadMediaFiles } from "../../features/uploadMediaFiles/uploadMediaFiles";
 import { getUserPosts } from "../../features/getuserposts/getUserPosts";
-import { containerMediaPost, fetchFileFromImage } from "../../widgest/feed/ui/post/post";
+import {
+  containerMediaPost,
+  fetchFileFromImage,
+} from "../../widgest/feed/ui/post/post";
 import { controlSlideShow } from "../../features/paginateFeed/paginateFeed";
 import { base64ToFile } from "../../shared/base64ToFile/base64ToFile";
+import { deleteMediaInPost } from "./api/api";
 
 async function mofireUpdatePost() {
   const currentPost: any = state.currentPostId;
@@ -32,8 +36,9 @@ async function mofireUpdatePost() {
   const containerMedia: any = await containerMediaPost(currentPost.postId);
   if (containerMedia) {
     let arrayMedia: any = [];
-    containerMedia.forEach(async (media: any, index: number) => {
+    containerMedia[0].forEach(async (media: any, index: number) => {
       const divMedia = renderTo(media);
+      console.log(media)
       const fileDiv = document.createElement("div");
       fileDiv.className = "file-preview";
       fileDiv.style.display = "flex";
@@ -54,12 +59,13 @@ async function mofireUpdatePost() {
       removeButton.style.cursor = "pointer";
       removeButton.style.borderRadius = "3px";
       fileDiv.append(removeButton);
-      removeButton.addEventListener("click", () => {
+      removeButton.addEventListener("click", async () => {
         fileDiv.remove();
+        const response = await deleteMediaInPost(currentPost.postId, containerMedia[1][index] )
         selectedFiles = selectedFiles.filter((file) => file !== media.file);
       });
-      const file = await fetchFileFromImage(currentPost.postId);
-      selectedFiles.push(file); // Предполагается, что media.file содержит информацию о файле
+      // const file = await fetchFileFromImage(currentPost.postId);
+      // selectedFiles.push(file); // Предполагается, что media.file содержит информацию о файле
 
       arrayMedia.push(fileDiv);
     });
@@ -156,14 +162,13 @@ async function mofireUpdatePost() {
         (file) => !validFiles.includes(file),
       );
 
-      previewContainer.innerHTML = "";
+      // previewContainer.innerHTML = "";
       let loadedFilesCount = 0;
 
       // Добавляем валидные файлы в массив selectedFiles, исключая дубликаты
       validFiles.forEach((file) => {
         if (!selectedFiles.includes(file)) {
           selectedFiles.push(file);
-          console.log(file, "normfile");
         }
       });
 
