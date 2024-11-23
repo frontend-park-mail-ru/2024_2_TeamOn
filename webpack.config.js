@@ -134,6 +134,19 @@ module.exports = {
           "^/api/tech/subscription/(.*)/custom": "/subscription/$1/custom",
         },
       },
+      {
+        context: "/api/csat",
+        target: "http://localhost:8086",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api/csat/token-endpoint": "/token-endpoint",
+
+          "^/api/csat/result/(.*)": "/csat/result/$1",
+          "^/api/csat/check": "/csat/check",
+          "^/api/csat/question": "/csat/question",
+          "^/api/csat/table": "/csat/table",
+        },
+      },
     ],
   },
 };

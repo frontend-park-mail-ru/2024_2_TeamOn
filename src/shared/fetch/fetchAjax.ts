@@ -57,6 +57,15 @@ async function getCSRFTokenForAuthor() {
   return data;
 }
 /**
+ * Функция получения токена к сервису "автор"
+ * @returns
+ */
+async function getCSRFTokenForCSAT() {
+  const response = await fetch("/api/csat/token-endpoint");
+  const data = await response.json();
+  return data;
+}
+/**
  * Отправляет запрос AJAX с помощью Fetch API с включенным CORS.
  * @param {*} method    HTTP-метод
  * @param {*} url       URL, на который отправляется запрос
@@ -89,6 +98,8 @@ export async function fetchAjax(
     } else if (url.startsWith("/api/danya")) {
       csrfToken = await getCSRFTokenForAuthor();
     } else if (url.startsWith("/api/tech")) {
+      csrfToken = await getCSRFTokenForAccounts();
+    } else if (url.startsWith("/api/csat")) {
       csrfToken = await getCSRFTokenForAccounts();
     }
 
