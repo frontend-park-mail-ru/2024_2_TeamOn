@@ -3,7 +3,7 @@ import {
   renderModalRequestCustomSubs,
   renderModalRealizeCustomSubs,
 } from "./ui/ui";
-import { addCustomSubs, requestPay } from "./api/api";
+import { addCustomSubs, requestPay, realizePay } from "./api/api";
 
 export {
   renderModalAddCustomSubs,
@@ -11,4 +11,5 @@ export {
   renderModalRequestCustomSubs,
   requestPay,
   renderModalRealizeCustomSubs,
+  realizePay,
 };

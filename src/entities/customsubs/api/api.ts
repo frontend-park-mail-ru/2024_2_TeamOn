@@ -42,7 +42,9 @@ async function requestPay(authorId: any, monthCount: any, layer: any) {
       { authorId: authorId, monthCount: monthCount, layer: layer },
       (response) => {
         if (response.ok) {
-          resolve(true);
+          response.json().then((data: any) => {
+            resolve(data);
+          });
         } else if (response.status === 400) {
           reject(new Error("getCustomSubscription: 400 "));
         } else {
@@ -54,4 +56,31 @@ async function requestPay(authorId: any, monthCount: any, layer: any) {
   });
 }
 
-export { addCustomSubs, requestPay };
+/**
+ * Функция добавления кастомных подписок
+ * @param offsetPopular Оффсет для популярных постов
+ * @returns
+ */
+async function realizePay(subscriptionRequestID: any) {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "POST",
+      `/api/danya/subscription/realize`,
+      { subscriptionRequestID: subscriptionRequestID },
+      (response) => {
+        if (response.ok) {
+          resolve(true);
+        } else if (response.status === 400) {
+          reject(new Error("getCustomSubscription: 400 "));
+        } else {
+          // reject(new Error("Внутреняя ошибка сервера"));
+          response.json().then((data: any) => {
+            resolve(data);
+          });
+        }
+      },
+    );
+  });
+}
+
+export { addCustomSubs, requestPay, realizePay };

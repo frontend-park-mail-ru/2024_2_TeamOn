@@ -8,11 +8,9 @@ import { renderRating } from "../../../entities/rating/index";
 import * as VDom from "vdom";
 
 async function renderFeedForm() {
-  const userdata = await getAccount();
-
   return (
     <div class="main-content">
-      {await Sidebar(userdata)}
+      {await Sidebar()}
       <div class="right-content">
         <div class="tabs feed">
           <a class="active"> Популярное </a>

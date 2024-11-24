@@ -1,4 +1,4 @@
-import { ELEMENTS_CLASS, QUERY } from "../../shared/consts/consts";
+import { ELEMENTS_CLASS, LINKS, QUERY } from "../../shared/consts/consts";
 import { getPopularPosts } from "../getPopularPosts/getPopularPosts";
 import { getRecentlyPosts } from "../getRecentlyPosts/getRecentlyPosts";
 import { containerPost } from "../../widgest/feed";
@@ -8,6 +8,7 @@ import { convertISOToRussianDate } from "../../shared/utils/parsedate";
 import { route } from "../../shared/routing/routing";
 import { getAvatar } from "../getavatar/getavatar";
 import { containerMediaPost } from "../../widgest/feed/ui/post/post";
+import { hasLogged } from "../../shared/utils/hasLogged";
 
 export function controlSlideShow(container: any, rightContainer: any) {
   const divPhotos = container.querySelector(`.container-image-photos`);
@@ -33,7 +34,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
   var currentIndex = 0;
 
   const updateImage = (currentIndex: any) => {
-    if (!imageModal) return;
+    if (!imageModal || imgPhotos.length == 0) return;
     imageModal.src = imgPhotos[currentIndex].src;
   };
 
@@ -309,8 +310,11 @@ async function customizePost(container: any, post: any = null) {
     const divLike: any = container.querySelector(
       `.${ELEMENTS_CLASS.POST.LIKES.BLOCK}`,
     );
-
     divLike.addEventListener("click", async () => {
+      if (!hasLogged()) {
+        route(LINKS.LOGIN.HREF);
+        return;
+      }
       if (post.isLiked) {
         // Удалить лайк
         const likeCount: any = await AddLikeOnPost(post.postId);
@@ -327,6 +331,7 @@ async function customizePost(container: any, post: any = null) {
       amountLike.innerHTML = `${post.likes}`; // Обновляем отображаемое количество лайков
     });
   }
+
   const rightContainer = document.querySelector(`.right-content`);
   controlSlideShow(container, rightContainer);
 }

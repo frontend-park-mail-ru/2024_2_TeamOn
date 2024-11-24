@@ -53,16 +53,13 @@ async function renderUserStats(user: any, payments: any = null) {
   const amountPosts: any = posts.length;
   const subscriptions: any =
     user.subscriptions.length === null ? 0 : user.subscriptions.length;
-
   return (
     <div class="stats">
       <p style="font-weight: bold; font-size: 26px">{user.authorUsername}</p>
       <p class="amount-subs"></p>
-      <p>Подписки {subscriptions}</p>
-      <p>
-        Подписчики {createText(user.followers === null ? 0 : user.followers)}
-      </p>
-      <p>Посты {createText(amountPosts)}</p>
+      <p>Подписки {String(subscriptions)}</p>
+      <p>Подписчики {String(user.followers === null ? 0 : user.followers)}</p>
+      <p>Посты {String(amountPosts)}</p>
     </div>
   );
 }

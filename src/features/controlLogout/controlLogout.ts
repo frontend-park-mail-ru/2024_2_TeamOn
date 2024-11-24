@@ -1,3 +1,4 @@
+import { hasLogged } from "../../shared/utils/hasLogged";
 import { ELEMENTS_CLASS, LINKS } from "../../shared/consts/consts";
 import { route } from "../../shared/routing/routing";
 import { removeItemLocalStorage } from "../../shared/utils/storages";
@@ -8,15 +9,17 @@ import { removeItemLocalStorage } from "../../shared/utils/storages";
  * @param authorData Информация об авторе
  */
 function controlLogout(container: any, authorData: any) {
-  const logoutbutton = container.querySelector(
-    `.${ELEMENTS_CLASS.LOGOUT.BLOCK}`,
-  );
-  logoutbutton.addEventListener("click", (event: any) => {
-    event.preventDefault();
-    removeItemLocalStorage(authorData.username);
-    sessionStorage.clear();
-    route(LINKS.HOME.HREF);
-  });
+  if (hasLogged()) {
+    const logoutbutton = container.querySelector(
+      `.${ELEMENTS_CLASS.LOGOUT.BLOCK}`,
+    );
+    logoutbutton.addEventListener("click", (event: any) => {
+      event.preventDefault();
+      removeItemLocalStorage(authorData.username);
+      sessionStorage.clear();
+      route(LINKS.HOME.HREF);
+    });
+  }
 }
 
 export { controlLogout };

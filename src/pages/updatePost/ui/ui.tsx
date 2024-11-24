@@ -39,10 +39,9 @@ import * as VDom from "vdom";
 import { Sidebar } from "../../../shared/sidebar/sidebar";
 import { getAccount } from "../../../features/getAccount/getAccount";
 async function containerUpdatePost() {
-  const userdata = await getAccount();
   return (
     <div class="main-content">
-      {await Sidebar(userdata)}
+      {await Sidebar()}
       <div class="container-updatepost">
         <div class="post-container-updatepost">
           <h1>Редактирование поста</h1>

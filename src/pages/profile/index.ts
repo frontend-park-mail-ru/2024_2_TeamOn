@@ -1,4 +1,4 @@
-import { state } from "../../shared/consts/consts";
+import { LINKS, state } from "../../shared/consts/consts";
 import { getAccount } from "../../features/getAccount/getAccount";
 import { renderAbout } from "../../entities/profileabout/index";
 import { renderTo, update } from "../../../lib/vdom/lib";
@@ -34,6 +34,8 @@ import {
   renderContainerSubs,
 } from "../../features/subscriptionsList/subcriptionsList";
 import { renderContainersLayer } from "../../entities/customsubs/ui/ui";
+import { hasLogged } from "../../shared/utils/hasLogged";
+import { route } from "../../shared/routing/routing";
 
 async function controlCustomSubscriptions(container: any) {
   if (window.location.pathname !== "/profile") return;
@@ -167,8 +169,14 @@ export async function controlBecomeCreator(div: any) {
   } else {
     div.style.display = "none";
   }
-
+  if (!hasLogged()) {
+    div.style.display = "block";
+  }
   const handleClick = async () => {
+    if (!hasLogged()) {
+      route(LINKS.LOGIN.HREF);
+      return;
+    }
     const setrole = await setAuthor();
 
     // Запускаем анимацию
@@ -196,8 +204,9 @@ export async function renderProfile() {
   try {
     const posts: any = [];
     const subcriptions: any = [];
-    // const authorData: any = await getPageAuthor(window.location.pathname);
-    const authorData: any = {authorUsername: "alesha"}
+    const authorData: any = await getPageAuthor(window.location.pathname);
+
+    // const authorData: any = {authorUsername: "alesha"}
     const avatar: any = await getAvatar(
       window.location.pathname,
       sessionStorage.getItem("authorid"),

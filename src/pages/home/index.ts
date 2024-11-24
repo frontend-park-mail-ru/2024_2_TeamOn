@@ -18,6 +18,7 @@ import { showSearch } from "../../entities/searchbar/index";
  * Обработка домашней страницы
  */
 export function renderHome() {
+  sessionStorage.clear();
   if (hasLogged()) {
     route(LINKS.FEED.HREF);
   } else {

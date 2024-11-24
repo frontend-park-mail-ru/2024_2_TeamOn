@@ -4,7 +4,6 @@
 
 import { renderSearchbar } from "./ui/ui";
 import { searchAuthor } from "./api/api";
-import { getAccount } from "../../features/getAccount/getAccount";
 import { findUsername } from "../../shared/utils/hasLogged";
 import {
   addItemLocalStorage,
@@ -54,29 +53,38 @@ async function showSearch(container: any) {
         results.style.display = "block";
         results.innerHTML = "";
         authors.forEach(async (author: any) => {
-          // const user: any = await getPageAuthor(
-          //   window.location.pathname,
-          //   author,
-          // );
-          const user = {authorUsername: "alesha"}
+          const user: any = await getPageAuthor(
+            window.location.pathname,
+            author,
+          );
+          // const user = { authorUsername: "author_5",
+          //   followers
+          //   :
+          //   5,
+          //   info
+          //   :
+          //   "Страница самого крутого автора - author_5",
+          //   isSubscribe
+          //   :
+          //   false,
+          //   subscriptions
+          //   :
+          //   []};
           const authorElement = document.createElement("div");
           authorElement.classList.add("result-item");
           authorElement.textContent = user.authorUsername;
 
           const avatarImage = document.createElement("img");
 
-          // const avatarload: any = await getAvatar(
-          //   window.location.pathname,
-          //   author,
-          // );
-          // avatarImage.src = avatarload;
-          // avatarImage.height = 50;
-          // avatarImage.width = 50;
+          const avatarload: any = await getAvatar(
+            window.location.pathname,
+            author,
+          );
+          avatarImage.src = avatarload;
+          avatarImage.height = 50;
+          avatarImage.width = 50;
 
           authorElement.addEventListener("click", async () => {
-            alert("da")
-            // await routeToAuthorPage();
-            // addItemLocalStorage(user.authorUsername);
             sessionStorage.setItem("authorid", author);
             sessionStorage.setItem("author", user.authorUsername);
             sessionStorage.getItem("account") == user.authorUsername
@@ -93,18 +101,4 @@ async function showSearch(container: any) {
   });
 }
 
-async function routeToAuthorPage() {
-  try {
-    const getAuthor = await getAccount();
-    if (getAuthor) {
-      console.log("Пользователь", getAccount);
-    }
-  } catch (error) {
-    const name = findUsername();
-    if (name) {
-      removeItemLocalStorage(name);
-    }
-  }
-  //route()
-}
 export { renderSearchbar, showSearch };

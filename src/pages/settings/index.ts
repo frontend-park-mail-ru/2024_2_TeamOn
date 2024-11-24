@@ -20,6 +20,7 @@ import { settingsContainer } from "./ui/settings";
 import { getAvatar } from "../../features/getavatar/getavatar";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { renderStatics, renderTableTitle } from "../statistics/ui/ui";
+import { hasLogged } from "../../shared/utils/hasLogged";
 /**
  * Рендер настроек
  * @returns
@@ -42,8 +43,9 @@ export async function renderSettings() {
     const contentContainer = container.querySelector(`.content-container`);
 
     modifierSidebar(mainContent);
-
-    controlLogout(container, user);
+    if (hasLogged()) {
+      controlLogout(container, user);
+    }
 
     setupTabs(tabs, contentContainer, userdata);
     const index: any = sessionStorage.getItem("settings");
