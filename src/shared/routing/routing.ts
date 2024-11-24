@@ -63,7 +63,7 @@ function updatePageContent(render: string): void {
       LINKS.UPDATE_POST.HREF,
     ].includes(render)
   ) {
-    if (nonauth()) return;
+    // if (nonauth()) return;
     const pageMap: Record<string, keyof MenuElements> = {
       [LINKS.FEED.HREF]: "feed",
       [LINKS.PROFILE.HREF]: "profile",

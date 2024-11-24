@@ -8,7 +8,6 @@ import { convertISOToRussianDate } from "../../shared/utils/parsedate";
 import { route } from "../../shared/routing/routing";
 import { getAvatar } from "../getavatar/getavatar";
 import { containerMediaPost } from "../../widgest/feed/ui/post/post";
-import { controlEventIFrame } from "../../pages/feed";
 
 export function controlSlideShow(container: any, rightContainer: any) {
   const divPhotos = container.querySelector(`.container-image-photos`);
@@ -553,9 +552,6 @@ async function paginate(
   // Обработчик события прокрутки
   window.addEventListener("scroll", async () => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-    // setTimeout(() => {
-    //   controlEventIFrame();
-    // }, 60_000);
     // Проверяем, достиг ли пользователь нижней части страницы
     if (scrollTop + clientHeight >= scrollHeight - 500) {
       await loadPosts();

@@ -31,8 +31,8 @@ async function showSearch(container: any) {
     searchInput.classList.add("feed");
     results.classList.add("feed");
   } else {
-    feedButton.style.display = "none";
-    containerSearchbar.style.display = "none";
+    // feedButton.style.display = "none";
+    // containerSearchbar.style.display = "none";
     results.classList.add("home");
   }
   closeBtn.addEventListener("click", () => {
@@ -54,25 +54,27 @@ async function showSearch(container: any) {
         results.style.display = "block";
         results.innerHTML = "";
         authors.forEach(async (author: any) => {
-          const user: any = await getPageAuthor(
-            window.location.pathname,
-            author,
-          );
+          // const user: any = await getPageAuthor(
+          //   window.location.pathname,
+          //   author,
+          // );
+          const user = {authorUsername: "alesha"}
           const authorElement = document.createElement("div");
           authorElement.classList.add("result-item");
           authorElement.textContent = user.authorUsername;
 
           const avatarImage = document.createElement("img");
 
-          const avatarload: any = await getAvatar(
-            window.location.pathname,
-            author,
-          );
-          avatarImage.src = avatarload;
-          avatarImage.height = 50;
-          avatarImage.width = 50;
+          // const avatarload: any = await getAvatar(
+          //   window.location.pathname,
+          //   author,
+          // );
+          // avatarImage.src = avatarload;
+          // avatarImage.height = 50;
+          // avatarImage.width = 50;
 
           authorElement.addEventListener("click", async () => {
+            alert("da")
             // await routeToAuthorPage();
             // addItemLocalStorage(user.authorUsername);
             sessionStorage.setItem("authorid", author);
