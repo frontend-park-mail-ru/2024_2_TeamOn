@@ -19,10 +19,9 @@ function containerLayer(layer: any) {
 }
 
 async function containerCreatePost() {
-  const userdata = await getAccount();
   return (
     <div class="main-content">
-      {await Sidebar(userdata)}
+      {await Sidebar()}
       <div class="container-createpost">
         <div class="post-container-createpost">
           <h1>Добавление поста</h1>

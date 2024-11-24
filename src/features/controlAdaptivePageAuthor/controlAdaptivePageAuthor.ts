@@ -22,6 +22,7 @@ import { following } from "../../entities/profileInfo";
 import { route } from "../../shared/routing/routing";
 import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 import { controlSlideShow } from "../paginateFeed/paginateFeed";
+import { hasLogged } from "../../shared/utils/hasLogged";
 
 /**
  * Управление адаптивностью на странице автора
@@ -49,6 +50,10 @@ async function controlAdaptivePageAuthors(
     // const buttonSubs: any = document.querySelector(`.follow`);
 
     buttonTip.addEventListener("click", () => {
+      if ( !hasLogged()) {
+        route(LINKS.LOGIN.HREF);
+        return;
+      }
       const place = document.querySelector(`.div-send-tip`);
       const modal: any = renderTip();
       update(place, modal);
@@ -84,7 +89,8 @@ async function controlAdaptivePageAuthors(
           return;
         }
 
-        const cost = parseInt(sanitizedCost, 10);
+        // const cost = parseInt(sanitizedCost, 10);
+        const cost = Number(sanitizedCost)
         if (cost < 360) {
           const input = containerTip.querySelectorAll(`.form-group`)[1];
           const error = input.querySelector("p");
@@ -95,12 +101,22 @@ async function controlAdaptivePageAuthors(
             input.appendChild(error);
           }
           return;
+        } else if (!cost) {
+          const input = containerTip.querySelectorAll(`.form-group`)[1];
+          const error = input.querySelector("p");
+          if (!error) {
+            const error = document.createElement("p");
+            error.style.color = "red";
+            error.textContent = "Введите сумму корректно";
+            input.appendChild(error);
+          }
+          return;
         }
 
         const userposts: any = await getUserPosts(window.location.pathname, 0);
         const ok = await sendTip(userposts[0].authorId, {
           sanitizedMessage,
-          sanitizedCost,
+          cost,
         });
         containerTip.style.display = "none";
         profileForm.classList.remove("blur");
@@ -380,6 +396,7 @@ async function modifierModalDeletePost(
     const placeStats: any = document.querySelector(`.stats`);
     const payments: any = await getPayments(window.location.pathname);
     const authorData: any = await getPageAuthor(window.location.pathname);
+    console.log(authorData);
     const arrayStats: VNode = await renderUserStats(authorData, payments);
     update(placeStats, arrayStats);
     return;

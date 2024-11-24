@@ -1,97 +1,20 @@
 import {
-  renderModalAddCustomSubs,
+  realizePay,
   renderModalRealizeCustomSubs,
   renderModalRequestCustomSubs,
   requestPay,
 } from "../../entities/customsubs";
 import { getCustomSubscription } from "../getCustomSubs/getCustomSubs";
-import { getSubsLayer } from "../getSubsLayer/getSubsLayer";
 import {
   containerCustomSubscribe,
   containerNoneCustomSubcsribe,
 } from "../../widgest/profile/ui/profileform/profileform";
 import { renderTo, update } from "../../../lib/vdom/lib";
-import { renderContainerAddCustomSubs } from "../../pages/profile/ui/profile";
 import { route } from "../../shared/routing/routing";
 import { renderModalStatusUpload } from "../../shared/pushstatus/pushstatus";
+import { hasLogged } from "../../shared/utils/hasLogged";
+import { LINKS } from "../../shared/consts/consts";
 
-// function modifireModalConfirmSubscription(
-//   profileForm: any,
-//   container: any,
-//   subscription: any,
-// ) {
-//   const modal: any = renderModalRequestCustomSubs(subscription);
-//   const div: any = document.querySelector(`.div-confirmsubs`);
-//   update(div, modal);
-//   const modalConfirm: any = div.querySelector(`.modal__confirmsubs`);
-//   profileForm.classList.add("blur");
-//   modalConfirm.style.display = "block";
-
-//   let selectedDuration: number = 1;
-//   const subscriptionSelect: HTMLSelectElement = modalConfirm.querySelector(
-//     `#subscription-duration`,
-//   );
-
-//   subscriptionSelect.addEventListener("change", (event: any) => {
-//     selectedDuration = Number(event.target.value);
-//   });
-
-//   const handleClick = async (event: any) => {
-//     modalConfirm.removeEventListener("click", handleClick);
-//     if (event.target.classList.contains("cancel")) {
-//       modalConfirm.style.display = "none";
-//       profileForm.classList.remove("blur");
-//       return;
-//     }
-
-//     if (event.target.classList.contains("save")) {
-//       const authorId: any = sessionStorage.getItem("authorid");
-//       const valueRequest: any = await requestPay(
-//         authorId,
-//         selectedDuration,
-//         subscription.layer,
-//       );
-//       const newUrl = `/profile/${authorId}?act=payments`;
-//       window.history.pushState({ path: newUrl }, "", newUrl);
-//       const authorPayRegex = /^\/profile\/[0-9a-zA-Z-]+$/;
-//       const queryRegex = /^\?act=payments$/;
-
-//       if (
-//         authorPayRegex.test(window.location.pathname) &&
-//         queryRegex.test(window.location.search)
-//       ) {
-
-//         const modal: any = renderModalRealizeCustomSubs(subscription);
-//         update(div, modal);
-//         const modalRealize: any = div.querySelector(`.modal__confirmsubs`);
-//         const pushback: any = modalRealize.querySelector(`.pushback`);
-//         pushback.style.display = "block";
-
-//         // // Обработчик для кнопки pushback
-//         pushback.addEventListener("click", () => {
-//           const newUrl = `/profile/${authorId}`;
-//           window.history.pushState({ path: newUrl }, "", newUrl);
-//         });
-//         const buttonCancel = modalRealize.querySelector(`.cancel`);
-//         buttonCancel.addEventListener("click", ()=> {
-//           modalRealize.style.display = "none";
-//           profileForm.classList.remove("blur");
-//           const newUrl = `/profile/${authorId}`;
-//           window.history.pushState({ path: newUrl }, "", newUrl);
-//           return;
-//         })
-//         profileForm.classList.add("blur");
-//         modalRealize.style.display = "block";
-
-//         modalConfirm.addEventListener("click", handleClick);
-//       }
-//     }
-//   }
-//   // Используем делегирование событий
-//   modalConfirm.addEventListener("click", handleClick);
-
-//   console.log(subscription);
-// }
 function foundCancel(div: any) {
   const buttonCancel: any = div.querySelector(`.cancel`);
   return buttonCancel;
@@ -118,6 +41,8 @@ function modifireModalConfirmSubscription(
   container: any,
   subscription: any,
 ) {
+  let subscriptionRequestID: any = 0;
+
   console.log(subscription);
   let pagenumber = true;
   const authorId: any = sessionStorage.getItem("authorid");
@@ -136,44 +61,28 @@ function modifireModalConfirmSubscription(
   const subscriptionSelect: HTMLSelectElement = modalConfirm.querySelector(
     `#subscription-duration`,
   );
-  const handleClickPayment = () => {
+  const handleClickPayment = async () => {
+    const response: any = await realizePay(subscriptionRequestID)
+    if (!response || response.message) {
+      const modalConfirmNew: any = div.querySelector(`.modal__confirmsubs`);
+      const input = modalConfirmNew.querySelectorAll(`.form-group`);
+      const error = input[input.length - 1].querySelector("p");
+      if (!error) {
+        const error = document.createElement("p");
+        error.style.color = "red";
+        error.textContent = "Ошибка оплаты";
+        input[input.length - 1].appendChild(error);
+        console.log(input)
+      }
+      return;
+    }
     const media = "Оплата успешно проведена";
     renderModalStatusUpload(true, media);
-    // modalConfirm.style.display = "none";
-    // profileForm.classList.remove("blur");
+    modalConfirm.style.display = "none";
+    profileForm.classList.remove("blur");
     const newUrl = `/profile/${authorId}`;
     window.history.pushState({ path: newUrl }, "", newUrl);
   };
-
-  //   const handleClickPayment = () => {
-  //     const successMessage: any = document.querySelector(`.push-modal`);
-  //     // const successMessage: any = document.getElementById("successMessage");
-  //     successMessage.style.display = "block";
-
-  //     // Устанавливаем начальное сообщение
-  //     let countdown = 5;
-  //     successMessage.innerHTML = `Оплата успешно проведена, вернем вас на окно профиля через ${countdown}...`;
-
-  //     // Запускаем анимацию
-  //     successMessage.style.animation = "scroll-message 0.5s ease-in-out";
-
-  //     // Устанавливаем интервал для обратного отсчета
-  //     const interval = setInterval(() => {
-  //         countdown--;
-  //         if (countdown > 0) {
-  //             successMessage.innerHTML = `Оплата успешно проведена, вернем вас на окно профиля через ${countdown}...`;
-  //         } else {
-  //             clearInterval(interval); // Останавливаем интервал
-  //             // Скрываем сообщение через 1 секунду после завершения отсчета
-  //             setTimeout(() => {
-  //                 successMessage.style.display = "none";
-  //             }, 1000);
-  //         }
-  //     }, 1000); // Интервал 1 секунда
-
-  //     const newUrl = `/profile/${authorId}`;
-  //     window.history.pushState({ path: newUrl }, "", newUrl);
-  // };
 
   const handleChange = (event: any) => {
     selectedDuration = Number(event.target.value);
@@ -208,12 +117,22 @@ function modifireModalConfirmSubscription(
     buttonSave.removeEventListener("click", handleClickSave);
 
     if (window.location.pathname === `/profile/${authorId}`) {
-      const valueRequest: any = await requestPay(
+      subscriptionRequestID = await requestPay(
         authorId,
         selectedDuration,
         Number(subscription.layer),
       );
-      alert("handleClickSave");
+      if (!subscriptionRequestID || subscriptionRequestID.message) {
+        const input = modalConfirm.querySelectorAll(`.form-group`)[1];
+        const error = input.querySelector("p");
+        if (!error) {
+          const error = document.createElement("p");
+          error.style.color = "red";
+          error.textContent = "Ошибка. Поля не могут быть пустыми";
+          input.appendChild(error);
+        }
+        return;
+      }
       const newUrl = `/profile/${authorId}?act=payments`;
       window.history.pushState({ path: newUrl }, "", newUrl);
 
@@ -292,6 +211,9 @@ function customizeSubscription(container: any, subscription: any) {
   const profileForm: any = document.querySelector(`.profile-form`);
 
   buttonSubscription.addEventListener(`click`, () => {
+    if (!hasLogged()) {
+      route(LINKS.LOGIN.HREF);
+    }
     modifireModalConfirmSubscription(profileForm, container, subscription);
   });
 }

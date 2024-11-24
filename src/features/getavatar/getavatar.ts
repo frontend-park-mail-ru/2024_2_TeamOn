@@ -26,6 +26,20 @@ export async function getAvatar(link: string, authorID: any = null) {
           );
         } else {
           reject(new Error("Ответ от фетча с ошибкой"));
+          // const wdata = { authorUsername: "author_5",
+          //   followers
+          //   : 
+          //   5,
+          //   info
+          //   : 
+          //   "Страница самого крутого автора - author_5",
+          //   isSubscribe
+          //   : 
+          //   false,
+          //   subscriptions
+          //   : 
+          //   []};
+          // resolve(wdata);
         }
       },
     );

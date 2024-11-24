@@ -9,6 +9,7 @@ import { controlActiveLink } from "../../features/controlActiveLink/controlActiv
 import { renderRating } from "../../entities/rating";
 import { addResult, checkShowIFrame, getQuestion } from "../settings";
 import { showSearch } from "../../entities/searchbar";
+import { hasLogged } from "../../shared/utils/hasLogged";
 
 async function controlEventIFrame(container: any = pageContainer) {
   const flag: any = await checkShowIFrame();
@@ -79,7 +80,6 @@ export async function renderFeed() {
     state.currentUser = user;
 
     showSearch(container);
-    
 
     const tabs = container.querySelector(".tabs");
 
@@ -97,8 +97,10 @@ export async function renderFeed() {
     if (mainContent) {
       modifierSidebar(mainContent);
     }
+    if ( hasLogged()) {
+      controlLogout(container, user);
 
-    controlLogout(container, user);
+    }
 
     await paginate(
       allPopularPosts,

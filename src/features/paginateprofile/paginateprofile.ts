@@ -88,6 +88,7 @@ async function paginateProfile(allPosts: any, containerPosts: any) {
     popular: [],
     recently: [],
   };
+
   /**
    * Загрузка постов в профиле
    * @returns
@@ -100,6 +101,7 @@ async function paginateProfile(allPosts: any, containerPosts: any) {
       if (!stopLoad) {
         // Загружаем популярные посты
         const posts: any = await getUserPosts(window.location.pathname, offset);
+
         const nextPosts = posts.slice(0, QUERY.LIMIT);
         if (nextPosts.length > 0) {
           allPosts.push(...nextPosts);

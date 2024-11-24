@@ -28,7 +28,7 @@ export async function profileContent(
 ) {
   return (
     <div class="main-content">
-      {await Sidebar(userdata)}
+      {await Sidebar()}
       {await profileForm(authorData, avatar, background, payments)}
       <div class="modal-view-photos" style="display: none; z-index=10101010">
         <div class="close-modal-view"></div>

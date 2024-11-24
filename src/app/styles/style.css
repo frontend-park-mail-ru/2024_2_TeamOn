@@ -927,6 +927,7 @@ form input[type=text]:focus {
   .center-column-profile {
     width: 100%;
     max-width: none;
+    margin-left: 0;
   }
   .header-profile {
     display: none;
