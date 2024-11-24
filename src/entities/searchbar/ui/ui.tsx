@@ -1,6 +1,7 @@
 import * as VDom from "vdom";
 import { ELEMENTS_CLASS, LINKS } from "../../../shared/consts/consts";
-import { resSearch } from "../index"; // Импортируем функцию, которую хотите использовать
+
+//import { resSearch } from "../index"; // Импортируем функцию, которую хотите использовать
 
 /**
  * Функция рендера серчбара
@@ -10,25 +11,25 @@ function renderSearchbar() {
   const isFeedPage = window.location.pathname === LINKS.FEED.HREF;
 
   // Создаем контейнер с поисковым полем
-  const searchbar = (
-    <div
-      className={`searchbar-container ${isFeedPage ? "feed-search" : "home-search"}`}
-    >
+  return (
+    <div className="searchbar-container">
       <div class="searchbar-wrapper">
-        <i class="fas fa-search searchbar-icon searchbar-icon--left"></i>
+        <button class="fas fa-search searchbar-icon searchbar-icon--left"></button>
         <input
           type="text"
           class="searchbar-input"
           placeholder="Найти автора"
-          oninput={resSearch}
+          id="searchInput"
         />
-        <i class="fas fa-times searchbar-icon searchbar-icon--right"></i>
-        <div class="author-dropdown" id="author-dropdown"></div>
+        <button class="fas fa-times searchbar-icon searchbar-icon--right"></button>
+        <div class="results">
+          <div class="result-item">
+            <div class="title"></div>
+          </div>
+        </div>
       </div>
     </div>
   );
-
-  return searchbar;
 }
 
 export { renderSearchbar };

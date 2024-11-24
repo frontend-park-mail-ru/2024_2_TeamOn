@@ -11,6 +11,7 @@ import {
 import { VNode } from "../../../lib/vdom/src/source";
 import { containerHome } from "./ui/home";
 
+import { showSearch } from "../../entities/searchbar/index";
 //убрать локалстораж на профиль
 
 /**
@@ -51,7 +52,7 @@ export function renderHome() {
     const homeContainer: any = container.querySelector(
       `.${ELEMENTS_CLASS.HOME.HOME_CONTAINER}`,
     ) as HTMLElement;
-
+    showSearch();
     if (window.location.pathname == LINKS.HOME.HREF) {
       // Создаем маску для выжигания
       const mask = createMask();
