@@ -553,9 +553,9 @@ async function paginate(
   // Обработчик события прокрутки
   window.addEventListener("scroll", async () => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-    setTimeout(() => {
-      controlEventIFrame();
-    }, 60_000);
+    // setTimeout(() => {
+    //   controlEventIFrame();
+    // }, 60_000);
     // Проверяем, достиг ли пользователь нижней части страницы
     if (scrollTop + clientHeight >= scrollHeight - 500) {
       await loadPosts();

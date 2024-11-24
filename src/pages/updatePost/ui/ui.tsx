@@ -96,14 +96,13 @@ async function containerUpdatePost() {
           </form>
         </div>
 
-        <div class="visibility-container-createpost">
+        {/* <div class="visibility-container-createpost">
           <h2>Кто может смотреть</h2>
           <label>
             <input type="radio" name="visibility" checked /> Только подписчики
           </label>
           <p>Выберите уровень</p>
-          {/* Выпадающий список из уровней будет тут */}
-        </div>
+        </div> */}
       </div>
       <div class="modal-view-photos" style="display: none; z-index=10101010">
         <div class="close-modal-view"></div>

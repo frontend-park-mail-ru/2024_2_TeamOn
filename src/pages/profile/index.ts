@@ -41,12 +41,15 @@ async function controlCustomSubscriptions(container: any) {
     container.querySelectorAll(`.subscription-level`);
   const profileForm: any = container.querySelector(`.profile-form`);
   const div: any = container.querySelector(`.add-customsubs`);
+  const rightColumn: any = container.querySelector(`.right-column`);
+
   if (!div) return;
 
   const currentSubs: any = await getCustomSubscription(
     window.location.pathname,
   );
   if (currentSubs.length === 3) {
+    rightColumn.style.height = "600px";
     div.style.display = "none";
     return;
   }
@@ -68,6 +71,7 @@ async function controlCustomSubscriptions(container: any) {
     const layers: any = await getSubsLayer();
     modalAddSubs.style.display = "block";
 
+    console.log(layers);
     layerList.append(...(await renderContainersLayer(layers)));
     const radioButtons: any = modalAddSubs.querySelectorAll(`.modal-layers`);
     let selectedLayer: any = 1;
@@ -93,32 +97,46 @@ async function controlCustomSubscriptions(container: any) {
     buttonCancel.addEventListener("click", handleClickCancel);
     profileForm.addEventListener("click", handleClickCancel);
 
-    buttonConfirm.addEventListener("click", async () => {
-      modalAddSubs.style.display = "none";
-      profileForm.classList.remove("blur");
+    buttonConfirm.addEventListener("click", async (e: any) => {
+      e.preventDefault();
 
+      // modalAddSubs.style.display = "none";
+      // profileForm.classList.remove("blur");
       if (
         !DOMPurify.sanitize(title.value) ||
         !DOMPurify.sanitize(cost.value) ||
         !DOMPurify.sanitize(description.value)
       ) {
-        const input = modalAddSubs.querySelector(`.form-group`);
+        const input = modalAddSubs.querySelectorAll(`.form-group`)[2];
         const error = input.querySelector("p");
         if (!error) {
           const error = document.createElement("p");
           error.style.color = "red";
-          error.textContent = "Ошибка";
+          error.textContent = "Ошибка. Поля должны быть заполнены";
           input.appendChild(error);
         }
         return;
       }
-
+      if (!Number(cost.value)) {
+        const input = modalAddSubs.querySelectorAll(`.form-group`)[2];
+        const error = input.querySelector("p");
+        if (!error) {
+          const error = document.createElement("p");
+          error.style.color = "red";
+          error.textContent = "Ошибка. Цена должна быть цифрой";
+          input.appendChild(error);
+        }
+        return;
+      }
+      // return;
       await addCustomSubs(
         title.value,
         description.value,
         Number(cost.value),
         Number(selectedLayer),
       );
+      modalAddSubs.style.display = "none";
+      profileForm.classList.remove("blur");
       const newsubs: any = await getCustomSubscription(
         window.location.pathname,
       );
@@ -249,13 +267,6 @@ export async function renderProfile() {
 
     controlCustomSubscriptions(container);
 
-    // const authorPayRegex = /^\/profile\/[0-9a-zA-Z-]+$/; // Проверка только пути
-    // const queryRegex = /^\?act=payments$/; // Проверка строки запроса
-
-    // if (authorPayRegex.test(window.location.pathname) && queryRegex.test(window.location.search)) {
-    //   await paginateSubscription(subcriptions, placeSubscriptions);
-
-    // }
     return container;
   } catch (error) {
     console.log("ERROR in profile");

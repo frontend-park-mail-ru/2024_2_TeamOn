@@ -118,10 +118,7 @@ module.exports = {
           "^/api/posts/post": "/post",
           "^/api/posts/delete/post/(.*)": "/delete/post/$1",
           "^/api/posts/author/post/(.*)": "/author/post/$1",
-          "^/api/posts/post/media/(.*)": "/post/media/$1",
-
-          // "^/api/posts/static/(.*)": "/static/$1",
-          // "^/api/posts/(.*)": "/$1",
+          "^/api/posts/post/delete/media/(.*)": "/post/delete/media/$1",
         },
       },
       {
@@ -130,7 +127,7 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           "^/api/tech/token-endpoint": "/token-endpoint",
-
+          "^/api/tech/search/(.*)": "/search/$1",
           "^/api/tech/subscription/custom": "/subscription/custom",
           "^/api/tech/subscription/layers": "/subscription/layers",
           "^/api/tech/subscription/allowed/layers":

@@ -56,7 +56,7 @@ async function deleteMediaInPost(postId: any, mediaId: any) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "DELETE",
-      `/api/posts/post/media/${postId}?mediaID=${mediaId}`,
+      `/api/posts/post/delete/media/${postId}?mediaID=${mediaId}`,
       null,
       (response) => {
         if (response.ok) {

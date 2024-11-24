@@ -6,20 +6,43 @@ import { renderSearchbar } from "./ui/ui";
 import { searchAuthor } from "./api/api";
 import { getAccount } from "../../features/getAccount/getAccount";
 import { findUsername } from "../../shared/utils/hasLogged";
-import { removeItemLocalStorage } from "../../shared/utils/storages";
-//import { route } from "src/shared/routing/routing";
+import {
+  addItemLocalStorage,
+  removeItemLocalStorage,
+} from "../../shared/utils/storages";
+import { getPageAuthor } from "../../features/getpageauthor/getpageauthor";
+import { route } from "../../shared/routing/routing";
+import { pageContainer } from "../../app";
+import { getAvatar } from "../../features/getavatar/getavatar";
 
-async function showSearch() {
-  //const search: any = document.querySelector(`.searchbar-container`);
-  const results: any = document.querySelector(`.results`);
-  const closeBtn: any = document.querySelector(`.searchbar-icon--right`);
-  const searchInput: any = document.querySelector(`.searchbar-input`);
-  const searchField: any = document.querySelector("div");
-  //const authors: any = await searchAuthor(authorName);
-  /*if (authors && authors.length > 0) {
-    results.style.display = "block";
-  }*/
+async function showSearch(container: any) {
+  const results: any = container.querySelector(`.results`);
+  const closeBtn: any = container.querySelector(`.searchbar-icon--right`);
+  const searchInput: any = container.querySelector(`.searchbar-input`);
+  const searchField: any = container.querySelector("div");
+  const containerSearchbar: any =
+    container.querySelector(`.searchbar-container`);
+  const feedButton: any = container.querySelector(`.feed-buttons`);
+
+  results.style.maxHeight = "300px";
+  results.style.overflowY = "auto";
+
+  if (window.location.pathname === "/feed") {
+    searchInput.classList.add("feed");
+    results.classList.add("feed");
+  } else {
+    feedButton.style.display = "none";
+    containerSearchbar.style.display = "none";
+    results.classList.add("home");
+  }
   closeBtn.addEventListener("click", () => {
+    searchInput.value = "";
+    results.style.display = "none";
+  });
+  pageContainer.addEventListener("click", (e: any) => {
+    if (e.target === results) {
+      return;
+    }
     searchInput.value = "";
     results.style.display = "none";
   });
@@ -30,14 +53,35 @@ async function showSearch() {
       if (authors && authors.length > 0) {
         results.style.display = "block";
         results.innerHTML = "";
-        authors.forEach((author: any) => {
+        authors.forEach(async (author: any) => {
+          const user: any = await getPageAuthor(
+            window.location.pathname,
+            author,
+          );
           const authorElement = document.createElement("div");
           authorElement.classList.add("result-item");
-          authorElement.textContent = author.username;
+          authorElement.textContent = user.authorUsername;
+
+          const avatarImage = document.createElement("img");
+
+          const avatarload: any = await getAvatar(
+            window.location.pathname,
+            author,
+          );
+          avatarImage.src = avatarload;
+          avatarImage.height = 50;
+          avatarImage.width = 50;
 
           authorElement.addEventListener("click", async () => {
-            await routeToAuthorPage();
+            // await routeToAuthorPage();
+            // addItemLocalStorage(user.authorUsername);
+            sessionStorage.setItem("authorid", author);
+            sessionStorage.setItem("author", user.authorUsername);
+            sessionStorage.getItem("account") == user.authorUsername
+              ? route(`/profile`)
+              : route(`/profile/${author}`);
           });
+          authorElement.appendChild(avatarImage);
           results.appendChild(authorElement);
         });
       } else {

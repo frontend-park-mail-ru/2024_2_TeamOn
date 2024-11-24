@@ -9,6 +9,7 @@ import { controlActiveLink } from "../../features/controlActiveLink/controlActiv
 import { renderRating } from "../../entities/rating";
 import { renderFrame } from "../../entities/rating/ui/ui";
 import { addResult, checkShowIFrame, getQuestion } from "../settings";
+import { showSearch } from "../../entities/searchbar";
 
 export async function controlEventIFrame(container: any = pageContainer) {
   const flag: any = await checkShowIFrame();
@@ -77,6 +78,8 @@ export async function renderFeed() {
     const container = update(pageContainer, vdom);
 
     state.currentUser = user;
+
+    showSearch(container);
 
     const tabs = container.querySelector(".tabs");
 

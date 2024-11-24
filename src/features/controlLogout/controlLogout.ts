@@ -14,6 +14,7 @@ function controlLogout(container: any, authorData: any) {
   logoutbutton.addEventListener("click", (event: any) => {
     event.preventDefault();
     removeItemLocalStorage(authorData.username);
+    sessionStorage.clear();
     route(LINKS.HOME.HREF);
   });
 }

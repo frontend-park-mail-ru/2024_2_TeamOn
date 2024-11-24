@@ -22,6 +22,7 @@ import { following } from "../../entities/profileInfo";
 import { route } from "../../shared/routing/routing";
 import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 import { controlSlideShow } from "../paginateFeed/paginateFeed";
+
 /**
  * Управление адаптивностью на странице автора
  * @param authorData Данные автора
@@ -43,76 +44,9 @@ async function controlAdaptivePageAuthors(
       });
     });
   }
-  /*const place = document.querySelector(`.div-create-post`);
-        //const modal: any = renderAddPost();
-        //update(place, modal);
-        const containerCreatePost =
-          container.querySelector(".modal__createpost");
-
-        const buttonCancel: any = containerCreatePost.querySelector(
-          `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
-        );
-        const buttonSave: any = containerCreatePost.querySelector(
-          `.${ELEMENTS_CLASS.SEND_TIP.BLOCK}`,
-        );
-
-        containerCreatePost.style.display = "block";
-        profileForm.classList.add("blur");
-
-        buttonCancel.addEventListener("click", () => {
-          containerCreatePost.style.display = "none";
-          profileForm.classList.remove("blur");
-          return;
-        });
-
-        buttonSave.addEventListener("click", async () => {
-          const title = container.querySelector(`.input-group`);
-          const content = container.querySelector(`.textarea-group`);
-          const containerCreatePost =
-            container.querySelector(".modal__createpost");
-          const sanitizedTitle = DOMPurify.sanitize(title.value);
-          const sanitizedContent = DOMPurify.sanitize(content.value);
-
-          if (!sanitizedTitle || !sanitizedContent) {
-            const input = containerCreatePost.querySelector(`.form-group`);
-            const error = input.querySelector("p");
-            if (!error) {
-              const error = document.createElement("p");
-              error.style.color = "red";
-              error.textContent = "Ошибка";
-              input.appendChild(error);
-            }
-            return;
-          }
-          const post: any = await addUserPost(
-            containerCreatePost,
-            sanitizedTitle,
-            sanitizedContent,
-          );
-          containerCreatePost.style.display = "none";
-          profileForm.classList.remove("blur");
-
-          const newposts: any = await getUserPosts(
-            window.location.pathname,
-            0,
-            300,
-          );
-          const place: any = profileForm.querySelector(".place-posts");
-          place.prepend(...(await renderPosts(newposts.slice(0, 1))));
-          modifireMyPosts(place, newposts.slice(0, 1), post.postId);
-          console.log(newposts.slice(0, 1));
-          const placeStats: any = document.querySelector(`.stats`);
-          const payments: any = await getPayments(window.location.pathname);
-
-          const arrayStats: VNode = await renderUserStats(authorData, payments);
-          update(placeStats, arrayStats);
-        });
-      });
-    });
-  }*/
   if (window.location.pathname !== "/profile") {
     const buttonTip = container.querySelector(`.send-tip__button-new`);
-    const buttonSubs: any = document.querySelector(`.follow`);
+    // const buttonSubs: any = document.querySelector(`.follow`);
 
     buttonTip.addEventListener("click", () => {
       const place = document.querySelector(`.div-send-tip`);
@@ -134,9 +68,40 @@ async function controlAdaptivePageAuthors(
         const costInput = containerTip.querySelector(`.input-group`);
         const message = messageInput.value;
         const costString = costInput.value;
-        const cost = parseInt(costString, 10);
+
+        const sanitizedMessage = DOMPurify.sanitize(messageInput.value);
+        const sanitizedCost = DOMPurify.sanitize(costInput.value);
+
+        if (sanitizedMessage == "" || sanitizedCost == "") {
+          const input = containerTip.querySelectorAll(`.form-group`)[1];
+          const error = input.querySelector("p");
+          if (!error) {
+            const error = document.createElement("p");
+            error.style.color = "red";
+            error.textContent = "Ошибка. Поля не могут быть пустыми";
+            input.appendChild(error);
+          }
+          return;
+        }
+
+        const cost = parseInt(sanitizedCost, 10);
+        if (cost < 360) {
+          const input = containerTip.querySelectorAll(`.form-group`)[1];
+          const error = input.querySelector("p");
+          if (!error) {
+            const error = document.createElement("p");
+            error.style.color = "red";
+            error.textContent = "Минимум 360 рублей";
+            input.appendChild(error);
+          }
+          return;
+        }
+
         const userposts: any = await getUserPosts(window.location.pathname, 0);
-        const ok = await sendTip(userposts[0].authorId, { message, cost });
+        const ok = await sendTip(userposts[0].authorId, {
+          sanitizedMessage,
+          sanitizedCost,
+        });
         containerTip.style.display = "none";
         profileForm.classList.remove("blur");
       });
@@ -145,27 +110,27 @@ async function controlAdaptivePageAuthors(
         profileForm.classList.remove("blur");
       });
     });
-    buttonSubs.addEventListener("click", async () => {
-      const userdata: any = await getUserPosts(window.location.pathname, 0);
-      console.log(userdata[0].authorId);
-      const ok: any = await following(userdata[0].authorId);
+    // buttonSubs.addEventListener("click", async () => {
+    //   const userdata: any = await getUserPosts(window.location.pathname, 0);
+    //   console.log(userdata[0].authorId);
+    //   const ok: any = await following(userdata[0].authorId);
 
-      const placeStats: any = document.querySelector(`.stats`);
-      const user: any = await getPageAuthor(window.location.pathname);
-      const arrayStats: VNode = await renderUserStats(user);
-      update(placeStats, arrayStats);
+    //   const placeStats: any = document.querySelector(`.stats`);
+    //   const user: any = await getPageAuthor(window.location.pathname);
+    //   const arrayStats: VNode = await renderUserStats(user);
+    //   update(placeStats, arrayStats);
 
-      const userdataSec: any = await getPageAuthor(window.location.pathname);
-      if (userdataSec.isSubscribe) {
-        const feedProfile: any = document.querySelector(`.place-posts`);
-        feedProfile.style.display = "block";
-        buttonSubs.textContent = "Подписаны";
-      } else {
-        const feedProfile: any = document.querySelector(`.place-posts`);
-        feedProfile.style.display = "none";
-        buttonSubs.textContent = "Подписаться";
-      }
-    });
+    //   const userdataSec: any = await getPageAuthor(window.location.pathname);
+    //   if (userdataSec.isSubscribe) {
+    //     const feedProfile: any = document.querySelector(`.place-posts`);
+    //     feedProfile.style.display = "block";
+    //     buttonSubs.textContent = "Подписаны";
+    //   } else {
+    //     const feedProfile: any = document.querySelector(`.place-posts`);
+    //     feedProfile.style.display = "none";
+    //     buttonSubs.textContent = "Подписаться";
+    //   }
+    // });
   }
 }
 

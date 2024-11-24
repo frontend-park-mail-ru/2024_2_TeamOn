@@ -9,7 +9,7 @@ import { route } from "../../../shared/routing/routing";
  */
 async function searchAuthor(authorName: string) {
   return new Promise((resolve, reject) => {
-    fetchAjax("GET", `/api/search/${authorName}`, null, (response) => {
+    fetchAjax("GET", `/api/tech/search/${authorName}`, null, (response) => {
       if (response.ok) {
         response.json().then((data) => {
           resolve(data);

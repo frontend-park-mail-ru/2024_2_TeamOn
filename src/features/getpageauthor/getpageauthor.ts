@@ -6,13 +6,15 @@ import { route } from "../../shared/routing/routing";
  * Получение текущей страницы профиля через объект типа промис
  * @returns Информация о пользователе
  */
-async function getPageAuthor(link: string) {
+async function getPageAuthor(link: string, authorId: any = null) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "GET",
       link === "/profile"
         ? "/api/danya/author/me"
-        : `/api/danya/author/${sessionStorage.getItem("authorid")}`,
+        : !authorId
+          ? `/api/danya/author/${sessionStorage.getItem("authorid")}`
+          : `/api/danya/author/${authorId}`,
       null,
       (response) => {
         if (response.ok) {

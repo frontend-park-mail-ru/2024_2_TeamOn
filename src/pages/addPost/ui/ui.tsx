@@ -3,6 +3,7 @@ import { Sidebar } from "../../../shared/sidebar/sidebar";
 import { getAccount } from "../../../features/getAccount/getAccount";
 
 function containerLayer(layer: any) {
+  const name: any = layer.title ? layer.title : layer.layerName;
   return (
     <label class="modal-label-layers">
       <input
@@ -12,7 +13,7 @@ function containerLayer(layer: any) {
         name="visibility"
         checked
       />
-      <h4>{layer.layerName}</h4>
+      <h4>{name}</h4>
     </label>
   );
 }
@@ -78,15 +79,6 @@ async function containerCreatePost() {
         <div class="visibility-container-createpost">
           <h2>Кто может смотреть</h2>
           <div class="layers"></div>
-          {/* <label>
-            <input id="1" type="radio" name="visibility" checked /> Name1
-          </label>
-          <label>
-            <input id="2" type="radio" name="visibility" checked /> Name2
-          </label>
-          <label>
-            <input id="3" type="radio" name="visibility" checked /> Name3
-          </label> */}
           <p>Выберите уровень</p>
         </div>
       </div>
