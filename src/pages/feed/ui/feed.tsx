@@ -4,7 +4,10 @@ import {
 } from "../../../widgest/feed/index";
 import { getAccount } from "../../../features/getAccount/getAccount";
 import { Sidebar } from "../../../shared/sidebar/sidebar";
+
 import { renderSearchbar } from "../../../entities/searchbar/index";
+
+import { renderRating } from "../../../entities/rating/index";
 
 import * as VDom from "vdom";
 

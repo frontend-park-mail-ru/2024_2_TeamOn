@@ -9,7 +9,7 @@ import { route } from "../shared/routing/routing";
 import { renderNotifications } from "../pages/notifications";
 import { renderSettings } from "../pages/settings";
 import { VirtualDOM } from "../../lib/vdom/src/source";
-import { render } from "../../lib/vdom/lib";
+import { render, renderTo } from "../../lib/vdom/lib";
 import { renderLogin } from "../pages/login";
 import { modifierSidebar } from "../shared/sidebar/modifire";
 import { renderCreatePost } from "../pages/addPost";
@@ -39,7 +39,6 @@ interface MenuConfig {
   feed: AsyncLinkConfig;
   createPost: AsyncLinkConfig;
   updatePost: AsyncLinkConfig;
-  // subscriptions: AsyncLinkConfig;
   notifications: AsyncLinkConfig;
 }
 
@@ -89,11 +88,6 @@ const config: Config = {
       text: LINKS.UPDATE_POST.TEXT,
       render: renderUpdatePost,
     },
-    // subscriptions: {
-    //   href: LINKS.NOTIFICATIONS.HREF,
-    //   text: LINKS.NOTIFICATIONS.TEXT,
-    //   render: renderSubscriptions,
-    // },
     notifications: {
       href: LINKS.NOTIFICATIONS.HREF,
       text: LINKS.NOTIFICATIONS.TEXT,
@@ -169,10 +163,8 @@ export const pageContainer = document.createElement("main");
 const pushmodal = document.createElement("div");
 pushmodal.className = "push-modal";
 pushmodal.style.display = "none";
-
 if (flag) {
   let root: HTMLElement | null = startA(config.menu, state);
-
   render(Virtual);
 
   root?.appendChild(pageContainer);

@@ -1,19 +1,30 @@
 import { modifierSidebar } from "../../shared/sidebar/modifire";
-import { update } from "../../../lib/vdom/lib";
+import { renderTo, update } from "../../../lib/vdom/lib";
 import { pageContainer } from "../../app";
 import { containerUpdatePost } from "./ui/ui";
 import { route } from "../../shared/routing/routing";
-import { LINKS, state } from "../../shared/consts/consts";
+import { allowedExtensions, LINKS, state } from "../../shared/consts/consts";
 import DOMPurify from "dompurify";
 import { addUserPost, editPost } from "../../entities/userPost";
 import { uploadMediaFiles } from "../../features/uploadMediaFiles/uploadMediaFiles";
 import { getUserPosts } from "../../features/getuserposts/getUserPosts";
+import {
+  containerMediaPost,
+  fetchFileFromImage,
+} from "../../widgest/feed/ui/post/post";
+import { controlSlideShow } from "../../features/paginateFeed/paginateFeed";
+import { base64ToFile } from "../../shared/base64ToFile/base64ToFile";
+import { deleteMediaInPost } from "./api/api";
 
 async function mofireUpdatePost() {
   const currentPost: any = state.currentPostId;
   const containerUpdatePost: any = document.querySelector(
     ".container-updatepost",
   );
+  const previewContainer: any = containerUpdatePost.querySelector(
+    `.container-image-photos`,
+  );
+  console.log(currentPost);
   const buttonSave = containerUpdatePost.querySelector(`.save-button`);
   const buttonCancel = containerUpdatePost.querySelector(`.cancel-button`);
 
@@ -22,6 +33,47 @@ async function mofireUpdatePost() {
   title.value = currentPost.title;
   content.textContent = currentPost.content;
 
+  const containerMedia: any = await containerMediaPost(currentPost.postId);
+  if (containerMedia) {
+    let arrayMedia: any = [];
+    containerMedia[0].forEach(async (media: any, index: number) => {
+      const divMedia = renderTo(media);
+      console.log(media)
+      const fileDiv = document.createElement("div");
+      fileDiv.className = "file-preview";
+      fileDiv.style.display = "flex";
+      fileDiv.style.alignItems = "center";
+      fileDiv.style.margin = "10px";
+      fileDiv.style.border = "1px solid #ccc";
+      fileDiv.style.borderRadius = "5px";
+      fileDiv.style.padding = "5px";
+
+      fileDiv.append(divMedia);
+      const removeButton = document.createElement("button");
+      removeButton.textContent = "Удалить";
+      removeButton.style.marginLeft = "5px";
+      removeButton.style.padding = "5px 10px";
+      removeButton.style.border = "none";
+      removeButton.style.backgroundColor = "#ff4d4d";
+      removeButton.style.color = "white";
+      removeButton.style.cursor = "pointer";
+      removeButton.style.borderRadius = "3px";
+      fileDiv.append(removeButton);
+      removeButton.addEventListener("click", async () => {
+        fileDiv.remove();
+        const response = await deleteMediaInPost(currentPost.postId, containerMedia[1][index] )
+        selectedFiles = selectedFiles.filter((file) => file !== media.file);
+      });
+      // const file = await fetchFileFromImage(currentPost.postId);
+      // selectedFiles.push(file); // Предполагается, что media.file содержит информацию о файле
+
+      arrayMedia.push(fileDiv);
+    });
+    const place: any = containerUpdatePost.querySelector(
+      `.container-image-photos`,
+    );
+    place.append(...arrayMedia);
+  }
   if (buttonCancel) {
     buttonCancel.addEventListener("click", () => {
       route(LINKS.PROFILE.HREF);
@@ -63,7 +115,11 @@ async function mofireUpdatePost() {
 
         try {
           if (selectedFiles.length != 0) {
-            const ok: any = await uploadMediaFiles(currentPost, selectedFiles);
+            console.log(selectedFiles);
+            const ok: any = await uploadMediaFiles(
+              currentPost.postId,
+              selectedFiles,
+            );
           }
         } catch (error) {
           console.error("Ошибка при загрузке фонового изображения:", error);
@@ -90,15 +146,117 @@ async function mofireUpdatePost() {
   let selectedFiles: File[] = []; // Массив для хранения выбранных файлов
 
   mediaInput.addEventListener("change", (event: any) => {
-    const files = event.target.files;
+    const files = (event.target as HTMLInputElement).files;
 
-    if (files.length) {
-      selectedFiles = Array.from(files); // Преобразуем FileList в массив
+    if (files && files.length) {
+      const newFiles = Array.from(files);
+
+      // Фильтруем валидные файлы
+      const validFiles = newFiles.filter((file) => {
+        const extension: any = file.name.split(".").pop()?.toLowerCase(); // Получаем расширение файла
+        return allowedExtensions.includes(extension); // Проверяем, допустимо ли расширение
+      });
+
+      // Удаляем невалидные файлы из нового выбора
+      const invalidFiles = newFiles.filter(
+        (file) => !validFiles.includes(file),
+      );
+
+      // previewContainer.innerHTML = "";
+      let loadedFilesCount = 0;
+
+      // Добавляем валидные файлы в массив selectedFiles, исключая дубликаты
+      validFiles.forEach((file) => {
+        if (!selectedFiles.includes(file)) {
+          selectedFiles.push(file);
+        }
+      });
+
+      // Отображаем превью для всех выбранных файлов
+      selectedFiles.forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = (e: ProgressEvent<FileReader>) => {
+          const fileDiv = createFileDiv(e.target?.result as string, index);
+          previewContainer.appendChild(fileDiv);
+          loadedFilesCount++;
+
+          if (loadedFilesCount === selectedFiles.length) {
+            controlSlideShow(containerUpdatePost, containerUpdatePost);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // Обработка недопустимых файлов
+      if (invalidFiles.length > 0) {
+        const input =
+          containerUpdatePost.querySelectorAll(`.form-group-add`)[1];
+        let error = input.querySelector("p");
+        if (!error) {
+          error = document.createElement("p");
+          error.style.color = "red";
+          input.appendChild(error);
+        }
+        error.textContent =
+          "Ошибка. Неподдерживаемый формат файла: " +
+          invalidFiles.map((file) => file.name).join(", ");
+      }
     }
   });
+  function createFileDiv(src: string, index: number): HTMLDivElement {
+    const fileDiv = document.createElement("div");
+    fileDiv.className = "file-preview";
+    fileDiv.style.display = "flex";
+    fileDiv.style.alignItems = "center";
+    fileDiv.style.margin = "10px";
+    fileDiv.style.border = "1px solid #ccc";
+    fileDiv.style.borderRadius = "5px";
+    fileDiv.style.padding = "5px";
+
+    const img = document.createElement("img");
+    img.src = src;
+    img.className = "image-photo";
+    img.style.width = "100px";
+    img.style.marginRight = "10px";
+
+    const removeButton = createRemoveButton(index, fileDiv);
+
+    fileDiv.appendChild(img);
+    fileDiv.appendChild(removeButton);
+
+    return fileDiv;
+  }
+
+  function createRemoveButton(
+    index: number,
+    fileDiv: HTMLDivElement,
+  ): HTMLButtonElement {
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "Удалить";
+    removeButton.style.marginLeft = "5px";
+    removeButton.style.padding = "5px 10px";
+    removeButton.style.border = "none";
+    removeButton.style.backgroundColor = "#ff4d4d";
+    removeButton.style.color = "white";
+    removeButton.style.cursor = "pointer";
+    removeButton.style.borderRadius = "3px";
+
+    // Обработчик для удаления изображения
+    removeButton.addEventListener("click", () => {
+      selectedFiles.splice(index, 1);
+      previewContainer.removeChild(fileDiv);
+    });
+
+    return removeButton;
+  }
 
   buttonUploadMedia.addEventListener("click", () => {
     mediaInput.click(); // Программно вызываем клик на input
+    let input = containerUpdatePost.querySelectorAll(`.form-group-add`)[1];
+    let error = input.querySelector("p");
+    if (error) {
+      error.remove();
+    }
   });
 }
 

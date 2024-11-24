@@ -5,65 +5,64 @@ import { fetchAjax } from "../../shared/fetch/fetchAjax";
  * @param offsetPopular Оффсет для популярных постов
  * @returns
  */
-async function getCustomSubscription(authorId: any) {
-  // return new Promise((resolve, reject) => {
-  //   fetchAjax(
-  //     "GET",
-  //     `/api/tech/subscription/${authorId}/custom`,
-  //     null,
-  //     (response) => {
-  //       if (response.ok) {
-  //         response.json().then((data) => {
-  //           resolve(data);
-  //         });
-  //       } else if (response.status === 400) {
-  //         reject(new Error("getCustomSubscription: 400 "));
-  //       } else {
-  //         reject(new Error("Внутреняя ошибка сервера"));
-  //       }
-  //     },
-  //   );
-  // });
+async function getCustomSubscription(link: any) {
   return new Promise((resolve, reject) => {
-    const subscriptions = [
-      {
-        customSubscriptionID: "sub_001",
-        title: "Subscription 1",
-        description: "Description for subscription 1",
-        cost: 10,
-        layer: 1,
+    fetchAjax(
+      "GET",
+      link === "/profile"
+        ? `/api/tech/subscription/me/custom`
+        : `/api/tech/subscription/${sessionStorage.getItem("authorid")}/custom`,
+      null,
+      (response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            resolve(data);
+          });
+        } else if (response.status === 400) {
+          reject(new Error("getCustomSubscription: 400 "));
+        } else {
+          reject(new Error("Внутреняя ошибка сервера"));
+        }
       },
-      {
-        customSubscriptionID: "sub_001",
-        title: "Subscription 1",
-        description: "Description for subscription 1",
-        cost: 10,
-        layer: 1,
-      },
-
-      // {
-      //   customSubscriptionID: "sub_002",
-      //   title: "Subscription 2",
-      //   description: "Description for subscription 2",
-      //   cost: 20,
-      //   layer: 2
-      // },
-      // {
-      //   customSubscriptionID: "sub_003",
-      //   title: "Subscription 3",
-      //   description: "Description for subscription 3",
-      //   cost: 30,
-      //   layer: 3
-      // }
-    ];
-
-    // Здесь вы можете добавить условие для reject в случае ошибки
-    // Например, если произошла ошибка, вы можете вызвать reject
-    // reject(new Error("Ошибка при получении подписок"));
-
-    // Возвращаем данные
-    resolve(subscriptions);
+    );
   });
 }
+// return new Promise((resolve, reject) => {
+//   const subscriptions = [
+//     {
+//       customSubscriptionID: "sub_001",
+//       title: "Subscription 1",
+//       description: "Description for subscription 1",
+//       cost: 10,
+//       layer: 1,
+//     },
+//     {
+//       customSubscriptionID: "sub_001",
+//       title: "Subscription 1",
+//       description: "Description for subscription 1",
+//       cost: 10,
+//       layer: 1,
+//     },
+
+// {
+//   customSubscriptionID: "sub_002",
+//   title: "Subscription 2",
+//   description: "Description for subscription 2",
+//   cost: 20,
+//   layer: 2
+// },
+// {
+//   customSubscriptionID: "sub_003",
+//   title: "Subscription 3",
+//   description: "Description for subscription 3",
+//   cost: 30,
+//   layer: 3
+// }
+// ];
+
+// Возвращаем данные
+//     resolve(subscriptions);
+//   });
+// }
 
 export { getCustomSubscription };

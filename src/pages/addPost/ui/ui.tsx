@@ -4,9 +4,15 @@ import { getAccount } from "../../../features/getAccount/getAccount";
 
 function containerLayer(layer: any) {
   return (
-    <label>
-      <input id={layer.layer} type="radio" name="visibility" checked />{" "}
-      {layer.layerName}
+    <label class="modal-label-layers">
+      <input
+        class="modal-layers"
+        id={layer.layer}
+        type="radio"
+        name="visibility"
+        checked
+      />
+      <h4>{layer.layerName}</h4>
     </label>
   );
 }
@@ -39,7 +45,17 @@ async function containerCreatePost() {
               accept="image/*"
               htmlFor="media-upload"
             >
-              <i class="icon-attache"></i>
+              <div class="attache-info">
+                <i class="icon-attache"></i>
+                <h4>Поддерживаемые форматы:</h4>
+              </div>
+              <div class="formats">
+                <h5 class="format">mp3</h5>
+                <h5 class="format">mp4</h5>
+                <h5 class="format">jpeg</h5>
+                <h5 class="format">png</h5>
+                <h5 class="format">pdf</h5>
+              </div>
             </label>
 
             <input
@@ -62,7 +78,7 @@ async function containerCreatePost() {
         <div class="visibility-container-createpost">
           <h2>Кто может смотреть</h2>
           <div class="layers"></div>
-          <label>
+          {/* <label>
             <input id="1" type="radio" name="visibility" checked /> Name1
           </label>
           <label>
@@ -70,7 +86,7 @@ async function containerCreatePost() {
           </label>
           <label>
             <input id="3" type="radio" name="visibility" checked /> Name3
-          </label>
+          </label> */}
           <p>Выберите уровень</p>
         </div>
       </div>

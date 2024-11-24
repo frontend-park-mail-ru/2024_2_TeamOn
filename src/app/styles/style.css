@@ -26,6 +26,28 @@ body {
   filter: blur(80px);
 }
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table td {
+  padding: 12px 16px;
+}
+
+table thead tr {
+  font-weight: bold;
+  border-top: 1px solid #e8e9eb;
+}
+
+table tr {
+  border-bottom: 1px solid #e8e9eb;
+}
+
+table tbody tr:hover {
+  background: #e8f6ff;
+}
+
 .close-modal-view {
   background-image: url("../styles/photos/close.png");
   width: 20px;
@@ -33,6 +55,14 @@ body {
   position: absolute;
   left: 101%;
   bottom: 101%;
+}
+
+.subscription-select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
 }
 
 .leftarrow-modal-view {
@@ -761,6 +791,46 @@ form input[type="text"]:focus {
   margin-top: 20px;
 }
 
+@keyframes scroll-message {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.scroll-message {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  background-color: #4caf50;
+  color: white;
+  padding: 15px;
+  border-radius: 5px;
+  animation: scroll-message 0.5s ease-in-out;
+}
+
+.pushback {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.pushback-icon {
+  background-image: url("photos/pushback.png");
+  filter: brightness(0.4);
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-size: cover;
+}
+
+.pushback-icon:hover {
+  filter: brightness(1.6);
+}
+
 .social-icons i {
   font-size: 24px;
   margin: 0 10px;
@@ -960,6 +1030,26 @@ form input[type="text"]:focus {
 
 .buttons-profile button:hover {
   background-color: var(--main-color-hover);
+}
+
+.modal-layers {
+  max-width: 20%;
+}
+
+.modal-label-layers {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: nowrap;
+  margin-top: 10px;
+}
+
+.modal-label-layers:hover {
+  background-color: rgba(255, 255, 255, 0.685);
 }
 
 .profile-header-mobile {
@@ -1603,7 +1693,13 @@ form input[type="text"]:focus {
 
 .likes,
 .comments {
-  display: inline-block;
+  font-size: 20px;
+  color: #666;
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  height: 30px;
+  margin-right: 5px;
   min-width: 30px;
   min-height: 30px;
   background-size: cover;
@@ -1662,7 +1758,8 @@ form input[type="text"]:focus {
 .modal__tip,
 .modal__editpost,
 .modal__addsubs,
-.modal__deletepost {
+.modal__deletepost,
+.modal__confirmsubs {
   display: none;
   background-color: white;
   width: 800px;
@@ -1721,9 +1818,10 @@ form input[type="text"]:focus {
 }
 
 .form-group label {
-  display: block;
+  display: flex;
   margin-bottom: 5px;
   color: #333;
+  align-items: center;
 }
 
 .form-group input,
@@ -2049,7 +2147,8 @@ span {
 }
 
 .form-container,
-.form-container-security {
+.form-container-security,
+.form-container-statistics {
   background-color: #fff;
   padding: 40px;
   border-radius: 10px;
@@ -2060,8 +2159,13 @@ span {
   height: 400px;
 }
 
+.form-container-statistics {
+  height: 100%;
+}
+
 .form-container h2,
-.form-container-security h2 {
+.form-container-security h2,
+.form-container-statistics h2 {
   font-size: 20px;
   margin-bottom: 20px;
 }
@@ -2074,7 +2178,8 @@ span {
 }
 
 .form-container label,
-.form-container-security label {
+.form-container-security label,
+.form-container-statistics label {
   display: block;
   margin-left: 0;
   margin-bottom: 10px;
@@ -2101,7 +2206,8 @@ select {
 }
 
 .form-container select,
-.form-container-security select {
+.form-container-security select,
+.form-container-statistics select {
   width: 51.5%;
   padding: 10px;
   margin-bottom: 20px;
@@ -2126,7 +2232,8 @@ select {
 }
 
 .form-container .profile-pic,
-.form-container-security .profile-pic {
+.form-container-security .profile-pic,
+.form-container-statistics .profile-pic {
   display: block;
   width: 100px;
   height: 100px;
@@ -2250,7 +2357,8 @@ select {
   .modal__createpost,
   .modal__deletepost,
   .modal__editpost,
-  .modal__addsubs {
+  .modal__addsubs,
+  .modal__confirmsubs {
     max-width: 90%;
   }
   .profile .left {
@@ -2325,6 +2433,128 @@ select {
     margin-left: -10%;
     border-bottom: none;
   }
+}
+.formats {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+
+.attache-info {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.format {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 15px;
+  background-color: var(--main-color);
+  width: 30px;
+  height: 20px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.format:hover {
+  background-color: var(--main-color-hover);
+}
+
+.modal-overlay {
+  position: fixed;
+  width: 100px;
+  height: 20px;
+  left: 5%;
+  top: 80%;
+  z-index: 10000000;
+}
+
+.rating-widget {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  width: 300px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.rating-widget .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.rating-widget h3 {
+  font-size: 16px;
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.rating-widget .stars {
+  margin-bottom: 20px;
+}
+
+.rating-widget .stars i {
+  font-size: 24px;
+  color: #ffc107;
+}
+
+.rating-widget .stars i.inactive {
+  color: #e0e0e0;
+}
+
+.rating-widget button {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.fas.fa-star {
+  color: #ccc;
+}
+
+.fas.fa-star.active {
+  color: #d9534f;
+}
+
+.fas.fa-star.inactive {
+  color: #ccc;
+}
+
+.remove-button-files {
+  background-image: url("photos/closefile.png");
+  background-size: cover;
+  width: 20px;
+  height: 20px;
+  margin-left: -25px;
+  position: relative;
+  margin-top: 5px;
+  transition: filter 0.3s ease;
+}
+
+.div-files {
+  display: flex;
+  cursor: pointer;
+}
+
+.remove-button-files:hover {
+  filter: brightness(0) invert(0%) sepia(138%) saturate(1000%) brightness(100%) contrast(2%);
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -1,11 +1,11 @@
 import { Sidebar } from "../../../shared/sidebar/sidebar";
 import * as VDom from "vdom";
 import {
-  //addpostForm,       {addpostForm()}
-  editpostForm,
+  addCustomSubsForm,
   deletepostForm,
   tipForm,
   profileForm,
+  confirmForm,
 } from "../../../widgest/profile";
 import { renderUserInfo } from "../../../entities/profileInfo/index";
 
@@ -30,9 +30,20 @@ export async function profileContent(
     <div class="main-content">
       {await Sidebar(userdata)}
       {await profileForm(authorData, avatar, background, payments)}
+      <div class="modal-view-photos" style="display: none; z-index=10101010">
+        <div class="close-modal-view"></div>
+        <div class="modal-container-photos">
+          <img class="image-photos-modal"></img>
+        </div>
+        <div class="slideshow">
+          <div class="leftarrow-modal-view"></div>
+          <div class="rightarrow-modal-view"></div>
+        </div>
+      </div>
       {tipForm()}
-      {editpostForm()}
+      {addCustomSubsForm()}
       {deletepostForm()}
+      {confirmForm()}
     </div>
   );
 }
@@ -79,8 +90,11 @@ export async function mobilepr(
 }
 
 function renderContainerAddCustomSubs() {
+  const flag: any =
+    window.location.pathname === "/profile" ? "display: flex" : "display: none";
+
   return (
-    <div class="add-customsubs">
+    <div class="add-customsubs" style={flag}>
       <i class="add-customsubs-icon"></i>
     </div>
   );

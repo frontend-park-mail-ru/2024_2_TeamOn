@@ -66,7 +66,17 @@ async function containerUpdatePost() {
               accept="image/*"
               htmlFor="media-upload"
             >
-              <i class="icon-attache"></i>
+              <div class="attache-info">
+                <i class="icon-attache"></i>
+                <h4>Поддерживаемые форматы:</h4>
+              </div>
+              <div class="formats">
+                <h5 class="format">mp3</h5>
+                <h5 class="format">mp4</h5>
+                <h5 class="format">jpeg</h5>
+                <h5 class="format">png</h5>
+                <h5 class="format">pdf</h5>
+              </div>
             </label>
 
             <input
@@ -93,6 +103,16 @@ async function containerUpdatePost() {
           </label>
           <p>Выберите уровень</p>
           {/* Выпадающий список из уровней будет тут */}
+        </div>
+      </div>
+      <div class="modal-view-photos" style="display: none; z-index=10101010">
+        <div class="close-modal-view"></div>
+        <div class="modal-container-photos">
+          <img class="image-photos-modal"></img>
+        </div>
+        <div class="slideshow">
+          <div class="leftarrow-modal-view"></div>
+          <div class="rightarrow-modal-view"></div>
         </div>
       </div>
     </div>

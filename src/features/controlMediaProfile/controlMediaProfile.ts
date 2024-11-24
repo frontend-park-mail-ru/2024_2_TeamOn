@@ -26,8 +26,8 @@ function handleImageUpload() {
         // Отправляем данные на сервер
         try {
           const ok: any = await saveBackground(formData);
-          const media = "Фон";
-          renderModalStatusUpload(ok, media);
+          const message = "Фон успешно применен";
+          renderModalStatusUpload(ok, message);
         } catch (error) {
           console.error("Ошибка при загрузке фонового изображения:", error);
         }
@@ -69,8 +69,8 @@ function handleImageUploadMobile() {
         // Отправляем данные на сервер
         try {
           const ok: any = await saveBackground(formData);
-          const media = "Фон";
-          renderModalStatusUpload(ok, media);
+          const message = "Фон успешно применен";
+          renderModalStatusUpload(ok, message);
         } catch (error) {
           console.error("Ошибка при загрузке фонового изображения:", error);
         }

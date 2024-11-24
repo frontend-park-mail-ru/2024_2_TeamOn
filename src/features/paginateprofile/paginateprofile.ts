@@ -3,6 +3,8 @@ import { customizePostProfile } from "../controlAdaptivePageAuthor/controlAdapti
 import { getUserPosts } from "../getuserposts/getUserPosts";
 import { renderUserPost } from "../../entities/userPost/index";
 import { renderTo } from "../../../lib/vdom/lib";
+import { containerMediaPost } from "../../widgest/feed/ui/post/post";
+import { getUrlFiles } from "../getUrlFiles/getUrlFiiles";
 
 /**
  * Функция рендера постов
@@ -10,12 +12,25 @@ import { renderTo } from "../../../lib/vdom/lib";
  * @returns
  */
 async function renderPosts(authorPosts: any[]) {
-  var posts: any = [];
-  authorPosts.forEach(async (post: any) => {
+  const postsPromises = authorPosts.map(async (post: any) => {
     const container: any = await renderUserPost(post);
+
     const div = renderTo(container);
-    posts.push(div);
+
+    const containerMedia: any = await containerMediaPost(post.postId);
+    if (containerMedia) {
+      let arrayMedia: any = [];
+      containerMedia[0].forEach((media: any) => {
+        const divMedia = renderTo(media);
+        arrayMedia.push(divMedia);
+      });
+      const place: any = div.querySelector(`.container-image-photos`);
+      place.append(...arrayMedia);
+    }
+
+    return div;
   });
+  const posts = await Promise.all(postsPromises);
   return posts;
 }
 
@@ -33,9 +48,9 @@ async function modifireMyPosts(
 ) {
   try {
     // Обработка популярных постов
-    if (posts.length > 1) {
-      const containersPost = containerPosts.querySelectorAll(`.posts`);
-
+    const containersPost = containerPosts.querySelectorAll(`.posts`);
+    if (posts.length > 0 && containersPost.length > 0) {
+      if (!containersPost) return;
       // Используем Promise.all для обработки популярных постов параллельно
       await Promise.all(
         Array.from(containersPost)
@@ -50,8 +65,9 @@ async function modifireMyPosts(
       );
       return;
     }
-    const containersPost = containerPosts.querySelectorAll(`.posts`);
-    return customizePostProfile(containersPost[0], posts[0], postId);
+    return 0;
+    // const containersPost = containerPosts.querySelectorAll(`.posts`);
+    // return customizePostProfile(containersPost[0], posts[0], postId);
   } catch (error) {
     console.log("ERROR");
     throw error;
@@ -88,10 +104,8 @@ async function paginateProfile(allPosts: any, containerPosts: any) {
         if (nextPosts.length > 0) {
           allPosts.push(...nextPosts);
           offset += QUERY.LIMIT;
-
           containerPosts.append(...(await renderPosts(nextPosts)));
           modifireMyPosts(containerPosts, nextPosts.reverse());
-          cache.popular.push(...nextPosts);
         } else {
           stopLoad = true;
         }
@@ -103,7 +117,6 @@ async function paginateProfile(allPosts: any, containerPosts: any) {
 
   // Инициализируем загрузку первых постов
   await loadProfilePost();
-
   // Обработчик события прокрутки
   window.addEventListener("scroll", async () => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;

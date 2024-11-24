@@ -24,7 +24,9 @@ async function getAccount() {
           removeItemLocalStorage(name);
           route(LINKS.HOME.HREF);
         } else {
-          reject(new Error("Внутреняя ошибка сервера"));
+          const name = findUsername();
+          removeItemLocalStorage(name);
+          route(LINKS.HOME.HREF);
         }
       },
     );

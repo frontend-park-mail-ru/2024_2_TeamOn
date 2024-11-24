@@ -37,7 +37,15 @@ module.exports = {
     preferRelative: true,
   },
   devServer: {
-    static: path.join(__dirname, "dist"),
+    static: [
+      {
+        directory: path.join(__dirname, "dist"),
+      },
+      {
+        directory: path.join(__dirname, "myback"),
+        publicPath: "/myback/",
+      },
+    ],
     open: true,
     port: 8090,
     historyApiFallback: true,
@@ -81,16 +89,19 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           "^/api/danya/token-endpoint": "/token-endpoint",
-          // "^/api/danya/author/me": "/author/me",
-          "^/api/danya/author/(.*)/following": "/author/$1/following",
-          "^/api/danya/author/(.*)/tip": "/author/$1/tip",
           "^/api/danya/author/(.*)/background": "/author/$1/background",
+          "^/api/danya/author/(.*)/tip": "/author/$1/tip",
           "^/api/danya/author/(.*)": "/author/$1",
           "^/api/danya/author/payments": "/author/payments",
           "^/api/danya/author/update/background": "/author/update/background",
           "^/api/danya/author/update/info": "/author/update/info",
+
+          "^/api/danya/subscription/request": "/subscription/request",
+          "^/api/danya/subscription/realize": "/subscription/realize",
+          "^/api/danya/unsubscription": "/unsubscription",
         },
       },
+
       {
         context: "/api/posts",
         target: "http://localhost:8084",
@@ -107,7 +118,10 @@ module.exports = {
           "^/api/posts/post": "/post",
           "^/api/posts/delete/post/(.*)": "/delete/post/$1",
           "^/api/posts/author/post/(.*)": "/author/post/$1",
-          "^/api/posts/(.*)": "/$1",
+          "^/api/posts/post/media/(.*)": "/post/media/$1",
+
+          // "^/api/posts/static/(.*)": "/static/$1",
+          // "^/api/posts/(.*)": "/$1",
         },
       },
       {
@@ -116,12 +130,25 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           "^/api/tech/token-endpoint": "/token-endpoint",
-          "^/api/tech/subscription/(.*)/custom": "/subscription/$1/custom",
-          "^/api/tech/subscription/layer": "/subscription/layer",
+
           "^/api/tech/subscription/custom": "/subscription/custom",
-          "^/api/tech/subscription/request": "/subscription/request",
-          "^/api/tech/subscription/realize": "/subscription/realize",
-          "^/api/tech/unsubscription": "/unsubscription",
+          "^/api/tech/subscription/layers": "/subscription/layers",
+          "^/api/tech/subscription/allowed/layers":
+            "/subscription/allowed/layers",
+          "^/api/tech/subscription/(.*)/custom": "/subscription/$1/custom",
+        },
+      },
+      {
+        context: "/api/csat",
+        target: "http://localhost:8086",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api/csat/token-endpoint": "/token-endpoint",
+
+          "^/api/csat/result/(.*)": "/csat/result/$1",
+          "^/api/csat/check": "/csat/check",
+          "^/api/csat/question": "/csat/question",
+          "^/api/csat/table": "/csat/table",
         },
       },
     ],

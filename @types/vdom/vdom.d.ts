@@ -28,6 +28,14 @@ declare module "vdom" {
       input: { [key: string]: any };
       button: { [key: string]: any };
       textarea: { [key: string]: any };
+      select: { [key: string]: any };
+      option: { [key: string]: any };
+      table: { [key: string]: any };
+      thead: { [key: string]: any };
+      tr: { [key: string]: any };
+      td: { [key: string]: any };
+      tbody: { [key: string]: any };
+      iframe: { [key: string]: any };
     }
   }
 }
