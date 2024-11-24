@@ -232,21 +232,23 @@ form input[type="text"]:focus {
 
 }
 */
-.feed-buttons__button  {
+.feed-buttons__button {
   position: absolute;
   top: 10%;
   right: 20%;
   display: flex;
   gap: 10px;
-  border: 2px solid white; 
-  background: transparent; 
+  border: 2px solid white;
+  background: transparent;
   border-radius: 30px;
-  color: white; 
-  padding: 10px 20px; 
+  color: white;
+  padding: 10px 20px;
   font-size: 16px;
-  text-decoration: none; 
-  display: inline-block; 
-  transition: background 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
   cursor: pointer;
   text-align: center;
 }
@@ -256,22 +258,24 @@ form input[type="text"]:focus {
   right: 10%;
   display: flex;
   gap: 10px;
-  border: 2px solid white; 
-  background: transparent; 
+  border: 2px solid white;
+  background: transparent;
   border-radius: 30px;
-  color: white; 
-  padding: 10px 20px; 
+  color: white;
+  padding: 10px 20px;
   font-size: 16px;
-  text-decoration: none; 
-  display: inline-block; 
-  transition: background 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
   cursor: pointer;
   text-align: center;
 }
-.feed-buttons__button:hover ,
+.feed-buttons__button:hover,
 .home-buttons__button:hover {
-  background: white; 
-  color: black; 
+  background: white;
+  color: black;
 }
 .donate-container {
   position: absolute;
@@ -2330,7 +2334,7 @@ select {
   position: relative;
   width: 150px; /* Начальная ширина */
   margin: 0 auto;
-  transition: width 0.3s ease; 
+  transition: width 0.3s ease;
 }
 
 /* Внешний контейнер для иконок и инпута */
@@ -2352,7 +2356,7 @@ select {
   position: relative;
   width: 150px; /* Начальная ширина */
   margin: 0 auto;
-  transition: width 0.3s ease; 
+  transition: width 0.3s ease;
 }
 
 /* Внешний контейнер для иконок и инпута */
@@ -2371,7 +2375,7 @@ select {
 /* Контейнер для поиска */
 .searchbar-container {
   position: relative;
-  width: 250px; 
+  width: 250px;
   margin: 0 auto;
   transition: width 0.3s ease;
   margin-top: 96px;
@@ -2383,11 +2387,11 @@ select {
   display: flex;
   right: 630px;
   align-items: center;
-  border: 2px solid white; 
+  border: 2px solid white;
   border-radius: 35px;
   background-color: transparent; /* Прозрачный фон */
   overflow: hidden;
-  transition: background-color 0.3s ease; 
+  transition: background-color 0.3s ease;
 }
 
 /* Поле ввода */
@@ -2400,7 +2404,9 @@ select {
   background: transparent; /* Прозрачный фон ввода */
   color: black; /* Черный текст */
   outline: none;
-  transition: width 0.3s ease, background-color 0.3s ease;
+  transition:
+    width 0.3s ease,
+    background-color 0.3s ease;
 }
 
 /* При наведении или фокусе, инпут расширяется */
@@ -2442,12 +2448,16 @@ select {
 /* Левая иконка (лупа) */
 .searchbar-icon--left {
   left: 10px; /* Расположение лупы */
+  background: transparent;
+  border: none;
 }
 
 /* Правая иконка (крестик) */
 .searchbar-icon--right {
   right: 10px; /* Расположение крестика */
-  cursor: pointer; 
+  cursor: pointer;
+  background: transparent;
+  border: none;
 }
 
 .author-dropdown {
@@ -2455,7 +2465,7 @@ select {
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: none; 
+  display: none;
   z-index: 10;
   width: 100%;
 }
@@ -2468,4 +2478,37 @@ select {
 .author-item:hover {
   background-color: black;
   color: white;
+}
+
+.results {
+  padding: 10px;
+}
+.result-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.result-item:last-child {
+  border-bottom: none;
+}
+.result-item img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.result-item .title {
+  font-size: 16px;
+  font-weight: bold;
+}
+.result-item .description {
+  font-size: 14px;
+  color: gray;
+}
+.view-all {
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  color: black;
 }

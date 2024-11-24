@@ -1,67 +1,64 @@
-import { renderSearchbar } from "./ui/ui";
+// при найденном значении вызывается плажка с авторами -> запрос к беку, т.е если бек отдал значение все класс все крута.
+// Возможность перехода на страницу автора, и не обязательно быть авторизованным
+// вызвать метод гет-аккаунт и почистить локалсторажи, для перехода на страницу пользователя
 
-//import { fetchAuthors } from './searchApi';
+ import { renderSearchbar } from "./ui/ui";
+import { searchAuthor } from "./api/api";
+import { getAccount } from "../../features/getAccount/getAccount";
+import { findUsername } from "../../shared/utils/hasLogged";
+import { removeItemLocalStorage } from "../../shared/utils/storages";
+//import { route } from "src/shared/routing/routing";
 
-/**
- * Интерфейс для автора
- */
-interface Author {
-    id: number;
-    name: string;
-}
+async function showSearch() {
+  //const search: any = document.querySelector(`.searchbar-container`);
+  const results: any = document.querySelector(`.results`);
+  const closeBtn: any = document.querySelector(`.searchbar-icon--right`);
+  const searchInput: any = document.querySelector(`.searchbar-input`);
+  const searchField: any = document.querySelector("div");
+  //const authors: any = await searchAuthor(authorName);
+  /*if (authors && authors.length > 0) {
+    results.style.display = "block";
+  }*/
+  closeBtn.addEventListener("click", () => {
+    searchInput.value = "";
+    results.style.display = "none";
+  });
+  searchInput.addEventListener("input", async (e: Event) => {
+    const authorName = (e.target as HTMLInputElement).value;
+    if (authorName.trim()) {
+      const authors: any = await searchAuthor(authorName);
+      if (authors && authors.length > 0) {
+        results.style.display = "block";
+        results.innerHTML = "";
+        authors.forEach((author: any) => {
+          const authorElement = document.createElement("div");
+          authorElement.classList.add("result-item");
+          authorElement.textContent = author.username;
 
-/**
- * Обрабатывает ввод пользователя и отображает совпадения.
- * @param {InputEvent} event - Событие ввода.
- */
-export async function resSearch(event: InputEvent): Promise<void> {
-    const inputElement = event.target as HTMLInputElement;
-    const query = inputElement.value.trim();
-    const dropdown = document.getElementById('author-dropdown') as HTMLElement;
-
-    if (!query) {
-        dropdown.innerHTML = '';
-        dropdown.style.display = 'none';
-        return;
+          authorElement.addEventListener("click", async () => {
+            await routeToAuthorPage();
+          });
+          results.appendChild(authorElement);
+        });
+      } else {
+        results.style.display = "none";
+      }
     }
-/*
-    try {
-        const authors = await fetchAuthors(query);
-        if (authors.length > 0) {
-            renderAuthorDropdown(authors);
-        } else {
-            dropdown.innerHTML = '';
-            dropdown.style.display = 'none';
-        }
-    } catch (error) {
-        console.error('Ошибка при поиске авторов:', error);
-        dropdown.innerHTML = '';
-        dropdown.style.display = 'none';
-    }*/
+  });
 }
 
-/**
- * Рендерит список авторов в всплывающем окне.
- * @param {Author[]} authors - Список авторов.
- */
-function renderAuthorDropdown(authors: Author[]): void {
-    const dropdown = document.getElementById('author-dropdown') as HTMLElement;
-    dropdown.innerHTML = authors
-        .map(author => `<div class="author-item" data-id="${author.id}">${author.name}</div>`)
-        .join('');
-    dropdown.style.display = 'block';  // Приведение к HTMLElement
-
-    // Добавляем обработчики событий на элементы
-    dropdown.querySelectorAll('.author-item').forEach(item => {
-        const authorItem = item as HTMLElement;  // Приведение к HTMLElement
-        authorItem.addEventListener('mouseover', () => {
-            authorItem.style.backgroundColor = 'black';
-            authorItem.style.color = 'white';
-        });
-        authorItem.addEventListener('mouseout', () => {
-            authorItem.style.backgroundColor = '';
-            authorItem.style.color = '';
-        });
-    });
+async function routeToAuthorPage() {
+  try {
+    const getAuthor = await getAccount();
+    if (getAuthor) {
+      console.log("Пользователь", getAccount);
+    }
+  } catch (error) {
+    const name = findUsername();
+    if (name) {
+      removeItemLocalStorage(name);
+    }
+  }
+  //route()
 }
-export{renderSearchbar};
+ export { renderSearchbar, showSearch };
