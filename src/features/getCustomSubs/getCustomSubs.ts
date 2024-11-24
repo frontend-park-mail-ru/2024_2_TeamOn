@@ -27,42 +27,6 @@ async function getCustomSubscription(link: any) {
     );
   });
 }
-// return new Promise((resolve, reject) => {
-//   const subscriptions = [
-//     {
-//       customSubscriptionID: "sub_001",
-//       title: "Subscription 1",
-//       description: "Description for subscription 1",
-//       cost: 10,
-//       layer: 1,
-//     },
-//     {
-//       customSubscriptionID: "sub_001",
-//       title: "Subscription 1",
-//       description: "Description for subscription 1",
-//       cost: 10,
-//       layer: 1,
-//     },
 
-// {
-//   customSubscriptionID: "sub_002",
-//   title: "Subscription 2",
-//   description: "Description for subscription 2",
-//   cost: 20,
-//   layer: 2
-// },
-// {
-//   customSubscriptionID: "sub_003",
-//   title: "Subscription 3",
-//   description: "Description for subscription 3",
-//   cost: 30,
-//   layer: 3
-// }
-// ];
-
-// Возвращаем данные
-//     resolve(subscriptions);
-//   });
-// }
 
 export { getCustomSubscription };

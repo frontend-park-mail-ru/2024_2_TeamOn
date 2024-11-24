@@ -43,7 +43,7 @@ export async function renderSettings() {
     const contentContainer = container.querySelector(`.content-container`);
 
     modifierSidebar(mainContent);
-    if ( hasLogged()) {
+    if (hasLogged()) {
       controlLogout(container, user);
     }
 

@@ -45,8 +45,13 @@ async function showSearch(container: any) {
     searchInput.value = "";
     results.style.display = "none";
   });
-  searchInput.addEventListener("input", async (e: Event) => {
+
+  const handleInput = async (e: Event) => {
     const authorName = (e.target as HTMLInputElement).value;
+    if (authorName.trim().length < 4) {
+      results.style.display = "none";
+      return; 
+    }
     if (authorName.trim()) {
       const authors: any = await searchAuthor(authorName);
       if (authors && authors.length > 0) {
@@ -57,19 +62,6 @@ async function showSearch(container: any) {
             window.location.pathname,
             author,
           );
-          // const user = { authorUsername: "author_5",
-          //   followers
-          //   : 
-          //   5,
-          //   info
-          //   : 
-          //   "Страница самого крутого автора - author_5",
-          //   isSubscribe
-          //   : 
-          //   false,
-          //   subscriptions
-          //   : 
-          //   []};
           const authorElement = document.createElement("div");
           authorElement.classList.add("result-item");
           authorElement.textContent = user.authorUsername;
@@ -98,7 +90,31 @@ async function showSearch(container: any) {
         results.style.display = "none";
       }
     }
-  });
+  };
+  searchInput.addEventListener("input", throttle(handleInput, 300)); // 300 мс
+}
+function throttle<T extends (...args: any[]) => any>(func: T, limit: number) {
+  let lastFunc: ReturnType<typeof setTimeout>;
+  let lastRan: number;
+
+  return function (this: unknown, ...args: Parameters<T>): void {
+    const context = this; // Используем this без явного указания типа
+    if (!lastRan) {
+      func.apply(context, args);
+      lastRan = Date.now();
+    } else {
+      clearTimeout(lastFunc);
+      lastFunc = setTimeout(
+        () => {
+          if (Date.now() - lastRan >= limit) {
+            func.apply(context, args);
+            lastRan = Date.now();
+          }
+        },
+        limit - (Date.now() - lastRan),
+      );
+    }
+  };
 }
 
 export { renderSearchbar, showSearch };

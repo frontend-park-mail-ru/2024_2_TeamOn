@@ -19,7 +19,6 @@ function controlLogout(container: any, authorData: any) {
       sessionStorage.clear();
       route(LINKS.HOME.HREF);
     });
-
   }
 }
 

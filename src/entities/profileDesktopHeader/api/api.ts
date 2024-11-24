@@ -26,19 +26,13 @@ async function getBackgroundAuthor(link: string, authorID: any) {
           resolve("https://cdn1.ozone.ru/s3/multimedia-p/6062969785.jpg");
         } else {
           // reject(new Error("Ответ от фетча с ошибкой"));
-          const wdata = { authorUsername: "author_5",
-            followers
-            : 
-            5,
-            info
-            : 
-            "Страница самого крутого автора - author_5",
-            isSubscribe
-            : 
-            false,
-            subscriptions
-            : 
-            []};
+          const wdata = {
+            authorUsername: "author_5",
+            followers: 5,
+            info: "Страница самого крутого автора - author_5",
+            isSubscribe: false,
+            subscriptions: [],
+          };
           resolve(wdata);
         }
       },

@@ -43,7 +43,7 @@ async function requestPay(authorId: any, monthCount: any, layer: any) {
       (response) => {
         if (response.ok) {
           response.json().then((data: any) => {
-            resolve(data)
+            resolve(data);
           });
         } else if (response.status === 400) {
           reject(new Error("getCustomSubscription: 400 "));
@@ -75,8 +75,8 @@ async function realizePay(subscriptionRequestID: any) {
         } else {
           // reject(new Error("Внутреняя ошибка сервера"));
           response.json().then((data: any) => {
-            resolve(data)
-          })
+            resolve(data);
+          });
         }
       },
     );

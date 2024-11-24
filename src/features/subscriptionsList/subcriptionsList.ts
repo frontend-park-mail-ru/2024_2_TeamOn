@@ -23,19 +23,7 @@ function foundSave(div: any) {
   const buttonSave: any = div.querySelector(`.save`);
   return buttonSave;
 }
-function changeModal(profileForm: any, subscription: any) {
-  const modal: any = renderModalRequestCustomSubs(subscription);
-  const div: any = document.querySelector(`.div-confirmsubs`);
-  update(div, modal);
 
-  const buttonCancel: any = foundCancel(div);
-  const buttonSave: any = foundSave(div);
-
-  const modalConfirm: any = div.querySelector(`.modal__confirmsubs`);
-  profileForm.classList.add("blur");
-  modalConfirm.style.display = "block";
-  return modalConfirm;
-}
 function modifireModalConfirmSubscription(
   profileForm: any,
   container: any,
@@ -62,7 +50,7 @@ function modifireModalConfirmSubscription(
     `#subscription-duration`,
   );
   const handleClickPayment = async () => {
-    const response: any = await realizePay(subscriptionRequestID)
+    const response: any = await realizePay(subscriptionRequestID);
     if (!response || response.message) {
       const modalConfirmNew: any = div.querySelector(`.modal__confirmsubs`);
       const input = modalConfirmNew.querySelectorAll(`.form-group`);
@@ -72,7 +60,7 @@ function modifireModalConfirmSubscription(
         error.style.color = "red";
         error.textContent = "Ошибка оплаты";
         input[input.length - 1].appendChild(error);
-        console.log(input)
+        console.log(input);
       }
       return;
     }
@@ -157,20 +145,6 @@ function modifireModalConfirmSubscription(
       pushback.style.display = "block";
       pushback.addEventListener("click", handlePushBack);
     }
-    // } else {
-    //   const modal: any = renderModalRequestCustomSubs(subscription);
-    //   const div: any = document.querySelector(`.div-confirmsubs`);
-
-    //   update(div, modal);
-    //   const modalRealize: any = div.querySelector(`.modal__confirmsubs`);
-    //   profileForm.classList.add("blur");
-    //   modalRealize.style.display = "block";
-    //   const buttonCancel: any = foundCancel(modalRealize);
-    //   const buttonSave: any = foundSave(modalRealize);
-    //   buttonCancel.addEventListener("click", handleClickCancel);
-    //   alert("nu")
-    //   buttonSave.addEventListener("click", handleClickPayment);
-    // }
   };
   const handlePushBack = () => {
     const newUrl = `/profile/${authorId}`;
@@ -213,6 +187,7 @@ function customizeSubscription(container: any, subscription: any) {
   buttonSubscription.addEventListener(`click`, () => {
     if (!hasLogged()) {
       route(LINKS.LOGIN.HREF);
+      return;
     }
     modifireModalConfirmSubscription(profileForm, container, subscription);
   });
@@ -224,7 +199,7 @@ export async function renderContainerSubs(allSubcriptions: any) {
     const div = renderTo(container);
     subs.push(div);
   });
-  if (allSubcriptions.length == 0) {
+  if (allSubcriptions.length == 0 && window.location.pathname != "/profile") {
     const rightColumn: any = document.querySelector(`.right-column`);
     rightColumn.style.height = "200px";
     const container: any = containerNoneCustomSubcsribe();

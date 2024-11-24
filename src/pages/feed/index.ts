@@ -97,9 +97,8 @@ export async function renderFeed() {
     if (mainContent) {
       modifierSidebar(mainContent);
     }
-    if ( hasLogged()) {
+    if (hasLogged()) {
       controlLogout(container, user);
-
     }
 
     await paginate(

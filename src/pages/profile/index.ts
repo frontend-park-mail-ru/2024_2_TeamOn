@@ -169,11 +169,11 @@ export async function controlBecomeCreator(div: any) {
   } else {
     div.style.display = "none";
   }
-  if ( !hasLogged()) {
+  if (!hasLogged()) {
     div.style.display = "block";
   }
   const handleClick = async () => {
-    if ( !hasLogged()) {
+    if (!hasLogged()) {
       route(LINKS.LOGIN.HREF);
       return;
     }

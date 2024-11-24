@@ -16,7 +16,6 @@ export function controlSlideShow(container: any, rightContainer: any) {
   const rightContent: any = rightContainer;
   const closeModal: any = document.querySelector(`.close-modal-view`); //
   const main: any = document.querySelector("main");
-  // const slideshow: any = modalPhotos.querySelector(".slideshow");
   let imageModal: any = null;
   let leftArrow: any = null;
   let rightArrow: any = null;
@@ -311,8 +310,8 @@ async function customizePost(container: any, post: any = null) {
       `.${ELEMENTS_CLASS.POST.LIKES.BLOCK}`,
     );
     divLike.addEventListener("click", async () => {
-      if ( !hasLogged()) {
-        route(LINKS.LOGIN.HREF)
+      if (!hasLogged()) {
+        route(LINKS.LOGIN.HREF);
         return;
       }
       if (post.isLiked) {
@@ -330,7 +329,7 @@ async function customizePost(container: any, post: any = null) {
       }
       amountLike.innerHTML = `${post.likes}`; // Обновляем отображаемое количество лайков
     });
-  } 
+  }
 
   const rightContainer = document.querySelector(`.right-content`);
   controlSlideShow(container, rightContainer);

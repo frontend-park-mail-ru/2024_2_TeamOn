@@ -9,14 +9,15 @@ import { getAccount } from "../../features/getAccount/getAccount";
  */
 async function Sidebar() {
   let result: any;
-  if ( hasLogged() ) {
-  const userdata: any = await getAccount();
+  if (hasLogged()) {
+    const userdata: any = await getAccount();
 
     sessionStorage.setItem("account", userdata.username);
     const role = userdata.role;
     const styleProfileIcon =
       role === "Reader" ? "display: none" : "display: flex;";
-      result = (<div class="side">
+    result = (
+      <div class="side">
         <div class="burger">
           <div class="line"></div>
           <div class="line"></div>
@@ -49,31 +50,32 @@ async function Sidebar() {
             </button>
           </div>
         </div>
-      </div>);
+      </div>
+    );
   } else {
-    result = (<div class="side">
-      <div class="burger">
-        <div class="line"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-      </div>
-      <div class="sidebar">
-        <div class="nav-menu">
-          <a class="referens">
-            <i class="icon-home"></i>
-            Главная
-          </a>
+    result = (
+      <div class="side">
+        <div class="burger">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
         </div>
-        <div class="become-a-creator" style="display: none">
-          <h4 class="notification-become">
-            Присоединяйтесь к сообществу!
-          </h4>
-          <button class="join-button">
-            <i style="font-style: normal;"> Войти </i>
-          </button>
+        <div class="sidebar">
+          <div class="nav-menu">
+            <a class="referens">
+              <i class="icon-home"></i>
+              Главная
+            </a>
+          </div>
+          <div class="become-a-creator" style="display: none">
+            <h4 class="notification-become">Присоединяйтесь к сообществу!</h4>
+            <button class="join-button">
+              <i style="font-style: normal;"> Войти </i>
+            </button>
+          </div>
         </div>
       </div>
-    </div>);
+    );
   }
   return result;
 }

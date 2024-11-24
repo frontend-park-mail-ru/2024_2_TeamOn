@@ -12,7 +12,6 @@ import { renderRating } from "../../../entities/rating/index";
 import * as VDom from "vdom";
 
 async function renderFeedForm() {
-
   return (
     <div class="main-content">
       {await Sidebar()}

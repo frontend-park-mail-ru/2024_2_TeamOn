@@ -50,7 +50,7 @@ async function controlAdaptivePageAuthors(
     // const buttonSubs: any = document.querySelector(`.follow`);
 
     buttonTip.addEventListener("click", () => {
-      if ( !hasLogged()) {
+      if (!hasLogged()) {
         route(LINKS.LOGIN.HREF);
         return;
       }
@@ -90,7 +90,7 @@ async function controlAdaptivePageAuthors(
         }
 
         // const cost = parseInt(sanitizedCost, 10);
-        const cost = Number(sanitizedCost)
+        const cost = Number(sanitizedCost);
         if (cost < 360) {
           const input = containerTip.querySelectorAll(`.form-group`)[1];
           const error = input.querySelector("p");

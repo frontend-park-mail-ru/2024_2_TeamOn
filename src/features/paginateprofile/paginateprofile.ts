@@ -66,8 +66,6 @@ async function modifireMyPosts(
       return;
     }
     return 0;
-    // const containersPost = containerPosts.querySelectorAll(`.posts`);
-    // return customizePostProfile(containersPost[0], posts[0], postId);
   } catch (error) {
     console.log("ERROR");
     throw error;

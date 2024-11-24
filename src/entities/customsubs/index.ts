@@ -11,5 +11,5 @@ export {
   renderModalRequestCustomSubs,
   requestPay,
   renderModalRealizeCustomSubs,
-  realizePay
+  realizePay,
 };
