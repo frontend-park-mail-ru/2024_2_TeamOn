@@ -38,7 +38,7 @@ async function mofireUpdatePost() {
     let arrayMedia: any = [];
     containerMedia[0].forEach(async (media: any, index: number) => {
       const divMedia = renderTo(media);
-      console.log(media)
+      console.log(media);
       const fileDiv = document.createElement("div");
       fileDiv.className = "file-preview";
       fileDiv.style.display = "flex";
@@ -61,7 +61,10 @@ async function mofireUpdatePost() {
       fileDiv.append(removeButton);
       removeButton.addEventListener("click", async () => {
         fileDiv.remove();
-        const response = await deleteMediaInPost(currentPost.postId, containerMedia[1][index] )
+        const response = await deleteMediaInPost(
+          currentPost.postId,
+          containerMedia[1][index],
+        );
         selectedFiles = selectedFiles.filter((file) => file !== media.file);
       });
       // const file = await fetchFileFromImage(currentPost.postId);
@@ -125,8 +128,19 @@ async function mofireUpdatePost() {
           console.error("Ошибка при загрузке фонового изображения:", error);
         }
 
-        if (post) {
+        if (post && !post.message) {
           route(LINKS.PROFILE.HREF);
+        } else {
+          const input =
+            containerUpdatePost.querySelectorAll(`.form-group-add`)[1];
+          const error = input.querySelector("p");
+          if (!error) {
+            const error = document.createElement("p");
+            error.style.color = "red";
+            error.textContent = post.message;
+            input.appendChild(error);
+          }
+          return;
         }
       } catch (error) {
         console.error(error);
@@ -142,6 +156,7 @@ async function mofireUpdatePost() {
     containerUpdatePost.querySelector(`.media-upload-label`);
   const mediaInput: any =
     containerUpdatePost.querySelector(`.media-upload-input`);
+  const attacheInfo: any = buttonUploadMedia.querySelector(`.attache-info`);
 
   let selectedFiles: File[] = []; // Массив для хранения выбранных файлов
 
@@ -250,13 +265,25 @@ async function mofireUpdatePost() {
     return removeButton;
   }
 
-  buttonUploadMedia.addEventListener("click", () => {
-    mediaInput.click(); // Программно вызываем клик на input
+  attacheInfo.addEventListener("click", () => {
+    mediaInput.click();
     let input = containerUpdatePost.querySelectorAll(`.form-group-add`)[1];
     let error = input.querySelector("p");
     if (error) {
       error.remove();
     }
+  });
+  const formats = containerUpdatePost.querySelectorAll(`.format`);
+  formats.forEach((format: any) => {
+    format.addEventListener("click", () => {
+      mediaInput.setAttribute("accept", "." + format.textContent);
+      mediaInput.click(); // Программно вызываем клик на input
+      let input = containerUpdatePost.querySelectorAll(`.form-group-add`)[1];
+      let error = input.querySelector("p");
+      if (error) {
+        error.remove();
+      }
+    });
   });
 }
 

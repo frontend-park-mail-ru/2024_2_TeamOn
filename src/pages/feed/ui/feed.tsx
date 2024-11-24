@@ -17,8 +17,8 @@ async function renderFeedForm() {
   return (
     <div class="main-content">
       {await Sidebar(userdata)}
+      {renderSearchbar()}
       <div class="right-content">
-        {renderSearchbar()}
         <div class="tabs feed">
           <a class="active"> Популярное </a>
           <a> Недавние </a>

@@ -1,12 +1,12 @@
 function renderModalStatusUpload(ok: any, message: any) {
   const modal: any = document.querySelector(`.push-modal`);
   modal.classList.add(`active`);
-  modal.style.display = "block";
+  modal.style.display = "flex";
   if (ok) {
     modal.textContent = message;
     modal.style.color = "green";
   } else {
-    modal.textContent = "Произошла ошибка";
+    modal.textContent = message;
     modal.style.color = "red";
   }
 

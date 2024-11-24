@@ -94,8 +94,19 @@ async function modifireCreatePost() {
           console.error("Ошибка при загрузке фонового изображения:", error);
         }
 
-        if (post) {
+        if (post && !post.message) {
           route(LINKS.PROFILE.HREF);
+        } else {
+          const input =
+            containerCreatePost.querySelectorAll(`.form-group-add`)[1];
+          const error = input.querySelector("p");
+          if (!error) {
+            const error = document.createElement("p");
+            error.style.color = "red";
+            error.textContent = post.message;
+            input.appendChild(error);
+          }
+          return;
         }
       } catch (error) {
         console.error(error);
@@ -112,6 +123,7 @@ async function modifireCreatePost() {
   const mediaInput: any =
     containerCreatePost.querySelector(`.media-upload-input`);
   let selectedFiles: File[] = []; // Массив для хранения выбранных файлов
+  const attacheInfo: any = buttonUploadMedia.querySelector(`.attache-info`);
 
   mediaInput.addEventListener("change", (event: any) => {
     const files = (event.target as HTMLInputElement).files;
@@ -219,13 +231,25 @@ async function modifireCreatePost() {
     return removeButton;
   }
 
-  buttonUploadMedia.addEventListener("click", () => {
+  attacheInfo.addEventListener("click", (e: any) => {
     mediaInput.click(); // Программно вызываем клик на input
     let input = containerCreatePost.querySelectorAll(`.form-group-add`)[1];
     let error = input.querySelector("p");
     if (error) {
       error.remove();
     }
+  });
+  const formats = containerCreatePost.querySelectorAll(`.format`);
+  formats.forEach((format: any) => {
+    format.addEventListener("click", () => {
+      mediaInput.setAttribute("accept", "." + format.textContent);
+      mediaInput.click(); // Программно вызываем клик на input
+      let input = containerCreatePost.querySelectorAll(`.form-group-add`)[1];
+      let error = input.querySelector("p");
+      if (error) {
+        error.remove();
+      }
+    });
   });
 }
 

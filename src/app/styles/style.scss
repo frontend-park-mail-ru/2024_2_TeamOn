@@ -126,6 +126,14 @@ form {
     margin-top: 0%;
     margin-bottom: 30px;
   }
+  .searchbar-wrapper {
+    left: 3%;
+    top: 60px;
+  }
+  .searchbar-wrapper-feed {
+    margin-left: -244px;
+    top: 10px;
+  }
 }
 form button[type="submit"] {
   margin-top: 1px;
@@ -229,12 +237,16 @@ form input[type="text"]:focus {
   opacity: 0.4;
 }
 
-.home-buttons {
+.home-buttons,
+.feed-buttons {
   position: absolute;
   top: 10%;
   right: 10%;
   display: flex;
   gap: 10px;
+}
+.feed-buttons {
+  right: 200px;
 }
 .donate-container {
   position: absolute;
@@ -244,6 +256,7 @@ form input[type="text"]:focus {
   position: relative;
 }
 .home-buttons__button,
+.feed-buttons__button,
 .logout__button,
 .donate__button,
 .send-tip__button,
@@ -287,7 +300,8 @@ form input[type="text"]:focus {
   margin-bottom: 5%;
   margin-top: 5%;
 }
-.home-buttons__button {
+.home-buttons__button,
+.feed-buttons__button {
   font-size: 28px;
 }
 .logout {
@@ -302,7 +316,8 @@ form input[type="text"]:focus {
   transition: background 0.3s ease;
 }
 
-.home-buttons__button__effects:hover {
+.home-buttons__button__effects:hover,
+.feed-buttons__button__effects:hover {
   background: gray;
   color: white;
 }
@@ -326,6 +341,7 @@ form input[type="text"]:focus {
   color: white;
 }
 .home-buttons__button__effects.primary,
+.feed-buttons__button__effects.primary,
 .logout__button__effects.primary,
 .donate__button__effects.primary,
 .send-tip__button__effects.primary,
@@ -339,6 +355,7 @@ form input[type="text"]:focus {
   border: none;
 }
 .home-buttons__button__effects.primary:hover,
+.feed-buttons__button__effects.primaryHhover,
 .logout__button__effects.primary:hover,
 .donate__button__effects.primary:hover,
 .send-tip__button__effects.primary:hover,
@@ -609,10 +626,12 @@ form input[type="text"]:focus {
 .right-column {
   background-color: white;
   padding: 20px;
-  margin: 10px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: relative;
+}
+.left-column {
+  margin: 10px;
 }
 .left-column {
   width: 100%;
@@ -1012,6 +1031,9 @@ form input[type="text"]:focus {
 }
 // ADD POST
 @media (max-width: 768px) {
+  .feed-buttons {
+    right: 110px;
+  }
   .container-createpost,
   .container-updatepost {
     display: flex;
@@ -2143,7 +2165,7 @@ select {
   .right-content {
     margin-left: 0;
     width: 100%;
-    margin-top: 20%;
+    margin-top: 40%;
   }
   .search-bar {
     width: 320px;
@@ -2158,18 +2180,33 @@ select {
   }
 }
 
-.searchbar-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999; /* Убедитесь, что элемент отображается поверх других */
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 0.3s ease,
-    visibility 0.3s ease;
-  background-color: red;
+.results {
+  padding: 10px;
+  width: 100px;
+  position: fixed;
+  left: 80%;
+  top: 10%;
+  z-index: 101010101010;
+  border-radius: 15px;
+  width: 250px;
+}
+.results.feed {
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.results.home {
+  box-shadow: 0 2px 5px #000000;
+  color: white;
+}
+.result-item {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 10px;
+  /* width: 116px; */
+  justify-content: flex-end;
+  padding: 10px;
+  transition: background 0.3s ease;
+}
 
 .formats {
   display: flex;
@@ -2279,5 +2316,202 @@ select {
 .remove-button-files:hover {
   filter: brightness(0) invert(0%) sepia(138%) saturate(1000%) brightness(100%)
     contrast(2%);
+}
 
+.searchbar-container {
+  position: relative;
+  width: 150px; /* Начальная ширина */
+  margin: 0 auto;
+  transition: width 0.3s ease;
+}
+
+/* Внешний контейнер для иконок и инпута */
+.searchbar-wrapper,
+.searchbar-wrapper-feed {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 2px solid white; /* Белая рамка */
+  border-radius: 35px;
+  background-color: transparent; /* Прозрачный фон */
+  overflow: hidden;
+  transition: background-color 0.3s ease; /* Плавный переход фона */
+  padding: 6px;
+}
+.searchbar-wrapper-feed {
+  position: fixed;
+  width: 260px;
+  left: 80%;
+  border: 2px solid black;
+}
+/* Поле ввода */
+/* Контейнер для поиска */
+.searchbar-container {
+  position: relative;
+  width: 150px; /* Начальная ширина */
+  margin: 0 auto;
+  transition: width 0.3s ease;
+}
+
+/* Поле ввода */
+/* Контейнер для поиска */
+.searchbar-container {
+  position: relative;
+  width: 250px;
+  margin: 0 auto;
+  transition: width 0.3s ease;
+  margin-top: 96px;
+}
+
+/* Внешний контейнер для иконок и инпута */
+.searchbar-wrapper {
+  position: relative;
+  display: flex;
+  right: 630px;
+  align-items: center;
+  border: 2px solid white;
+  border-radius: 35px;
+  background-color: transparent; /* Прозрачный фон */
+  overflow: hidden;
+  transition: background-color 0.3s ease;
+}
+
+/* Поле ввода */
+.searchbar-input {
+  width: 100%; /* Начальная ширина */
+  flex: 1;
+  border: none;
+  padding: 10px 50px; /* Отступы для иконок */
+  font-size: 20px;
+  background: transparent; /* Прозрачный фон ввода */
+  color: black; /* Черный текст */
+  outline: none;
+  transition:
+    width 0.3s ease,
+    background-color 0.3s ease;
+}
+
+/* При наведении или фокусе, инпут расширяется */
+.searchbar-wrapper:hover .searchbar-input,
+.searchbar-wrapper:focus-within .searchbar-input {
+  width: 300px; /* Ширина при наведении или фокусе */
+}
+
+/* При наведении на инпут изменяется цвет фона и текста */
+.searchbar-wrapper:hover {
+  background-color: white; /* Белый фон при наведении */
+}
+
+/* Начальный стиль для placeholder */
+.searchbar-input::placeholder {
+  color: white;
+  opacity: 0.6;
+}
+
+.searchbar-input.feed::placeholder {
+  color: black;
+  opacity: 0.6;
+}
+/* При наведении на инпут изменяется placeholder */
+.searchbar-input:hover::placeholder {
+  color: black; /* Черный цвет placeholder при наведении */
+}
+
+/* Логика изменения цвета иконок при наведении */
+.searchbar-wrapper:hover .searchbar-icon,
+.searchbar-wrapper:focus-within .searchbar-icon {
+  color: black; /* Черный цвет для иконок */
+}
+
+/* Общий стиль для иконок */
+.searchbar-icon {
+  position: absolute;
+  color: black; /* Черный цвет для иконок */
+  font-size: 18px;
+  pointer-events: none; /* Чтобы не мешать вводу текста */
+}
+
+/* Левая иконка (лупа) */
+.searchbar-icon--left {
+  left: 10px; /* Расположение лупы */
+  background: transparent;
+  border: none;
+}
+
+/* Правая иконка (крестик) */
+.searchbar-icon--right {
+  right: 10px; /* Расположение крестика */
+  cursor: pointer;
+  background: transparent;
+  border: none;
+}
+
+.author-dropdown {
+  position: absolute;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: none;
+  z-index: 10;
+  width: 100%;
+}
+
+.author-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.author-item:hover {
+  background-color: black;
+  color: white;
+}
+
+.results {
+  padding: 10px;
+  cursor: pointer;
+}
+.results.home {
+  left: -250%;
+  position: relative !important;
+}
+@media (max-width: 768px) {
+  .results.home {
+    left: 8px;
+    margin-top: 26%;
+  }
+  .results {
+    left: 70px;
+  }
+}
+.result-item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e8e9eb;
+  border-radius: 15px;
+}
+.results.feed .result-item:hover {
+  background-color: #f0f0f0;
+}
+.result-item:last-child {
+  border-bottom: none;
+}
+.result-item img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.result-item .title {
+  font-size: 16px;
+  font-weight: bold;
+}
+.result-item .description {
+  font-size: 14px;
+  color: gray;
+}
+.view-all {
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  color: black;
 }

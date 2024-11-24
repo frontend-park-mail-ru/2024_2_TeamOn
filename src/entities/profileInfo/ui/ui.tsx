@@ -26,10 +26,10 @@ async function renderUserInfo(user: any, payments: any) {
           <i class="icon-sendtip"></i>
           Создать публикацию
         </button>
-        <button class="follow" style={flagTwo}>
+        {/* <button class="follow" style={flagTwo}>
           <i class="icon-follow"></i>
           {isSubs}
-        </button>
+        </button> */}
         <button class="send-tip__button-new" style={flagTwo}>
           <i class="icon-sendtip"></i>
           Поблагодарить

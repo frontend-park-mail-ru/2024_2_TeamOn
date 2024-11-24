@@ -1,4 +1,9 @@
-import { ELEMENTS_CLASS, LINKS, state } from "../../shared/consts/consts";
+import {
+  allowedExtensions,
+  ELEMENTS_CLASS,
+  LINKS,
+  state,
+} from "../../shared/consts/consts";
 import { pageContainer } from "../../app/index";
 import { renderTo, update } from "../../../lib/vdom/lib";
 import { VNode } from "../../../lib/vdom/src/source";
@@ -255,7 +260,7 @@ async function createProfileForm(userdata: any): Promise<HTMLDivElement> {
   saveButton.className = ELEMENTS_CLASS.SEND_TIP.COMBINE + " save-settings";
   saveButton.textContent = "Сохранить";
 
-  formContainer.append(emailRow, emailError, saveButton, buttonSetAuthor);
+  formContainer.append(emailRow, emailError, buttonSetAuthor, saveButton);
   const username: any = usernameInput;
   const email: any = emailInput;
   saveButton.addEventListener("click", async (event: any) => {
@@ -767,6 +772,14 @@ async function createPhoto(): Promise<any> {
   profilePicInput.addEventListener("change", async (event: any) => {
     const file = event.target.files[0];
     if (file) {
+      const validFormats = ["image/jpeg", "image/png"];
+      if (!validFormats.includes(file.type)) {
+        const message = "Неверный формат файла";
+        renderModalStatusUpload(false, message);
+
+        return; // Прерываем выполнение, если формат не подходит
+      }
+
       const reader = new FileReader();
       reader.onload = async function (e: any) {
         profilePic.src = e.target.result;

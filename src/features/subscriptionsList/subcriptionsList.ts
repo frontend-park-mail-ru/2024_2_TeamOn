@@ -6,7 +6,10 @@ import {
 } from "../../entities/customsubs";
 import { getCustomSubscription } from "../getCustomSubs/getCustomSubs";
 import { getSubsLayer } from "../getSubsLayer/getSubsLayer";
-import { containerCustomSubscribe } from "../../widgest/profile/ui/profileform/profileform";
+import {
+  containerCustomSubscribe,
+  containerNoneCustomSubcsribe,
+} from "../../widgest/profile/ui/profileform/profileform";
 import { renderTo, update } from "../../../lib/vdom/lib";
 import { renderContainerAddCustomSubs } from "../../pages/profile/ui/profile";
 import { route } from "../../shared/routing/routing";
@@ -299,6 +302,13 @@ export async function renderContainerSubs(allSubcriptions: any) {
     const div = renderTo(container);
     subs.push(div);
   });
+  if (allSubcriptions.length == 0) {
+    const rightColumn: any = document.querySelector(`.right-column`);
+    rightColumn.style.height = "200px";
+    const container: any = containerNoneCustomSubcsribe();
+    const div = renderTo(container);
+    subs.push(div);
+  }
   return subs;
 }
 export async function modifireSubscriptions(
@@ -330,7 +340,8 @@ async function paginateSubscription(
   async function loadSubcriptions() {
     try {
       const subs: any = await getCustomSubscription(window.location.pathname);
-      allSubcriptions.push(...subs);
+      const filteredSubs = subs.filter((sub: any) => sub.layer !== 0);
+      allSubcriptions.push(...filteredSubs);
       placeSubscriptions.append(
         ...(await renderContainerSubs(allSubcriptions)),
       );

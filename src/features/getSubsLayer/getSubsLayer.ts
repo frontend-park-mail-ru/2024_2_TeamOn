@@ -21,30 +21,4 @@ async function getSubsLayer() {
   });
 }
 
-/**
- * Функция получения доступных уровней подписки
- * @param offsetPopular Оффсет для популярных постов
- * @returns
- */
-async function getAllowedSubsLayer() {
-  return new Promise((resolve, reject) => {
-    fetchAjax(
-      "GET",
-      `/api/tech/subscription/allowed/layers`,
-      null,
-      (response) => {
-        if (response.ok) {
-          response.json().then((data) => {
-            resolve(data);
-          });
-        } else if (response.status === 400) {
-          reject(new Error("getCustomSubscription: 400 "));
-        } else {
-          reject(new Error("Внутреняя ошибка сервера"));
-        }
-      },
-    );
-  });
-}
-
-export { getSubsLayer, getAllowedSubsLayer };
+export { getSubsLayer };

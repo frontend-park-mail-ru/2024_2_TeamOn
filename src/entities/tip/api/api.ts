@@ -13,7 +13,7 @@ async function sendTip(authorId: any, body: any) {
     fetchAjax(
       "POST",
       `/api/danya/author/${authorId}/tip`,
-      { message: body.message, cost: body.cost },
+      { message: body.sanitizedMessage, cost: Number(body.sanitizedCost) },
       (response) => {
         if (response.ok) {
           resolve(true);

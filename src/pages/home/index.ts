@@ -52,7 +52,7 @@ export function renderHome() {
     const homeContainer: any = container.querySelector(
       `.${ELEMENTS_CLASS.HOME.HOME_CONTAINER}`,
     ) as HTMLElement;
-    showSearch();
+    showSearch(container);
     if (window.location.pathname == LINKS.HOME.HREF) {
       // Создаем маску для выжигания
       const mask = createMask();

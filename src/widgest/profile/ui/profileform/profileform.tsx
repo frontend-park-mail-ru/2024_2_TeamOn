@@ -21,7 +21,13 @@ function containerCustomSubscribe(subscription: any) {
     </div>
   );
 }
-
+function containerNoneCustomSubcsribe() {
+  return (
+    <div class="subscription-level">
+      <h3 class="title-level">У этого пользователя еще нет подписок</h3>
+    </div>
+  );
+}
 /**
  * Рендер формы профиля
  * @param authorData Данные об авторе
@@ -70,4 +76,4 @@ async function profileForm(
   );
 }
 
-export { profileForm, containerCustomSubscribe };
+export { profileForm, containerCustomSubscribe, containerNoneCustomSubcsribe };
