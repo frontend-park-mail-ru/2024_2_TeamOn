@@ -2157,6 +2157,20 @@ select {
     border-bottom: none;
   }
 }
+
+.searchbar-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999; /* Убедитесь, что элемент отображается поверх других */
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+  background-color: red;
+
 .formats {
   display: flex;
   flex-wrap: wrap;
@@ -2265,4 +2279,5 @@ select {
 .remove-button-files:hover {
   filter: brightness(0) invert(0%) sepia(138%) saturate(1000%) brightness(100%)
     contrast(2%);
+
 }

@@ -96,7 +96,7 @@ export async function renderFeed() {
     }
 
     controlLogout(container, user);
-
+    
     await paginate(
       allPopularPosts,
       allRecentlyPosts,

@@ -11,6 +11,9 @@ import {
 import { VNode } from "../../../lib/vdom/src/source";
 import { containerHome } from "./ui/home";
 
+import { showSearch } from "../../entities/searchbar/index";
+//убрать локалстораж на профиль
+
 /**
  * Обработка домашней страницы
  */
@@ -31,6 +34,12 @@ export function renderHome() {
     button.addEventListener("click", () => {
       route(LINKS.LOGIN.HREF);
     });
+    const buttonFeed: any = container.querySelector(
+      `.${ELEMENTS_CLASS.FEED_BUTTONS.BLOCK}`,
+    );
+    buttonFeed.addEventListener("click", () => {
+      route(LINKS.FEED.HREF);
+    });
 
     if (window.location.pathname !== LINKS.HOME.HREF) {
       route(LINKS.HOME.HREF, window.location.pathname);
@@ -43,7 +52,7 @@ export function renderHome() {
     const homeContainer: any = container.querySelector(
       `.${ELEMENTS_CLASS.HOME.HOME_CONTAINER}`,
     ) as HTMLElement;
-
+    showSearch();
     if (window.location.pathname == LINKS.HOME.HREF) {
       // Создаем маску для выжигания
       const mask = createMask();
