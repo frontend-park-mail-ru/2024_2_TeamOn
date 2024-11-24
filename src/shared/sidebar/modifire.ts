@@ -40,7 +40,9 @@ function modifierSidebar(mainContainer?: any) {
         if (window.location.pathname === link.href) {
           setActiveLink(link);
         } else {
-          sidebarReferenses[index].classList.remove(ELEMENTS_CLASS.ACTIVE);
+          if (sidebarReferenses[index]) {
+            sidebarReferenses[index].classList.remove(ELEMENTS_CLASS.ACTIVE);
+          }
         }
       });
     });

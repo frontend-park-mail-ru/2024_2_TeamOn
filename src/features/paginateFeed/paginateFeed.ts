@@ -16,7 +16,6 @@ export function controlSlideShow(container: any, rightContainer: any) {
   const rightContent: any = rightContainer;
   const closeModal: any = document.querySelector(`.close-modal-view`); //
   const main: any = document.querySelector("main");
-  // const slideshow: any = modalPhotos.querySelector(".slideshow");
   let imageModal: any = null;
   let leftArrow: any = null;
   let rightArrow: any = null;

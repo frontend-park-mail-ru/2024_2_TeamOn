@@ -1,5 +1,6 @@
 import { saveBackground } from "../../entities/profileDesktopHeader";
 import { renderModalStatusUpload } from "../../shared/pushstatus/pushstatus";
+import { controlSlideShow } from "../paginateFeed/paginateFeed";
 
 /**
  * Загрузка бекграунда
@@ -126,6 +127,8 @@ function controlMediaProfile(container: any) {
       buttonUploadBackground.style.display = "none";
     });
   }
+  const rightContainer = document.querySelector(`.profile-form`);
+  controlSlideShow(container, rightContainer);
 }
 
 export { controlMediaProfile };
