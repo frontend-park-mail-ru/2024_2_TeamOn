@@ -3,10 +3,7 @@ import { containerCreatePost, containerLayer } from "./ui/ui";
 import { pageContainer } from "../../app";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { modifireCreatePost } from "./modal/modal";
-import { containerCustomSubscribe } from "src/widgest/profile/ui/profileform/profileform";
-import { getSubsLayer } from "../../features/getSubsLayer/getSubsLayer";
 import { getCustomSubscription } from "../../features/getCustomSubs/getCustomSubs";
-import { renderContainerSubs } from "../../features/subscriptionsList/subcriptionsList";
 
 async function renderLayers(layers: any) {
   try {

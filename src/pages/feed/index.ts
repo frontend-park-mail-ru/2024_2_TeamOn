@@ -7,11 +7,10 @@ import { paginate } from "../../features/paginateFeed/paginateFeed";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { controlActiveLink } from "../../features/controlActiveLink/controlActiveLink";
 import { renderRating } from "../../entities/rating";
-import { renderFrame } from "../../entities/rating/ui/ui";
 import { addResult, checkShowIFrame, getQuestion } from "../settings";
 import { showSearch } from "../../entities/searchbar";
 
-export async function controlEventIFrame(container: any = pageContainer) {
+async function controlEventIFrame(container: any = pageContainer) {
   const flag: any = await checkShowIFrame();
   const div: any = document.querySelector(`#rating-iframe`);
   if (div) return;
@@ -80,6 +79,7 @@ export async function renderFeed() {
     state.currentUser = user;
 
     showSearch(container);
+    
 
     const tabs = container.querySelector(".tabs");
 
@@ -106,6 +106,7 @@ export async function renderFeed() {
       containerPopularPosts,
       containerRecentlyPosts,
     );
+    controlEventIFrame();
 
     return container;
   } catch (error) {

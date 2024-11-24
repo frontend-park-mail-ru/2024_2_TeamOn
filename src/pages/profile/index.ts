@@ -196,8 +196,8 @@ export async function renderProfile() {
   try {
     const posts: any = [];
     const subcriptions: any = [];
-    const authorData: any = await getPageAuthor(window.location.pathname);
-
+    // const authorData: any = await getPageAuthor(window.location.pathname);
+    const authorData: any = {authorUsername: "alesha"}
     const avatar: any = await getAvatar(
       window.location.pathname,
       sessionStorage.getItem("authorid"),
