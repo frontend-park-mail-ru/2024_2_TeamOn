@@ -116,6 +116,10 @@ async function mofireUpdatePost() {
               currentPost.postId,
               selectedFiles,
             );
+            if (ok.pending) {
+              buttonSave.classList.add("active");
+              buttonCancel.classList.add("active");
+            }
             if (!ok) {
               await deletePost(currentPost.postId);
 
