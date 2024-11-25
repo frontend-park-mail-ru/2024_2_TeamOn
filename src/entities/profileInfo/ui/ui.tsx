@@ -60,6 +60,7 @@ async function renderUserStats(user: any, payments: any = null) {
       <p>Подписки {String(subscriptions)}</p>
       <p>Подписчики {String(user.followers === null ? 0 : user.followers)}</p>
       <p>Посты {String(amountPosts)}</p>
+      <p style={flag}>Выплаты {String(payments.amount)}</p>
     </div>
   );
 }

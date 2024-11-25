@@ -51,8 +51,8 @@ function modifireModalConfirmSubscription(
   );
   const handleClickPayment = async () => {
     const response: any = await realizePay(subscriptionRequestID);
+    const modalConfirmNew: any = document.querySelector(`.modal__confirmsubs`);
     if (!response || response.message) {
-      const modalConfirmNew: any = div.querySelector(`.modal__confirmsubs`);
       const input = modalConfirmNew.querySelectorAll(`.form-group`);
       const error = input[input.length - 1].querySelector("p");
       if (!error) {
@@ -66,7 +66,7 @@ function modifireModalConfirmSubscription(
     }
     const media = "Оплата успешно проведена";
     renderModalStatusUpload(true, media);
-    modalConfirm.style.display = "none";
+    modalConfirmNew.style.display = "none";
     profileForm.classList.remove("blur");
     const newUrl = `/profile/${authorId}`;
     window.history.pushState({ path: newUrl }, "", newUrl);

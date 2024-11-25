@@ -12,14 +12,16 @@ import { showSearch } from "../../entities/searchbar";
 import { hasLogged } from "../../shared/utils/hasLogged";
 
 async function controlEventIFrame(container: any = pageContainer) {
-  const flag: any = await checkShowIFrame();
+  // const flag: any = await checkShowIFrame();
   const div: any = document.querySelector(`#rating-iframe`);
+  const flagLocalStorage: any = localStorage.setItem("iframe", "block");
   if (div) return;
-  if (flag.iCanShow) {
+  if (localStorage.getItem("iframe") === "block") {
     const rating: any = renderRating();
     const divrating: any = renderTo(rating);
     container.append(divrating);
     controlIFRAME();
+    localStorage.removeItem("iframe");
   }
 }
 async function controlIFRAME() {
