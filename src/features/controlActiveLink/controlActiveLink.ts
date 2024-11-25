@@ -1,9 +1,4 @@
-import { VNode } from "../../../lib/vdom/src/source";
-import { renderTo } from "../../../lib/vdom/lib";
-import {
-  containerPopularposts,
-  containerRecentlyposts,
-} from "../../widgest/feed";
+import { paginate } from "../paginateFeed/paginateFeed";
 
 function controlActiveLink(tab: any, content: any) {
   const containerPopularPosts: any = document.querySelector(
@@ -19,8 +14,7 @@ function controlActiveLink(tab: any, content: any) {
         ? 0
         : sessionStorage.getItem("feed");
     link.className = index.toString() === initial.toString() ? "active" : "";
-
-    link.addEventListener("click", (event: any) => {
+    link.addEventListener("click", async (event: any) => {
       event.preventDefault();
       tab.querySelectorAll("a").forEach((linkreset: any, index: number) => {
         linkreset.classList.remove("active");

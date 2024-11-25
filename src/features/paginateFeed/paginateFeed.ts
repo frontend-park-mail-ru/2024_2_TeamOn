@@ -11,7 +11,6 @@ import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 import { hasLogged } from "../../shared/utils/hasLogged";
 
 export function controlSlideShow(container: any, rightContainer: any) {
-  const divPhotos = container.querySelector(`.container-image-photos`);
   const modalPhotos: any = document.querySelector(`.modal-view-photos`); //
   const rightContent: any = rightContainer;
   const closeModal: any = document.querySelector(`.close-modal-view`); //
@@ -49,7 +48,6 @@ export function controlSlideShow(container: any, rightContainer: any) {
     index: any = null,
   ) => {
     event.stopPropagation();
-    // containerModal.style.display = "block";
     modalPhotos.style.display = "block";
     rightContent.classList.add("blackout");
     currentIndex = index;
@@ -395,13 +393,6 @@ async function modifirePosts(
  * @returns
  */
 async function renderPopularPosts(popularPosts: any) {
-  // var posts: any = [];
-  // popularPosts.forEach(async (post: any) => {
-  //   const container = await containerPost(post.postId);
-  //   const div = renderTo(container);
-  //   posts.push(div);
-  // });
-  // return posts;
   const postsPromises = popularPosts.map(async (post: any) => {
     const container = await containerPost(post.postId);
 
@@ -423,47 +414,44 @@ async function renderPopularPosts(popularPosts: any) {
   const posts = await Promise.all(postsPromises);
   return posts;
 }
-// async function renderPosts(authorPosts: any[]) {
 
-//   const postsPromises = authorPosts.map(async (post: any) => {
-
-//     const container: any = await renderUserPost(post);
-
-//     const div = renderTo(container);
-
-//     const containerMedia: any = await containerMediaPost(post.postId);
-
-//     let arrayMedia: any = [];
-//     containerMedia.forEach( (media: any) => {
-//       const divMedia = renderTo(media);
-//       arrayMedia.push(divMedia)
-//     })
-//     const place: any = div.querySelector(`.container-image-photos`);
-//     place.append(...arrayMedia);
-
-//     return div;
-
-//   });
-//   const posts = await Promise.all(postsPromises);
-//   return posts;
-// }
 /**
  * Рендерит скелет недавних постов
  * @returns
  */
 async function renderRecentlyPosts(recentlyPosts: any) {
-  try {
-    var posts: any = [];
-    recentlyPosts.forEach(async (post: any) => {
-      const container: any = await containerPost(post.postId);
-      const div = renderTo(container);
-      posts.push(div);
-    });
-    return posts;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  // try {
+  //   var posts: any = [];
+  //   recentlyPosts.forEach(async (post: any) => {
+  //     const container: any = await containerPost(post.postId);
+  //     const div = renderTo(container);
+  //     posts.push(div);
+  //   });
+  //   return posts;
+  // } catch (error) {
+  //   console.error(error);
+  //   throw error;
+  // }
+  const postsPromises = recentlyPosts.map(async (post: any) => {
+    const container = await containerPost(post.postId);
+
+    const div = renderTo(container);
+
+    const containerMedia: any = await containerMediaPost(post.postId);
+    if (containerMedia) {
+      let arrayMedia: any = [];
+      containerMedia[0].forEach((media: any) => {
+        const divMedia = renderTo(media);
+        arrayMedia.push(divMedia);
+      });
+      const place: any = div.querySelector(`.container-image-photos`);
+      place.append(...arrayMedia);
+    }
+    return div;
+  });
+
+  const posts = await Promise.all(postsPromises);
+  return posts;
 }
 
 /**
@@ -496,9 +484,15 @@ async function paginate(
     activeLinkFeed == "0"
       ? (stopLoadPopularPosts = false)
       : (stopLoadRecentlyPosts = false);
+      // if (activeLinkFeed === "0") {
+      //   stopLoadPopularPosts = false;
+      //   stopLoadRecentlyPosts = true;
+      // } else {
+      //   stopLoadPopularPosts = true;
+      //   stopLoadRecentlyPosts = false;
+      // }
     try {
-      if (!stopLoadPopularPosts) {
-        // containerPopularPosts.style.opacity = 0;
+      if (!stopLoadPopularPosts && window.location.pathname === "/feed") {
 
         // Загружаем популярные посты
         const popularPosts: any = await getPopularPosts(offsetPopular);
@@ -522,7 +516,7 @@ async function paginate(
           stopLoadPopularPosts = true;
         }
       }
-      if (!stopLoadRecentlyPosts) {
+      if (!stopLoadRecentlyPosts && window.location.pathname === "/feed") {
         // Загружаем недавние посты
         const recentlyPosts: any = await getRecentlyPosts(offsetRecently);
         const nextRecentlyPosts = recentlyPosts.slice(0, QUERY.LIMIT);

@@ -6,6 +6,7 @@ import {
   tipForm,
   profileForm,
   confirmForm,
+  unfollowForm,
 } from "../../../widgest/profile";
 import { renderUserInfo } from "../../../entities/profileInfo/index";
 
@@ -44,6 +45,7 @@ export async function profileContent(
       {addCustomSubsForm()}
       {deletepostForm()}
       {confirmForm()}
+      {unfollowForm()}
     </div>
   );
 }

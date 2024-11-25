@@ -550,7 +550,6 @@ function modifierTable(
   responseTableInfinity: any,
 ) {
   const divTables: any = formContainer.querySelectorAll(`.my-table`);
-  console.log(divTables);
   let response: any;
   divTables.forEach((div: any, index: number) => {
     if (index === 0) {
@@ -566,10 +565,8 @@ function modifierTable(
 
 function customizeTable(div: any, response: any) {
   const tbody: any = div.querySelector("tbody");
-  console.log(tbody);
   let array: any = [];
   response.forEach((resp: any, index: number) => {
-    // const jsxContainer: any = renderStatics(resp.theme, resp.rating);
     const container = document.createElement("tr");
     const td1 = document.createElement("td");
     td1.className = "theme-output";

@@ -73,7 +73,6 @@ async function controlCustomSubscriptions(container: any) {
     const layers: any = await getSubsLayer();
     modalAddSubs.style.display = "block";
 
-    console.log(layers);
     layerList.append(...(await renderContainersLayer(layers)));
     const radioButtons: any = modalAddSubs.querySelectorAll(`.modal-layers`);
     let selectedLayer: any = 1;
@@ -131,12 +130,24 @@ async function controlCustomSubscriptions(container: any) {
         return;
       }
       // return;
-      await addCustomSubs(
+      const response: any = await addCustomSubs(
         title.value,
         description.value,
         Number(cost.value),
         Number(selectedLayer),
       );
+      if (response && response.message) {
+        const input = modalAddSubs.querySelectorAll(`.form-group`)[2];
+        const error = input.querySelector("p");
+        if (!error) {
+          const error = document.createElement("p");
+          error.style.color = "red";
+          error.textContent = response.message;
+          input.appendChild(error);
+        }
+        return;
+      }
+
       modalAddSubs.style.display = "none";
       profileForm.classList.remove("blur");
       const newsubs: any = await getCustomSubscription(
@@ -147,6 +158,10 @@ async function controlCustomSubscriptions(container: any) {
       const place: any = document.querySelector(".subscription-levels");
       place.append(...(await renderContainerSubs(newsubs.slice(-1))));
       modifireSubscriptions(place, newsubs.reverse());
+      if (newsubs.length === 3) {
+        div.style.display = "none";
+        return;
+      }
     });
   };
 

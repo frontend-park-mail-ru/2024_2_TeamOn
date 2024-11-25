@@ -1,7 +1,7 @@
 import { allowedExtensions, LINKS } from "../../../shared/consts/consts";
 import { route } from "../../../shared/routing/routing";
 import DOMPurify from "dompurify";
-import { addUserPost } from "../../../entities/userPost";
+import { addUserPost, deletePost } from "../../../entities/userPost";
 import { getUserPosts } from "../../../features/getuserposts/getUserPosts";
 import { uploadMediaFiles } from "../../../features/uploadMediaFiles/uploadMediaFiles";
 import { controlSlideShow } from "../../../features/paginateFeed/paginateFeed";
@@ -87,8 +87,21 @@ async function modifireCreatePost() {
 
         try {
           if (selectedFiles.length != 0) {
-            console.log(selectedFiles);
             const ok: any = await uploadMediaFiles(postId, selectedFiles);
+            if (!ok) {
+              await deletePost(postId);
+              
+                const input =
+                  containerCreatePost.querySelectorAll(`.form-group-add`)[1];
+                const error = input.querySelector("p");
+                if (!error) {
+                  const error = document.createElement("p");
+                  error.style.color = "red";
+                  error.textContent = "Файлы слишком большие";
+                  input.appendChild(error);
+                }
+                return;
+            }
           }
         } catch (error) {
           console.error("Ошибка при загрузке фонового изображения:", error);

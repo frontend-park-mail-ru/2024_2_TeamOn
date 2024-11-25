@@ -12,27 +12,37 @@ import { showSearch } from "../../entities/searchbar";
 import { hasLogged } from "../../shared/utils/hasLogged";
 
 async function controlEventIFrame(container: any = pageContainer) {
-  // const flag: any = await checkShowIFrame();
   const div: any = document.querySelector(`#rating-iframe`);
-  const flagLocalStorage: any = localStorage.setItem("iframe", "block");
+
   if (div) return;
-  if (localStorage.getItem("iframe") === "block") {
-    const rating: any = renderRating();
-    const divrating: any = renderTo(rating);
-    container.append(divrating);
-    controlIFRAME();
-    localStorage.removeItem("iframe");
-  }
+
+  const rating: any = renderRating();
+  const divrating: any = renderTo(rating);
+  container.append(divrating);
+  controlIFRAME();
+
+  setInterval(
+    async () => {
+      const div: any = document.querySelector(`#rating-iframe`);
+
+      if (div) return;
+
+      const rating: any = renderRating();
+      const divrating: any = renderTo(rating);
+      container.append(divrating);
+      controlIFRAME();
+    },
+    5 * 60 * 1000,
+  );
 }
 async function controlIFRAME() {
-  // const flag: any = await checkShowIFrame();
-  // if (!flag) return;
-
   const frame: any = document.querySelector(`.rating-widget`);
   const stars: any = frame.querySelectorAll(`i`);
 
   const button: any = frame.querySelector(`.button-sendgrade`);
   const textQuestion: any = frame.querySelector(`.question`);
+  const close: any = frame.querySelector(`.close`);
+
   let grade = 0;
   stars.forEach((star: any, index: number) => {
     star.addEventListener("click", () => {
@@ -53,6 +63,10 @@ async function controlIFRAME() {
     if (ok) {
       frame.style.display = "none";
     }
+  });
+
+  close.addEventListener("click", () => {
+    frame.style.display = "none";
   });
 }
 /**

@@ -4,11 +4,6 @@
 
 import { renderSearchbar } from "./ui/ui";
 import { searchAuthor } from "./api/api";
-import { findUsername } from "../../shared/utils/hasLogged";
-import {
-  addItemLocalStorage,
-  removeItemLocalStorage,
-} from "../../shared/utils/storages";
 import { getPageAuthor } from "../../features/getpageauthor/getpageauthor";
 import { route } from "../../shared/routing/routing";
 import { pageContainer } from "../../app";
@@ -18,10 +13,6 @@ async function showSearch(container: any) {
   const results: any = container.querySelector(`.results`);
   const closeBtn: any = container.querySelector(`.searchbar-icon--right`);
   const searchInput: any = container.querySelector(`.searchbar-input`);
-  const searchField: any = container.querySelector("div");
-  const containerSearchbar: any =
-    container.querySelector(`.searchbar-container`);
-  const feedButton: any = container.querySelector(`.feed-buttons`);
 
   results.style.maxHeight = "300px";
   results.style.overflowY = "auto";

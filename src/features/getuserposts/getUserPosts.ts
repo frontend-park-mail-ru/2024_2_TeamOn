@@ -33,6 +33,7 @@ export async function getUserPosts(
         } else if (response.status === 504) {
           reject("Сервер не ответил вовремя. Попробуйте позже.");
         } else {
+          resolve(false);
           reject(new Error("Внутреняя ошибка сервера"));
         }
       },

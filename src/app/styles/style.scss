@@ -700,7 +700,8 @@ form input[type="text"]:focus {
 .buttons-profile {
   text-align: center;
 }
-.buttons-profile button {
+.buttons-profile button,
+.button-buy-subs.issubs {
   display: block;
   width: 100%;
   margin: 10px 0;
@@ -710,11 +711,20 @@ form input[type="text"]:focus {
   background-color: #d9534f;
   color: white;
   font-size: 16px;
-  cursor: pointer;
   transition: background 0.3s ease;
+}
+.buttons-profile button {
+  cursor: pointer;
+}
+.button-buy-subs.issubs {
+  cursor: default;
 }
 .button-buy-subs:hover {
   background-color: var(--main-color-hover);
+}
+.button-buy-subs.issubs:hover {
+  background-color: var(--main-color);
+  user-select: none;
 }
 .buttons-profile button i {
   margin-right: 10px;
@@ -1593,6 +1603,7 @@ form input[type="text"]:focus {
 .modal__editpost,
 .modal__addsubs,
 .modal__deletepost,
+.modal__unfollow,
 .modal__confirmsubs {
   display: none;
   background-color: white;
@@ -1618,7 +1629,8 @@ form input[type="text"]:focus {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.modal__deletepost {
+.modal__deletepost,
+.modal__unfollow {
   width: 500px;
 }
 .edit {
@@ -2135,6 +2147,7 @@ select {
   .modal__deletepost,
   .modal__editpost,
   .modal__addsubs,
+  .modal__unfollow,
   .modal__confirmsubs {
     max-width: 90%;
   }
@@ -2288,6 +2301,11 @@ select {
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
+}
+@media (max-width: 768px) {
+  .rating-widget {
+    top: -200%;
+  }
 }
 .rating-widget .close {
   position: absolute;

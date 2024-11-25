@@ -1,14 +1,6 @@
 import * as VDom from "vdom";
-import { ELEMENTS_CLASS, LINKS } from "../../../shared/consts/consts";
-//TODO звезди
-// только на ленте
-// вспливабщее окно
-// бек
-// готово
-function renderRating() {
-  /*const isFeedPage = window.location.pathname===LINKS.FEED.HREF);
-  if (!isFeedPage) return;*/
 
+function renderRating() {
   return (
     <div>
       <div
@@ -21,6 +13,9 @@ function renderRating() {
         <div class="modal-overlay" id="modal-overlay">
           <div class="rating-widget">
             <h3 class="question">Насколько вы удовлетворены сервисом</h3>
+            <div class="close">
+              <h3>x</h3>
+            </div>
             <div class="stars">
               <i class="fas fa-star"></i>
               <i class="fas fa-star"></i>
