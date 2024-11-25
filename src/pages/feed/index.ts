@@ -15,7 +15,7 @@ export async function controlEventIFrame(container: any = pageContainer) {
   const div: any = document.querySelector(`#rating-iframe`);
 
   if (div) return;
-  if ( window.location.pathname === "/feed") {
+  if (window.location.pathname === "/feed") {
     const rating: any = renderRating();
     const divrating: any = renderTo(rating);
     container.append(divrating);
@@ -28,7 +28,7 @@ export async function controlEventIFrame(container: any = pageContainer) {
 
       if (div) return;
 
-      if ( window.location.pathname === "/feed") {
+      if (window.location.pathname === "/feed") {
         const rating: any = renderRating();
         const divrating: any = renderTo(rating);
         container.append(divrating);

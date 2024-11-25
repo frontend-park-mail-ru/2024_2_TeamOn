@@ -10,6 +10,7 @@ async function renderFeedForm() {
   return (
     <div class="main-content">
       {await Sidebar()}
+      {renderSearchbar()}
       <div class="right-content">
         <div class="tabs feed">
           <a class="active"> Популярное </a>

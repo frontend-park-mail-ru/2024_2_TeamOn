@@ -140,7 +140,7 @@ function modifireModalConfirmSubscription(
     placeposts.style.display = "block";
     await paginateProfile([], placeposts);
     await paginateSubscription([], placeSubscriptions);
-    
+
     const placeStats: any = document.querySelector(`.stats`);
     const payments: any = await getPayments(window.location.pathname);
     const authorData: any = await getPageAuthor(window.location.pathname);
