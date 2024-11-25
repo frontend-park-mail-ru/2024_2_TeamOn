@@ -54,7 +54,7 @@ async function modifireCreatePost() {
   if (buttonSave) {
     buttonSave.addEventListener("click", async (event: any) => {
       event.preventDefault();
-      
+
       if (title.value == "" || content.value == "") {
         const input =
           containerCreatePost.querySelectorAll(`.form-group-add`)[1];
@@ -67,7 +67,7 @@ async function modifireCreatePost() {
         }
         return;
       }
-      
+
       let input = containerCreatePost.querySelectorAll(`.form-group-add`)[1];
       let error = input.querySelector("p");
       if (error) {
@@ -84,7 +84,7 @@ async function modifireCreatePost() {
         );
         let postId: any = await getUserPosts("/profile", 0, 300);
         postId = postId[0].postId;
-        
+
         try {
           if (selectedFiles.length != 0) {
             const ok: any = await uploadMediaFiles(postId, selectedFiles);

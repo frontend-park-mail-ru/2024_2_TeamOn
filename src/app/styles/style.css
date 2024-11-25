@@ -2322,7 +2322,8 @@ select {
   cursor: not-allowed;
 }
 
-.save-button.active {
+.save-button.active,
+.cancel-button.active {
   background-color: gray;
   cursor: not-allowed;
 }
