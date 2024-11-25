@@ -843,8 +843,8 @@ form input[type="text"]:focus {
 .button-buy-subs.issubs:hover {
   background-color: var(--main-color);
   -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 .buttons-profile button i {
@@ -2895,10 +2895,6 @@ select {
   font-size: 14px;
   color: black;
 }
-
-<<<<<<< HEAD
-/*# sourceMappingURL=style.css.map */
-=======
 .new-badge {
   background-color: red; /* Цвет фона плашки */
   color: white; /* Цвет текста плашки */
@@ -2910,4 +2906,3 @@ select {
 }
 
 /*# sourceMappingURL=style.css.map */
->>>>>>> Поправил баги
