@@ -167,16 +167,18 @@ async function controlCustomSubscriptions(container: any) {
 }
 
 export async function controlBecomeCreator(div: any) {
-  const userdata: any = await getAccount();
-  const role = userdata.role;
+  if ( hasLogged()) {
+    const userdata: any = await getAccount();
+    const role = userdata.role;
+    if (role === "Reader") {
+      div.classList.add("fade"); // Добавляем класс для анимации
+      div.style.display = "flex";
+    } else {
+      div.style.display = "none";
+    }
+  }
   const button: any = div.querySelector(`.join-button`);
 
-  if (role === "Reader") {
-    div.classList.add("fade"); // Добавляем класс для анимации
-    div.style.display = "flex";
-  } else {
-    div.style.display = "none";
-  }
   if (!hasLogged()) {
     div.style.display = "block";
   }
@@ -185,7 +187,9 @@ export async function controlBecomeCreator(div: any) {
       route(LINKS.LOGIN.HREF);
       return;
     }
-    const setrole = await setAuthor();
+    if ( hasLogged()) {
+      const setrole = await setAuthor();
+    }
 
     // Запускаем анимацию
     div.classList.add("fade-out");
@@ -227,8 +231,11 @@ export async function renderProfile() {
       window.location.pathname,
       sessionStorage.getItem("authorid"),
     );
-    const userdata: any = await getAccount();
-    const payments: any = await getPayments(window.location.pathname);
+    let payments: any = 0;
+    
+    if (hasLogged()) {
+      payments= await getPayments(window.location.pathname);
+    }
 
     document.body.style.height = "100%";
     state.currentUser = authorData;
@@ -238,7 +245,6 @@ export async function renderProfile() {
     }
 
     const vdom: any = await profileContent(
-      userdata,
       authorData,
       avatar,
       background,

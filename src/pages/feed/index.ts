@@ -123,7 +123,9 @@ export async function renderFeed() {
       containerPopularPosts,
       containerRecentlyPosts,
     );
-    controlEventIFrame();
+    if ( hasLogged()) {
+      controlEventIFrame();
+    }
 
     return container;
   } catch (error) {
