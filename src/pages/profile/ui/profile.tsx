@@ -21,7 +21,6 @@ import { renderUserInfo } from "../../../entities/profileInfo/index";
  */
 
 export async function profileContent(
-  userdata: any,
   authorData: any,
   avatar: any,
   background: any,

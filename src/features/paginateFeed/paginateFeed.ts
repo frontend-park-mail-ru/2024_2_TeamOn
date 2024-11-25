@@ -513,7 +513,7 @@ async function paginate(
           stopLoadPopularPosts = true;
         }
       }
-      if (!stopLoadRecentlyPosts && window.location.pathname === "/feed") {
+      if (!stopLoadRecentlyPosts && window.location.pathname === "/feed" && hasLogged()) {
         // Загружаем недавние посты
         const recentlyPosts: any = await getRecentlyPosts(offsetRecently);
         const nextRecentlyPosts = recentlyPosts.slice(0, QUERY.LIMIT);
