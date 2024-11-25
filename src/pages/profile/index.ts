@@ -167,7 +167,7 @@ async function controlCustomSubscriptions(container: any) {
 }
 
 export async function controlBecomeCreator(div: any) {
-  if ( hasLogged()) {
+  if (hasLogged()) {
     const userdata: any = await getAccount();
     const role = userdata.role;
     if (role === "Reader") {
@@ -187,7 +187,7 @@ export async function controlBecomeCreator(div: any) {
       route(LINKS.LOGIN.HREF);
       return;
     }
-    if ( hasLogged()) {
+    if (hasLogged()) {
       const setrole = await setAuthor();
     }
 
@@ -232,9 +232,9 @@ export async function renderProfile() {
       sessionStorage.getItem("authorid"),
     );
     let payments: any = 0;
-    
+
     if (hasLogged()) {
-      payments= await getPayments(window.location.pathname);
+      payments = await getPayments(window.location.pathname);
     }
 
     document.body.style.height = "100%";

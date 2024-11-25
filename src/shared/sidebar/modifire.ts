@@ -50,7 +50,7 @@ function modifierSidebar(mainContainer?: any) {
       });
     });
   });
-  
+
   const containerBecomeCreator = sidebar.querySelector(`.become-a-creator`);
   controlBecomeCreator(containerBecomeCreator);
 }

@@ -1195,7 +1195,7 @@ form input[type=text]:focus {
   margin-bottom: 20px;
   border: none; /* Removed the border */
   font-size: 16px;
-  color: #999999;
+  color: black;
   background-color: #f9f9f9; /* Added a background color to distinguish the input field */
 }
 
@@ -2260,6 +2260,11 @@ select {
 }
 
 .become-author-button.active {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
+.save-button.active {
   background-color: gray;
   cursor: not-allowed;
 }
