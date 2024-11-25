@@ -80,7 +80,7 @@ async function modifireCreatePost() {
           containerCreatePost,
           sanitizedTitle,
           sanitizedContent,
-          Number(0),
+          Number(layer),
         );
         let postId: any = await getUserPosts("/profile", 0, 300);
         postId = postId[0].postId;
