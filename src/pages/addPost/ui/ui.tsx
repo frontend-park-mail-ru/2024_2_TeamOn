@@ -1,6 +1,5 @@
 import * as VDom from "vdom";
 import { Sidebar } from "../../../shared/sidebar/sidebar";
-import { getAccount } from "../../../features/getAccount/getAccount";
 
 function containerLayer(layer: any) {
   const name: any = layer.title ? layer.title : layer.layerName;

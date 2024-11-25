@@ -1,13 +1,9 @@
 import { LINKS, state } from "../../shared/consts/consts";
 import { getAccount } from "../../features/getAccount/getAccount";
 import { renderAbout } from "../../entities/profileabout/index";
-import { renderTo, update } from "../../../lib/vdom/lib";
+import { update } from "../../../lib/vdom/lib";
 import { pageContainer } from "../../app/index";
-import {
-  mobilepr,
-  profileContent,
-  renderContainerAddCustomSubs,
-} from "./ui/profile";
+import { mobilepr, profileContent } from "./ui/profile";
 import { getBackgroundAuthor } from "../../entities/profileDesktopHeader";
 import { getPageAuthor } from "../../features/getpageauthor/getpageauthor";
 import { getPayments } from "../../features/getpayments/getpayments";
@@ -21,7 +17,6 @@ import { paginateProfile } from "../../features/paginateprofile/paginateprofile"
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { setAuthor } from "../settings";
 import { getCustomSubscription } from "../../features/getCustomSubs/getCustomSubs";
-import { containerCustomSubscribe } from "../../widgest/profile/ui/profileform/profileform";
 import {
   addCustomSubs,
   renderModalAddCustomSubs,
@@ -101,8 +96,6 @@ async function controlCustomSubscriptions(container: any) {
     buttonConfirm.addEventListener("click", async (e: any) => {
       e.preventDefault();
 
-      // modalAddSubs.style.display = "none";
-      // profileForm.classList.remove("blur");
       if (
         !DOMPurify.sanitize(title.value) ||
         !DOMPurify.sanitize(cost.value) ||
@@ -201,6 +194,11 @@ export async function controlBecomeCreator(div: any) {
     setTimeout(() => {
       div.style.display = "none";
       const profile: any = document.querySelector(`.profile`);
+
+      // profile.classList.add("new");
+      const span: any = pageContainer.querySelector(".new-badge");
+
+      span.style.display = "block";
       profile.style.display = "flex";
     }, 500); // Должно совпадать с длительностью анимации в CSS
 
@@ -221,7 +219,6 @@ export async function renderProfile() {
     const subcriptions: any = [];
     const authorData: any = await getPageAuthor(window.location.pathname);
 
-    // const authorData: any = {authorUsername: "alesha"}
     const avatar: any = await getAvatar(
       window.location.pathname,
       sessionStorage.getItem("authorid"),
@@ -252,7 +249,6 @@ export async function renderProfile() {
       throw new Error("VirtualDOM не построился");
     }
 
-    // const container = update(pageContainer, vdom);
     if (window.innerWidth <= 1024) {
       const mobileContaine2: any = await mobilepr(
         authorData,

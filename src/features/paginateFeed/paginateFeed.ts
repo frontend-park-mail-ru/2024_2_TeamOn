@@ -9,6 +9,7 @@ import { route } from "../../shared/routing/routing";
 import { getAvatar } from "../getavatar/getavatar";
 import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 import { hasLogged } from "../../shared/utils/hasLogged";
+import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 
 export function controlSlideShow(container: any, rightContainer: any) {
   const modalPhotos: any = document.querySelector(`.modal-view-photos`); //
@@ -26,9 +27,11 @@ export function controlSlideShow(container: any, rightContainer: any) {
   }
   const imgPhotos: any = Array.from(container.querySelectorAll(`.image-photo`)); //
 
-  const imgAvatar: any = container.querySelector(`.author-avatar`);
+  let imgAvatar: any = container.querySelector(`.author-avatar`);
   const toggleButton: any = container.querySelector(".toggleButton");
-
+  if (!imgAvatar) {
+    imgAvatar = container.querySelector(`.profile-avatar`);
+  }
   var currentIndex = 0;
 
   const updateImage = (currentIndex: any) => {
@@ -271,11 +274,12 @@ async function customizePost(container: any, post: any = null) {
   }
   if (authorSection) {
     authorSection.addEventListener("click", () => {
-      sessionStorage.setItem("authorid", post.authorId);
-      sessionStorage.setItem("author", post.authorUsername);
-      sessionStorage.getItem("account") == post.authorUsername
-        ? route(`/profile`)
-        : route(`/profile/${sessionStorage.getItem("authorid")}`);
+      // sessionStorage.setItem("authorid", post.authorId);
+      // sessionStorage.setItem("author", post.authorUsername);
+      // sessionStorage.getItem("account") == post.authorUsername
+      //   ? route(`/profile`)
+      //   : route(`/profile/${sessionStorage.getItem("authorid")}`);
+      gotoauthor(post.authorId);
     });
   }
 
@@ -484,16 +488,9 @@ async function paginate(
     activeLinkFeed == "0"
       ? (stopLoadPopularPosts = false)
       : (stopLoadRecentlyPosts = false);
-      // if (activeLinkFeed === "0") {
-      //   stopLoadPopularPosts = false;
-      //   stopLoadRecentlyPosts = true;
-      // } else {
-      //   stopLoadPopularPosts = true;
-      //   stopLoadRecentlyPosts = false;
-      // }
+
     try {
       if (!stopLoadPopularPosts && window.location.pathname === "/feed") {
-
         // Загружаем популярные посты
         const popularPosts: any = await getPopularPosts(offsetPopular);
         const nextPopularPosts = popularPosts.slice(0, QUERY.LIMIT);

@@ -3,7 +3,7 @@ import { route } from "../../shared/routing/routing";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { clearHistoryBrowser } from "../../shared/utils/clearHistory";
 import { pageContainer } from "../../app/index";
-import { createElement, createText, update } from "../../../lib/vdom/lib";
+import { update } from "../../../lib/vdom/lib";
 import {
   controllerMask,
   createMask,
@@ -12,7 +12,6 @@ import { VNode } from "../../../lib/vdom/src/source";
 import { containerHome } from "./ui/home";
 
 import { showSearch } from "../../entities/searchbar/index";
-//убрать локалстораж на профиль
 
 /**
  * Обработка домашней страницы

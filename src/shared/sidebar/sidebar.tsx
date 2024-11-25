@@ -36,6 +36,9 @@ async function Sidebar() {
             <a class="referens profile" style={styleProfileIcon}>
               <i class="icon-profile"></i>
               Профиль
+              <span style="display: none;" class="new-badge">
+                НОВОЕ
+              </span>
             </a>
           </div>
           <div class="logout">

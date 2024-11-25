@@ -5,15 +5,10 @@ import { containerUpdatePost } from "./ui/ui";
 import { route } from "../../shared/routing/routing";
 import { allowedExtensions, LINKS, state } from "../../shared/consts/consts";
 import DOMPurify from "dompurify";
-import { addUserPost, editPost } from "../../entities/userPost";
+import { deletePost, editPost } from "../../entities/userPost";
 import { uploadMediaFiles } from "../../features/uploadMediaFiles/uploadMediaFiles";
-import { getUserPosts } from "../../features/getuserposts/getUserPosts";
-import {
-  containerMediaPost,
-  fetchFileFromImage,
-} from "../../widgest/feed/ui/post/post";
+import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 import { controlSlideShow } from "../../features/paginateFeed/paginateFeed";
-import { base64ToFile } from "../../shared/base64ToFile/base64ToFile";
 import { deleteMediaInPost } from "./api/api";
 
 async function mofireUpdatePost() {
@@ -67,8 +62,6 @@ async function mofireUpdatePost() {
         );
         selectedFiles = selectedFiles.filter((file) => file !== media.file);
       });
-      // const file = await fetchFileFromImage(currentPost.postId);
-      // selectedFiles.push(file); // Предполагается, что media.file содержит информацию о файле
 
       arrayMedia.push(fileDiv);
     });
@@ -123,6 +116,20 @@ async function mofireUpdatePost() {
               currentPost.postId,
               selectedFiles,
             );
+            if (!ok) {
+              await deletePost(currentPost.postId);
+
+              const input =
+                containerUpdatePost.querySelectorAll(`.form-group-add`)[1];
+              const error = input.querySelector("p");
+              if (!error) {
+                const error = document.createElement("p");
+                error.style.color = "red";
+                error.textContent = "Файлы слишком большие";
+                input.appendChild(error);
+              }
+              return;
+            }
           }
         } catch (error) {
           console.error("Ошибка при загрузке фонового изображения:", error);
@@ -177,7 +184,6 @@ async function mofireUpdatePost() {
         (file) => !validFiles.includes(file),
       );
 
-      // previewContainer.innerHTML = "";
       let loadedFilesCount = 0;
 
       // Добавляем валидные файлы в массив selectedFiles, исключая дубликаты
