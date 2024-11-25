@@ -67,6 +67,11 @@ export function controlSlideShow(container: any, rightContainer: any) {
     if (isMobile()) {
       let startX = 0;
       let endX = 0;
+      modalPhotos.addEventListener("click", (event: any) => {
+        document.body.style.overflow = "auto";
+        modalPhotos.style.display = "none";
+        rightContent.classList.remove("blackout");
+      });
       modalPhotos.addEventListener("touchstart", (event: any) => {
         startX = event.touches[0].clientX;
       });
@@ -274,11 +279,6 @@ async function customizePost(container: any, post: any = null) {
   }
   if (authorSection) {
     authorSection.addEventListener("click", () => {
-      // sessionStorage.setItem("authorid", post.authorId);
-      // sessionStorage.setItem("author", post.authorUsername);
-      // sessionStorage.getItem("account") == post.authorUsername
-      //   ? route(`/profile`)
-      //   : route(`/profile/${sessionStorage.getItem("authorid")}`);
       gotoauthor(post.authorId);
     });
   }
