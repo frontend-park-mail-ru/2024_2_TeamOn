@@ -10,14 +10,7 @@ function renderTableTitle() {
         </tr>
       </thead>
       <tbody>
-        <div class="output-backend">
-          {/* {renderStatic(theme, rating)} */}
-          {/* {renderStatics("1", "2")} */}
-          {/* <tr>
-            <td class="theme-output">434</td>
-            <td class="rating-output">sdsd</td>
-          </tr> */}
-        </div>
+        <div class="output-backend"></div>
       </tbody>
     </table>
   );

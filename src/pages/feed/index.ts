@@ -7,7 +7,7 @@ import { paginate } from "../../features/paginateFeed/paginateFeed";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { controlActiveLink } from "../../features/controlActiveLink/controlActiveLink";
 import { renderRating } from "../../entities/rating";
-import { addResult, checkShowIFrame, getQuestion } from "../settings";
+import { addResult, getQuestion } from "../settings";
 import { showSearch } from "../../entities/searchbar";
 import { hasLogged } from "../../shared/utils/hasLogged";
 

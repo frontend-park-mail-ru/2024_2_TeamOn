@@ -90,17 +90,17 @@ async function modifireCreatePost() {
             const ok: any = await uploadMediaFiles(postId, selectedFiles);
             if (!ok) {
               await deletePost(postId);
-              
-                const input =
-                  containerCreatePost.querySelectorAll(`.form-group-add`)[1];
-                const error = input.querySelector("p");
-                if (!error) {
-                  const error = document.createElement("p");
-                  error.style.color = "red";
-                  error.textContent = "Файлы слишком большие";
-                  input.appendChild(error);
-                }
-                return;
+
+              const input =
+                containerCreatePost.querySelectorAll(`.form-group-add`)[1];
+              const error = input.querySelector("p");
+              if (!error) {
+                const error = document.createElement("p");
+                error.style.color = "red";
+                error.textContent = "Файлы слишком большие";
+                input.appendChild(error);
+              }
+              return;
             }
           }
         } catch (error) {

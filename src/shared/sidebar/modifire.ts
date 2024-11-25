@@ -33,8 +33,10 @@ function modifierSidebar(mainContainer?: any) {
     if (link.active) {
       sidebarReferenses[index].className = ELEMENTS_CLASS.ACTIVE;
     }
-    // const span: any = mainContainer.querySelector(".new");
-    // span.style.color = "red";
+    const span: any = mainContainer.querySelector(".new");
+    if (span) {
+      span.style.color = "red";
+    }
 
     window.addEventListener("popstate", () => {
       sidebarLinks.forEach((link: any, index: any) => {

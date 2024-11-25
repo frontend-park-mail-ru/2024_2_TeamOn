@@ -1,6 +1,5 @@
 import { LINKS, state } from "../consts/consts";
 import { goToPage } from "../../app/index";
-import { nonauth } from "../utils/nonauth";
 
 class Routing {
   public history: string[] = [];
@@ -63,7 +62,6 @@ function updatePageContent(render: string): void {
       LINKS.UPDATE_POST.HREF,
     ].includes(render)
   ) {
-    // if (nonauth()) return;
     const pageMap: Record<string, keyof MenuElements> = {
       [LINKS.FEED.HREF]: "feed",
       [LINKS.PROFILE.HREF]: "profile",

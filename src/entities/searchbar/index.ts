@@ -1,13 +1,9 @@
-// при найденном значении вызывается плажка с авторами -> запрос к беку, т.е если бек отдал значение все класс все крута.
-// Возможность перехода на страницу автора, и не обязательно быть авторизованным
-// вызвать метод гет-аккаунт и почистить локалсторажи, для перехода на страницу пользователя
-
 import { renderSearchbar } from "./ui/ui";
 import { searchAuthor } from "./api/api";
 import { getPageAuthor } from "../../features/getpageauthor/getpageauthor";
-import { route } from "../../shared/routing/routing";
 import { pageContainer } from "../../app";
 import { getAvatar } from "../../features/getavatar/getavatar";
+import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 
 async function showSearch(container: any) {
   const results: any = container.querySelector(`.results`);
@@ -68,11 +64,7 @@ async function showSearch(container: any) {
           avatarImage.width = 50;
 
           authorElement.addEventListener("click", async () => {
-            sessionStorage.setItem("authorid", author);
-            sessionStorage.setItem("author", user.authorUsername);
-            sessionStorage.getItem("account") == user.authorUsername
-              ? route(`/profile`)
-              : route(`/profile/${author}`);
+            gotoauthor(author);
           });
           authorElement.appendChild(avatarImage);
           results.appendChild(authorElement);

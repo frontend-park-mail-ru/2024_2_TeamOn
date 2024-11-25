@@ -5,10 +5,9 @@ import * as VDom from "vdom";
 import { createText } from "jsxteamon2/dist/jsxteamon";
 
 export async function notificationContainer() {
-  const userdata: any | null = await getAccount();
   return (
     <div class="main-content">
-      {await Sidebar(userdata)}
+      {await Sidebar()}
       <div class="container-notification">
         <h1>Уведомления</h1>
         <div class="notification-icon">

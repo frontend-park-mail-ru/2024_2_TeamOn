@@ -2,10 +2,10 @@ import * as VDom from "vdom";
 import { createText } from "jsxteamon2/dist/jsxteamon";
 import { Sidebar } from "../../../shared/sidebar/sidebar";
 
-export async function settingsContainer(userdata: any) {
+export async function settingsContainer() {
   return (
     <div class="main-content">
-      {await Sidebar(userdata)}
+      {await Sidebar()}
       <div class="container">
         <h1>Настройки</h1>
         <div class="tabs"></div>

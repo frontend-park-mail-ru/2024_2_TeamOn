@@ -32,7 +32,7 @@ export async function renderSettings() {
     doc.style.height = "100%";
     const userdata: any = await getAccount();
 
-    const vdom: VNode = await settingsContainer(userdata);
+    const vdom: VNode = await settingsContainer();
 
     const container = update(pageContainer, vdom);
 

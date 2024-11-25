@@ -712,6 +712,7 @@ form input[type=text]:focus {
 .profile-avatar {
   width: 100%;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .stats {
@@ -1206,7 +1207,7 @@ form input[type=text]:focus {
   border: none; /* Removed the border */
   border-radius: 5px;
   font-size: 16px;
-  color: #999999;
+  color: black;
   resize: none;
   background-color: #f9f9f9; /* Added a background color to distinguish the text area */
 }
@@ -1600,6 +1601,7 @@ form input[type=text]:focus {
   height: 50px;
   border-radius: 50%;
   margin-right: 10px;
+  cursor: pointer;
 }
 
 .author-name {
@@ -2776,6 +2778,16 @@ select {
   padding: 10px;
   font-size: 14px;
   color: black;
+}
+
+.new-badge {
+  background-color: red; /* Цвет фона плашки */
+  color: white; /* Цвет текста плашки */
+  padding: 5px 10px; /* Отступы внутри плашки */
+  border-radius: 5px; /* Закругление углов */
+  font-size: 12px; /* Размер шрифта */
+  font-weight: bold; /* Жирный текст */
+  margin-left: 10px; /* Отступ слева для отделения от текста */
 }
 
 /*# sourceMappingURL=style.css.map */
