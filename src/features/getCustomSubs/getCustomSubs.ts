@@ -28,5 +28,4 @@ async function getCustomSubscription(link: any) {
   });
 }
 
-
 export { getCustomSubscription };

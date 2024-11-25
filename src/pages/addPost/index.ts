@@ -13,12 +13,10 @@ async function renderLayers(layers: any) {
     const div = renderTo(container);
     containers.push(div);
 
-    console.log(layers);
     layers.forEach((layer: any) => {
       const container: any = containerLayer(layer);
       const div = renderTo(container);
       containers.push(div);
-      console.log(containers);
     });
     return containers;
   } catch (error) {

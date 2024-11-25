@@ -24,7 +24,8 @@ async function uploadMediaFiles(postId: number, files: File[]) {
         } else if (response.status === 400) {
           resolve(false);
         } else {
-          reject(new Error("Внутреняя ошибка сервера"));
+          resolve(false)
+          // reject(new Error("Внутреняя ошибка сервера"));
         }
       },
     );

@@ -56,7 +56,6 @@ export async function containerMediaPost(postId: any) {
   if (propertiesPost.mediaContent.length <= 0) return;
   for (const content of propertiesPost.mediaContent) {
     const url: any = content.mediaURL;
-    console.log(url);
     mediaId.push(content.mediaID);
     try {
       const response = await fetch("/" + url);
@@ -81,7 +80,6 @@ export async function containerMediaPost(postId: any) {
       console.error("Ошибка при запросе к URL:", url, error);
     }
   }
-  console.log(arrayMedia);
   return [arrayMedia, mediaId];
 }
 export { containerPost };

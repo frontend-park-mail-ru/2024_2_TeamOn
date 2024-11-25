@@ -113,8 +113,9 @@ async function controlAdaptivePageAuthors(
           return;
         }
 
-        const userposts: any = await getUserPosts(window.location.pathname, 0);
-        const ok = await sendTip(userposts[0].authorId, {
+        const authorId = sessionStorage.getItem("authorid");
+
+        const ok = await sendTip(authorId, {
           sanitizedMessage,
           cost,
         });
@@ -126,27 +127,6 @@ async function controlAdaptivePageAuthors(
         profileForm.classList.remove("blur");
       });
     });
-    // buttonSubs.addEventListener("click", async () => {
-    //   const userdata: any = await getUserPosts(window.location.pathname, 0);
-    //   console.log(userdata[0].authorId);
-    //   const ok: any = await following(userdata[0].authorId);
-
-    //   const placeStats: any = document.querySelector(`.stats`);
-    //   const user: any = await getPageAuthor(window.location.pathname);
-    //   const arrayStats: VNode = await renderUserStats(user);
-    //   update(placeStats, arrayStats);
-
-    //   const userdataSec: any = await getPageAuthor(window.location.pathname);
-    //   if (userdataSec.isSubscribe) {
-    //     const feedProfile: any = document.querySelector(`.place-posts`);
-    //     feedProfile.style.display = "block";
-    //     buttonSubs.textContent = "Подписаны";
-    //   } else {
-    //     const feedProfile: any = document.querySelector(`.place-posts`);
-    //     feedProfile.style.display = "none";
-    //     buttonSubs.textContent = "Подписаться";
-    //   }
-    // });
   }
 }
 
@@ -258,92 +238,6 @@ function setDate(container: any, post: any) {
 }
 
 /**
- * Модифицрования модального окна редактирования поста
- * @param dropdownmenu Меню всплытия
- * @param profileForm Форма профиля
- * @param title Заголовок
- * @param content Содержимое
- * @param postbefore Предыдущий пост (если изменим содержимое постов профиля)
- * @param postId Айди поста (после создания)
- */
-async function modifierModalEditPost(
-  dropdownmenu: any,
-  profileForm: any,
-  title: any,
-  content: any,
-  postbefore: any,
-  postId: any = null,
-) {
-  // const alluserpost: any = await getUserPosts(window.location.pathname, 0, 300);
-  // let post = alluserpost.find(
-  //   (userpost: any) => userpost.postId === postbefore.postId,
-  // );
-  // if (postId) {
-  //   post = alluserpost[0];
-  // }
-  // dropdownmenu.classList.remove(ELEMENTS_CLASS.ACTIVE);
-  // const place = document.querySelector(`.div-edit-posts`);
-  // //const modal: any = renderEditPost(post);
-  // // update(place, modal);
-  // const modalsEdit: any = document.querySelector(".modal__editpost");
-  // const buttonCancel: any = modalsEdit.querySelector(`.cancel`);
-  // const buttonConfirm: any = modalsEdit.querySelector(`.save`);
-  // const edittitle: any = modalsEdit.querySelector(".input-group");
-  // const editcontent: any = modalsEdit.querySelector(".textarea-group");
-  // modalsEdit.style.display = "block";
-  // profileForm.classList.add("blur");
-  // buttonCancel.addEventListener("click", () => {
-  //   modalsEdit.style.display = "none";
-  //   profileForm.classList.remove("blur");
-  //   return;
-  // });
-  // buttonConfirm.addEventListener("click", async () => {
-  //   modalsEdit.style.display = "none";
-  //   profileForm.classList.remove("blur");
-  //   if (
-  //     !DOMPurify.sanitize(edittitle.value) ||
-  //     !DOMPurify.sanitize(editcontent.value)
-  //   ) {
-  //     const input = modalsEdit.querySelector(`.form-group`);
-  //     const error = input.querySelector("p");
-  //     if (!error) {
-  //       const error = document.createElement("p");
-  //       error.style.color = "red";
-  //       error.textContent = "Ошибка";
-  //       input.appendChild(error);
-  //     }
-  //     return;
-  //   }
-  //   console.log(edittitle.value);
-  //   console.log(editcontent.value);
-  //   await editPost(
-  //     modalsEdit,
-  //     postId ? postId : post.postId,
-  //     DOMPurify.sanitize(edittitle.value),
-  //     DOMPurify.sanitize(editcontent.value),
-  //   );
-  //   const afteruserPosts: any = await getUserPosts(
-  //     window.location.pathname,
-  //     0,
-  //     300,
-  //   );
-  //   const foundPost = afteruserPosts.find(
-  //     (afteruserpost: any) => afteruserpost.postId === post.postId,
-  //   );
-  //   title.textContent = foundPost.title;
-  //   content.textContent = foundPost.content;
-  //   if (postId) {
-  //     const foundPostPostid = afteruserPosts.find(
-  //       (afteruserpost: any) => afteruserpost.postId === postId,
-  //     );
-  //     title.textContent = foundPostPostid.title;
-  //     content.textContent = foundPostPostid.content;
-  //   }
-  //   return;
-  // });
-}
-
-/**
  * Модифицирование модального окна удаления поста
  * @param dropdownmenu Меню всплытия
  * @param profileForm Форма профиля
@@ -396,7 +290,6 @@ async function modifierModalDeletePost(
     const placeStats: any = document.querySelector(`.stats`);
     const payments: any = await getPayments(window.location.pathname);
     const authorData: any = await getPageAuthor(window.location.pathname);
-    console.log(authorData);
     const arrayStats: VNode = await renderUserStats(authorData, payments);
     update(placeStats, arrayStats);
     return;

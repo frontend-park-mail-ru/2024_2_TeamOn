@@ -4,19 +4,30 @@ import { renderUserInfo } from "../../../../entities/profileInfo/ui/ui";
 import { getCustomSubscription } from "../../../../features/getCustomSubs/getCustomSubs";
 import { renderContainerAddCustomSubs } from "../../../../pages/profile/ui/profile";
 
-function containerCustomSubscribe(subscription: any) {
+function containerCustomSubscribe(subscription: any, userdata: any = null) {
   const flag =
     window.location.pathname === "/profile"
       ? "display: none"
       : "display: block;";
-
+  let isSubs: any = false;
+  if (userdata) {
+    isSubs = userdata.isSubscribe;
+  }
+  const text: any = isSubs ? "Уже подписаны" : "Подписаться";
+  const styleSubs: any = isSubs ? "display: none" : "display: block";
   return (
     <div class="subscription-level">
-      <h3 class="title-level">{subscription.title}</h3>
-      <p class="count-level">{String(subscription.cost)} ₽ в месяц</p>
-      <p class="content-level">{String(subscription.description)}</p>
+      <h3 style={styleSubs} class="title-level">
+        {subscription.title}
+      </h3>
+      <p style={styleSubs} class="count-level">
+        {String(subscription.cost)} ₽ в месяц
+      </p>
+      <p style={styleSubs} class="content-level">
+        {String(subscription.description)}
+      </p>
       <button class="button-buy-subs" style={flag}>
-        Оформить
+        {text}
       </button>
     </div>
   );

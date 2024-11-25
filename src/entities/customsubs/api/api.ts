@@ -20,7 +20,9 @@ async function addCustomSubs(
         if (response.ok) {
           resolve(true);
         } else if (response.status === 400) {
-          reject(new Error("getCustomSubscription: 400 "));
+          response.json().then((data: any) => {
+            resolve(data);
+          });
         } else {
           reject(new Error("Внутреняя ошибка сервера"));
         }
@@ -83,4 +85,31 @@ async function realizePay(subscriptionRequestID: any) {
   });
 }
 
-export { addCustomSubs, requestPay, realizePay };
+/**
+ * Функция добавления кастомных подписок
+ * @param offsetPopular Оффсет для популярных постов
+ * @returns
+ */
+async function unfollow(authorId: any) {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "POST",
+      `/api/danya/unsubscription`,
+      { authorId: authorId },
+      (response) => {
+        if (response.ok) {
+          resolve(true);
+        } else if (response.status === 400) {
+          response.json().then((data: any) => {
+            resolve(data);
+          });
+        } else {
+          resolve(null);
+          reject(new Error("Внутреняя ошибка сервера"));
+        }
+      },
+    );
+  });
+}
+
+export { addCustomSubs, requestPay, realizePay, unfollow };

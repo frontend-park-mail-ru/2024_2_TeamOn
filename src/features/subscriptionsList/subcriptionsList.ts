@@ -2,7 +2,9 @@ import {
   realizePay,
   renderModalRealizeCustomSubs,
   renderModalRequestCustomSubs,
+  renderModalUnfollow,
   requestPay,
+  unfollow,
 } from "../../entities/customsubs";
 import { getCustomSubscription } from "../getCustomSubs/getCustomSubs";
 import {
@@ -14,6 +16,8 @@ import { route } from "../../shared/routing/routing";
 import { renderModalStatusUpload } from "../../shared/pushstatus/pushstatus";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { LINKS } from "../../shared/consts/consts";
+import { paginateProfile } from "../paginateprofile/paginateprofile";
+import { getPageAuthor } from "../getpageauthor/getpageauthor";
 
 function foundCancel(div: any) {
   const buttonCancel: any = div.querySelector(`.cancel`);
@@ -23,7 +27,65 @@ function foundSave(div: any) {
   const buttonSave: any = div.querySelector(`.save`);
   return buttonSave;
 }
+function foundUnfollow(div: any) {
+  const buttonSave: any = div.querySelector(`.delete`);
+  return buttonSave;
+}
+async function modifireModalUnfollow(
+  profileForm: any,
+  container: any,
+  subscription: any,
+) {
+  const authorId: any = sessionStorage.getItem("authorid");
+  const userdata: any = await getPageAuthor(window.location.pathname);
+  const modal: any = renderModalUnfollow(userdata);
+  const div: any = document.querySelector(`.div-unfollow`);
+  const placeSubscriptions = container.querySelector(`.subscription-levels`);
 
+  update(div, modal);
+
+  const buttonCancel: any = foundCancel(div);
+  const buttonUnfollow: any = foundUnfollow(div);
+
+  const modalConfirm: any = div.querySelector(`.modal__unfollow`);
+  profileForm.classList.add("blur");
+  modalConfirm.style.display = "block";
+
+  const handleClickCancel = () => {
+    buttonCancel.removeEventListener("click", handleClickCancel);
+    const div: any = document.querySelector(`.div-unfollow`);
+    const modalConfirm: any = div.querySelector(`.modal__unfollow`);
+
+    modalConfirm.style.display = "none";
+    profileForm.classList.remove("blur");
+  };
+  buttonCancel.addEventListener("click", handleClickCancel);
+
+  const handleClickUnfollow = async () => {
+    const response: any = await unfollow(authorId);
+    if (!response || response.message) {
+      const input = modalConfirm.querySelector(`.form-group`);
+      const error = modalConfirm.querySelector(".error-msg");
+      if (!error) {
+        const error = document.createElement("p");
+        error.style.color = "red";
+        error.textContent = "Ошибка";
+        error.className = "error-msg";
+        input.appendChild(error);
+      }
+      return;
+    }
+    const media = `Успешно отписались от ${userdata.authorUsername}`;
+    renderModalStatusUpload(true, media);
+    modalConfirm.style.display = "none";
+    profileForm.classList.remove("blur");
+    const placeposts: any = container.querySelector(`.place-posts`);
+    await paginateProfile([], placeposts);
+    await paginateSubscription([], placeSubscriptions);
+  };
+
+  buttonUnfollow.addEventListener("click", handleClickUnfollow);
+}
 function modifireModalConfirmSubscription(
   profileForm: any,
   container: any,
@@ -31,7 +93,6 @@ function modifireModalConfirmSubscription(
 ) {
   let subscriptionRequestID: any = 0;
 
-  console.log(subscription);
   let pagenumber = true;
   const authorId: any = sessionStorage.getItem("authorid");
   const modal: any = renderModalRequestCustomSubs(subscription);
@@ -60,7 +121,6 @@ function modifireModalConfirmSubscription(
         error.style.color = "red";
         error.textContent = "Ошибка оплаты";
         input[input.length - 1].appendChild(error);
-        console.log(input);
       }
       return;
     }
@@ -70,6 +130,13 @@ function modifireModalConfirmSubscription(
     profileForm.classList.remove("blur");
     const newUrl = `/profile/${authorId}`;
     window.history.pushState({ path: newUrl }, "", newUrl);
+    const placeposts: any = document.querySelector(`.place-posts`);
+    const placeSubscriptions: any =
+      document.querySelector(`.subscription-levels`);
+    placeSubscriptions.innerHTML = "";
+    placeposts.style.display = "block";
+    await paginateProfile([], placeposts);
+    await paginateSubscription([], placeSubscriptions);
   };
 
   const handleChange = (event: any) => {
@@ -101,7 +168,6 @@ function modifireModalConfirmSubscription(
     return;
   };
   const handleClickSave = async (event: any) => {
-    console.log(pagenumber);
     buttonSave.removeEventListener("click", handleClickSave);
 
     if (window.location.pathname === `/profile/${authorId}`) {
@@ -184,28 +250,44 @@ function customizeSubscription(container: any, subscription: any) {
   const buttonSubscription: any = container.querySelector(`.button-buy-subs`);
   const profileForm: any = document.querySelector(`.profile-form`);
 
-  buttonSubscription.addEventListener(`click`, () => {
+  buttonSubscription.addEventListener(`click`, async () => {
     if (!hasLogged()) {
       route(LINKS.LOGIN.HREF);
       return;
     }
-    modifireModalConfirmSubscription(profileForm, container, subscription);
+    const userdata: any = await getPageAuthor(window.location.pathname);
+    if (!userdata.isSubscribe) {
+      modifireModalConfirmSubscription(profileForm, container, subscription);
+    }
   });
 }
-export async function renderContainerSubs(allSubcriptions: any) {
+export async function renderContainerSubs(
+  allSubcriptions: any,
+  userdata: any = null,
+) {
   let subs: any = [];
-  allSubcriptions.forEach(async (subscription: any) => {
-    const container: any = containerCustomSubscribe(subscription);
+
+  for (const subscription of allSubcriptions) {
+    const container: any = containerCustomSubscribe(subscription, userdata);
     const div = renderTo(container);
     subs.push(div);
-  });
-  if (allSubcriptions.length == 0 && window.location.pathname != "/profile") {
+    if (userdata && userdata.isSubscribe) {
+      const button: any = div.querySelector(`.button-buy-subs`);
+      button.classList.add("issubs");
+      const rightColumn: any = document.querySelector(`.right-column`);
+      rightColumn.style.height = "200px";
+      return subs;
+    }
+  }
+
+  if (allSubcriptions.length === 0 && window.location.pathname !== "/profile") {
     const rightColumn: any = document.querySelector(`.right-column`);
     rightColumn.style.height = "200px";
     const container: any = containerNoneCustomSubcsribe();
     const div = renderTo(container);
     subs.push(div);
   }
+
   return subs;
 }
 export async function modifireSubscriptions(
@@ -236,11 +318,12 @@ async function paginateSubscription(
 ) {
   async function loadSubcriptions() {
     try {
+      const userdata: any = await getPageAuthor(window.location.pathname);
       const subs: any = await getCustomSubscription(window.location.pathname);
       const filteredSubs = subs.filter((sub: any) => sub.layer !== 0);
       allSubcriptions.push(...filteredSubs);
       placeSubscriptions.append(
-        ...(await renderContainerSubs(allSubcriptions)),
+        ...(await renderContainerSubs(allSubcriptions, userdata)),
       );
       modifireSubscriptions(placeSubscriptions, allSubcriptions.reverse());
     } catch (error) {

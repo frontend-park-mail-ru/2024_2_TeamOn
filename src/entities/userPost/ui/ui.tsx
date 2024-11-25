@@ -1,4 +1,3 @@
-import { containerMediaPost } from "../../../widgest/feed/ui/post/post";
 import { createText } from "../../../../lib/vdom/lib";
 import * as VDom from "vdom";
 
@@ -47,67 +46,7 @@ async function renderUserPost(post: any) {
     </div>
   );
 }
-/**
- * Рендер модального окна создания поста
- * @returns
- */
-/*
-function renderAddPost() {
-  if (window.location.pathname !== "/profile") {
-    return <></>;
-  }
 
-  return (
-    <div class="modal__createpost">
-      <div class="modal-header">
-        <h2>Создание поста</h2>
-      </div>
-      <div class="form-group">
-        <label class="label-tip">Заголовок</label>
-        <textarea class="input-group"></textarea>
-      </div>
-      <div class="form-group">
-        <label class="label-group">Содержание</label>
-        <textarea class="textarea-group"></textarea>
-      </div>
-      <div class="form-actions">
-        <button class="cancel cancel__button cancel__button__effects">
-          Закрыть
-        </button>
-        <button class="send-tip send-tip__button send-tip__button__effects">
-          Создать
-        </button>
-      </div>
-    </div>
-  );
-}
-function renderEditPost(post: any) {
-  return (
-    <div class="modal__editpost">
-      <div class="modal-header">
-        <h2>Редактирование</h2>
-      </div>
-      <div class="form-group">
-        <label class="label-tip">Заголовок</label>
-        <textarea class="input-group">{post.title}</textarea>
-      </div>
-      <div class="form-group">
-        <label class="label-group">Содержание</label>
-        <textarea class="textarea-group">{post.content}</textarea>
-        <div class="char-count"></div>
-      </div>
-      <div class="form-actions">
-        <button class="cancel cancel__button cancel__button__effects">
-          Закрыть
-        </button>
-        <button class="save save__button save__button__effects">
-          Сохранить
-        </button>
-      </div>
-    </div>
-  );
-}
-*/
 /**
  * Рендер удаления поста
  * @param post Пост
@@ -134,28 +73,5 @@ function renderDeletePost(post: any) {
     </div>
   );
 }
-/*
-function renderCreatePost(){
-    return (
-            <div className="container">
-                <div className="post-container">
-                <h1>Добавление поста</h1>
-                <input type="text" placeholder="Введите заголовок поста" />
-                <textarea placeholder="Начните писать пост"></textarea>
-                <i className="fas fa-paperclip attachment-icon"></i>
-                <button className="save-button">Сохранить</button>
-                </div>
-                <div className="visibility-container">
-                <h2>Кто может смотреть</h2>
-                <label>
-                    <input type="radio" name="visibility" checked /> Только подписчики
-                </label>
-                <p>Выберите уровень</p>
-                </div>
-            </div>
-            );
-        }
 
-export default renderCreatePost;
-*/
-export { renderUserPost, /*renderEditPost, renderAddPost*/ renderDeletePost };
+export { renderUserPost, renderDeletePost };

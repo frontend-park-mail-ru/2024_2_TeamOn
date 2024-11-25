@@ -1,11 +1,8 @@
 import { renderTo } from "../../../../lib/vdom/lib";
-import { getCustomSubscription } from "../../../features/getCustomSubs/getCustomSubs";
 import { containerLayer } from "../../../pages/addPost/ui/ui";
 import * as VDom from "vdom";
 
 async function renderContainersLayer(layers: any) {
-  // const layers: any = await getCustomSubscription(window.location.pathname);
-  console.log(layers);
   let containersLayers: any = [];
   layers.forEach((layer: any) => {
     const container: any = containerLayer(layer);
@@ -34,18 +31,7 @@ function renderModalAddCustomSubs() {
         <label class="label-tip">Стоимость</label>
         <textarea class="input-group"></textarea>
       </div>
-      <div class="form-group layer-list">
-        {/* {...renderContainersLayer()}  */}
-        {/* <label>
-            <input type="radio" name="visibility" checked />
-            </label> 
-            <label>
-            <input type="radio" name="visibility" checked />
-            </label> 
-            <label>
-            <input type="radio" name="visibility" checked />
-            </label>  */}
-      </div>
+      <div class="form-group layer-list"></div>
       <div class="form-actions">
         <button class="cancel cancel__button cancel__button__effects">
           Закрыть
@@ -128,16 +114,40 @@ function renderModalRealizeCustomSubs(
           Оплатить
         </button>
       </div>
-      <div id="successMessage" class="scroll-message" style="display: none;">
-        {/* Оплата успешно проведена! */}
+      <div
+        id="successMessage"
+        class="scroll-message"
+        style="display: none;"
+      ></div>
+    </div>
+  );
+}
+function renderModalUnfollow(authorData: any) {
+  return (
+    <div class="modal__unfollow">
+      <div class="modal-header">
+        <h2>Отмена подписки</h2>
+      </div>
+      <div class="form-group">
+        <p class="textarea-group-delete">
+          Вы действительно хотите отписаться от {authorData.authorUsername} ?
+        </p>
+      </div>
+      <div class="form-actions">
+        <button class="cancel cancel__button cancel__button__effects">
+          Закрыть
+        </button>
+        <button class="delete delete__button delete__button__effects">
+          Отписаться
+        </button>
       </div>
     </div>
   );
 }
-
 export {
   renderModalAddCustomSubs,
   renderContainersLayer,
   renderModalRequestCustomSubs,
   renderModalRealizeCustomSubs,
+  renderModalUnfollow,
 };
