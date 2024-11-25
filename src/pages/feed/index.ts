@@ -11,15 +11,16 @@ import { addResult, getQuestion } from "../settings";
 import { showSearch } from "../../entities/searchbar";
 import { hasLogged } from "../../shared/utils/hasLogged";
 
-async function controlEventIFrame(container: any = pageContainer) {
+export async function controlEventIFrame(container: any = pageContainer) {
   const div: any = document.querySelector(`#rating-iframe`);
 
   if (div) return;
-
-  const rating: any = renderRating();
-  const divrating: any = renderTo(rating);
-  container.append(divrating);
-  controlIFRAME();
+  if ( window.location.pathname === "/feed") {
+    const rating: any = renderRating();
+    const divrating: any = renderTo(rating);
+    container.append(divrating);
+    controlIFRAME();
+  }
 
   setInterval(
     async () => {
@@ -27,12 +28,14 @@ async function controlEventIFrame(container: any = pageContainer) {
 
       if (div) return;
 
-      const rating: any = renderRating();
-      const divrating: any = renderTo(rating);
-      container.append(divrating);
-      controlIFRAME();
+      if ( window.location.pathname === "/feed") {
+        const rating: any = renderRating();
+        const divrating: any = renderTo(rating);
+        container.append(divrating);
+        controlIFRAME();
+      }
     },
-    5 * 60 * 1000,
+    1 * 10 * 1000,
   );
 }
 async function controlIFRAME() {
@@ -123,9 +126,9 @@ export async function renderFeed() {
       containerPopularPosts,
       containerRecentlyPosts,
     );
-    if (hasLogged()) {
-      controlEventIFrame();
-    }
+    // if (hasLogged()) {
+    //   controlEventIFrame();
+    // }
 
     return container;
   } catch (error) {

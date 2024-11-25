@@ -18,6 +18,9 @@ import { hasLogged } from "../../shared/utils/hasLogged";
 import { LINKS } from "../../shared/consts/consts";
 import { paginateProfile } from "../paginateprofile/paginateprofile";
 import { getPageAuthor } from "../getpageauthor/getpageauthor";
+import { getPayments } from "../getpayments/getpayments";
+import { renderUserStats } from "../../entities/profileInfo/ui/ui";
+import { VNode } from "lib/vdom/src/source";
 
 function foundCancel(div: any) {
   const buttonCancel: any = div.querySelector(`.cancel`);
@@ -137,6 +140,13 @@ function modifireModalConfirmSubscription(
     placeposts.style.display = "block";
     await paginateProfile([], placeposts);
     await paginateSubscription([], placeSubscriptions);
+    
+    const placeStats: any = document.querySelector(`.stats`);
+    const payments: any = await getPayments(window.location.pathname);
+    const authorData: any = await getPageAuthor(window.location.pathname);
+    const arrayStats: VNode = await renderUserStats(authorData, payments);
+    update(placeStats, arrayStats);
+    return;
   };
 
   const handleChange = (event: any) => {

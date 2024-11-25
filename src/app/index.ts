@@ -4,7 +4,7 @@ import { renderProfile } from "../pages/profile";
 import { renderHome } from "../pages/home";
 import { startA } from "./providers/menu";
 import "./styles/style.css";
-import { renderFeed } from "../pages/feed";
+import { controlEventIFrame, renderFeed } from "../pages/feed";
 import { route } from "../shared/routing/routing";
 import { renderNotifications } from "../pages/notifications";
 import { renderSettings } from "../pages/settings";
@@ -14,6 +14,7 @@ import { renderLogin } from "../pages/login";
 import { modifierSidebar } from "../shared/sidebar/modifire";
 import { renderCreatePost } from "../pages/addPost";
 import { renderUpdatePost } from "../entities/userPost";
+import { hasLogged } from "../shared/utils/hasLogged";
 /**
  * Объект, содержащий конфигурацию меню приложения.
  */
@@ -163,6 +164,9 @@ export const pageContainer = document.createElement("main");
 const pushmodal = document.createElement("div");
 pushmodal.className = "push-modal";
 pushmodal.style.display = "none";
+if (hasLogged()) {
+  controlEventIFrame();
+}
 if (flag) {
   let root: HTMLElement | null = startA(config.menu, state);
   render(Virtual);
