@@ -24,7 +24,7 @@ async function uploadMediaFiles(postId: number, files: File[]) {
         } else if (response.status === 400) {
           resolve(false);
         } else {
-          resolve(false)
+          resolve(false);
         }
       },
     );
