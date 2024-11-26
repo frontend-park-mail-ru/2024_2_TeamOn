@@ -40,7 +40,7 @@ export async function controlEventIFrame(container: any = pageContainer) {
 }
 async function controlIFRAME() {
   const frame: any = document.querySelector(`.rating-widget`);
-if (!frame) return;
+  if (!frame) return;
   const stars: any = frame.querySelectorAll(`i`);
 
   const button: any = frame.querySelector(`.button-sendgrade`);

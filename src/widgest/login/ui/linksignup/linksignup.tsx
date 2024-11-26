@@ -1,7 +1,7 @@
 import * as VDom from "vdom";
 
 function linkSignup() {
-  const linkMessage: string = "У вас нет аккаунта? "
+  const linkMessage: string = "У вас нет аккаунта? ";
   return (
     <div class="signup-link" style="user-select: none;">
       {linkMessage}

@@ -714,14 +714,6 @@ form input[type=text]:focus {
   cursor: pointer;
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
 .stats {
   text-align: center;
   margin: 20px 0;
@@ -2092,122 +2084,6 @@ span {
   transition: width 0.3s ease, left 0.3s ease;
 }
 
-@media (max-width: 768px) {
-  .tabs a {
-    font-size: 14px;
-  }
-  .slideshow {
-    display: none;
-  }
-  .modal-view-photos {
-    width: 390px;
-    box-shadow: 0 0px 0px rgba(0, 0, 0, 0.1);
-    padding: 0;
-  }
-  .close-modal-view {
-    opacity: 0;
-  }
-}
-.modal-container-photos {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-}
-
-.modal-container-photos img {
-  height: auto;
-  transition: transform 0.5s ease; /* Плавный переход */
-}
-
-.background-modal-view {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0%;
-  left: 0%;
-}
-
-.container-image-photos .image-photo {
-  width: 100%;
-}
-
-.become-a-creator {
-  background-color: #f9f9f9; /* Цвет фона */
-  padding: 20px; /* Отступы внутри блока */
-  border-radius: 8px; /* Скругление углов */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Эффект тени */
-  text-align: center; /* Выравнивание текста по центру */
-  margin: 20px; /* Отступы вокруг блока */
-  text-align: left;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  top: 55%;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-}
-
-.fade {
-  transition:
-    opacity 0.5s ease,
-    visibility 0.5s ease;
-  opacity: 1;
-  visibility: visible;
-}
-
-.fade-out {
-  opacity: 0;
-  visibility: hidden;
-}
-
-@media (max-width: 768px) {
-  .become-a-creator {
-    top: 40%;
-  }
-}
-.notification-become {
-  font-weight: normal;
-}
-
-.join-button {
-  display: inline-block; /* Отображение как блочный элемент */
-  margin-top: 15px; /* Отступ сверху */
-  padding: 10px 20px; /* Отступы внутри кнопки */
-  background-color: var(--main-color); /* Цвет фона кнопки */
-  color: white; /* Цвет текста кнопки */
-  text-decoration: none; /* Убираем подчеркивание */
-  border-radius: 10px; /* Скругление углов кнопки */
-  transition: background-color 0.3s; /* Плавный переход цвета фона */
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.join-button:hover {
-  background-color: rgba(
-    217,
-    84,
-    79,
-    0.7960784314
-  ); /* Цвет фона при наведении */
-}
-
-.tabs a::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  width: 0;
-  height: 2px;
-  background-color: #000;
-  transition:
-    width 0.3s ease,
-    left 0.3s ease;
-}
-
 .tabs a.active::after {
   width: 50%;
   left: 25%;
@@ -2911,6 +2787,7 @@ select {
   font-size: 14px;
   color: black;
 }
+
 .new-badge {
   background-color: red; /* Цвет фона плашки */
   color: white; /* Цвет текста плашки */
