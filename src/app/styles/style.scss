@@ -505,6 +505,7 @@ form input[type="text"]:focus {
 .signup__container input[type="submit"] {
   width: 100%;
   padding: 10px;
+  margin-top: 20px;
   border: none;
   border-radius: 20px;
   background-color: #000;
@@ -657,7 +658,6 @@ form input[type="text"]:focus {
   border-radius: 10px;
   cursor: pointer;
 }
-
 .stats {
   text-align: center;
   margin: 20px 0;
@@ -2546,11 +2546,15 @@ select {
 }
 
 .new-badge {
-  background-color: red; /* Цвет фона плашки */
-  color: white; /* Цвет текста плашки */
-  padding: 5px 10px; /* Отступы внутри плашки */
-  border-radius: 5px; /* Закругление углов */
-  font-size: 12px; /* Размер шрифта */
-  font-weight: bold; /* Жирный текст */
-  margin-left: 10px; /* Отступ слева для отделения от текста */
+  background-color: red;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.container-table {
+  margin-bottom: 40px;
 }

@@ -21,12 +21,15 @@ import { getAvatar } from "../../features/getavatar/getavatar";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { renderStatics, renderTableTitle } from "../statistics/ui/ui";
 import { hasLogged } from "../../shared/utils/hasLogged";
+import { setTitle } from "../../shared/settitle/setTitle";
 /**
  * Рендер настроек
  * @returns
  */
 export async function renderSettings() {
   try {
+    setTitle(LINKS.SETTINGS.TEXT);
+
     const user = state.currentUser;
     const doc: any = document.body;
     doc.style.height = "100%";
@@ -509,18 +512,18 @@ async function createStatistics() {
 
   let time = "1";
   const responseTableDay: any = await getDataTable(time);
-  titleDay.textContent = "За последний день";
+  titleDay.innerHTML = "<i>За последний день</i>";
   formContainer.appendChild(titleDay);
   const tableDay: any = renderTable();
 
   time = "7";
   const responseTableWeek = await getDataTable(time);
-  titleWeek.textContent = "За последнюю неделю";
+  titleWeek.innerHTML = "<i>За последнюю неделю</i>";
   const tableWeek: any = renderTable();
 
   time = "infinity";
   const responseTableInfinity = await getDataTable(time);
-  titleInfinity.textContent = "За последнюю неделю";
+  titleInfinity.innerHTML = "<i>За последнее время</i>";
   const tableInfinity: any = renderTable();
 
   containerDay.appendChild(titleDay);

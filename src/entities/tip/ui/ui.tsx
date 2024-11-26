@@ -17,8 +17,8 @@ function renderTip() {
       </div>
       <div class="form-group">
         <label class="label-tip">Сумма</label>
-        <textarea class="input-group">360</textarea>
-        <div class="amount-count">Минимум 360 рублей</div>
+        <textarea class="input-group">10</textarea>
+        <div class="amount-count">Минимум 10 рублей</div>
       </div>
       <div class="form-group">
         <label class="label-group">Сообщение</label>

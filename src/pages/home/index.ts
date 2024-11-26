@@ -12,6 +12,7 @@ import { VNode } from "../../../lib/vdom/src/source";
 import { containerHome } from "./ui/home";
 
 import { showSearch } from "../../entities/searchbar/index";
+import { setTitle } from "../../shared/settitle/setTitle";
 
 /**
  * Обработка домашней страницы
@@ -21,6 +22,7 @@ export function renderHome() {
   if (hasLogged()) {
     route(LINKS.FEED.HREF);
   } else {
+    setTitle(LINKS.HOME.TEXT);
     document.body.style.height = "100vh";
     clearHistoryBrowser();
 

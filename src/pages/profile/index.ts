@@ -31,6 +31,8 @@ import {
 import { renderContainersLayer } from "../../entities/customsubs/ui/ui";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { route } from "../../shared/routing/routing";
+import { setTitle } from "../../shared/settitle/setTitle";
+import { showOverlay } from "../../shared/overlay/overlay";
 
 async function controlCustomSubscriptions(container: any) {
   if (window.location.pathname !== "/profile") return;
@@ -54,11 +56,13 @@ async function controlCustomSubscriptions(container: any) {
     const modalAddCustomSubscription: any =
       container.querySelector(`.div-add-custom-subs`);
     update(modalAddCustomSubscription, renderModalAddCustomSubs());
-
     const layerList: any =
       modalAddCustomSubscription.querySelector(`.layer-list`);
 
     const modalAddSubs: any = document.querySelector(`.modal__addsubs`);
+
+    const overlay: any = showOverlay(modalAddSubs, profileForm);
+
     const buttonCancel: any = modalAddSubs.querySelector(`.cancel`);
     const buttonConfirm: any = modalAddSubs.querySelector(`.save`);
     const inputs: any = modalAddSubs.querySelectorAll(".input-group");
@@ -84,7 +88,8 @@ async function controlCustomSubscriptions(container: any) {
     const handleClickCancel = (e: any) => {
       modalAddSubs.style.display = "none";
       profileForm.classList.remove("blur");
-
+      overlay.remove();
+      document.body.style.overflow = "auto";
       return;
     };
 
@@ -92,15 +97,15 @@ async function controlCustomSubscriptions(container: any) {
 
     buttonCancel.addEventListener("click", handleClickCancel);
     profileForm.addEventListener("click", handleClickCancel);
+    overlay.addEventListener("click", handleClickCancel);
 
     buttonConfirm.addEventListener("click", async (e: any) => {
       e.preventDefault();
+      const sanitizedTitle = DOMPurify.sanitize(title.value);
+      const sanitizedDescription = DOMPurify.sanitize(description.value);
+      const sanitizedCost = DOMPurify.sanitize(cost.value);
 
-      if (
-        !DOMPurify.sanitize(title.value) ||
-        !DOMPurify.sanitize(cost.value) ||
-        !DOMPurify.sanitize(description.value)
-      ) {
+      if (!sanitizedTitle || !sanitizedDescription || !sanitizedCost) {
         const input = modalAddSubs.querySelectorAll(`.form-group`)[2];
         const error = input.querySelector("p");
         if (!error) {
@@ -111,18 +116,18 @@ async function controlCustomSubscriptions(container: any) {
         }
         return;
       }
-      if (!Number(cost.value)) {
+
+      if (!Number.isInteger(Number(sanitizedCost))) {
         const input = modalAddSubs.querySelectorAll(`.form-group`)[2];
         const error = input.querySelector("p");
         if (!error) {
           const error = document.createElement("p");
           error.style.color = "red";
-          error.textContent = "Ошибка. Цена должна быть цифрой";
+          error.textContent = "Ошибка. Введите целое число";
           input.appendChild(error);
         }
         return;
       }
-      // return;
       const response: any = await addCustomSubs(
         title.value,
         description.value,
@@ -143,6 +148,8 @@ async function controlCustomSubscriptions(container: any) {
 
       modalAddSubs.style.display = "none";
       profileForm.classList.remove("blur");
+      overlay.remove();
+      document.body.style.overflow = "auto";
       const newsubs: any = await getCustomSubscription(
         window.location.pathname,
       );
@@ -219,6 +226,7 @@ export async function controlBecomeCreator(div: any) {
  */
 export async function renderProfile() {
   try {
+    setTitle(LINKS.PROFILE.TEXT);
     const posts: any = [];
     const subcriptions: any = [];
     const authorData: any = await getPageAuthor(window.location.pathname);

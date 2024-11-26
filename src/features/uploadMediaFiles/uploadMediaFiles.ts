@@ -20,7 +20,7 @@ async function uploadMediaFiles(postId: number, files: File[]) {
       formData,
       (response) => {
         if (response.ok) {
-          resolve({ success: true, pending: false });
+          resolve(true);
         } else if (response.status === 400) {
           resolve(false);
         } else {

@@ -9,11 +9,14 @@ import { VNode } from "../../../lib/vdom/src/source";
 import { containerLogin } from "./ui/login";
 import { authLogin } from "../../features/authLogin/authLogin";
 import { validateLoginForm } from "../../shared/validateLoginForm/validateLoginForm";
+import { setTitle } from "../../shared/settitle/setTitle";
 /**
  * Рендерит форму входа на страницу.
  * @returns
  */
 export function renderLogin() {
+  setTitle(LINKS.LOGIN.TEXT);
+
   let attempts = 0;
 
   const vdom: VNode = containerLogin();
