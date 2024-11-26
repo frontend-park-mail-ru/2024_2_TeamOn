@@ -505,7 +505,6 @@ form input[type="text"]:focus {
 .signup__container input[type="submit"] {
   width: 100%;
   padding: 10px;
-  margin-top: 20px;
   border: none;
   border-radius: 20px;
   background-color: #000;
@@ -658,6 +657,7 @@ form input[type="text"]:focus {
   border-radius: 10px;
   cursor: pointer;
 }
+
 .stats {
   text-align: center;
   margin: 20px 0;

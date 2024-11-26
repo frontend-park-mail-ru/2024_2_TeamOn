@@ -34,6 +34,7 @@ export function renderLogin() {
       inputPassword.type = "text";
       passwordEye.classList.add("active");
     } else {
+      passwordEye.classList.remove("active");
       inputPassword.type = "password";
       passwordEye.classList.remove("active");
     }
