@@ -22,7 +22,24 @@ async function containerPost(postId: any) {
         <div class="toggleButton" style="display: none;">
           Показать...
         </div>
-        <div class="container-image-photos"></div>
+        <div class="container-image-photos">
+          <img
+            class="image-photo"
+            src="https://i.pinimg.com/236x/93/ed/3a/93ed3af6411e1e8b997038c74c287a8a.jpg"
+          ></img>
+          <img
+            class="image-photo"
+            src="https://img.freepik.com/free-photo/heart-shaped-hands-sunset_23-2150169264.jpg"
+          ></img>
+          <img
+            class="image-photo"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9UE1dYBdrFfV1Dz09dGWXy7R8TasGsOk7zQ&s"
+          ></img>
+          <img
+            class="image-photo"
+            src="https://avatars.mds.yandex.net/i?id=bb6f43ed6751b908e678f9081d830a85_l-4821174-images-thumbs&n=27&h=480&w=480"
+          ></img>
+        </div>
         <div class="date"></div>
         <div class="iteraction-section">
           <div class="likes-container">

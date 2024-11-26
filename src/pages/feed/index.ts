@@ -129,9 +129,6 @@ export async function renderFeed() {
       containerPopularPosts,
       containerRecentlyPosts,
     );
-    // if (hasLogged()) {
-    //   controlEventIFrame();
-    // }
 
     return container;
   } catch (error) {
