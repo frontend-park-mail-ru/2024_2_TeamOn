@@ -1144,7 +1144,6 @@ form input[type=text]:focus {
 .date {
   text-align: right;
   color: gray;
-  margin-top: 10px;
 }
 
 .menu-icon {
@@ -2058,7 +2057,8 @@ span {
 }
 
 .container-image-photos .image-photo {
-  width: 100%;
+  max-width: 300px;
+  max-height: 300px;
 }
 
 .become-a-creator {

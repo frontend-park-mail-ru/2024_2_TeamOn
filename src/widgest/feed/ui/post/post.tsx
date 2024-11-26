@@ -15,7 +15,10 @@ async function containerPost(postId: any) {
       <div class="post-container">
         <div class="author-section">
           <img class="author-avatar avatar"></img>
-          <div class="author-name"></div>
+          <div class="info-post-section">
+            <div class="author-name"></div>
+            <div class="date"></div>
+          </div>
         </div>
         <div class="title"></div>
         <div class="content"></div>
@@ -40,7 +43,6 @@ async function containerPost(postId: any) {
             src="https://avatars.mds.yandex.net/i?id=bb6f43ed6751b908e678f9081d830a85_l-4821174-images-thumbs&n=27&h=480&w=480"
           ></img>
         </div>
-        <div class="date"></div>
         <div class="iteraction-section">
           <div class="likes-container">
             <div class="likes"></div>

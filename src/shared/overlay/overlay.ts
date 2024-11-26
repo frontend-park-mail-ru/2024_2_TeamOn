@@ -1,7 +1,6 @@
 function showOverlay(modal: any, profileForm: any) {
   document.body.style.overflowY = "hidden";
   document.body.style.overflowX = "hidden";
-
   const overlay = document.createElement("div");
   overlay.className = "modal-overlay";
   overlay.style.position = "fixed";
@@ -18,7 +17,11 @@ function showOverlay(modal: any, profileForm: any) {
     modal.style.display = "none";
     profileForm.classList.remove("blur");
     profileForm.classList.remove("blackout");
-    document.body.style.overflow = "auto";
+    if (document.body.style.overflow == "auto") {
+      document.body.style.overflow = "hidde";
+    } else {
+      document.body.style.overflow = "auto";
+    }
   });
   return overlay;
 }

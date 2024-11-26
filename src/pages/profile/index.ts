@@ -62,7 +62,6 @@ async function controlCustomSubscriptions(container: any) {
     const modalAddSubs: any = document.querySelector(`.modal__addsubs`);
 
     const overlay: any = showOverlay(modalAddSubs, profileForm);
-
     const buttonCancel: any = modalAddSubs.querySelector(`.cancel`);
     const buttonConfirm: any = modalAddSubs.querySelector(`.save`);
     const inputs: any = modalAddSubs.querySelectorAll(".input-group");
@@ -89,7 +88,6 @@ async function controlCustomSubscriptions(container: any) {
       modalAddSubs.style.display = "none";
       profileForm.classList.remove("blur");
       overlay.remove();
-      document.body.style.overflow = "auto";
       return;
     };
 
@@ -149,7 +147,6 @@ async function controlCustomSubscriptions(container: any) {
       modalAddSubs.style.display = "none";
       profileForm.classList.remove("blur");
       overlay.remove();
-      document.body.style.overflow = "auto";
       const newsubs: any = await getCustomSubscription(
         window.location.pathname,
       );

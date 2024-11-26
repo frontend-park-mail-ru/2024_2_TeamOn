@@ -158,20 +158,23 @@ export function controlSlideShow(container: any, rightContainer: any) {
   }
   let MAX_SIZE = 0;
   if (isMobile()) {
-    MAX_SIZE = 200;
+    MAX_SIZE = 300;
   } else {
     MAX_SIZE = 1000;
   }
 
   function filterImages() {
     let resheight = 0;
+    let reswidth = 0;
     let limitExceeded = false; // Флаг для отслеживания превышения лимита
 
     imgPhotos.forEach((img: any) => {
       const imgHeight = img.naturalHeight;
-      if (resheight + imgHeight <= MAX_SIZE) {
+      const imgWidth = img.naturalWidth;
+      if (reswidth + imgWidth <= MAX_SIZE) {
         img.style.display = "block";
         resheight += imgHeight;
+        reswidth += imgWidth;
       } else {
         img.style.display = "none";
         limitExceeded = true; // Устанавливаем флаг, если лимит превышен
