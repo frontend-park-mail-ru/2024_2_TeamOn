@@ -236,7 +236,7 @@ form input[type="text"]:focus {
   user-select: none;
   opacity: 0.4;
 }
-
+/*
 .home-buttons,
 .feed-buttons {
   position: absolute;
@@ -244,9 +244,55 @@ form input[type="text"]:focus {
   right: 10%;
   display: flex;
   gap: 10px;
+}*/
+
+.feed-buttons__button {
+  position: absolute;
+  top: 10%;
+  right: 20%;
+  display: flex;
+  gap: 10px;
+  border: 2px solid white;
+  background: transparent;
+  border-radius: 30px;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  text-decoration: none;
+  display: inline-block;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+}
+.home-buttons__button {
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  display: flex;
+  gap: 10px;
+  border: 2px solid white;
+  background: transparent;
+  border-radius: 30px;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  text-decoration: none;
+  display: inline-block;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+}
+.feed-buttons__button:hover,
+.home-buttons__button:hover {
+  background: white;
+  color: black;
 }
 .feed-buttons {
-  right: 200px;
+  right: 350px;
 }
 .donate-container {
   position: absolute;
@@ -255,8 +301,8 @@ form input[type="text"]:focus {
 .create-posts {
   position: relative;
 }
-.home-buttons__button,
-.feed-buttons__button,
+/*.home-buttons__button,
+.feed-buttons__button,*/
 .logout__button,
 .donate__button,
 .send-tip__button,
@@ -316,11 +362,11 @@ form input[type="text"]:focus {
   transition: background 0.3s ease;
 }
 
-.home-buttons__button__effects:hover,
+/*.home-buttons__button__effects:hover,
 .feed-buttons__button__effects:hover {
   background: gray;
   color: white;
-}
+}*/
 .logout__button__effects:hover,
 .donate__button__effects:hover,
 .send-tip__button__effects:hover,
@@ -340,8 +386,8 @@ form input[type="text"]:focus {
   background: green;
   color: white;
 }
-.home-buttons__button__effects.primary,
-.feed-buttons__button__effects.primary,
+/*.home-buttons__button__effects.primary,
+.feed-buttons__button__effects.primary,*/
 .logout__button__effects.primary,
 .donate__button__effects.primary,
 .send-tip__button__effects.primary,
