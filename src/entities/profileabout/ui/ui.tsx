@@ -2,6 +2,7 @@ import { getAccount } from "../../../features/getAccount/getAccount";
 import { createText } from "../../../../lib/vdom/lib";
 import * as VDom from "vdom";
 import { getPageAuthor } from "../../../features/getpageauthor/getpageauthor";
+import { MAX_SYMBOLS_ABOUT } from "../../../shared/consts/consts";
 
 /**
  * Рендер контейнера "О СЕБЕ"
@@ -10,17 +11,28 @@ import { getPageAuthor } from "../../../features/getpageauthor/getpageauthor";
  * @param newValue Новое значение
  * @returns
  */
-export function renderAbout(authorData: any, isEdit = false, newValue?: any) {
+export function renderAbout(
+  authorData: any,
+  isEdit = false,
+  newValue?: any,
+  errorMessage?: string,
+) {
   const flag =
     window.location.pathname === "/profile"
       ? "display: block"
       : "display: none;";
+  const maxValue =
+    newValue && newValue.lentgh > MAX_SYMBOLS_ABOUT
+      ? `Максимальная длина текста ${MAX_SYMBOLS_ABOUT} символов.`
+      : "";
+
   const editModeValue = (
     <div class="about">
       <h2>ОБО МНЕ</h2>
       <input
         class="about-input"
         value={authorData.info == null ? "Мой статус..." : authorData.info}
+        /*maxLength={MAX_SYMBOLS_ABOUT}*/
       ></input>
       <p class="about-profile" style="display: none;">
         {createText(
@@ -63,5 +75,6 @@ export function renderAbout(authorData: any, isEdit = false, newValue?: any) {
       </button>
     </div>
   );
+
   return isEdit ? editModeValue : defaultModeValue;
 }

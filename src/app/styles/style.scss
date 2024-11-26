@@ -16,6 +16,11 @@ body {
   height: 100%;
   width: 100%;
 }
+:root {
+  --main-color: #d9534f;
+  --main-background-color: #f5f5f5;
+  --main-color-hover: rgba(217, 84, 79, 0.7960784314);
+}
 .blur {
   filter: blur(8px); /* Значение размытия */
 }
@@ -84,11 +89,7 @@ table tbody tr:hover {
   color: blue;
   text-decoration: underline;
 }
-:root {
-  --main-color: #d9534f;
-  --main-background-color: #f5f5f5;
-  --main-color-hover: rgba(217, 84, 79, 0.7960784314);
-}
+
 main {
   flex: 1;
   padding: 0px;
@@ -331,7 +332,7 @@ form input[type="text"]:focus {
   color: gray;
 }
 .save__button {
-  color: green;
+  color: black;
 }
 .delete__button {
   color: red;
@@ -383,7 +384,7 @@ form input[type="text"]:focus {
   color: white;
 }
 .save__button__effects:hover {
-  background: green;
+  background: var(--main-color);
   color: white;
 }
 /*.home-buttons__button__effects.primary,
@@ -598,12 +599,16 @@ form input[type="text"]:focus {
   font-size: 16px;
   color: #555;
   margin-bottom: 15px;
+  max-width: 100%;
+  white-space: nowrap; /* Запрещаем перенос текста */
+  overflow: hidden; /* Скрываем текст, выходящий за пределы */
+  text-overflow: ellipsis; /* Добавляем многоточие, если текст слишком длинный */
+  box-sizing: border-box; /* Учитываем padding и border в ширине */
 }
 
 /* Стили для кнопки "Изменить" */
 .edit-info-button,
-.save-info-button,
-.cancel-info-button {
+.save-info-button {
   display: block;
   margin: 10px 0;
   padding: 10px;
@@ -616,6 +621,24 @@ form input[type="text"]:focus {
   transition:
     background-color 0.3s,
     color 0.3s;
+}
+.cancel-info-button {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+.cancel-info-button:hover {
+  background-color: gray;
+  color: white;
 }
 .edit-info-button {
   background-color: white;
@@ -647,6 +670,11 @@ form input[type="text"]:focus {
   transition:
     border-color 0.3s,
     box-shadow 0.3s; /* Плавный переход для фокуса */
+  max-width: 100%;
+  white-space: nowrap; /* Запрещаем перенос текста */
+  overflow: hidden; /* Скрываем текст, выходящий за пределы */
+  text-overflow: ellipsis; /* Добавляем многоточие, если текст слишком длинный */
+  box-sizing: border-box; /* Учитываем padding и border в ширине */
 }
 
 /* Эффекты при фокусе на поле ввода */
@@ -1513,6 +1541,20 @@ form input[type="text"]:focus {
   font-size: 14px;
   color: #333;
   margin-bottom: 20px;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-height: 100px;
+  padding: 10px;
+  font-size: 16px;
+  line-height: 1.5;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  resize: vertical;
 }
 .date {
   font-size: 12px;
