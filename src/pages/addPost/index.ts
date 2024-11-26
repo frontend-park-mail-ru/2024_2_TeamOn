@@ -4,6 +4,8 @@ import { pageContainer } from "../../app";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { modifireCreatePost } from "./modal/modal";
 import { getCustomSubscription } from "../../features/getCustomSubs/getCustomSubs";
+import { setTitle } from "../../shared/settitle/setTitle";
+import { LINKS } from "../../shared/consts/consts";
 
 async function renderLayers(layers: any) {
   try {
@@ -25,6 +27,7 @@ async function renderLayers(layers: any) {
 }
 export async function renderCreatePost() {
   try {
+    setTitle(LINKS.CREATE_POST.TEXT);
     const vdom: any = await containerCreatePost();
     const container = update(pageContainer, vdom);
     const mainContent = container.querySelector(".main-content");

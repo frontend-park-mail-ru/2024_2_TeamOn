@@ -53,12 +53,6 @@ async function profileForm(
   background: any,
   payments: any,
 ) {
-  const isSubs =
-    window.location.pathname === "/profile"
-      ? "display: block"
-      : authorData.isSubscribe
-        ? "display: block;"
-        : "display: none";
   return (
     <div class="profile-form">
       <div class="div-mobile"></div>
@@ -74,7 +68,7 @@ async function profileForm(
             <div class="nav-tabs-profile">
               <a class="active-profile active">Лента</a>
             </div>
-            <div class="place-posts" style={isSubs}></div>
+            <div class="place-posts"></div>
           </div>
         </div>
         <div class="right-column">

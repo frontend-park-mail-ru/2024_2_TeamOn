@@ -103,24 +103,24 @@ function validateSignupForm(
   }
 
   let hasError = false;
-  let passwordStrength = 0; // Переменная для хранения силы пароля
+  let passwordStrength = 0;
 
   // Проверка логина
   if (!DOMPurify.sanitize(inputUsername.value)) {
-    showError(inputUsername, "Пожалуйста, введите логин");
+    showError(inputUsername, "Пожалуйста, введите имя");
     hasError = true;
   } else {
     removeError(inputUsername);
   }
 
   if (DOMPurify.sanitize(inputUsername.value).length < 4) {
-    showError(inputUsername, "Логин должен иметь не менее 4 символов");
+    showError(inputUsername, "Имя должно иметь не менее 4 символов");
     hasError = true;
   } else {
     removeError(inputUsername);
   }
   if (DOMPurify.sanitize(inputUsername.value).length > 11) {
-    showError(inputUsername, "Логин должен иметь не более 10 символов");
+    showError(inputUsername, "Имя должно иметь не более 10 символов");
     hasError = true;
   } else {
     removeError(inputUsername);

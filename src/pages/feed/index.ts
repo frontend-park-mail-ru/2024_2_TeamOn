@@ -1,4 +1,4 @@
-import { state } from "../../shared/consts/consts";
+import { LINKS, state } from "../../shared/consts/consts";
 import { controlLogout } from "../../features/controlLogout/controlLogout";
 import { renderTo, update } from "../../../lib/vdom/lib";
 import { pageContainer } from "../../app/index";
@@ -10,6 +10,7 @@ import { renderRating } from "../../entities/rating";
 import { addResult, getQuestion } from "../settings";
 import { showSearch } from "../../entities/searchbar";
 import { hasLogged } from "../../shared/utils/hasLogged";
+import { setTitle } from "../../shared/settitle/setTitle";
 
 export async function controlEventIFrame(container: any = pageContainer) {
   const div: any = document.querySelector(`#rating-iframe`);
@@ -79,6 +80,7 @@ async function controlIFRAME() {
  */
 export async function renderFeed() {
   try {
+    setTitle(LINKS.FEED.TEXT);
     const allPopularPosts: any = []; // Массив для хранения всех загруженных популярных постов
     const allRecentlyPosts: any = []; // Массив для хранения всех загруженных недавних постов
 

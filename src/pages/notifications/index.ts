@@ -5,12 +5,14 @@ import { route } from "../../shared/routing/routing";
 import { removeItemLocalStorage } from "../../shared/utils/storages";
 import { notificationContainer } from "./ui/notifications";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
+import { setTitle } from "../../shared/settitle/setTitle";
 /**
  * Функция рендера уведомлений (в обработке)
  * @returns
  */
 export async function renderNotifications() {
   try {
+    setTitle(LINKS.NOTIFICATIONS.TEXT);
     const user: any = state.currentUser;
 
     const vdom = await notificationContainer();

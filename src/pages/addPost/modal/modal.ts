@@ -5,6 +5,7 @@ import { addUserPost, deletePost } from "../../../entities/userPost";
 import { getUserPosts } from "../../../features/getuserposts/getUserPosts";
 import { uploadMediaFiles } from "../../../features/uploadMediaFiles/uploadMediaFiles";
 import { controlSlideShow } from "../../../features/paginateFeed/paginateFeed";
+import { paginateProfile } from "src/features/paginateprofile/paginateprofile";
 
 async function modifireCreatePost() {
   const containerCreatePost: any = document.querySelector(
@@ -88,10 +89,7 @@ async function modifireCreatePost() {
         try {
           if (selectedFiles.length != 0) {
             const ok: any = await uploadMediaFiles(postId, selectedFiles);
-            if (ok.pending) {
-              buttonSave.classList.add("active");
-              buttonCancel.classList.add("active");
-            }
+
             if (!ok) {
               const response: any = await deletePost(postId);
 
@@ -115,9 +113,10 @@ async function modifireCreatePost() {
           route(LINKS.PROFILE.HREF);
         } else {
           const input =
-            containerCreatePost.querySelectorAll(`.form-group-add`)[1];
+            containerCreatePost.querySelectorAll(`.form-group-add`)[2];
           const error = input.querySelector("p");
           if (!error) {
+            alert("naaa");
             const error = document.createElement("p");
             error.style.color = "red";
             error.textContent = post.message;

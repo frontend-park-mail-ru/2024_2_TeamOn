@@ -21,6 +21,7 @@ import { getPageAuthor } from "../getpageauthor/getpageauthor";
 import { getPayments } from "../getpayments/getpayments";
 import { renderUserStats } from "../../entities/profileInfo/ui/ui";
 import { VNode } from "lib/vdom/src/source";
+import { showOverlay } from "../../shared/overlay/overlay";
 
 function foundCancel(div: any) {
   const buttonCancel: any = div.querySelector(`.cancel`);
@@ -106,6 +107,8 @@ function modifireModalConfirmSubscription(
   const buttonSave: any = foundSave(div);
 
   const modalConfirm: any = div.querySelector(`.modal__confirmsubs`);
+  const overlay: any = showOverlay(modalConfirm, profileForm);
+
   profileForm.classList.add("blur");
   modalConfirm.style.display = "block";
 
@@ -137,7 +140,10 @@ function modifireModalConfirmSubscription(
     const placeSubscriptions: any =
       document.querySelector(`.subscription-levels`);
     placeSubscriptions.innerHTML = "";
-    placeposts.style.display = "block";
+
+    overlay.remove();
+    document.body.style.overflow = "auto";
+
     await paginateProfile([], placeposts);
     await paginateSubscription([], placeSubscriptions);
 
@@ -152,23 +158,13 @@ function modifireModalConfirmSubscription(
   const handleChange = (event: any) => {
     selectedDuration = Number(event.target.value);
   };
-  const handleClickProfileForm = (event: any) => {
-    if (event.target.classList.contains("button-buy-subs")) return;
-    profileForm.removeEventListener("click", handleClickProfileForm);
-    const div: any = document.querySelector(`.div-confirmsubs`);
-    const modalConfirm: any = div.querySelector(`.modal__confirmsubs`);
 
-    modalConfirm.style.display = "none";
-    profileForm.classList.remove("blur");
-    const newUrl = `/profile/${authorId}`;
-    window.history.pushState({ path: newUrl }, "", newUrl);
-
-    return;
-  };
   const handleClickCancel = async (event: any) => {
     buttonCancel.removeEventListener("click", handleClickCancel);
     const div: any = document.querySelector(`.div-confirmsubs`);
     const modalConfirm: any = div.querySelector(`.modal__confirmsubs`);
+    overlay.remove();
+    document.body.style.overflow = "auto";
 
     modalConfirm.style.display = "none";
     profileForm.classList.remove("blur");
@@ -250,7 +246,7 @@ function modifireModalConfirmSubscription(
   subscriptionSelect.addEventListener("change", handleChange);
   buttonCancel.addEventListener("click", handleClickCancel);
   buttonSave.addEventListener("click", handleClickSave);
-  profileForm.addEventListener("click", handleClickProfileForm);
+  overlay.addEventListener("click", handleClickCancel);
 }
 
 function customizeSubscription(container: any, subscription: any) {
@@ -335,7 +331,7 @@ async function paginateSubscription(
       placeSubscriptions.append(
         ...(await renderContainerSubs(allSubcriptions, userdata)),
       );
-      modifireSubscriptions(placeSubscriptions, allSubcriptions.reverse());
+      modifireSubscriptions(placeSubscriptions, allSubcriptions);
     } catch (error) {
       console.error("Error in loadSubcriptions");
     }

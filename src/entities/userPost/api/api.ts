@@ -30,7 +30,7 @@ async function editPost(
           resolve(true);
         } else if (response.status === 400) {
           response.json().then((data: any) => {
-            const input = modalEdit.querySelector(`.form-group-add`);
+            const input = modalEdit.querySelectorAll(`.form-group-add`)[1];
             const error = document.createElement("p");
             error.style.color = "red";
             error.textContent = data.message;
@@ -93,7 +93,8 @@ async function addUserPost(
           });
         } else if (response.status === 400) {
           response.json().then((data) => {
-            const input = containerCreatePost.querySelector(`.form-group-add`);
+            const input =
+              containerCreatePost.querySelectorAll(`.form-group-add`)[1];
             const error = input.querySelector("p");
             if (!error) {
               const error = document.createElement("p");
