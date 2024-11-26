@@ -23,6 +23,7 @@ import { route } from "../../shared/routing/routing";
 import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 import { controlSlideShow } from "../paginateFeed/paginateFeed";
 import { hasLogged } from "../../shared/utils/hasLogged";
+import { showOverlay } from "../../shared/overlay/overlay";
 
 /**
  * Управление адаптивностью на странице автора
@@ -47,7 +48,6 @@ async function controlAdaptivePageAuthors(
   }
   if (window.location.pathname !== "/profile") {
     const buttonTip = container.querySelector(`.send-tip__button-new`);
-    // const buttonSubs: any = document.querySelector(`.follow`);
 
     buttonTip.addEventListener("click", () => {
       if (!hasLogged()) {
@@ -58,6 +58,9 @@ async function controlAdaptivePageAuthors(
       const modal: any = renderTip();
       update(place, modal);
 
+      const containerTip: any = document.querySelector(".modal__tip");
+      const overlay: any = showOverlay(containerTip, profileForm);
+
       const buttonCancel: any = document.querySelector(
         `.${ELEMENTS_CLASS.CANCEL.BLOCK}`,
       );
@@ -65,10 +68,11 @@ async function controlAdaptivePageAuthors(
         `.${ELEMENTS_CLASS.SEND_TIP.BLOCK}`,
       );
 
-      const containerTip: any = document.querySelector(".modal__tip");
       containerTip.style.display = "block";
       profileForm.classList.add("blur");
-      buttonSend.addEventListener("click", async () => {
+
+      buttonSend.addEventListener("click", async (event: any) => {
+        event.preventDefault();
         const messageInput = containerTip.querySelector(`.textarea-group`);
         const costInput = containerTip.querySelector(`.input-group`);
         const message = messageInput.value;
@@ -77,8 +81,8 @@ async function controlAdaptivePageAuthors(
         const sanitizedMessage = DOMPurify.sanitize(messageInput.value);
         const sanitizedCost = DOMPurify.sanitize(costInput.value);
 
+        const input = containerTip.querySelectorAll(`.form-group`)[1];
         if (sanitizedMessage == "" || sanitizedCost == "") {
-          const input = containerTip.querySelectorAll(`.form-group`)[1];
           const error = input.querySelector("p");
           if (!error) {
             const error = document.createElement("p");
@@ -89,15 +93,29 @@ async function controlAdaptivePageAuthors(
           return;
         }
 
-        // const cost = parseInt(sanitizedCost, 10);
-        const cost = Number(sanitizedCost);
-        if (cost < 360) {
+        let error = input.querySelector("p");
+        if (error) {
+          error.remove();
+        }
+        if (!Number.isInteger(Number(sanitizedCost))) {
           const input = containerTip.querySelectorAll(`.form-group`)[1];
           const error = input.querySelector("p");
           if (!error) {
             const error = document.createElement("p");
             error.style.color = "red";
-            error.textContent = "Минимум 360 рублей";
+            error.textContent = "Ошибка. Введите целое число";
+            input.appendChild(error);
+          }
+          return;
+        }
+        const cost = parseInt(sanitizedCost, 10);
+        if (cost < 10) {
+          const input = containerTip.querySelectorAll(`.form-group`)[1];
+          const error = input.querySelector("p");
+          if (!error) {
+            const error = document.createElement("p");
+            error.style.color = "red";
+            error.textContent = "Минимум 10 рублей";
             input.appendChild(error);
           }
           return;
@@ -107,7 +125,7 @@ async function controlAdaptivePageAuthors(
           if (!error) {
             const error = document.createElement("p");
             error.style.color = "red";
-            error.textContent = "Введите сумму корректно";
+            error.textContent = "Ошибка. Не менее 10 рублей";
             input.appendChild(error);
           }
           return;
@@ -121,10 +139,13 @@ async function controlAdaptivePageAuthors(
         });
         containerTip.style.display = "none";
         profileForm.classList.remove("blur");
+        overlay.remove();
       });
       buttonCancel.addEventListener("click", async () => {
+        overlay.remove();
         containerTip.style.display = "none";
         profileForm.classList.remove("blur");
+        document.body.style.overflow = "auto";
       });
     });
   }
@@ -265,6 +286,8 @@ async function modifierModalDeletePost(
   update(place, modal);
 
   const modalsDelete: any = document.querySelector(".modal__deletepost");
+  const overlay: any = showOverlay(modalsDelete, profileForm);
+
   const buttonCancel: any = modalsDelete.querySelector(`.cancel`);
   const buttonConfirm: any = modalsDelete.querySelector(`.delete`);
 
@@ -274,11 +297,14 @@ async function modifierModalDeletePost(
   modalsDelete.style.display = "block";
   profileForm.classList.add("blur");
 
-  buttonCancel.addEventListener("click", () => {
+  const handleClickCancel = () => {
     modalsDelete.style.display = "none";
     profileForm.classList.remove("blur");
+    overlay.remove();
     return;
-  });
+  };
+  buttonCancel.addEventListener("click", handleClickCancel);
+  overlay.addEventListener("click", handleClickCancel);
 
   buttonConfirm.addEventListener("click", async () => {
     modalsDelete.style.display = "none";
@@ -286,6 +312,7 @@ async function modifierModalDeletePost(
 
     await deletePost(foundPost.postId);
     container.style.display = "none";
+    overlay.remove();
 
     const placeStats: any = document.querySelector(`.stats`);
     const payments: any = await getPayments(window.location.pathname);

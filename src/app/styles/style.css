@@ -154,27 +154,27 @@ form {
     top: 10px;
   }
 }
-form button[type="submit"] {
+form button[type=submit] {
   margin-top: 1px;
   width: 152.14px;
 }
 
-form button[type="submit"]:hover,
+form button[type=submit]:hover,
 .profile-pic-container.custom-upload-button:hover {
   background-color: #3e8e41;
 }
 
-form input[type="email"],
-form input[type="password"],
-form input[type="text"] {
+form input[type=email],
+form input[type=password],
+form input[type=text] {
   padding: 10px;
   margin: 10px;
   border: 1px solid #ccc;
 }
 
-form input[type="email"]:focus,
-form input[type="password"],
-form input[type="text"]:focus {
+form input[type=email]:focus,
+form input[type=password],
+form input[type=text]:focus {
   border-color: #aaa;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -202,7 +202,7 @@ form input[type="text"]:focus {
   margin-bottom: 10px;
 }
 
-.error-input ~ input[type="password"] {
+.error-input ~ input[type=password] {
   border-color: red;
   box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
 }
@@ -257,10 +257,11 @@ form input[type="text"]:focus {
   cursor: default;
   pointer-events: none;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   opacity: 0.4;
 }
+
 /*
 .home-buttons,
 .feed-buttons {
@@ -273,6 +274,7 @@ form input[type="text"]:focus {
 .feed-buttons__button {
   position: absolute;
   top: 10%;
+  right: 20%;
   display: flex;
   gap: 10px;
   border: 2px solid white;
@@ -283,12 +285,11 @@ form input[type="text"]:focus {
   font-size: 16px;
   text-decoration: none;
   display: inline-block;
-  transition:
-    background 0.3s ease,
-    color 0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease;
   cursor: pointer;
   text-align: center;
 }
+
 .home-buttons__button {
   position: absolute;
   top: 10%;
@@ -303,12 +304,11 @@ form input[type="text"]:focus {
   font-size: 16px;
   text-decoration: none;
   display: inline-block;
-  transition:
-    background 0.3s ease,
-    color 0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease;
   cursor: pointer;
   text-align: center;
 }
+
 .feed-buttons__button:hover,
 .home-buttons__button:hover {
   background: white;
@@ -316,7 +316,7 @@ form input[type="text"]:focus {
 }
 
 .feed-buttons {
-  right: 400px;
+  right: 350px;
 }
 
 .donate-container {
@@ -343,9 +343,7 @@ form input[type="text"]:focus {
   background: white;
   color: gray;
   cursor: pointer;
-  transition:
-    background 0.3s,
-    color 0.3s;
+  transition: background 0.3s, color 0.3s;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -399,7 +397,6 @@ form input[type="text"]:focus {
   background: gray;
   color: white;
 }*/
-
 .logout__button__effects:hover,
 .donate__button__effects:hover,
 .send-tip__button__effects:hover,
@@ -438,8 +435,8 @@ form input[type="text"]:focus {
   border: none;
 }
 
-/*.home-buttons__button__effects.primary:hover,
-.feed-buttons__button__effects.primaryHhover,*/
+.home-buttons__button__effects.primary:hover,
+.feed-buttons__button__effects.primaryHhover,
 .logout__button__effects.primary:hover,
 .donate__button__effects.primary:hover,
 .send-tip__button__effects.primary:hover,
@@ -489,8 +486,8 @@ form input[type="text"]:focus {
   color: #333;
 }
 
-.login__container input[type="text"],
-.login__container input[type="password"] {
+.login__container input[type=text],
+.login__container input[type=password] {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -499,7 +496,7 @@ form input[type="text"]:focus {
   box-sizing: border-box;
 }
 
-.login__container input[type="submit"] {
+.login__container input[type=submit] {
   width: 100%;
   padding: 10px;
   margin: 20px 0 0;
@@ -511,7 +508,7 @@ form input[type="text"]:focus {
   cursor: pointer;
 }
 
-.login__container input[type="submit"]:hover {
+.login__container input[type=submit]:hover {
   background-color: #555;
 }
 
@@ -549,11 +546,7 @@ form input[type="text"]:focus {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: repeating-linear-gradient(
-    to right,
-    #fff 2px,
-    transparent 2px
-  );
+  background-image: repeating-linear-gradient(to right, #fff 2px, transparent 2px);
 }
 
 .signup {
@@ -588,8 +581,8 @@ form input[type="text"]:focus {
   font-size: 24px;
 }
 
-.signup__container input[type="text"],
-.signup__container input[type="password"] {
+.signup__container input[type=text],
+.signup__container input[type=password] {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -598,9 +591,10 @@ form input[type="text"]:focus {
   box-sizing: border-box;
 }
 
-.signup__container input[type="submit"] {
+.signup__container input[type=submit] {
   width: 100%;
   padding: 10px;
+  margin-top: 20px;
   border: none;
   border-radius: 20px;
   background-color: #000;
@@ -609,7 +603,7 @@ form input[type="text"]:focus {
   cursor: pointer;
 }
 
-.signup__container input[type="submit"]:hover {
+.signup__container input[type=submit]:hover {
   background-color: #333;
 }
 
@@ -672,9 +666,7 @@ form input[type="text"]:focus {
   color: white;
   font-size: 16px;
   cursor: pointer;
-  transition:
-    background-color 0.3s,
-    color 0.3s;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .cancel-info-button {
@@ -723,9 +715,7 @@ form input[type="text"]:focus {
   border-radius: 4px;
   font-size: 14px;
   margin-bottom: 15px;
-  transition:
-    border-color 0.3s,
-    box-shadow 0.3s; /* Плавный переход для фокуса */
+  transition: border-color 0.3s, box-shadow 0.3s; /* Плавный переход для фокуса */
 }
 
 /* Эффекты при фокусе на поле ввода */
@@ -833,8 +823,8 @@ form input[type="text"]:focus {
 .button-buy-subs.issubs:hover {
   background-color: var(--main-color);
   -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 
 .buttons-profile button i {
@@ -1037,14 +1027,14 @@ form input[type="text"]:focus {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
-  object-fit: cover;
+     object-fit: cover;
   border-radius: 10px;
 }
 
 .profile-avatar {
   height: 250px;
   -o-object-fit: cover;
-  object-fit: cover;
+     object-fit: cover;
 }
 
 .posts {
@@ -1176,7 +1166,6 @@ form input[type="text"]:focus {
 .date {
   text-align: right;
   color: gray;
-  margin-top: 10px;
 }
 
 .menu-icon {
@@ -1263,8 +1252,8 @@ form input[type="text"]:focus {
   margin-bottom: 20px;
 }
 
-.post-container-createpost input[type="text"],
-.post-container-updatepost input[type="text"] {
+.post-container-createpost input[type=text],
+.post-container-updatepost input[type=text] {
   width: 97%;
   padding: 10px;
   margin-bottom: 20px;
@@ -1331,10 +1320,7 @@ form input[type="text"]:focus {
   background-color: var(--main-color-hover);
 }
 
-.post-container-createpost
-  .save-button:hover
-  .post-container-updatepost
-  .save-button:hover {
+.post-container-createpost .save-button:hover .post-container-updatepost .save-button:hover {
   background-color: var(--main-color-hover);
 }
 
@@ -1417,8 +1403,8 @@ form input[type="text"]:focus {
   font-size: 18px;
   color: #666;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   background-image: url("photos/eye_nsee.png");
   background-size: cover;
   width: 20px;
@@ -1458,9 +1444,7 @@ form input[type="text"]:focus {
   text-align: center;
   padding: 20px;
   border-radius: 8px;
-  transition:
-    opacity 0.5s ease,
-    visibility 0.5s ease;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
   opacity: 0;
   align-items: center;
   justify-content: center;
@@ -1470,8 +1454,8 @@ form input[type="text"]:focus {
   left: 1%;
   font-size: bold;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   visibility: hidden;
 }
 
@@ -1746,8 +1730,7 @@ form input[type="text"]:focus {
 .rightarrow-modal-view:hover,
 .leftarrow-modal-view:hover {
   cursor: pointer;
-  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%)
-    hue-rotate(0deg) brightness(100%) contrast(100%);
+  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(100%) contrast(100%);
   transition: filter 0.3s ease; /* Плавный переход */
 }
 
@@ -1812,15 +1795,13 @@ form input[type="text"]:focus {
 .comments-container:hover .comments,
 .author-name:hover {
   cursor: pointer;
-  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%)
-    hue-rotate(0deg) brightness(100%) contrast(100%);
+  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(100%) contrast(100%);
   transition: filter 0.3s ease; /* Плавный переход */
 }
 
 .likes-container.active {
   cursor: pointer;
-  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%)
-    hue-rotate(0deg) brightness(100%) contrast(100%);
+  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(100%) contrast(100%);
   transition: filter 0.3s ease; /* Плавный переход */
 }
 
@@ -2124,7 +2105,8 @@ span {
 }
 
 .container-image-photos .image-photo {
-  width: 100%;
+  max-width: 300px;
+  max-height: 300px;
 }
 
 .become-a-creator {
@@ -2141,14 +2123,12 @@ span {
   position: relative;
   top: 55%;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 
 .fade {
-  transition:
-    opacity 0.5s ease,
-    visibility 0.5s ease;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
   opacity: 1;
   visibility: visible;
 }
@@ -2182,12 +2162,7 @@ span {
 }
 
 .join-button:hover {
-  background-color: rgba(
-    217,
-    84,
-    79,
-    0.7960784314
-  ); /* Цвет фона при наведении */
+  background-color: rgba(217, 84, 79, 0.7960784314); /* Цвет фона при наведении */
 }
 
 .tabs a::after {
@@ -2198,9 +2173,7 @@ span {
   width: 0;
   height: 2px;
   background-color: #000;
-  transition:
-    width 0.3s ease,
-    left 0.3s ease;
+  transition: width 0.3s ease, left 0.3s ease;
 }
 
 .tabs a.active::after {
@@ -2281,12 +2254,12 @@ select {
   flex-grow: 1;
 }
 
-.form-container input[type="text"],
-.form-container input[type="email"],
-.form-container input[type="password"],
-.form-container-security input[type="text"],
-.form-container-security input[type="email"],
-.form-container-security input[type="password"] {
+.form-container input[type=text],
+.form-container input[type=email],
+.form-container input[type=password],
+.form-container-security input[type=text],
+.form-container-security input[type=email],
+.form-container-security input[type=password] {
   width: 50%;
   padding: 10px;
   margin-bottom: 20px;
@@ -2303,8 +2276,8 @@ select {
   border: 1px solid #000;
   border-radius: 20px;
   -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+     -moz-appearance: none;
+          appearance: none;
 }
 
 .toggleButton {
@@ -2407,9 +2380,7 @@ select {
 .about-mobile__button.active,
 .posts-mobile__button.active {
   border: 2px solid var(--main-color);
-  transition:
-    border 0.3s ease,
-    background-color 0.3s ease;
+  transition: border 0.3s ease, background-color 0.3s ease;
 }
 
 .about-mobile__button,
@@ -2424,12 +2395,12 @@ select {
 }
 /* Адаптивность */
 @media (max-width: 768px) {
-  .form-container input[type="text"],
-  .form-container input[type="email"],
-  .form-container input[type="password"],
-  .form-container-security input[type="text"],
-  .form-container-security input[type="email"],
-  .form-container-security input[type="password"] {
+  .form-container input[type=text],
+  .form-container input[type=email],
+  .form-container input[type=password],
+  .form-container-security input[type=text],
+  .form-container-security input[type=email],
+  .form-container-security input[type=password] {
     width: 100%;
   }
   .defs {
@@ -2685,8 +2656,7 @@ select {
 }
 
 .remove-button-files:hover {
-  filter: brightness(0) invert(0%) sepia(138%) saturate(1000%) brightness(100%)
-    contrast(2%);
+  filter: brightness(0) invert(0%) sepia(138%) saturate(1000%) brightness(100%) contrast(2%);
 }
 
 .searchbar-container {
@@ -2715,7 +2685,7 @@ select {
   width: 260px;
   left: 80%;
   border: 2px solid black;
-  z-index: 101010101010;
+  z-index: 1000;
   background-color: #f5f5f5;
 }
 
@@ -2761,9 +2731,7 @@ select {
   background: transparent; /* Прозрачный фон ввода */
   color: black; /* Черный текст */
   outline: none;
-  transition:
-    width 0.3s ease,
-    background-color 0.3s ease;
+  transition: width 0.3s ease, background-color 0.3s ease;
 }
 
 /* При наведении или фокусе, инпут расширяется */
@@ -2913,13 +2881,17 @@ select {
 }
 
 .new-badge {
-  background-color: red; /* Цвет фона плашки */
-  color: white; /* Цвет текста плашки */
-  padding: 5px 10px; /* Отступы внутри плашки */
-  border-radius: 5px; /* Закругление углов */
-  font-size: 12px; /* Размер шрифта */
-  font-weight: bold; /* Жирный текст */
-  margin-left: 10px; /* Отступ слева для отделения от текста */
+  background-color: red;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.container-table {
+  margin-bottom: 40px;
 }
 
 /*# sourceMappingURL=style.css.map */

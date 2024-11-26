@@ -116,10 +116,6 @@ async function mofireUpdatePost() {
               currentPost.postId,
               selectedFiles,
             );
-            if (ok.pending) {
-              buttonSave.classList.add("active");
-              buttonCancel.classList.add("active");
-            }
             if (!ok) {
               await deletePost(currentPost.postId);
 
@@ -145,6 +141,7 @@ async function mofireUpdatePost() {
           const input =
             containerUpdatePost.querySelectorAll(`.form-group-add`)[1];
           const error = input.querySelector("p");
+          alert(error);
           if (!error) {
             const error = document.createElement("p");
             error.style.color = "red";

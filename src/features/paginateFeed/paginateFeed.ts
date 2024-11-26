@@ -10,6 +10,7 @@ import { getAvatar } from "../getavatar/getavatar";
 import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
+import { showOverlay } from "../../shared/overlay/overlay";
 
 export function controlSlideShow(container: any, rightContainer: any) {
   const modalPhotos: any = document.querySelector(`.modal-view-photos`); //
@@ -19,6 +20,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
   let imageModal: any = null;
   let leftArrow: any = null;
   let rightArrow: any = null;
+  let overlay: any = null;
   if (modalPhotos) {
     imageModal = modalPhotos.querySelector(".image-photos-modal"); //
     // Обработчики для кнопок переключения
@@ -53,6 +55,8 @@ export function controlSlideShow(container: any, rightContainer: any) {
     event.stopPropagation();
     modalPhotos.style.display = "block";
     rightContent.classList.add("blackout");
+    overlay = showOverlay(modalPhotos, rightContent);
+
     currentIndex = index;
     callback(currentIndex);
     document.body.style.overflow = "hidden";
@@ -71,6 +75,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
         document.body.style.overflow = "auto";
         modalPhotos.style.display = "none";
         rightContent.classList.remove("blackout");
+        overlay.remove();
       });
       modalPhotos.addEventListener("touchstart", (event: any) => {
         startX = event.touches[0].clientX;
@@ -121,6 +126,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
         document.body.style.overflow = "auto";
         modalPhotos.style.display = "none";
         rightContent.classList.remove("blackout");
+        overlay.remove();
       });
     }
 
@@ -131,6 +137,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
         document.body.style.overflow = "auto";
         modalPhotos.style.display = "none";
         rightContent.classList.remove("blackout");
+        overlay.remove();
       });
     }
   };
@@ -151,20 +158,23 @@ export function controlSlideShow(container: any, rightContainer: any) {
   }
   let MAX_SIZE = 0;
   if (isMobile()) {
-    MAX_SIZE = 200;
+    MAX_SIZE = 300;
   } else {
     MAX_SIZE = 1000;
   }
 
   function filterImages() {
     let resheight = 0;
+    let reswidth = 0;
     let limitExceeded = false; // Флаг для отслеживания превышения лимита
 
     imgPhotos.forEach((img: any) => {
-      const imgHeight = img.clientHeight;
-      if (resheight + imgHeight <= MAX_SIZE) {
+      const imgHeight = img.naturalHeight;
+      const imgWidth = img.naturalWidth;
+      if (reswidth + imgWidth <= MAX_SIZE) {
         img.style.display = "block";
         resheight += imgHeight;
+        reswidth += imgWidth;
       } else {
         img.style.display = "none";
         limitExceeded = true; // Устанавливаем флаг, если лимит превышен
@@ -424,18 +434,6 @@ async function renderPopularPosts(popularPosts: any) {
  * @returns
  */
 async function renderRecentlyPosts(recentlyPosts: any) {
-  // try {
-  //   var posts: any = [];
-  //   recentlyPosts.forEach(async (post: any) => {
-  //     const container: any = await containerPost(post.postId);
-  //     const div = renderTo(container);
-  //     posts.push(div);
-  //   });
-  //   return posts;
-  // } catch (error) {
-  //   console.error(error);
-  //   throw error;
-  // }
   const postsPromises = recentlyPosts.map(async (post: any) => {
     const container = await containerPost(post.postId);
 
