@@ -635,7 +635,7 @@ export async function getQuestion() {
           resolve(data);
         });
       } else if (response.status === 400) {
-        reject("Внутреняя ошибка сервера");
+        resolve(false);
       } else {
         reject(new Error("Внутреняя ошибка сервера"));
       }

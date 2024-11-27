@@ -18,6 +18,12 @@ body {
   width: 100%;
 }
 
+:root {
+  --main-color: #d9534f;
+  --main-background-color: #f5f5f5;
+  --main-color-hover: rgba(217, 84, 79, 0.7960784314);
+}
+
 .blur {
   filter: blur(8px); /* Значение размытия */
 }
@@ -97,13 +103,6 @@ table tbody tr:hover {
   cursor: pointer;
   color: blue;
   text-decoration: underline;
-}
-
-:root {
-  --main-color: #d9534f;
-  --main-background-color: #f5f5f5;
-  --main-color-hover: rgba(217, 84, 79, 0.7960784314);
-  --main-color-cancel: #aaa;
 }
 
 main {
@@ -642,7 +641,6 @@ form input[type=text]:focus {
 }
 
 /* Стили для текстового блока "ОБО МНЕ" */
-.about-input,
 .about-profile {
   font-size: 16px;
   color: #555;
@@ -679,10 +677,14 @@ form input[type=text]:focus {
   color: white;
   font-size: 16px;
   cursor: pointer;
-  transition:
-    background-color 0.3s,
-    color 0.3s;
+  transition: background-color 0.3s, color 0.3s;
 }
+
+.cancel-info-button:hover {
+  background-color: gray;
+  color: white;
+}
+
 .edit-info-button {
   background-color: white;
   color: gray;
@@ -692,11 +694,9 @@ form input[type=text]:focus {
   background-color: gray;
   color: white;
 }
+
+.save-info-button:hover,
 .cancel-info-button:hover {
-  background-color: gray;
-  color: white;
-}
-.save-info-button:hover {
   background-color: var(--main-color-hover);
 }
 
@@ -716,6 +716,11 @@ form input[type=text]:focus {
   font-size: 14px;
   margin-bottom: 15px;
   transition: border-color 0.3s, box-shadow 0.3s; /* Плавный переход для фокуса */
+  max-width: 100%;
+  white-space: nowrap; /* Запрещаем перенос текста */
+  overflow: hidden; /* Скрываем текст, выходящий за пределы */
+  text-overflow: ellipsis; /* Добавляем многоточие, если текст слишком длинный */
+  box-sizing: border-box; /* Учитываем padding и border в ширине */
 }
 
 /* Эффекты при фокусе на поле ввода */
@@ -1683,6 +1688,9 @@ form input[type=text]:focus {
   font-size: 14px;
   color: #333;
   margin-bottom: 20px;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 20px;
   width: 100%;
   max-width: 100%;
   height: auto;
@@ -1890,18 +1898,7 @@ form input[type=text]:focus {
 .textarea-group,
 .textarea-group-delete {
   height: 100px;
-  resize: vertical; /* Позволяет изменять высоту */
-  max-width: 100%; /* Ограничиваем ширину */
-  overflow-wrap: break-word; /* Перенос слов */
-  word-wrap: break-word; /* Перенос длинных слов (устаревшее, но полезно для совместимости) */
-  white-space: pre-wrap; /* Сохраняем введённые пользователем разрывы строк */
-  overflow: hidden; /* Скрываем прокрутку, если текст превышает высоту */
-  box-sizing: border-box; /* Учитываем padding и border в размерах */
-  padding: 10px; /* Отступы для текста внутри */
-  line-height: 1.5; /* Межстрочный интервал для улучшения читаемости */
-  font-size: 16px; /* Размер шрифта */
-  border: 1px solid #ccc; /* Граница для выделения */
-  border-radius: 5px; /* Закругления для эстетики */
+  resize: none;
 }
 
 .textarea-group-delete {
@@ -1913,10 +1910,6 @@ form input[type=text]:focus {
 .input-group {
   height: 30px;
   resize: none;
-  max-width: 100%;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  overflow: hidden;
 }
 
 .form-group .optional {
@@ -2110,7 +2103,7 @@ span {
 }
 
 .become-a-creator {
-  background-color: #f9f9f9; /* Цвет фона */
+  background-color: #f9f9f9;
   padding: 20px; /* Отступы внутри блока */
   border-radius: 8px; /* Скругление углов */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Эффект тени */

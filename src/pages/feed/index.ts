@@ -61,14 +61,13 @@ async function controlIFRAME() {
     frame.style.display = "none";
   });
   const question: any = await getQuestion();
-  if (!question.ok) {
+  if (!question) {
     return;
   }
   textQuestion.textContent = question.question;
 
   button.addEventListener("click", async (e: any) => {
     e.preventDefault();
-    console.log(grade);
     const ok: any = await addResult(question.questionID, grade);
     if (ok) {
       frame.style.display = "none";
