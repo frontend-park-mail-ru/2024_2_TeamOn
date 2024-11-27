@@ -25,7 +25,7 @@ body {
 }
 
 .blur {
-  filter: blur(8px); /* Значение размытия */
+  filter: blur(8px);
 }
 
 .blackout {
@@ -145,7 +145,6 @@ form {
     margin-bottom: 30px;
   }
   .searchbar-wrapper {
-    left: 3%;
     top: 60px;
   }
   .searchbar-wrapper-feed {
@@ -261,19 +260,9 @@ form input[type=text]:focus {
   opacity: 0.4;
 }
 
-/*
-.home-buttons,
-.feed-buttons {
-  position: absolute;
-  top: 10%;
-  right: 10%;
-  display: flex;
-  gap: 10px;
-}*/
 .feed-buttons__button {
   position: absolute;
   top: 10%;
-  right: 20%;
   display: flex;
   gap: 10px;
   border: 2px solid white;
@@ -312,10 +301,6 @@ form input[type=text]:focus {
 .home-buttons__button:hover {
   background: white;
   color: black;
-}
-
-.feed-buttons {
-  right: 350px;
 }
 
 .donate-container {
@@ -391,11 +376,6 @@ form input[type=text]:focus {
   transition: background 0.3s ease;
 }
 
-/*.home-buttons__button__effects:hover,
-.feed-buttons__button__effects:hover {
-  background: gray;
-  color: white;
-}*/
 .logout__button__effects:hover,
 .donate__button__effects:hover,
 .send-tip__button__effects:hover,
@@ -419,8 +399,6 @@ form input[type=text]:focus {
   color: white;
 }
 
-/*.home-buttons__button__effects.primary,
-.feed-buttons__button__effects.primary,*/
 .logout__button__effects.primary,
 .donate__button__effects.primary,
 .send-tip__button__effects.primary,
@@ -531,11 +509,11 @@ form input[type=text]:focus {
 /* SIGNUP */
 .password-strength {
   display: block;
-  height: 3px; /* Высота полосы */
-  width: 0; /* Начальная ширина */
-  transition: width 0.3s ease; /* Плавный переход при изменении ширины */
-  position: relative; /* Относительное позиционирование */
-  left: 0; /* Закрепление левого края */
+  height: 3px;
+  width: 0;
+  transition: width 0.3s ease;
+  position: relative;
+  left: 0;
 }
 
 .password-strength::before {
@@ -646,10 +624,10 @@ form input[type=text]:focus {
   color: #555;
   margin-bottom: 15px;
   max-width: 100%;
-  white-space: nowrap; /* Запрещаем перенос текста */
-  overflow: hidden; /* Скрываем текст, выходящий за пределы */
-  text-overflow: ellipsis; /* Добавляем многоточие, если текст слишком длинный */
-  box-sizing: border-box; /* Учитываем padding и border в ширине */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
 }
 
 /* Стили для кнопки "Изменить" */
@@ -715,18 +693,18 @@ form input[type=text]:focus {
   border-radius: 4px;
   font-size: 14px;
   margin-bottom: 15px;
-  transition: border-color 0.3s, box-shadow 0.3s; /* Плавный переход для фокуса */
+  transition: border-color 0.3s, box-shadow 0.3s;
   max-width: 100%;
-  white-space: nowrap; /* Запрещаем перенос текста */
-  overflow: hidden; /* Скрываем текст, выходящий за пределы */
-  text-overflow: ellipsis; /* Добавляем многоточие, если текст слишком длинный */
-  box-sizing: border-box; /* Учитываем padding и border в ширине */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
 }
 
 /* Эффекты при фокусе на поле ввода */
 .about-input:focus {
-  border-color: #007bff; /* Синий цвет при фокусе */
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Легкая тень при фокусе */
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 .active-profile.active {
@@ -1067,7 +1045,6 @@ form input[type=text]:focus {
 .change-cover-button-mobile {
   position: absolute;
   bottom: 10px;
-  /* left: 50%; */
   transform: translateX(-50%);
   color: white;
   border: none;
@@ -1183,35 +1160,42 @@ form input[type=text]:focus {
 }
 
 .dropdown-menu {
-  display: none; /* Скрываем по умолчанию */
-  position: absolute; /* Фиксируем элемент относительно окна браузера */
-  z-index: 1000; /* Устанавливаем высокий z-index, чтобы меню отображалось поверх других элементов */
-  background-color: white; /* Фон меню */
-  border: 1px solid #ccc; /* Граница меню */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Тень для меню */
-  padding: 10px; /* Внутренние отступы */
-  width: 200px; /* Ширина меню (можно изменить) */
-  border-radius: 4px; /* Скругление углов */
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  width: 200px;
+  border-radius: 4px;
 }
 
 .dropdown-menu.active {
-  display: block; /* Показываем меню, когда класс active добавлен */
+  display: block;
 }
 
-/* Стили для содержимого внутри dropdownMenu */
 .dropdown-menu .interaction-post {
-  padding: 8px 12px; /* Отступы для элементов меню */
-  cursor: pointer; /* Курсор при наведении */
+  padding: 8px 12px;
+  cursor: pointer;
   font-size: 14px;
 }
 
 .dropdown-menu .interaction-post:hover {
-  background-color: #f0f0f0; /* Цвет фона при наведении */
+  background-color: #f0f0f0;
 }
 
+@media (min-width: 768px) {
+  .feed-buttons__button {
+    right: 20%;
+  }
+  .searchbar-wrapper {
+    right: 630px;
+  }
+}
 @media (max-width: 768px) {
   .feed-buttons {
-    right: 110px;
+    left: 10%;
   }
   .container-createpost,
   .container-updatepost {
@@ -1262,10 +1246,10 @@ form input[type=text]:focus {
   width: 97%;
   padding: 10px;
   margin-bottom: 20px;
-  border: none; /* Removed the border */
+  border: none;
   font-size: 16px;
   color: black;
-  background-color: #f9f9f9; /* Added a background color to distinguish the input field */
+  background-color: #f9f9f9;
 }
 
 .post-container-createpost textarea,
@@ -1273,12 +1257,12 @@ form input[type=text]:focus {
   width: 97%;
   height: 300px;
   padding: 10px;
-  border: none; /* Removed the border */
+  border: none;
   border-radius: 5px;
   font-size: 16px;
   color: black;
   resize: none;
-  background-color: #f9f9f9; /* Added a background color to distinguish the text area */
+  background-color: #f9f9f9;
 }
 
 .post-container-createpost .attachment-icon,
@@ -1471,7 +1455,7 @@ form input[type=text]:focus {
 
 .push-modal.active {
   display: block;
-  opacity: 1; /* Делаем его видимым */
+  opacity: 1;
   visibility: visible;
 }
 
@@ -1739,7 +1723,7 @@ form input[type=text]:focus {
 .leftarrow-modal-view:hover {
   cursor: pointer;
   filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(100%) contrast(100%);
-  transition: filter 0.3s ease; /* Плавный переход */
+  transition: filter 0.3s ease;
 }
 
 .likes-container,
@@ -1804,13 +1788,13 @@ form input[type=text]:focus {
 .author-name:hover {
   cursor: pointer;
   filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(100%) contrast(100%);
-  transition: filter 0.3s ease; /* Плавный переход */
+  transition: filter 0.3s ease;
 }
 
 .likes-container.active {
   cursor: pointer;
   filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(100%) contrast(100%);
-  transition: filter 0.3s ease; /* Плавный переход */
+  transition: filter 0.3s ease;
 }
 
 /* ДОНАТ */
@@ -1996,11 +1980,11 @@ span {
 .image-upload-label {
   display: inline-block;
   padding: 10px 20px;
-  background-color: black; /* Цвет кнопки */
-  color: white; /* Цвет текста */
-  border-radius: 35px; /* Скругление углов */
-  cursor: pointer; /* Указатель при наведении */
-  transition: background-color 0.3s; /* Плавный переход цвета */
+  background-color: black;
+  color: white;
+  border-radius: 35px;
+  cursor: pointer;
+  transition: background-color 0.3s;
   z-index: 1;
   position: relative;
   position: relative;
@@ -2086,7 +2070,7 @@ span {
 
 .modal-container-photos img {
   height: auto;
-  transition: transform 0.5s ease; /* Плавный переход */
+  transition: transform 0.5s ease;
 }
 
 .background-modal-view {
@@ -2104,11 +2088,11 @@ span {
 
 .become-a-creator {
   background-color: #f9f9f9;
-  padding: 20px; /* Отступы внутри блока */
-  border-radius: 8px; /* Скругление углов */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Эффект тени */
-  text-align: center; /* Выравнивание текста по центру */
-  margin: 20px; /* Отступы вокруг блока */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin: 20px;
   text-align: left;
   align-items: center;
   display: flex;
@@ -2141,21 +2125,21 @@ span {
 }
 
 .join-button {
-  display: inline-block; /* Отображение как блочный элемент */
-  margin-top: 15px; /* Отступ сверху */
-  padding: 10px 20px; /* Отступы внутри кнопки */
-  background-color: var(--main-color); /* Цвет фона кнопки */
-  color: white; /* Цвет текста кнопки */
-  text-decoration: none; /* Убираем подчеркивание */
-  border-radius: 10px; /* Скругление углов кнопки */
-  transition: background-color 0.3s; /* Плавный переход цвета фона */
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: var(--main-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: background-color 0.3s;
   border: none;
   cursor: pointer;
   font-size: 16px;
 }
 
 .join-button:hover {
-  background-color: rgba(217, 84, 79, 0.7960784314); /* Цвет фона при наведении */
+  background-color: rgba(217, 84, 79, 0.7960784314);
 }
 
 .tabs a::after {
@@ -2301,14 +2285,14 @@ select {
   display: inline-block;
   padding: 10px 20px;
   cursor: pointer;
-  background-color: #4caf50; /* Зеленый цвет */
+  background-color: #4caf50;
   color: white;
   border-radius: 5px;
   transition: background-color 0.3s;
 }
 
 .custom-file-upload:hover {
-  background-color: #45a049; /* Темнее при наведении */
+  background-color: #45a049;
 }
 
 .image-photos-modal {
@@ -2518,7 +2502,6 @@ select {
   display: flex;
   flex-direction: row-reverse;
   gap: 10px;
-  /* width: 116px; */
   justify-content: flex-end;
   padding: 10px;
   transition: background 0.3s ease;
@@ -2654,7 +2637,7 @@ select {
 
 .searchbar-container {
   position: relative;
-  width: 150px; /* Начальная ширина */
+  width: 150px;
   margin: 0 auto;
   transition: width 0.3s ease;
 }
@@ -2665,11 +2648,11 @@ select {
   position: relative;
   display: flex;
   align-items: center;
-  border: 2px solid white; /* Белая рамка */
+  border: 2px solid white;
   border-radius: 35px;
-  background-color: transparent; /* Прозрачный фон */
+  background-color: transparent;
   overflow: hidden;
-  transition: background-color 0.3s ease; /* Плавный переход фона */
+  transition: background-color 0.3s ease;
   padding: 6px;
 }
 
@@ -2683,15 +2666,13 @@ select {
 }
 
 /* Поле ввода */
-/* Контейнер для поиска */
 .searchbar-container {
   position: relative;
-  width: 150px; /* Начальная ширина */
+  width: 150px;
   margin: 0 auto;
   transition: width 0.3s ease;
 }
 
-/* Поле ввода */
 /* Контейнер для поиска */
 .searchbar-container {
   position: relative;
@@ -2705,24 +2686,23 @@ select {
 .searchbar-wrapper {
   position: relative;
   display: flex;
-  right: 630px;
   align-items: center;
   border: 2px solid white;
   border-radius: 35px;
-  background-color: transparent; /* Прозрачный фон */
+  background-color: transparent;
   overflow: hidden;
   transition: background-color 0.3s ease;
 }
 
 /* Поле ввода */
 .searchbar-input {
-  width: 100%; /* Начальная ширина */
+  width: 100%;
   flex: 1;
   border: none;
-  padding: 10px 50px; /* Отступы для иконок */
+  padding: 10px 50px;
   font-size: 20px;
-  background: transparent; /* Прозрачный фон ввода */
-  color: black; /* Черный текст */
+  background: transparent;
+  color: black;
   outline: none;
   transition: width 0.3s ease, background-color 0.3s ease;
 }
@@ -2730,12 +2710,12 @@ select {
 /* При наведении или фокусе, инпут расширяется */
 .searchbar-wrapper:hover .searchbar-input,
 .searchbar-wrapper:focus-within .searchbar-input {
-  width: 300px; /* Ширина при наведении или фокусе */
+  width: 300px;
 }
 
 /* При наведении на инпут изменяется цвет фона и текста */
 .searchbar-wrapper:hover {
-  background-color: white; /* Белый фон при наведении */
+  background-color: white;
 }
 
 /* Начальный стиль для placeholder */
@@ -2760,36 +2740,36 @@ select {
 
 /* При наведении на инпут изменяется placeholder */
 .searchbar-input:hover::-moz-placeholder {
-  color: black; /* Черный цвет placeholder при наведении */
+  color: black;
 }
 .searchbar-input:hover::placeholder {
-  color: black; /* Черный цвет placeholder при наведении */
+  color: black;
 }
 
 /* Логика изменения цвета иконок при наведении */
 .searchbar-wrapper:hover .searchbar-icon,
 .searchbar-wrapper:focus-within .searchbar-icon {
-  color: black; /* Черный цвет для иконок */
+  color: black;
 }
 
 /* Общий стиль для иконок */
 .searchbar-icon {
   position: absolute;
-  color: black; /* Черный цвет для иконок */
+  color: black;
   font-size: 18px;
-  pointer-events: none; /* Чтобы не мешать вводу текста */
+  pointer-events: none;
 }
 
 /* Левая иконка (лупа) */
 .searchbar-icon--left {
-  left: 10px; /* Расположение лупы */
+  left: 10px;
   background: transparent;
   border: none;
 }
 
 /* Правая иконка (крестик) */
 .searchbar-icon--right {
-  right: 10px; /* Расположение крестика */
+  right: 10px;
   cursor: pointer;
   background: transparent;
   border: none;
