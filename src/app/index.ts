@@ -168,7 +168,7 @@ if (hasLogged()) {
   controlEventIFrame();
 }
 if (window.location.pathname === "/grafana") {
-  alert("nu")
+  alert("nu");
 }
 if (flag) {
   let root: HTMLElement | null = startA(config.menu, state);
