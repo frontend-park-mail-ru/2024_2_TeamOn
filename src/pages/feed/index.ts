@@ -57,8 +57,13 @@ async function controlIFRAME() {
       });
     });
   });
+  close.addEventListener("click", () => {
+    frame.style.display = "none";
+  });
   const question: any = await getQuestion();
-
+  if (!question.ok) {
+    return;
+  }
   textQuestion.textContent = question.question;
 
   button.addEventListener("click", async (e: any) => {
@@ -68,10 +73,6 @@ async function controlIFRAME() {
     if (ok) {
       frame.style.display = "none";
     }
-  });
-
-  close.addEventListener("click", () => {
-    frame.style.display = "none";
   });
 }
 /**

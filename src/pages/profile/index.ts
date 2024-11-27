@@ -71,6 +71,27 @@ async function controlCustomSubscriptions(container: any) {
     const layers: any = await getSubsLayer();
     modalAddSubs.style.display = "block";
 
+    title.addEventListener("input", () => {
+      let input = modalAddSubs.querySelectorAll(`.form-group`)[2];
+      let error = input.querySelector("p");
+      if (error) {
+        error.remove();
+      }
+    });
+    cost.addEventListener("input", () => {
+      let input = modalAddSubs.querySelectorAll(`.form-group`)[2];
+      let error = input.querySelector("p");
+      if (error) {
+        error.remove();
+      }
+    });
+    description.addEventListener("input", () => {
+      let input = modalAddSubs.querySelectorAll(`.form-group`)[2];
+      let error = input.querySelector("p");
+      if (error) {
+        error.remove();
+      }
+    });
     layerList.append(...(await renderContainersLayer(layers)));
     const radioButtons: any = modalAddSubs.querySelectorAll(`.modal-layers`);
     let selectedLayer: any = 1;
@@ -103,18 +124,23 @@ async function controlCustomSubscriptions(container: any) {
       const sanitizedDescription = DOMPurify.sanitize(description.value);
       const sanitizedCost = DOMPurify.sanitize(cost.value);
 
+      const input = modalAddSubs.querySelectorAll(`.form-group`)[2];
       if (!sanitizedTitle || !sanitizedDescription || !sanitizedCost) {
-        const input = modalAddSubs.querySelectorAll(`.form-group`)[2];
         const error = input.querySelector("p");
         if (!error) {
           const error = document.createElement("p");
           error.style.color = "red";
           error.textContent = "Ошибка. Поля должны быть заполнены";
           input.appendChild(error);
+        } else {
+          error.textContent = "Ошибка. Поля должны быть заполнены";
         }
         return;
       }
-
+      let error = input.querySelector("p");
+      if (error) {
+        error.remove();
+      }
       if (!Number.isInteger(Number(sanitizedCost))) {
         const input = modalAddSubs.querySelectorAll(`.form-group`)[2];
         const error = input.querySelector("p");
@@ -123,9 +149,12 @@ async function controlCustomSubscriptions(container: any) {
           error.style.color = "red";
           error.textContent = "Ошибка. Введите целое число";
           input.appendChild(error);
+        } else {
+          error.textContent = "Ошибка. Введите целое число";
         }
         return;
       }
+
       const response: any = await addCustomSubs(
         title.value,
         description.value,
