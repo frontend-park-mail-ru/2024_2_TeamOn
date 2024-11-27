@@ -28,7 +28,7 @@ export const state = {
  */
 export const maxAttempts = 3;
 
-export const allowedExtensions = ["mp3", "mp4", "pdf", "jpeg", "png"];
+export const allowedExtensions = ["mp3", "mp4", "pdf", "jpeg", "png", "jpg"];
 export const MAX_SYMBOLS_ABOUT = 71;
 export const validatePassword = {
   MIN_SYMBOLS: 8,

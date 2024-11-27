@@ -52,6 +52,7 @@ async function containerCreatePost() {
                 <h5 class="format">mp3</h5>
                 <h5 class="format">mp4</h5>
                 <h5 class="format">jpeg</h5>
+                <h5 class="format">jpg</h5>
                 <h5 class="format">png</h5>
                 <h5 class="format">pdf</h5>
               </div>

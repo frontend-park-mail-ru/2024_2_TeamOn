@@ -9,7 +9,7 @@ import * as VDom from "vdom";
  * @param mediaContent Медиа-контент у поста
  * @returns
  */
-async function containerPost(postId: any) {
+async function containerPost(post: any) {
   return (
     <div>
       <div class="post-container">
@@ -20,8 +20,8 @@ async function containerPost(postId: any) {
             <div class="date"></div>
           </div>
         </div>
-        <div class="title"></div>
-        <div class="content"></div>
+        <div class="title">{post.title}</div>
+        <div class="content">{post.content}</div>
         <div class="toggleButton" style="display: none;">
           Показать...
         </div>

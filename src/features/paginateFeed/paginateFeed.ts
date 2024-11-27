@@ -408,7 +408,7 @@ async function modifirePosts(
  */
 async function renderPopularPosts(popularPosts: any) {
   const postsPromises = popularPosts.map(async (post: any) => {
-    const container = await containerPost(post.postId);
+    const container = await containerPost(post);
 
     const div = renderTo(container);
 
@@ -503,7 +503,7 @@ async function paginate(
           modifirePosts(
             containerPopularPosts,
             containerRecentlyPosts,
-            nextPopularPosts,
+            nextPopularPosts.reverse(),
             [],
           );
           cache.popular.push(...nextPopularPosts);
@@ -531,7 +531,7 @@ async function paginate(
             containerPopularPosts,
             containerRecentlyPosts,
             [],
-            nextRecentlyPosts,
+            nextRecentlyPosts.reverse(),
           );
           cache.recently.push(...nextRecentlyPosts);
         } else {
