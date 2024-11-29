@@ -11,7 +11,7 @@ async function following(authorId: any) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "POST",
-      `/api/danya/author/${authorId}/following`,
+      `/api/pages/author/${authorId}/following`,
       null,
       (response) => {
         if (response.ok) {

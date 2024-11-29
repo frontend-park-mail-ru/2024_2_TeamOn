@@ -13,8 +13,8 @@ async function getBackgroundAuthor(link: string, authorID: any) {
     fetchAjax(
       "GET",
       link == "/profile"
-        ? "/api/danya/author/me/background"
-        : `/api/danya/author/${authorID}/background`,
+        ? "/api/pages/author/me/background"
+        : `/api/pages/author/${authorID}/background`,
       null,
       (response) => {
         if (response.ok) {
@@ -49,7 +49,7 @@ async function saveBackground(background: FormData) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "POST",
-      "/api/danya/author/update/background",
+      "/api/authors/author/update/background",
       background,
       (response) => {
         if (response.ok) {

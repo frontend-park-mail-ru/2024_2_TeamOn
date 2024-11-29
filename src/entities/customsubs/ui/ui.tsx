@@ -1,11 +1,16 @@
-import { renderTo } from "../../../../lib/vdom/lib";
+import { renderTo, update } from "../../../../lib/vdom/lib";
 import { containerLayer } from "../../../pages/addPost/ui/ui";
 import * as VDom from "vdom";
 
-async function renderContainersLayer(layers: any) {
+async function renderContainersLayer(layers: Array<any>) {
+  if (!Array.isArray(layers)) {
+    throw new Error("layers should be an array");
+  }
+  let newAy: any = [];
   let containersLayers: any = [];
   layers.forEach((layer: any) => {
     const container: any = containerLayer(layer);
+    newAy.push(container);
     const div: any = renderTo(container);
     containersLayers.push(div);
   });

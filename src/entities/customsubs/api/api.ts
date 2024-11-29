@@ -36,11 +36,11 @@ async function addCustomSubs(
  * @param offsetPopular Оффсет для популярных постов
  * @returns
  */
-async function requestPay(authorId: any, monthCount: any, layer: any) {
+async function requestPay(authorId: string, monthCount: number, layer: number) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "POST",
-      `/api/danya/subscription/request`,
+      `/api/pages/subscription/request`,
       { authorId: authorId, monthCount: monthCount, layer: layer },
       (response) => {
         if (response.ok) {
@@ -67,7 +67,7 @@ async function realizePay(subscriptionRequestID: any) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "POST",
-      `/api/danya/subscription/realize`,
+      `/api/pages/subscription/realize`,
       { subscriptionRequestID: subscriptionRequestID },
       (response) => {
         if (response.ok) {

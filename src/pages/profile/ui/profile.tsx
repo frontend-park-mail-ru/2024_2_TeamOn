@@ -7,6 +7,7 @@ import {
   profileForm,
   confirmForm,
   unfollowForm,
+  followersForm,
 } from "../../../widgest/profile";
 import { renderUserInfo } from "../../../entities/profileInfo/index";
 
@@ -45,6 +46,7 @@ export async function profileContent(
       {deletepostForm()}
       {confirmForm()}
       {unfollowForm()}
+      {followersForm()}
     </div>
   );
 }

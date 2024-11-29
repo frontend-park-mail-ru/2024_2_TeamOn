@@ -4,7 +4,7 @@
 const tokenEndpoints: any = {
   auth: "/api/auth/token-endpoint",
   accounts: "/api/accounts/token-endpoint",
-  danya: "/api/danya/token-endpoint",
+  authors_pages: "/api/authors_pages/token-endpoint",
   posts: "/api/posts/token-endpoint",
 };
 /**
@@ -52,7 +52,7 @@ async function getCSRFTokenForTech() {
  * @returns
  */
 async function getCSRFTokenForAuthor() {
-  const response = await fetch("/api/danya/token-endpoint");
+  const response = await fetch("/api/pages/token-endpoint");
   const data = await response.json();
   return data;
 }
@@ -95,7 +95,7 @@ export async function fetchAjax(
       csrfToken = await getCSRFTokenForAuth();
     } else if (url.startsWith("/api/accounts")) {
       csrfToken = await getCSRFTokenForAccounts();
-    } else if (url.startsWith("/api/danya")) {
+    } else if (url.startsWith("/api/pages")) {
       csrfToken = await getCSRFTokenForAuthor();
     } else if (url.startsWith("/api/tech")) {
       csrfToken = await getCSRFTokenForAccounts();

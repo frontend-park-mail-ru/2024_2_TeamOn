@@ -139,6 +139,7 @@ async function controlAdaptivePageAuthors(
         });
         containerTip.style.display = "none";
         profileForm.classList.remove("blur");
+        document.body.style.overflow = "auto";
         overlay.remove();
       });
       buttonCancel.addEventListener("click", async () => {

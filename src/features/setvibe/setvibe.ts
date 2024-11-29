@@ -11,7 +11,7 @@ async function setVibe(info: any) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "POST",
-      `/api/danya/author/update/info`,
+      `/api/pages/author/update/info`,
       { info: info },
       (response) => {
         if (response.ok) {

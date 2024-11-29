@@ -31,65 +31,7 @@ function foundSave(div: any) {
   const buttonSave: any = div.querySelector(`.save`);
   return buttonSave;
 }
-function foundUnfollow(div: any) {
-  const buttonSave: any = div.querySelector(`.delete`);
-  return buttonSave;
-}
-async function modifireModalUnfollow(
-  profileForm: any,
-  container: any,
-  subscription: any,
-) {
-  const authorId: any = sessionStorage.getItem("authorid");
-  const userdata: any = await getPageAuthor(window.location.pathname);
-  const modal: any = renderModalUnfollow(userdata);
-  const div: any = document.querySelector(`.div-unfollow`);
-  const placeSubscriptions = container.querySelector(`.subscription-levels`);
 
-  update(div, modal);
-
-  const buttonCancel: any = foundCancel(div);
-  const buttonUnfollow: any = foundUnfollow(div);
-
-  const modalConfirm: any = div.querySelector(`.modal__unfollow`);
-  profileForm.classList.add("blur");
-  modalConfirm.style.display = "block";
-
-  const handleClickCancel = () => {
-    buttonCancel.removeEventListener("click", handleClickCancel);
-    const div: any = document.querySelector(`.div-unfollow`);
-    const modalConfirm: any = div.querySelector(`.modal__unfollow`);
-
-    modalConfirm.style.display = "none";
-    profileForm.classList.remove("blur");
-  };
-  buttonCancel.addEventListener("click", handleClickCancel);
-
-  const handleClickUnfollow = async () => {
-    const response: any = await unfollow(authorId);
-    if (!response || response.message) {
-      const input = modalConfirm.querySelector(`.form-group`);
-      const error = modalConfirm.querySelector(".error-msg");
-      if (!error) {
-        const error = document.createElement("p");
-        error.style.color = "red";
-        error.textContent = "Ошибка";
-        error.className = "error-msg";
-        input.appendChild(error);
-      }
-      return;
-    }
-    const media = `Успешно отписались от ${userdata.authorUsername}`;
-    renderModalStatusUpload(true, media);
-    modalConfirm.style.display = "none";
-    profileForm.classList.remove("blur");
-    const placeposts: any = container.querySelector(`.place-posts`);
-    await paginateProfile([], placeposts);
-    await paginateSubscription([], placeSubscriptions);
-  };
-
-  buttonUnfollow.addEventListener("click", handleClickUnfollow);
-}
 function modifireModalConfirmSubscription(
   profileForm: any,
   container: any,

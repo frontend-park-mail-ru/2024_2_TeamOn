@@ -4,11 +4,6 @@ export interface VNode {
   children: VNode[];
   class?: any;
 }
-// export interface VNode {
-//   type: string;
-//   props: { [key: string]: any };
-//   children: (VNode | string)[]; // Изменено на (VNode | string)[]
-// }
 /**
  * Класс виртуального дома
  */
@@ -143,11 +138,6 @@ export class VirtualDOM {
         patches[key] = newProps[key];
       }
     }
-    // for (const key in oldProps) {
-    //   if (!(key in newProps)) {
-    //     patches[key] = undefined; // Удаляем свойство
-    //   }
-    // }
 
     return patches;
   }

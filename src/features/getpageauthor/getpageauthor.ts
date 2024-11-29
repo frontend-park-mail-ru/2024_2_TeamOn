@@ -10,11 +10,11 @@ async function getPageAuthor(link: string, authorId: any = null) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "GET",
-      link === "/profile"
-        ? "/api/danya/author/me"
+      link === "/profile" && !authorId
+        ? "/api/pages/author/me"
         : !authorId
-          ? `/api/danya/author/${sessionStorage.getItem("authorid")}`
-          : `/api/danya/author/${authorId}`,
+          ? `/api/pages/author/${sessionStorage.getItem("authorid")}`
+          : `/api/pages/author/${authorId}`,
       null,
       (response) => {
         if (response.ok) {

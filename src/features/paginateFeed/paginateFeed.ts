@@ -170,7 +170,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
 
     imgPhotos.forEach((img: any) => {
       const imgHeight = img.naturalHeight;
-      const imgWidth = img.naturalWidth;
+      const imgWidth = img.clientWidth;
       if (reswidth + imgWidth <= MAX_SIZE) {
         img.style.display = "block";
         resheight += imgHeight;
@@ -435,7 +435,7 @@ async function renderPopularPosts(popularPosts: any) {
  */
 async function renderRecentlyPosts(recentlyPosts: any) {
   const postsPromises = recentlyPosts.map(async (post: any) => {
-    const container = await containerPost(post.postId);
+    const container = await containerPost(post);
 
     const div = renderTo(container);
 
@@ -456,13 +456,6 @@ async function renderRecentlyPosts(recentlyPosts: any) {
   return posts;
 }
 
-/**
- * Функция пагинация для ленты
- * @param allPopularPosts Все популярные посты
- * @param allRecentlyPosts Все недавние посты
- * @param containerPopularPosts Контейнер популярных постов
- * @param containerRecentlyPosts Конейтер недавних постов
- */
 async function paginate(
   allPopularPosts: any,
   allRecentlyPosts: any,
@@ -473,15 +466,15 @@ async function paginate(
   let stopLoadRecentlyPosts: boolean = false;
   let offsetPopular = 0;
   let offsetRecently = 0;
-  // Объект для предотвращения повторной загрузки
   let isLoading = false;
-  const cache: any = {
-    popular: [],
-    recently: [],
-  };
+
+  // Используем Set для отслеживания активных запросов
+  const activeRequests = new Set();
+
   async function loadPosts() {
     if (isLoading) return; // Если загрузка уже идет, выходим из функции
     isLoading = true; // Устанавливаем флаг загрузки
+
     const activeLinkFeed = sessionStorage.getItem("feed");
     activeLinkFeed == "0"
       ? (stopLoadPopularPosts = false)
@@ -490,13 +483,15 @@ async function paginate(
     try {
       if (!stopLoadPopularPosts && window.location.pathname === "/feed") {
         // Загружаем популярные посты
+        const requestId = `popular-${offsetPopular}`;
+        if (activeRequests.has(requestId)) return; // Проверяем, был ли этот запрос уже отправлен
+        activeRequests.add(requestId);
+
         const popularPosts: any = await getPopularPosts(offsetPopular);
         const nextPopularPosts = popularPosts.slice(0, QUERY.LIMIT);
-
         if (nextPopularPosts.length > 0) {
           allPopularPosts.push(...nextPopularPosts);
           offsetPopular += QUERY.LIMIT;
-
           containerPopularPosts.append(
             ...(await renderPopularPosts(nextPopularPosts)),
           );
@@ -506,22 +501,27 @@ async function paginate(
             nextPopularPosts.reverse(),
             [],
           );
-          cache.popular.push(...nextPopularPosts);
         } else {
           stopLoadPopularPosts = true;
         }
+        activeRequests.delete(requestId); // Удаляем запрос из активных
       }
+
       if (
         !stopLoadRecentlyPosts &&
         window.location.pathname === "/feed" &&
         hasLogged()
       ) {
         // Загружаем недавние посты
+        const requestId = `recent-${offsetRecently}`;
+        if (activeRequests.has(requestId)) return; // Проверяем, был ли этот запрос уже отправлен
+        activeRequests.add(requestId);
+
         const recentlyPosts: any = await getRecentlyPosts(offsetRecently);
         const nextRecentlyPosts = recentlyPosts.slice(0, QUERY.LIMIT);
         if (nextRecentlyPosts.length > 0) {
           allRecentlyPosts.push(...nextRecentlyPosts);
-          offsetRecently += QUERY.LIMIT; // Увеличиваем смещение на количество загруженных постов
+          offsetRecently += QUERY.LIMIT;
 
           // Обновляем контейнер недавних постов
           containerRecentlyPosts.append(
@@ -533,13 +533,13 @@ async function paginate(
             [],
             nextRecentlyPosts.reverse(),
           );
-          cache.recently.push(...nextRecentlyPosts);
         } else {
           stopLoadRecentlyPosts = true;
         }
+        activeRequests.delete(requestId); // Удаляем запрос из активных
       }
     } finally {
-      isLoading = false;
+      isLoading = false; // Сбрасываем флаг загрузки
     }
   }
 
@@ -550,7 +550,7 @@ async function paginate(
   window.addEventListener("scroll", async () => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
     // Проверяем, достиг ли пользователь нижней части страницы
-    if (scrollTop + clientHeight >= scrollHeight - 500) {
+    if (scrollTop + clientHeight >= scrollHeight - 1000) {
       await loadPosts();
     }
   });

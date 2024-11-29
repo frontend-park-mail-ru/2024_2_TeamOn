@@ -12,7 +12,7 @@ async function getPayments(link: string) {
     if (link !== "/profile") {
       resolve(false);
     }
-    fetchAjax("GET", "/api/danya/author/payments", null, (response) => {
+    fetchAjax("GET", "/api/pages/author/payments", null, (response) => {
       if (response.ok) {
         response.json().then((data) => {
           resolve(data);

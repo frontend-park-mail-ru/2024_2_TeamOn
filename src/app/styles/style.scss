@@ -127,8 +127,11 @@ form {
     margin-top: 0%;
     margin-bottom: 30px;
   }
-  .searchbar-wrapper {
+  .searchbar-container .searchbar-wrapper {
     top: 60px;
+  }
+  .searchbar-container.profile .searchbar-wrapper {
+    top: 0;
   }
   .searchbar-wrapper-feed {
     margin-left: -244px;
@@ -1088,7 +1091,7 @@ form input[type="text"]:focus {
   .feed-buttons__button {
     right: 20%;
   }
-  .searchbar-wrapper {
+  .searchbar-container .searchbar-container .searchbar-wrapper {
     right: 630px;
   }
 }
@@ -1638,7 +1641,8 @@ form input[type="text"]:focus {
 .modal__addsubs,
 .modal__deletepost,
 .modal__unfollow,
-.modal__confirmsubs {
+.modal__confirmsubs,
+.modal__subscriptions {
   display: none;
   background-color: white;
   width: 800px;
@@ -1651,6 +1655,9 @@ form input[type="text"]:focus {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.modal__subscriptions {
+  width: 400px;
 }
 .modal-view-photos {
   width: 800px;
@@ -2189,7 +2196,8 @@ select {
   .modal__editpost,
   .modal__addsubs,
   .modal__unfollow,
-  .modal__confirmsubs {
+  .modal__confirmsubs,
+  .modal__subscriptions {
     max-width: 90%;
   }
   .profile .left {
@@ -2276,6 +2284,12 @@ select {
   z-index: 101010101010;
   border-radius: 15px;
   width: 250px;
+}
+.results-subscriptions {
+  width: 100%;
+  border-radius: 15px;
+  padding: 10px;
+  cursor: pointer;
 }
 .results.feed {
   background-color: #f5f5f5;
@@ -2422,12 +2436,18 @@ select {
   position: relative;
   display: flex;
   align-items: center;
-  border: 2px solid white;
   border-radius: 35px;
   background-color: transparent;
   overflow: hidden;
   transition: background-color 0.3s ease;
   padding: 6px;
+}
+.searchbar-wrapper,
+.searchbar-wrapper-feed {
+  border: 2px solid white;
+}
+.searchbar-container.profile .searchbar-wrapper {
+  border: 2px solid black;
 }
 .searchbar-wrapper-feed {
   position: fixed;
@@ -2446,11 +2466,15 @@ select {
 }
 
 /* Контейнер для поиска */
-.searchbar-container {
+.searchbar-container,
+.searchbar-container.profile {
   position: relative;
   width: 250px;
   margin: 0 auto;
   transition: width 0.3s ease;
+}
+
+.searchbar-container {
   margin-top: 96px;
 }
 
@@ -2465,7 +2489,9 @@ select {
   overflow: hidden;
   transition: background-color 0.3s ease;
 }
-
+.searchbar-container.profile .searchbar-wrapper {
+  height: 30px;
+}
 /* Поле ввода */
 .searchbar-input {
   width: 100%;
@@ -2493,7 +2519,10 @@ select {
 }
 
 /* Начальный стиль для placeholder */
-.searchbar-input::placeholder {
+.searchbar-container
+  .searchbar-container
+  .searchbar-wrapper
+  .searchbar-input::placeholder {
   color: white;
   opacity: 0.6;
 }
@@ -2579,7 +2608,8 @@ select {
   border-bottom: 1px solid #e8e9eb;
   border-radius: 15px;
 }
-.results.feed .result-item:hover {
+.results.feed .result-item:hover,
+.results-subscriptions .result-item:hover {
   background-color: #f0f0f0;
 }
 .result-item:last-child {

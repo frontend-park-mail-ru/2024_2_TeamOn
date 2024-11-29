@@ -33,7 +33,114 @@ import { hasLogged } from "../../shared/utils/hasLogged";
 import { route } from "../../shared/routing/routing";
 import { setTitle } from "../../shared/settitle/setTitle";
 import { showOverlay } from "../../shared/overlay/overlay";
+import { renderUserSubscriptins } from "../../entities/profileInfo";
+import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 
+async function renderContainerSubscriptions(authorData: any, overlay: any) {
+  const modalSubscriptions: any = document.querySelector(`.modal__subscriptions`);
+  const results: any = modalSubscriptions.querySelector(`.results-subscriptions`);
+
+  if (!authorData || !modalSubscriptions) return;
+
+  // Создаем массив промисов для загрузки всех подписок
+  const subscriptionPromises = authorData.subscriptions.map(async (sub: any) => {
+    const pageSub: any = await getPageAuthor(window.location.pathname, sub.AuthorID);
+    const avatarSub: any = await getAvatar(window.location.pathname, sub.AuthorID);
+
+    const authorElement = document.createElement("div");
+    authorElement.classList.add("result-item");
+    authorElement.textContent = pageSub.authorUsername;
+
+    const avatarImage = document.createElement("img");
+    avatarImage.src = avatarSub;
+    avatarImage.height = 50;
+    avatarImage.width = 50;
+
+    authorElement.addEventListener("click", async () => {
+      overlay.remove();
+      gotoauthor(sub.AuthorID);
+    });
+
+    authorElement.appendChild(avatarImage);
+    return authorElement; // Возвращаем элемент для добавления в результаты
+  });
+
+  // Ждем завершения всех промисов и добавляем элементы в результаты
+  const subscriptionElements = await Promise.all(subscriptionPromises);
+  subscriptionElements.forEach((element) => results.appendChild(element));
+
+  return results;
+}
+
+export function showSubscriptions(authorData: any, container: any) {
+  const div: any = container.querySelector(`.div-subscriptions`);
+
+  if (!div) return;
+
+  const profileForm: any = container.querySelector(`.profile-form`);
+  let overlay: any = undefined;
+
+  const handleClickSubscriptions = async () => {
+    update(div, renderUserSubscriptins());
+    const modalSubscriptions: any = document.querySelector(
+      `.modal__subscriptions`,
+    );
+    overlay = showOverlay(modalSubscriptions, profileForm);
+    let divResults: any = undefined;
+    try {
+      divResults = await renderContainerSubscriptions(authorData, overlay);
+    } catch (error) {
+      console.error("Error in divResults")
+    }
+    const search: any =
+      modalSubscriptions.querySelector(`.searchbar-container`);
+    search.classList.add("profile");
+    modalSubscriptions.style.display = "block";
+    profileForm.classList.add("blur");
+    const handleClickCancel = () => {
+      modalSubscriptions.style.display = "none";
+      profileForm.classList.remove("blur");
+      overlay.remove();
+    };
+    const buttonCancel: any =
+      modalSubscriptions.querySelector(`.close__button`);
+    buttonCancel.addEventListener("click", handleClickCancel);
+
+    const resultItems = divResults.querySelectorAll(".result-item"); // Преобразуем NodeList в массив
+    const input = modalSubscriptions.querySelector(".searchbar-input");
+    input.addEventListener("input", () => {
+      const searchValue = input.value.replace(/\s+/g, "").toLowerCase(); // Приводим к нижнему регистру для нечувствительного поиска
+
+      // Сначала собираем все найденные элементы
+      const matchedItems: any = [];
+      const unmatchedItems: any = [];
+
+      resultItems.forEach((item: any) => {
+        const text = item.textContent.toLowerCase(); // Получаем текст элемента в нижнем регистре
+        if (text.includes(searchValue)) {
+          matchedItems.push(item); // Если найдено, добавляем в массив совпадений
+        } else {
+          unmatchedItems.push(item); // Иначе добавляем в массив несоответствий
+        }
+      });
+
+      // Добавляем найденные элементы
+      matchedItems.forEach((item: any) => {
+        divResults.appendChild(item);
+      });
+
+      // Добавляем остальные элементы
+      unmatchedItems.forEach((item: any) => {
+        divResults.appendChild(item);
+      });
+    });
+  };
+
+  const amountSubscriptions: any = container.querySelector(
+    `.amount-subscriptions`,
+  );
+  amountSubscriptions.addEventListener("click", handleClickSubscriptions);
+}
 async function controlCustomSubscriptions(container: any) {
   if (window.location.pathname !== "/profile") return;
   const containersCustomSubs: any =
@@ -252,6 +359,7 @@ export async function controlBecomeCreator(div: any) {
  */
 export async function renderProfile() {
   try {
+    document.body.style.overflow = "auto";
     setTitle(LINKS.PROFILE.TEXT);
     const posts: any = [];
     const subcriptions: any = [];
@@ -320,6 +428,8 @@ export async function renderProfile() {
 
     const placeposts: any = container.querySelector(`.place-posts`);
     const placeSubscriptions = container.querySelector(`.subscription-levels`);
+
+    showSubscriptions(authorData, container);
 
     await paginateProfile(posts, placeposts);
 

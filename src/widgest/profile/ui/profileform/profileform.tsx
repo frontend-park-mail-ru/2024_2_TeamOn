@@ -5,16 +5,19 @@ import { getCustomSubscription } from "../../../../features/getCustomSubs/getCus
 import { renderContainerAddCustomSubs } from "../../../../pages/profile/ui/profile";
 
 function containerCustomSubscribe(subscription: any, userdata: any = null) {
-  const flag =
+  const flag: string =
     window.location.pathname === "/profile"
       ? "display: none"
       : "display: block;";
-  let isSubs: any = false;
+  let isSubs: boolean = false;
   if (userdata) {
     isSubs = userdata.isSubscribe;
   }
   const text: any = isSubs ? "Уже подписаны" : "Подписаться";
   const styleSubs: any = isSubs ? "display: none" : "display: block";
+  const disable: any = isSubs
+    ? " pointer-events: none;  cursor: not-allowed;"
+    : "";
   return (
     <div class="subscription-level">
       <h3 style={styleSubs} class="title-level">
@@ -26,7 +29,7 @@ function containerCustomSubscribe(subscription: any, userdata: any = null) {
       <p style={styleSubs} class="content-level">
         {String(subscription.description)}
       </p>
-      <button class="button-buy-subs" style={flag}>
+      <button class="button-buy-subs" style={flag + disable}>
         {text}
       </button>
     </div>
