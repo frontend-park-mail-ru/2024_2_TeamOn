@@ -21,10 +21,12 @@ async function showSearch(container: any) {
     // containerSearchbar.style.display = "none";
     results.classList.add("home");
   }
+  
   closeBtn.addEventListener("click", () => {
     searchInput.value = "";
     results.style.display = "none";
   });
+
   pageContainer.addEventListener("click", (e: any) => {
     if (e.target === results) {
       return;
@@ -74,6 +76,7 @@ async function showSearch(container: any) {
       }
     }
   };
+
   searchInput.addEventListener("input", throttle(handleInput, 300)); // 300 мс
 }
 function throttle<T extends (...args: any[]) => any>(func: T, limit: number) {

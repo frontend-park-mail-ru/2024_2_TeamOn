@@ -90,7 +90,7 @@ async function realizePay(subscriptionRequestID: any) {
  * @param offsetPopular Оффсет для популярных постов
  * @returns
  */
-async function unfollow(authorId: any) {
+async function unfollow(authorId: string) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "POST",

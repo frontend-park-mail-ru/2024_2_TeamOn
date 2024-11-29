@@ -25,7 +25,17 @@ export function renderAbout(
     newValue && newValue.lentgh > MAX_SYMBOLS_ABOUT
       ? `Максимальная длина текста ${MAX_SYMBOLS_ABOUT} символов.`
       : "";
+  let result;
 
+  if (authorData.info == null) {
+      if (newValue === undefined) {
+          result = "Изменить статус...";
+      } else {
+          result = newValue;
+      }
+  } else {
+      result = authorData.info;
+  }
   const editModeValue = (
     <div class="about">
       <h2>ОБО МНЕ</h2>
@@ -58,13 +68,7 @@ export function renderAbout(
         style="display: none;"
       ></input>
       <p class="about-profile">
-        {createText(
-          authorData.info == null
-            ? newValue == undefined
-              ? "Изменить статус..."
-              : newValue
-            : authorData.info,
-        )}
+        {result}
       </p>
       <div class="interaction-place-info" style="display: none;">
         <button class="save-info-button">Сохранить</button>
