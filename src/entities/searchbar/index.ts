@@ -21,7 +21,7 @@ async function showSearch(container: any) {
     // containerSearchbar.style.display = "none";
     results.classList.add("home");
   }
-  
+
   closeBtn.addEventListener("click", () => {
     searchInput.value = "";
     results.style.display = "none";

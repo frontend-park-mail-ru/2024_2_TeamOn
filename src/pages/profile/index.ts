@@ -37,33 +37,45 @@ import { renderUserSubscriptins } from "../../entities/profileInfo";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 
 async function renderContainerSubscriptions(authorData: any, overlay: any) {
-  const modalSubscriptions: any = document.querySelector(`.modal__subscriptions`);
-  const results: any = modalSubscriptions.querySelector(`.results-subscriptions`);
+  const modalSubscriptions: any = document.querySelector(
+    `.modal__subscriptions`,
+  );
+  const results: any = modalSubscriptions.querySelector(
+    `.results-subscriptions`,
+  );
 
   if (!authorData || !modalSubscriptions) return;
 
   // Создаем массив промисов для загрузки всех подписок
-  const subscriptionPromises = authorData.subscriptions.map(async (sub: any) => {
-    const pageSub: any = await getPageAuthor(window.location.pathname, sub.AuthorID);
-    const avatarSub: any = await getAvatar(window.location.pathname, sub.AuthorID);
+  const subscriptionPromises = authorData.subscriptions.map(
+    async (sub: any) => {
+      const pageSub: any = await getPageAuthor(
+        window.location.pathname,
+        sub.AuthorID,
+      );
+      const avatarSub: any = await getAvatar(
+        window.location.pathname,
+        sub.AuthorID,
+      );
 
-    const authorElement = document.createElement("div");
-    authorElement.classList.add("result-item");
-    authorElement.textContent = pageSub.authorUsername;
+      const authorElement = document.createElement("div");
+      authorElement.classList.add("result-item");
+      authorElement.textContent = pageSub.authorUsername;
 
-    const avatarImage = document.createElement("img");
-    avatarImage.src = avatarSub;
-    avatarImage.height = 50;
-    avatarImage.width = 50;
+      const avatarImage = document.createElement("img");
+      avatarImage.src = avatarSub;
+      avatarImage.height = 50;
+      avatarImage.width = 50;
 
-    authorElement.addEventListener("click", async () => {
-      overlay.remove();
-      gotoauthor(sub.AuthorID);
-    });
+      authorElement.addEventListener("click", async () => {
+        overlay.remove();
+        gotoauthor(sub.AuthorID);
+      });
 
-    authorElement.appendChild(avatarImage);
-    return authorElement; // Возвращаем элемент для добавления в результаты
-  });
+      authorElement.appendChild(avatarImage);
+      return authorElement; // Возвращаем элемент для добавления в результаты
+    },
+  );
 
   // Ждем завершения всех промисов и добавляем элементы в результаты
   const subscriptionElements = await Promise.all(subscriptionPromises);
@@ -90,7 +102,7 @@ export function showSubscriptions(authorData: any, container: any) {
     try {
       divResults = await renderContainerSubscriptions(authorData, overlay);
     } catch (error) {
-      console.error("Error in divResults")
+      console.error("Error in divResults");
     }
     const search: any =
       modalSubscriptions.querySelector(`.searchbar-container`);

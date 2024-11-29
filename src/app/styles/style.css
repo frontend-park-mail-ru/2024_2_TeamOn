@@ -783,7 +783,6 @@ form input[type=text]:focus {
 .buttons-profile button,
 .button-buy-subs.issubs {
   display: block;
-  width: 100%;
   margin: 10px 0;
   padding: 10px;
   border: none;
@@ -792,6 +791,11 @@ form input[type=text]:focus {
   color: white;
   font-size: 16px;
   transition: background 0.3s ease;
+}
+
+.buttons-profile button,
+.button-buy-subs.issubs {
+  width: 100%;
 }
 
 .buttons-profile button {
@@ -2193,9 +2197,15 @@ span {
   font-weight: bold;
 }
 
+@media (max-width: 768px) {
+  .form-container-stat {
+    overflow: auto;
+  }
+}
 .form-container,
 .form-container-security,
-.form-container-statistics {
+.form-container-stat,
+.form-container-feedback {
   background-color: #fff;
   padding: 40px;
   border-radius: 10px;
@@ -2206,13 +2216,14 @@ span {
   height: 400px;
 }
 
-.form-container-statistics {
+.form-container-stat,
+.form-container-feedback {
   height: 100%;
 }
 
 .form-container h2,
 .form-container-security h2,
-.form-container-statistics h2 {
+.form-container-stat h2 .form-container-feedback h2 {
   font-size: 20px;
   margin-bottom: 20px;
 }
@@ -2226,7 +2237,8 @@ span {
 
 .form-container label,
 .form-container-security label,
-.form-container-statistics label {
+.form-container-stat label,
+.form-container-feedback label {
   display: block;
   margin-left: 0;
   margin-bottom: 10px;
@@ -2254,7 +2266,8 @@ select {
 
 .form-container select,
 .form-container-security select,
-.form-container-statistics select {
+.form-container-stat select,
+.form-container-feedback select {
   width: 51.5%;
   padding: 10px;
   margin-bottom: 20px;
@@ -2280,7 +2293,7 @@ select {
 
 .form-container .profile-pic,
 .form-container-security .profile-pic,
-.form-container-statistics .profile-pic {
+.form-container-stat .profile-pic {
   display: block;
   width: 100px;
   height: 100px;
@@ -2309,7 +2322,8 @@ select {
 }
 
 .form-container button,
-.form-container-security button {
+.form-container-security button,
+.form-container-stat button {
   background-color: #000;
   color: #fff;
   border: none;
@@ -2320,6 +2334,12 @@ select {
   width: 152.14px;
   margin-top: 10px;
   margin-left: 10px;
+  transition: background 0.3s ease;
+}
+
+.form-container-stat button:hover {
+  background: var(--main-color-hover);
+  color: white;
 }
 
 @media (max-width: 768px) {
@@ -2898,6 +2918,52 @@ select {
 
 .container-table {
   margin-bottom: 40px;
+}
+
+canvas {
+  border: 1px solid black;
+}
+
+.modal-graphic {
+  position: fixed;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: none;
+}
+
+.period-buttons-posts,
+.period-buttons-payments {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.period-buttons-posts button,
+.period-buttons-payments button {
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.graphic-posts,
+.graphic-payments {
+  width: 800px;
+  overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+  .graphic-posts,
+  .graphic-payments {
+    max-width: 225px;
+  }
+}
+.section {
+  flex: 1;
+  height: 50px;
 }
 
 /*# sourceMappingURL=style.css.map */

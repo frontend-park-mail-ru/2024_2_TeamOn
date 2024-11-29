@@ -28,13 +28,13 @@ export function renderAbout(
   let result;
 
   if (authorData.info == null) {
-      if (newValue === undefined) {
-          result = "Изменить статус...";
-      } else {
-          result = newValue;
-      }
+    if (newValue === undefined) {
+      result = "Изменить статус...";
+    } else {
+      result = newValue;
+    }
   } else {
-      result = authorData.info;
+    result = authorData.info;
   }
   const editModeValue = (
     <div class="about">
@@ -67,9 +67,7 @@ export function renderAbout(
         value={newValue == undefined ? "Мой статус..." : newValue}
         style="display: none;"
       ></input>
-      <p class="about-profile">
-        {result}
-      </p>
+      <p class="about-profile">{result}</p>
       <div class="interaction-place-info" style="display: none;">
         <button class="save-info-button">Сохранить</button>
         <button class="cancel-info-button">Отменить</button>

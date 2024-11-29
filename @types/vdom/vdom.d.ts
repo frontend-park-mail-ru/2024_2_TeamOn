@@ -37,6 +37,7 @@ declare module "vdom" {
       tbody: { [key: string]: any };
       iframe: { [key: string]: any };
       span: { [key: string]: any };
+      canvas: { [key: string]: any };
     }
   }
 }

@@ -16,7 +16,7 @@ import {
   validateSettingsPassword,
   validateMainInfo,
 } from "../../shared/validateSettingsForm/validateSettingsForm";
-import { settingsContainer } from "./ui/settings";
+import { renderStat, settingsContainer } from "./ui/settings";
 import { getAvatar } from "../../features/getavatar/getavatar";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { renderStatics, renderTableTitle } from "../statistics/ui/ui";
@@ -160,6 +160,7 @@ function setupTabs(
     "Основная информация",
     "Безопасность",
     "Статистика",
+    "Оценки",
     /** , "Получение дохода"*/
   ].forEach((tabName, index) => {
     const tabLink = document.createElement("a");
@@ -202,15 +203,18 @@ async function updateContent(
   contentContainer.innerHTML = "";
   contentContainer.appendChild(await createProfileForm(userdata));
   contentContainer.appendChild(createSecurityForm());
-  contentContainer.appendChild(await createStatistics());
+  contentContainer.appendChild(await createStat());
+  contentContainer.appendChild(await createFeedback());
   let containerPersonalize: any =
     contentContainer.querySelector(`.form-container`);
   let containerPassword: any = contentContainer.querySelector(
     `.form-container-security`,
   );
-  let containerStatistics: any = contentContainer.querySelector(
-    `.form-container-statistics`,
+  let containerFeedback: any = contentContainer.querySelector(
+    `.form-container-feedback`,
   );
+  let containerStatistics: any =
+    contentContainer.querySelector(`.form-container-stat`);
 
   switch (index) {
     case 0:
@@ -224,6 +228,10 @@ async function updateContent(
     case 2:
       containerPersonalize.style.display = "none";
       containerStatistics.style.display = "block";
+      break;
+    case 3:
+      containerPersonalize.style.display = "none";
+      containerFeedback.style.display = "block";
       break;
     default:
       return [buttonPersonalize, buttonPassword];
@@ -490,9 +498,549 @@ function createSecurityForm(): HTMLDivElement {
   });
   return formContainer;
 }
-async function createStatistics() {
+async function createStat() {
   const formContainer = document.createElement("div");
-  formContainer.className = "form-container-statistics";
+  formContainer.className = "form-container-stat";
+  update(formContainer, await renderStat());
+
+  const postsYear: any = {
+    valuesY: [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3],
+    valuesX: [
+      "Январь",
+      "Февраль",
+      "Март",
+      "Апрель",
+      "Май",
+      "Июнь",
+      "Июль",
+      "Август",
+      "Сентябрь",
+      "Октябрь",
+      "Ноябрь",
+      "Декабрь",
+    ],
+  };
+
+  const paymentsYear: any = {
+    valuesY: [
+      1200, 800, 500, 300, 5000, 10000, 12000, 8000, 5000, 3000, 50000, 100000,
+    ],
+    valuesX: [
+      "Январь",
+      "Февраль",
+      "Март",
+      "Апрель",
+      "Май",
+      "Июнь",
+      "Июль",
+      "Август",
+      "Сентябрь",
+      "Октябрь",
+      "Ноябрь",
+      "Декабрь",
+    ],
+  };
+
+  const postsMonth: any = {
+    valuesY: [
+      12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3, 12, 19, 3, 5,
+      2, 3, 12, 19, 3, 5, 2, 3,
+    ],
+    valuesX: [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30",
+    ],
+  };
+
+  const paymentsMonth: any = {
+    valuesY: [
+      1200, 800, 500, 300, 5000, 10000, 12000, 8000, 5000, 3000, 50000, 100000,
+      1200, 800, 500, 300, 5000, 10000,
+    ],
+    valuesX: [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30",
+    ],
+  };
+
+  const postsDay: any = {
+    valuesY: [12, 8, 5, 3, 5, 10, 12, 8, 5, 3, 5, 10, 12, 8, 5, 3, 5, 1],
+    valuesX: [
+      "00:00",
+      "01:00",
+      "02:00",
+      "03:00",
+      "04:00",
+      "05:00",
+      "06:00",
+      "07:00",
+      "08:00",
+      "09:00",
+      "10:00",
+      "11:00",
+      "12:00",
+      "13:00",
+      "14:00",
+      "15:00",
+      "16:00",
+      "17:00",
+      "18:00",
+      "19:00",
+      "20:00",
+      "21:00",
+      "22:00",
+      "23:00",
+      "24:00",
+    ],
+  };
+  const paymentsDay: any = {
+    valuesY: [
+      1200, 800, 500, 300, 5000, 10000, 12000, 8000, 5000, 3000, 50000, 100000,
+      1200, 800, 500, 300, 5000, 10000,
+    ],
+    valuesX: [
+      "00:00",
+      "01:00",
+      "02:00",
+      "03:00",
+      "04:00",
+      "05:00",
+      "06:00",
+      "07:00",
+      "08:00",
+      "09:00",
+      "10:00",
+      "11:00",
+      "12:00",
+      "13:00",
+      "14:00",
+      "15:00",
+      "16:00",
+      "17:00",
+      "18:00",
+      "19:00",
+      "20:00",
+      "21:00",
+      "22:00",
+      "23:00",
+      "24:00",
+    ],
+  };
+
+  const totalPaymentsDay = paymentsDay.valuesY.reduce(
+    (accumulator: any, currentValue: number) => accumulator + currentValue,
+    0,
+  );
+  const totalPaymentsMonth = paymentsMonth.valuesY.reduce(
+    (accumulator: any, currentValue: number) => accumulator + currentValue,
+    0,
+  );
+  const totalPaymentsYear = paymentsYear.valuesY.reduce(
+    (accumulator: any, currentValue: number) => accumulator + currentValue,
+    0,
+  );
+  const totalPostsDay = postsDay.valuesY.reduce(
+    (accumulator: any, currentValue: number) => accumulator + currentValue,
+    0,
+  );
+  const totalPostsMonth = postsMonth.valuesY.reduce(
+    (accumulator: any, currentValue: number) => accumulator + currentValue,
+    0,
+  );
+  const totalPostsYear = postsYear.valuesY.reduce(
+    (accumulator: any, currentValue: number) => accumulator + currentValue,
+    0,
+  );
+
+  const content: any = renderContainerGraphics(
+    formContainer,
+    postsYear,
+    paymentsYear,
+  );
+
+  const buttonsPosts: any = formContainer.querySelector(
+    ".period-buttons-posts",
+  );
+  const buttonsPayments: any = formContainer.querySelector(
+    `.period-buttons-payments`,
+  );
+
+  const tablePosts: any = formContainer.querySelector(`.table-posts`);
+  const tablePayments: any = formContainer.querySelector(`.table-payments`);
+
+  let total = totalPaymentsYear;
+  let response: any = [{ theme: "Количество выплат", rating: total }];
+  customizeTable(tablePayments, response);
+
+  total = totalPostsYear;
+  response = [{ theme: "Количество постов", rating: total }];
+  customizeTable(tablePosts, response);
+
+  const buttonSetDayPosts: any = buttonsPosts.querySelector(`.btn-day`);
+  const buttonSetMonthPosts: any = buttonsPosts.querySelector(`.btn-month`);
+  const buttonSetYearPosts: any = buttonsPosts.querySelector(`.btn-year`);
+
+  const buttonSetDayPayments: any = buttonsPayments.querySelector(`.btn-day`);
+  const buttonSetMonthPayments: any =
+    buttonsPayments.querySelector(`.btn-month`);
+  const buttonSetYearPayments: any = buttonsPayments.querySelector(`.btn-year`);
+
+  buttonSetDayPayments.addEventListener("click", () => {
+    const canv: any = formContainer.querySelector(`.canv-payments`);
+    const ctx = canv.getContext("2d");
+
+    // Очистка канваса
+    ctx.clearRect(0, 0, canv.width, canv.height);
+    renderContainerGraphicPayments(formContainer, paymentsDay, "Часы");
+
+    const total = totalPaymentsDay;
+    const response: any = [{ theme: "Количество выплат", rating: total }];
+    customizeTable(tablePayments, response);
+
+    // customizeTable(tablePayments, response);
+  });
+
+  buttonSetDayPosts.addEventListener("click", () => {
+    const canv: any = formContainer.querySelector(`.canv-posts`);
+    const ctx = canv.getContext("2d");
+
+    // Очистка канваса
+    ctx.clearRect(0, 0, canv.width, canv.height);
+    renderContainerGraphicPosts(formContainer, postsDay, "Часы");
+
+    const total = totalPostsDay;
+    const response: any = [{ theme: "Количество постов", rating: total }];
+    customizeTable(tablePosts, response);
+  });
+  buttonSetMonthPayments.addEventListener("click", () => {
+    const canv: any = formContainer.querySelector(`.canv-payments`);
+    const ctx = canv.getContext("2d");
+
+    // Очистка канваса
+    ctx.clearRect(0, 0, canv.width, canv.height);
+    renderContainerGraphicPayments(
+      formContainer,
+      paymentsMonth,
+      "Число месяца",
+    );
+
+    const total = totalPaymentsMonth;
+    const response: any = [{ theme: "Количество выплат", rating: total }];
+    customizeTable(tablePayments, response);
+  });
+
+  buttonSetMonthPosts.addEventListener("click", () => {
+    const canv: any = formContainer.querySelector(`.canv-posts`);
+    const ctx = canv.getContext("2d");
+
+    // Очистка канваса
+    ctx.clearRect(0, 0, canv.width, canv.height);
+    renderContainerGraphicPosts(formContainer, postsMonth, "Число месяца");
+
+    const total = totalPostsMonth;
+    const response: any = [{ theme: "Количество постов", rating: total }];
+    customizeTable(tablePosts, response);
+  });
+  buttonSetYearPayments.addEventListener("click", () => {
+    const canv: any = formContainer.querySelector(`.canv-payments`);
+    const ctx = canv.getContext("2d");
+
+    // Очистка канваса
+    ctx.clearRect(0, 0, canv.width, canv.height);
+    renderContainerGraphicPayments(formContainer, paymentsYear, "Месяц");
+
+    const total = totalPaymentsYear;
+    const response: any = [{ theme: "Количество выплат", rating: total }];
+    customizeTable(tablePayments, response);
+  });
+
+  buttonSetYearPosts.addEventListener("click", () => {
+    const canv: any = formContainer.querySelector(`.canv-posts`);
+    const ctx = canv.getContext("2d");
+
+    // Очистка канваса
+    ctx.clearRect(0, 0, canv.width, canv.height);
+    renderContainerGraphicPosts(formContainer, postsYear, "Месяц");
+
+    const total = totalPostsYear;
+    const response: any = [{ theme: "Количество выплат", rating: total }];
+    customizeTable(tablePosts, response);
+  });
+
+  return formContainer;
+}
+function adjustCanvasWidth(canvas: any, numberOfValues: number) {
+  const baseWidth = 800; // Базовая ширина канваса
+  const additionalWidthPerValue = 50; // Дополнительная ширина на каждое значение
+
+  let newWidth = baseWidth + numberOfValues * additionalWidthPerValue;
+
+  canvas.width = Math.min(newWidth);
+}
+function renderContainerGraphicPosts(
+  formContainer: any,
+  posts: any,
+  labelX: string,
+) {
+  const canvas: any = formContainer.querySelector(".canv-posts");
+
+  const dataPosts = posts.valuesY;
+  const labelsPosts = posts.valuesX;
+
+  adjustCanvasWidth(canvas, posts.valuesX.length);
+
+  renderGraphics(
+    canvas,
+    dataPosts,
+    labelsPosts,
+    formContainer,
+    "Количество постов",
+    labelX,
+  );
+}
+function renderContainerGraphicPayments(
+  formContainer: any,
+  payments: any,
+  labelX: string,
+) {
+  const canvasPayments: any = formContainer.querySelector(".canv-payments");
+
+  // Данные для графика
+  const dataPayments = payments.valuesY;
+
+  const labelsPayments = payments.valuesX;
+
+  adjustCanvasWidth(canvasPayments, payments.valuesX.length);
+
+  renderGraphics(
+    canvasPayments,
+    dataPayments,
+    labelsPayments,
+    formContainer,
+    "Количество выплат",
+    labelX,
+  );
+}
+function renderContainerGraphics(
+  formContainer: any,
+  posts: any,
+  payments: any,
+) {
+  renderContainerGraphicPosts(formContainer, posts, "Месяц");
+
+  renderContainerGraphicPayments(formContainer, payments, "Месяц");
+}
+function renderGraphics(
+  canvas: any,
+  data: any,
+  labels: any,
+  formContainer: any,
+  label: string,
+  labelX: string,
+) {
+  const ctx = canvas.getContext("2d");
+  const padding = 40;
+  const leftOffset = 30;
+  const width = canvas.width - padding * 2 - leftOffset;
+  const height = canvas.height - padding * 2;
+  ctx.lineWidth = 2;
+
+  // Нормализация данных для отображения
+  const maxDataValue = Math.max(...data);
+  const scaleY = height / maxDataValue;
+
+  // Очищаем канвас перед перерисовкой
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Рисуем оси
+  ctx.beginPath();
+  ctx.moveTo(padding + leftOffset, padding);
+  ctx.lineTo(padding + leftOffset, canvas.height - padding);
+  ctx.lineTo(canvas.width - padding, canvas.height - padding);
+  ctx.stroke();
+
+  // Рисуем метки на оси X
+  ctx.fillStyle = "black";
+  labels.forEach((label: any, index: number) => {
+    const x = padding + leftOffset + (width / (data.length - 1)) * index;
+    ctx.fillText(label, x - 10, canvas.height - padding + 15);
+  });
+
+  // Рисуем метки на оси Y
+  ctx.fillStyle = "black";
+  const numberOfYLabels = 5;
+  for (let i = 0; i <= numberOfYLabels; i++) {
+    const yValue = (maxDataValue / numberOfYLabels) * i;
+    const y = canvas.height - padding - yValue * scaleY;
+    ctx.fillText(yValue.toFixed(0), padding + leftOffset - 30, y + 5);
+
+    // Рисуем горизонтальную линию, если yValue не равно 0
+    if (yValue !== 0) {
+      ctx.beginPath();
+      ctx.moveTo(padding + leftOffset + 1, y);
+      ctx.lineTo(canvas.width - padding, y);
+      ctx.strokeStyle = "#e0e0e0";
+      ctx.stroke();
+    }
+  }
+
+  // Добавляем названия осей
+  ctx.fillStyle = "black";
+  ctx.font = "14px Arial";
+  ctx.fillText(labelX, canvas.width / 2.5, canvas.height - 5);
+  ctx.save();
+  ctx.translate(20, canvas.height / 1.5);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillText(label, 0, 1);
+  ctx.restore();
+  ctx.lineWidth = 3;
+
+  // Анимация линии графика
+  let currentIndex = 0; // Индекс текущей точки
+  const animationSpeed = 50; // Задержка в миллисекундах
+
+  function animateLine() {
+    if (currentIndex < data.length - 1) {
+      ctx.beginPath();
+      const startX =
+        padding + leftOffset + (width / (data.length - 1)) * currentIndex;
+      const startY = canvas.height - padding - data[currentIndex] * scaleY;
+      const endX =
+        padding + leftOffset + (width / (data.length - 1)) * (currentIndex + 1);
+      const endY = canvas.height - padding - data[currentIndex + 1] * scaleY;
+
+      // Интерполяция для плавного перехода
+      const steps = 1000; // Количество промежуточных шагов
+      for (let step = 0; step <= steps; step++) {
+        const t = step / steps; // Пропорция от 0 до 1
+        const interpolatedX = startX + (endX - startX) * t;
+        const interpolatedY = startY + (endY - startY) * t;
+
+        if (step === 0) {
+          ctx.moveTo(interpolatedX, interpolatedY);
+        } else {
+          ctx.lineTo(interpolatedX, interpolatedY);
+        }
+      }
+
+      ctx.strokeStyle = "blue";
+      ctx.stroke();
+      currentIndex++;
+      setTimeout(animateLine, animationSpeed); // Задержка перед следующим кадром
+    }
+  }
+
+  // Начинаем анимацию
+  animateLine();
+
+  // Рисуем точки на графике
+  ctx.strokeStyle = "blue"; // Цвет обводки точек
+  data.forEach((value: any, index: number) => {
+    const x = padding + leftOffset + (width / (data.length - 1)) * index;
+    const y = canvas.height - padding - value * scaleY;
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, Math.PI * 2); // Радиус 5
+    ctx.stroke(); // Обводим точки
+  });
+
+  // Модальное окно
+  const modal: any = formContainer.querySelector(".modal-graphic");
+  const modalContent: any = formContainer.querySelector(".modalContent");
+
+  canvas.addEventListener("click", function (event: any) {
+    event.stopPropagation();
+
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+
+    const xIndex = Math.floor(
+      (mouseX - (padding + leftOffset)) / (width / (data.length - 1)),
+    );
+
+    if (xIndex >= 0 && xIndex < data.length) {
+      const yValue = data[xIndex];
+      modalContent.textContent = `${labels[xIndex]} - ${yValue}`;
+
+      // Получаем координаты курсора
+      const cursorX = event.clientX;
+      const cursorY = event.clientY;
+
+      // Устанавливаем позицию модального окна
+      modal.style.left = cursorX + "px";
+      modal.style.top = cursorY + "px";
+      modal.style.display = "block";
+    }
+  });
+
+  document.addEventListener("click", function (event) {
+    const isClickInsideModal = modal.contains(event.target);
+    const isClickOnCanvas = event.target === canvas;
+    if (!isClickInsideModal && !isClickOnCanvas) {
+      modal.style.display = "none";
+    }
+  });
+}
+
+async function createFeedback() {
+  const formContainer = document.createElement("div");
+  formContainer.className = "form-container-feedback";
 
   const formTitle = document.createElement("h2");
   formTitle.textContent = "Статистика";
@@ -568,6 +1116,7 @@ function modifierTable(
 
 function customizeTable(div: any, response: any) {
   const tbody: any = div.querySelector("tbody");
+  tbody.innerHTML = "";
   let array: any = [];
   response.forEach((resp: any, index: number) => {
     const container = document.createElement("tr");
