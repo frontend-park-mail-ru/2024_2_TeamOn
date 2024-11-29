@@ -1,6 +1,7 @@
 import * as VDom from "vdom";
 import { createText } from "jsxteamon2/dist/jsxteamon";
 import { Sidebar } from "../../../shared/sidebar/sidebar";
+import { getAccount } from "../../../features/getAccount/getAccount";
 
 export async function settingsContainer() {
   return (
@@ -16,10 +17,14 @@ export async function settingsContainer() {
 }
 
 async function renderStat() {
+  const role: any = await getAccount();
+  const flag: string = role.role === "Author" ? "display: block" : "display: none"
+  const inlineStyle: string = "display: flex; flex-direction: column; gap: 50px";
+  const inlineStyleFlag: string = flag + inlineStyle;
   return (
     <div
       class="container-static"
-      style="display: flex; flex-direction: column; gap: 50px"
+      style={inlineStyleFlag}
     >
       <div class="stat-posts">
         <div class="graphic-posts">
