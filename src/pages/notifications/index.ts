@@ -23,9 +23,11 @@ export async function renderNotifications() {
     const iconNotification = container.querySelector(`.icon-notification`);
     setStatic(iconNotification, urlIconNotification);
 
-    const iconNotificationBig = container.querySelector(`.icon-notification-big`);
+    const iconNotificationBig = container.querySelector(
+      `.icon-notification-big`,
+    );
     setStatic(iconNotificationBig, urlIconNotification);
-    
+
     const mainContent = container.querySelector(".main-content");
 
     modifierSidebar(mainContent);
