@@ -2,7 +2,11 @@ import { ELEMENTS_CLASS, LINKS } from "../../shared/consts/consts";
 import { route } from "../../shared/routing/routing";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { clearHistoryBrowser } from "../../shared/utils/clearHistory";
-import { pageContainer, urlHomeContainer, urlHomeContainerSec } from "../../app/index";
+import {
+  pageContainer,
+  urlHomeContainer,
+  urlHomeContainerSec,
+} from "../../app/index";
 import { update } from "../../../lib/vdom/lib";
 import {
   controllerMask,
@@ -31,7 +35,7 @@ export async function renderHome() {
     const container = update(pageContainer, vdom);
 
     const homeContainer: any = container.querySelector(`.home-container`);
- 
+
     const button: any = container.querySelector(
       `.${ELEMENTS_CLASS.HOME_BUTTONS.BLOCK}`,
     );

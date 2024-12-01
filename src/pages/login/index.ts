@@ -2,7 +2,12 @@ import { LINKS } from "../../shared/consts/consts";
 import { ELEMENTS_CLASS } from "../../shared/consts/consts";
 import { route } from "../../shared/routing/routing";
 import { update } from "../../../lib/vdom/lib";
-import { pageContainer, urlEyeNoSeePassword, urlEyeSeePassword, urlLogin } from "../../app/index";
+import {
+  pageContainer,
+  urlEyeNoSeePassword,
+  urlEyeSeePassword,
+  urlLogin,
+} from "../../app/index";
 import { findUsername } from "../../shared/utils/hasLogged";
 import { removeItemLocalStorage } from "../../shared/utils/storages";
 import { VNode } from "../../../lib/vdom/src/source";
@@ -42,12 +47,12 @@ export async function renderLogin() {
     if (inputPassword.type === "password") {
       inputPassword.type = "text";
       passwordEye.classList.add("active");
-      setStatic(passwordEye, urlEyeSeePassword)
+      setStatic(passwordEye, urlEyeSeePassword);
     } else {
       passwordEye.classList.remove("active");
       inputPassword.type = "password";
       passwordEye.classList.remove("active");
-      setStatic(passwordEye, urlEyeNoSeePassword)
+      setStatic(passwordEye, urlEyeNoSeePassword);
     }
   });
 

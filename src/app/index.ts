@@ -182,7 +182,9 @@ export const urlPushbackIcon: any = await getUrlStatic("/pushback.png");
 export const urlAddCustomSubs: any = await getUrlStatic("/addsubs.png");
 export const urlIconEditBackground: any = await getUrlStatic("/icon_edit.png");
 export const urlIconHome: any = await getUrlStatic("/icon_home.png");
-export const urlIconNotification: any = await getUrlStatic("/icon_notification.png");
+export const urlIconNotification: any = await getUrlStatic(
+  "/icon_notification.png",
+);
 export const urlIconSettings: any = await getUrlStatic("/icon_settings.png");
 export const urlIconProfile: any = await getUrlStatic("/icon_profile.png");
 export const urlIconModeration: any = await getUrlStatic("/police.png");
