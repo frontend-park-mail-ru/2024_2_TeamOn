@@ -38,6 +38,10 @@ async function Sidebar() {
               Главная
             </a>
             <a class="referens">
+              <i class="icon-notification"></i>
+              Уведомления
+            </a>
+            <a class="referens">
               <i class="icon-settings"></i>
               Настройки
             </a>

@@ -13,6 +13,8 @@ import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { showOverlay } from "../../shared/overlay/overlay";
 import { renderComplaintPost } from "../../pages/feed/ui/feed";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
+import { setStatic } from "../../shared/getStatic/getStatic";
+import { urlIconLike } from "../../app";
 
 export function controlSlideShow(container: any, rightContainer: any) {
   const modalPhotos: any = document.querySelector(`.modal-view-photos`); //
@@ -371,6 +373,9 @@ async function customizePost(container: any, post: any = null) {
   date.textContent = convertISOToRussianDate(post.createdAt);
 
   const divLikes: any = container.querySelector(`.likes-container`);
+  const iconLike: any = divLikes.querySelector(`.likes`);
+  setStatic(iconLike, urlIconLike);
+
   if (divLikes) {
     const amountLike: any = container.querySelector(
       `.${ELEMENTS_CLASS.POST.LIKES.AMOUNT}`,

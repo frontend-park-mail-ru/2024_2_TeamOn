@@ -1,4 +1,10 @@
-import { urlIconHome, urlIconModeration, urlIconProfile, urlIconSettings } from "../../app";
+import {
+  urlIconHome,
+  urlIconModeration,
+  urlIconNotification,
+  urlIconProfile,
+  urlIconSettings,
+} from "../../app";
 import { controlBecomeCreator } from "../../pages/profile";
 import { ELEMENTS_CLASS, sidebarLinks } from "../consts/consts";
 import { setStatic } from "../getStatic/getStatic";
@@ -29,7 +35,10 @@ function modifierSidebar(mainContainer?: any) {
 
   const iconModeration: any = sidebar.querySelector(`.icon-moderation`);
   setStatic(iconModeration, urlIconModeration);
-  
+
+  const iconNotification: any = sidebar.querySelector(`.icon-notification`);
+  setStatic(iconNotification, urlIconNotification);
+
   const iconProfile: any = sidebar.querySelector(`.icon-profile`);
   setStatic(iconProfile, urlIconProfile);
 
