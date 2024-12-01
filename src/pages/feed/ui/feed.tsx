@@ -7,12 +7,6 @@ import { Sidebar } from "../../../shared/sidebar/sidebar";
 import { renderSearchbar } from "../../../entities/searchbar/index";
 import * as VDom from "vdom";
 import { hasLogged } from "../../../shared/utils/hasLogged";
-import {
-  urlCloseModal,
-  urlLeftArrowModal,
-  urlRightArrowModal,
-} from "../../../app";
-
 async function renderFeedForm() {
   return (
     <div class="main-content">
@@ -28,13 +22,13 @@ async function renderFeedForm() {
       </div>
       {complaintForm()}
       <div class="modal-view-photos" style="display: none; z-index=10101010">
-        <div class="close-modal-view" src={urlCloseModal}></div>
+        <div class="close-modal-view"></div>
         <div class="modal-container-photos">
           <img class="image-photos-modal"></img>
         </div>
         <div class="slideshow">
-          <div class="leftarrow-modal-view" src={urlLeftArrowModal}></div>
-          <div class="rightarrow-modal-view" src={urlRightArrowModal}></div>
+          <div class="leftarrow-modal-view"></div>
+          <div class="rightarrow-modal-view"></div>
         </div>
       </div>
     </div>

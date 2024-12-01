@@ -2,7 +2,13 @@ import { LINKS, state } from "../../shared/consts/consts";
 import { getAccount } from "../../features/getAccount/getAccount";
 import { renderAbout } from "../../entities/profileabout/index";
 import { update } from "../../../lib/vdom/lib";
-import { pageContainer } from "../../app/index";
+import {
+  pageContainer,
+  urlAddCustomSubs,
+  urlCloseModal,
+  urlLeftArrowModal,
+  urlRightArrowModal,
+} from "../../app/index";
 import { mobilepr, profileContent } from "./ui/profile";
 import { getBackgroundAuthor } from "../../entities/profileDesktopHeader";
 import { getPageAuthor } from "../../features/getpageauthor/getpageauthor";
@@ -35,6 +41,7 @@ import { setTitle } from "../../shared/settitle/setTitle";
 import { showOverlay } from "../../shared/overlay/overlay";
 import { renderUserSubscriptins } from "../../entities/profileInfo";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
+import { setStatic } from "../../shared/getStatic/getStatic";
 
 async function renderContainerSubscriptions(authorData: any, overlay: any) {
   const modalSubscriptions: any = document.querySelector(
@@ -421,6 +428,19 @@ export async function renderProfile() {
       update(mobile, await mobileContaine2);
       controlAdaptiveProfile(container);
     }
+    const addCustomSubs: any = container.querySelector(`.add-customsubs-icon`);
+    setStatic(addCustomSubs, urlAddCustomSubs);
+
+    const closeModalView: any = container.querySelector(`.close-modal-view`);
+    setStatic(closeModalView, urlCloseModal);
+    const leftArrowModalView: any = container.querySelector(
+      `.leftarrow-modal-view`,
+    );
+    setStatic(leftArrowModalView, urlLeftArrowModal);
+    const rightArrowModalView: any = container.querySelector(
+      `.rightarrow-modal-view `,
+    );
+    setStatic(rightArrowModalView, urlRightArrowModal);
 
     // Отрисовка информации о пользователе
     const content = renderAbout(authorData);

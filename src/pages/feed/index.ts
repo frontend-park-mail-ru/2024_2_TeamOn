@@ -1,7 +1,12 @@
 import { LINKS, state } from "../../shared/consts/consts";
 import { controlLogout } from "../../features/controlLogout/controlLogout";
 import { renderTo, update } from "../../../lib/vdom/lib";
-import { pageContainer } from "../../app/index";
+import {
+  pageContainer,
+  urlCloseModal,
+  urlLeftArrowModal,
+  urlRightArrowModal,
+} from "../../app/index";
 import { renderFeedForm } from "./ui/feed";
 import { paginate } from "../../features/paginateFeed/paginateFeed";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
@@ -11,6 +16,7 @@ import { addResult, getQuestion } from "../settings";
 import { showSearch } from "../../entities/searchbar";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { setTitle } from "../../shared/settitle/setTitle";
+import { setStatic } from "../../shared/getStatic/getStatic";
 
 export async function controlEventIFrame(container: any = pageContainer) {
   const div: any = document.querySelector(`#rating-iframe`);
@@ -98,6 +104,17 @@ export async function renderFeed() {
     const vdom = await renderFeedForm();
 
     const container = update(pageContainer, vdom);
+
+    const closeModalView: any = container.querySelector(`.close-modal-view`);
+    setStatic(closeModalView, urlCloseModal);
+    const leftArrowModalView: any = container.querySelector(
+      `.leftarrow-modal-view`,
+    );
+    setStatic(leftArrowModalView, urlLeftArrowModal);
+    const rightArrowModalView: any = container.querySelector(
+      `.rightarrow-modal-view `,
+    );
+    setStatic(rightArrowModalView, urlRightArrowModal);
 
     state.currentUser = user;
 

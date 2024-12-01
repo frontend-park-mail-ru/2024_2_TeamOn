@@ -34,19 +34,19 @@ async function Sidebar() {
         <div class="sidebar">
           <div class="nav-menu">
             <a class="referens">
-              <i class="icon-home" src={urlIconHome}></i>
+              <i class="icon-home"></i>
               Главная
             </a>
             <a class="referens">
-              <i class="icon-settings" src={urlIconSettings}></i>
+              <i class="icon-settings"></i>
               Настройки
             </a>
             <a class="referens">
-              <i class="icon-moderation" src={urlIconModeration}></i>
+              <i class="icon-moderation"></i>
               Модерация
             </a>
-            <a class="referens profile" style={styleProfileIcon}>
-              <i class="icon-profile" src={urlIconProfile}></i>
+            <a class="referens profile">
+              <i class="icon-profile"></i>
               Профиль
               <span style="display: none;" class="new-badge">
                 НОВОЕ

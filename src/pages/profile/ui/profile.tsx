@@ -99,7 +99,7 @@ function renderContainerAddCustomSubs() {
 
   return (
     <div class="add-customsubs" style={flag}>
-      <i class="add-customsubs-icon" src={urlAddCustomSubs}></i>
+      <i class="add-customsubs-icon"></i>
     </div>
   );
 }

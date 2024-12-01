@@ -39,7 +39,7 @@ async function renderUserPost(post: any) {
         <div class="date">{createText(post.createdAt)}</div>
         <div class="interaction-section">
           <div class="likes-container">
-            <div class="likes" src={urlIconLike}></div>
+            <div class="likes"></div>
             <h3 class="amount-likes">{createText(post.likes)}</h3>
           </div>
         </div>

@@ -29,6 +29,9 @@ export async function renderLogin() {
 
   const container = update(pageContainer, vdom);
 
+  const loginContainer: any = container.querySelector(`.login`);
+  setStatic(loginContainer, urlLogin);
+
   const iconEye: any = container.querySelector(`.password-eye`);
 
   const closeBtn: any = container.querySelector(

@@ -24,6 +24,8 @@ import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 import { controlSlideShow } from "../paginateFeed/paginateFeed";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { showOverlay } from "../../shared/overlay/overlay";
+import { setStatic } from "../../shared/getStatic/getStatic";
+import { urlIconLike } from "../../app";
 
 /**
  * Управление адаптивностью на странице автора
@@ -178,6 +180,9 @@ export async function customizePostProfile(
   post: any,
   postId: any = null,
 ) {
+  const iconLike: any = container.querySelector(`.likes`);
+  setStatic(iconLike, urlIconLike);
+
   setTitle(container, post);
 
   setContent(container, post);

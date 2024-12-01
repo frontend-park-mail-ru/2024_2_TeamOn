@@ -17,6 +17,7 @@ import { containerHome } from "./ui/home";
 
 import { showSearch } from "../../entities/searchbar/index";
 import { setTitle } from "../../shared/settitle/setTitle";
+import { setStatic } from "../../shared/getStatic/getStatic";
 
 /**
  * Обработка домашней страницы
@@ -35,6 +36,10 @@ export async function renderHome() {
     const container = update(pageContainer, vdom);
 
     const homeContainer: any = container.querySelector(`.home-container`);
+    setStatic(homeContainer, urlHomeContainer);
+    const homeContainerSec: any =
+      container.querySelector(`.home-container-sec`);
+    setStatic(homeContainerSec, urlHomeContainerSec);
 
     const button: any = container.querySelector(
       `.${ELEMENTS_CLASS.HOME_BUTTONS.BLOCK}`,

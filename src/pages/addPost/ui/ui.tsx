@@ -46,7 +46,7 @@ async function containerCreatePost() {
               htmlFor="media-upload"
             >
               <div class="attache-info">
-                <i class="icon-attache" src={urlIconAttache}></i>
+                <i class="icon-attache"></i>
                 <h4>Поддерживаемые форматы:</h4>
               </div>
               <div class="formats">

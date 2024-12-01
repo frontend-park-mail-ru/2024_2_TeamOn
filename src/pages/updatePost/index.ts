@@ -1,6 +1,12 @@
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { renderTo, update } from "../../../lib/vdom/lib";
-import { pageContainer } from "../../app";
+import {
+  pageContainer,
+  urlCloseModal,
+  urlIconAttache,
+  urlLeftArrowModal,
+  urlRightArrowModal,
+} from "../../app";
 import { containerUpdatePost } from "./ui/ui";
 import { route } from "../../shared/routing/routing";
 import { allowedExtensions, LINKS, state } from "../../shared/consts/consts";
@@ -10,6 +16,7 @@ import { uploadMediaFiles } from "../../features/uploadMediaFiles/uploadMediaFil
 import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 import { controlSlideShow } from "../../features/paginateFeed/paginateFeed";
 import { deleteMediaInPost } from "./api/api";
+import { setStatic } from "../../shared/getStatic/getStatic";
 
 async function mofireUpdatePost() {
   const currentPost: any = state.currentPostId;
@@ -301,6 +308,19 @@ async function renderUpdatePost() {
     const vdom: any = await containerUpdatePost();
     const container: any = update(pageContainer, vdom);
     const mainContent = container.querySelector(".main-content");
+    const iconAttache = container.querySelector(`.icon-attache`);
+    setStatic(iconAttache, urlIconAttache);
+
+    const closeModalView: any = container.querySelector(`.close-modal-view`);
+    setStatic(closeModalView, urlCloseModal);
+    const leftArrowModalView: any = container.querySelector(
+      `.leftarrow-modal-view`,
+    );
+    setStatic(leftArrowModalView, urlLeftArrowModal);
+    const rightArrowModalView: any = container.querySelector(
+      `.rightarrow-modal-view `,
+    );
+    setStatic(rightArrowModalView, urlRightArrowModal);
 
     modifierSidebar(mainContent);
 

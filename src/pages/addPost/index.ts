@@ -1,11 +1,12 @@
 import { renderTo, update } from "../../../lib/vdom/lib";
 import { containerCreatePost, containerLayer } from "./ui/ui";
-import { pageContainer } from "../../app";
+import { pageContainer, urlIconAttache } from "../../app";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { modifireCreatePost } from "./modal/modal";
 import { getCustomSubscription } from "../../features/getCustomSubs/getCustomSubs";
 import { setTitle } from "../../shared/settitle/setTitle";
 import { LINKS } from "../../shared/consts/consts";
+import { setStatic } from "../../shared/getStatic/getStatic";
 
 async function renderLayers(layers: any) {
   try {
@@ -31,6 +32,8 @@ export async function renderCreatePost() {
     const vdom: any = await containerCreatePost();
     const container = update(pageContainer, vdom);
     const mainContent = container.querySelector(".main-content");
+    const iconAttache = container.querySelector(`.icon-attache`);
+    setStatic(iconAttache, urlIconAttache);
 
     const placeLayers: any = container.querySelector(`.layers`);
     const subs: any = await getCustomSubscription("/profile");

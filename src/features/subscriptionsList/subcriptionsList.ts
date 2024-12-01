@@ -159,7 +159,8 @@ function modifireModalConfirmSubscription(
       modalRealize.style.display = "block";
 
       pushback.style.display = "block";
-      setStatic(pushback, urlPushbackIcon);
+      const pushbackIcon: any = pushback.querySelector(`.pushback-icon`);
+      setStatic(pushbackIcon, urlPushbackIcon);
 
       pushback.addEventListener("click", handlePushBack);
     }

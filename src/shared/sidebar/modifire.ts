@@ -1,5 +1,7 @@
+import { urlIconHome, urlIconProfile, urlIconSettings } from "../../app";
 import { controlBecomeCreator } from "../../pages/profile";
 import { ELEMENTS_CLASS, sidebarLinks } from "../consts/consts";
+import { setStatic } from "../getStatic/getStatic";
 import { route } from "../routing/routing";
 import { setActiveLink } from "../setActiveLink/setActiveLink";
 /**
@@ -19,6 +21,15 @@ function modifierSidebar(mainContainer?: any) {
   burger.addEventListener("click", () => {
     sidebar.classList.toggle(ELEMENTS_CLASS.ACTIVE);
   });
+  const iconHome: any = sidebar.querySelector(`.icon-home`);
+  setStatic(iconHome, urlIconHome);
+  const iconSettings: any = sidebar.querySelector(`.icon-settings`);
+  setStatic(iconSettings, urlIconSettings);
+  const urlIconModeration: any = sidebar.querySelector(`.icon-moderation`);
+  setStatic(urlIconModeration, urlIconModeration);
+  const iconProfile: any = sidebar.querySelector(`.icon-profile`);
+  setStatic(iconProfile, urlIconProfile);
+
   const sidebarReferenses = sidebar.querySelectorAll(".referens");
   sidebarLinks.forEach((link: any, index: any) => {
     sidebarReferenses[index]?.addEventListener("click", (event: any) => {

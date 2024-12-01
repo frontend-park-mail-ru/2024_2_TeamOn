@@ -8,6 +8,7 @@ import { containerSignup } from "./ui/signup";
 import { authSignup } from "../../features/authSignup/authSignup";
 import { validateSignupForm } from "../../shared/validateSignupForm/validateSignupForm";
 import { setTitle } from "../../shared/settitle/setTitle";
+import { setStatic } from "../../shared/getStatic/getStatic";
 /**
  * Функция рендерит форму регистрации.
  * @returns
@@ -18,6 +19,9 @@ export async function renderSignup() {
   const vdom: VNode = containerSignup();
 
   const container = update(pageContainer, vdom);
+
+  const signupContainer: any = container.querySelector(`.signup`);
+  setStatic(signupContainer, urlSignup);
 
   const form: any = container.querySelector(`.form-signup`);
   const inputUsername: any = container.querySelector(`.input-username`);
