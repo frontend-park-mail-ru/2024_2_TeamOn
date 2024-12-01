@@ -2,7 +2,7 @@ import { LINKS } from "../../shared/consts/consts";
 import { ELEMENTS_CLASS } from "../../shared/consts/consts";
 import { route } from "../../shared/routing/routing";
 import { update } from "../../../lib/vdom/lib";
-import { pageContainer } from "../../app/index";
+import { pageContainer, urlEyeNoSeePassword, urlEyeSeePassword, urlLogin } from "../../app/index";
 import { findUsername } from "../../shared/utils/hasLogged";
 import { removeItemLocalStorage } from "../../shared/utils/storages";
 import { VNode } from "../../../lib/vdom/src/source";
@@ -10,11 +10,12 @@ import { containerLogin } from "./ui/login";
 import { authLogin } from "../../features/authLogin/authLogin";
 import { validateLoginForm } from "../../shared/validateLoginForm/validateLoginForm";
 import { setTitle } from "../../shared/settitle/setTitle";
+import { setStatic } from "../../shared/getStatic/getStatic";
 /**
  * Рендерит форму входа на страницу.
  * @returns
  */
-export function renderLogin() {
+export async function renderLogin() {
   setTitle(LINKS.LOGIN.TEXT);
 
   let attempts = 0;
@@ -22,6 +23,12 @@ export function renderLogin() {
   const vdom: VNode = containerLogin();
 
   const container = update(pageContainer, vdom);
+
+  const mainContainer: any = container.querySelector(`.login`);
+
+  setStatic(mainContainer, urlLogin);
+
+  const iconEye: any = container.querySelector(`.password-eye`);
 
   const closeBtn: any = container.querySelector(
     `.${ELEMENTS_CLASS.CLOSE_BTN.ELEMENT}`,
@@ -32,14 +39,17 @@ export function renderLogin() {
   closeBtn.innerHTML = "x";
 
   const passwordEye: any = container.querySelector(".password-eye");
+
   passwordEye.addEventListener("click", () => {
     if (inputPassword.type === "password") {
       inputPassword.type = "text";
       passwordEye.classList.add("active");
+      setStatic(passwordEye, urlEyeSeePassword)
     } else {
       passwordEye.classList.remove("active");
       inputPassword.type = "password";
       passwordEye.classList.remove("active");
+      setStatic(passwordEye, urlEyeNoSeePassword)
     }
   });
 

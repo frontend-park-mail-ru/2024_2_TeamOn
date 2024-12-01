@@ -427,7 +427,6 @@ form input[type=text]:focus {
   width: 100%;
   height: 100%;
   z-index: 1;
-  background: url("photos/login.png");
   background-size: cover;
   background-position: center center;
 }
@@ -525,7 +524,6 @@ form input[type=text]:focus {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url("photos/signup.png");
   background-size: cover;
   background-position: center center;
   z-index: 10;

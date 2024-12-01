@@ -16,6 +16,7 @@ import { renderCreatePost } from "../pages/addPost";
 import { renderUpdatePost } from "../entities/userPost";
 import { hasLogged } from "../shared/utils/hasLogged";
 import { renderModeration } from "../pages/moderation";
+import { getUrlStatic } from "../shared/getStatic/getStatic";
 /**
  * Объект, содержащий конфигурацию меню приложения.
  */
@@ -33,9 +34,9 @@ interface AsyncLinkConfig {
 }
 
 interface MenuConfig {
-  home: SyncLinkConfig;
-  login: SyncLinkConfig;
-  signup: SyncLinkConfig;
+  home: AsyncLinkConfig;
+  login: AsyncLinkConfig;
+  signup: AsyncLinkConfig;
   profile: AsyncLinkConfig;
   settings: AsyncLinkConfig;
   feed: AsyncLinkConfig;
@@ -174,6 +175,27 @@ pushmodal.style.display = "none";
 if (hasLogged()) {
   controlEventIFrame();
 }
+export const urlCloseModal: any = await getUrlStatic("/close.png");
+export const urlLeftArrowModal: any = await getUrlStatic("/left-arrow.png");
+export const urlRightArrowModal: any = await getUrlStatic("/right-arrow.png");
+export const urlPushbackIcon: any = await getUrlStatic("/pushback.png");
+export const urlAddCustomSubs: any = await getUrlStatic("/addsubs.png");
+export const urlIconEditBackground: any = await getUrlStatic("/icon_edit.png");
+export const urlIconHome: any = await getUrlStatic("/icon_home.png");
+export const urlIconNotification: any = await getUrlStatic("/icon_notification.png");
+export const urlIconSettings: any = await getUrlStatic("/icon_settings.png");
+export const urlIconProfile: any = await getUrlStatic("/icon_profile.png");
+export const urlIconModeration: any = await getUrlStatic("/police.png");
+export const urlIconLike: any = await getUrlStatic("/icon_like.png");
+export const urlIconComment: any = await getUrlStatic("/icon_comment.png");
+export const urlIconAttache: any = await getUrlStatic("/paperclip.png");
+export const urlRemoveButtonFile: any = await getUrlStatic("/closefile.png");
+export const urlHomeContainer: any = await getUrlStatic("/fon.png");
+export const urlHomeContainerSec: any = await getUrlStatic("/human.png");
+export const urlLogin: any = await getUrlStatic("/login.png");
+export const urlSignup: any = await getUrlStatic("/signup.png");
+export const urlEyeSeePassword: any = await getUrlStatic("/eye_see.png");
+export const urlEyeNoSeePassword: any = await getUrlStatic("/eye_nsee.png");
 
 if (flag) {
   let root: HTMLElement | null = startA(config.menu, state);

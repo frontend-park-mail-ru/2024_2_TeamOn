@@ -2,7 +2,7 @@ import { ELEMENTS_CLASS, LINKS } from "../../shared/consts/consts";
 import { route } from "../../shared/routing/routing";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { clearHistoryBrowser } from "../../shared/utils/clearHistory";
-import { pageContainer } from "../../app/index";
+import { pageContainer, urlHomeContainer, urlHomeContainerSec } from "../../app/index";
 import { update } from "../../../lib/vdom/lib";
 import {
   controllerMask,
@@ -13,14 +13,8 @@ import { containerHome } from "./ui/home";
 
 import { showSearch } from "../../entities/searchbar/index";
 import { setTitle } from "../../shared/settitle/setTitle";
-import { getStatic } from "../../shared/getStatic/getStatic";
+import { setStatic } from "../../shared/getStatic/getStatic";
 
-async function setStatic(container: any, url: string) {
-  const staticUrl: string = await getStatic(url);
-  container.style.backgroundImage = `url(${staticUrl})`;
-  console.log(staticUrl);
-  return staticUrl;
-}
 /**
  * Обработка домашней страницы
  */
@@ -40,10 +34,9 @@ export async function renderHome() {
     const homeContainer: any = container.querySelector(`.home-container`);
     const homeContainerSec: any =
       container.querySelector(`.home-container-sec`);
-
-    await setStatic(homeContainer, "/fon.png");
-
-    await setStatic(homeContainerSec, "/human.jpg");
+      
+    setStatic(homeContainer, urlHomeContainer);
+    setStatic(homeContainerSec, urlHomeContainerSec);
 
     const button: any = container.querySelector(
       `.${ELEMENTS_CLASS.HOME_BUTTONS.BLOCK}`,

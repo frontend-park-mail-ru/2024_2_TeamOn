@@ -1,5 +1,5 @@
 import { LINKS, state } from "../../shared/consts/consts";
-import { goToPage, pageContainer } from "../../app/index";
+import { goToPage, pageContainer, urlSignup } from "../../app/index";
 import { ELEMENTS_CLASS } from "../../shared/consts/consts";
 import { route } from "../../shared/routing/routing";
 import { update } from "../../../lib/vdom/lib";
@@ -8,16 +8,21 @@ import { containerSignup } from "./ui/signup";
 import { authSignup } from "../../features/authSignup/authSignup";
 import { validateSignupForm } from "../../shared/validateSignupForm/validateSignupForm";
 import { setTitle } from "../../shared/settitle/setTitle";
+import { setStatic } from "../../shared/getStatic/getStatic";
 /**
  * Функция рендерит форму регистрации.
  * @returns
  */
-export function renderSignup() {
+export async function renderSignup() {
   setTitle(LINKS.SIGNUP.TEXT);
 
   const vdom: VNode = containerSignup();
 
   const container = update(pageContainer, vdom);
+
+  const mainContainer: any = container.querySelector(`.signup`);
+  
+  setStatic(mainContainer, urlSignup);
 
   const form: any = container.querySelector(`.form-signup`);
   const inputUsername: any = container.querySelector(`.input-username`);
