@@ -20,8 +20,6 @@ async function showSearch(container: any) {
     searchInput.classList.add("feed");
     results.classList.add("feed");
   } else {
-    // feedButton.style.display = "none";
-    // containerSearchbar.style.display = "none";
     results.classList.add("home");
   }
 
