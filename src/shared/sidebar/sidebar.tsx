@@ -45,7 +45,7 @@ async function Sidebar() {
               <i class="icon-moderation"></i>
               Модерация
             </a>
-            <a class="referens profile">
+            <a class="referens profile" style={styleProfileIcon}>
               <i class="icon-profile"></i>
               Профиль
               <span style="display: none;" class="new-badge">
