@@ -18,14 +18,13 @@ export async function settingsContainer() {
 
 async function renderStat() {
   const role: any = await getAccount();
-  const flag: string = role.role === "Author" ? "display: block" : "display: none"
-  const inlineStyle: string = "display: flex; flex-direction: column; gap: 50px";
+  const flag: string =
+    role.role === "Author" ? "display: block" : "display: none";
+  const inlineStyle: string =
+    "display: flex; flex-direction: column; gap: 50px";
   const inlineStyleFlag: string = flag + inlineStyle;
   return (
-    <div
-      class="container-static"
-      style={inlineStyleFlag}
-    >
+    <div class="container-static" style={inlineStyleFlag}>
       <div class="stat-posts">
         <div class="graphic-posts">
           <p>

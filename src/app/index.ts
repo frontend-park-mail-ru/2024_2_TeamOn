@@ -15,6 +15,7 @@ import { modifierSidebar } from "../shared/sidebar/modifire";
 import { renderCreatePost } from "../pages/addPost";
 import { renderUpdatePost } from "../entities/userPost";
 import { hasLogged } from "../shared/utils/hasLogged";
+import { renderModeration } from "../pages/moderation";
 /**
  * Объект, содержащий конфигурацию меню приложения.
  */
@@ -41,6 +42,7 @@ interface MenuConfig {
   createPost: AsyncLinkConfig;
   updatePost: AsyncLinkConfig;
   notifications: AsyncLinkConfig;
+  moderation: AsyncLinkConfig;
 }
 
 interface Config {
@@ -93,6 +95,11 @@ const config: Config = {
       href: LINKS.NOTIFICATIONS.HREF,
       text: LINKS.NOTIFICATIONS.TEXT,
       render: renderNotifications,
+    },
+    moderation: {
+      href: LINKS.MODERATION.HREF,
+      text: LINKS.MODERATION.TEXT,
+      render: renderModeration,
     },
   },
 };

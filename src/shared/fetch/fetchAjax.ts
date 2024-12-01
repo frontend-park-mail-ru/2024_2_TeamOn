@@ -67,6 +67,15 @@ async function getCSRFTokenForCSAT() {
   return data;
 }
 /**
+ * Функция получения токена к сервису "модерация"
+ * @returns
+ */
+async function getCSRFTokenForModeration() {
+  const response = await fetch("/api/moderation/token-endpoint");
+  const data = await response.json();
+  return data;
+}
+/**
  * Отправляет запрос AJAX с помощью Fetch API с включенным CORS.
  * @param {*} method    HTTP-метод
  * @param {*} url       URL, на который отправляется запрос
@@ -101,6 +110,8 @@ export async function fetchAjax(
       csrfToken = await getCSRFTokenForAccounts();
     } else if (url.startsWith("/api/csat")) {
       csrfToken = await getCSRFTokenForAuthor();
+    } else if (url.startsWith("/api/moderation")) {
+      csrfToken = await getCSRFTokenForAccounts();
     }
 
     if (csrfToken) {

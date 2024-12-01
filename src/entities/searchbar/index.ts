@@ -13,7 +13,10 @@ async function showSearch(container: any) {
   results.style.maxHeight = "300px";
   results.style.overflowY = "auto";
 
-  if (window.location.pathname === "/feed") {
+  if (
+    window.location.pathname === "/feed" ||
+    window.location.pathname === "/moderation"
+  ) {
     searchInput.classList.add("feed");
     results.classList.add("feed");
   } else {

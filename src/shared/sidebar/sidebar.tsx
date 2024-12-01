@@ -16,6 +16,8 @@ async function Sidebar() {
     const role = userdata.role;
     const styleProfileIcon =
       role === "Reader" ? "display: none" : "display: flex;";
+    const styleModerationIcon =
+      role === "Reader" ? "display: none" : "display: flex;";
     result = (
       <div class="side">
         <div class="burger">
@@ -32,6 +34,10 @@ async function Sidebar() {
             <a class="referens">
               <i class="icon-settings"></i>
               Настройки
+            </a>
+            <a class="referens">
+              <i class="icon-moderation"></i>
+              Модерация
             </a>
             <a class="referens profile" style={styleProfileIcon}>
               <i class="icon-profile"></i>

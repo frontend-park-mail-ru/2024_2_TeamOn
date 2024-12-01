@@ -1,8 +1,9 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const path = require("path");
 
 module.exports = {
-  mode: "development",
+  mode: "production",
   entry: "./src/app/index.ts",
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -20,6 +21,18 @@ module.exports = {
         use: "babel-loader",
         exclude: /node_modules/,
       },
+      // {
+      //   test: /\.(png|jpe?g|gif|svg)$/i,
+      //   use: [
+      //     {
+      //       loader: "file-loader",
+      //       options: {
+      //         name: "[path][name].[ext]", // Сохранение структуры папок
+      //         outputPath: "images/", // Папка для выходных изображений
+      //       },
+      //     },
+      //   ],
+      // },
     ],
   },
   plugins: [
@@ -35,6 +48,10 @@ module.exports = {
       vdom: path.resolve(__dirname, "lib/vdom/lib"),
     },
     preferRelative: true,
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
   },
   devServer: {
     static: [
@@ -146,6 +163,19 @@ module.exports = {
           "^/api/csat/check": "/csat/check",
           "^/api/csat/question": "/csat/question",
           "^/api/csat/table": "/csat/table",
+        },
+      },
+      {
+        context: "/api/moderation",
+        target: "http://localhost:8087",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api/moderation/token-endpoint": "/token-endpoint",
+          "^/api/moderation/moderation/post": "/moderation/post",
+          "^/api/moderation/moderation/post/decision":
+            "/moderation/post/decision",
+          "^/api/moderation/moderation/post/complaint":
+            "/moderation/post/complaint",
         },
       },
     ],

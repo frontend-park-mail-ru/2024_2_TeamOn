@@ -1,17 +1,22 @@
-import { LINKS } from "../../shared/consts/consts";
+import { LINKS, LOCATIONS, QUERY } from "../../shared/consts/consts";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { route } from "../../shared/routing/routing";
 
 /**
- * Функция выдачи медиа-контента
- * @param offsetRecently Оффсет для недавних
+ * Функция получения популярных постов
+ * @param offsetPopular Оффсет для популярных постов
  * @returns
  */
-async function getUrlFiles(postId: string) {
+async function getModerationPosts(
+  offsetApprove: number,
+  filter: string,
+  limit: number = 0,
+) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "GET",
-      "/api/posts/post/media/" + `${postId}`,
+      "/api/moderation/moderation/post" +
+        `?limit=${limit === 0 ? QUERY.LIMIT : limit}&offset=${offsetApprove}&filter=${filter}`,
       null,
       (response) => {
         if (response.ok) {
@@ -28,4 +33,4 @@ async function getUrlFiles(postId: string) {
   });
 }
 
-export { getUrlFiles };
+export { getModerationPosts };

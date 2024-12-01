@@ -38,6 +38,8 @@ declare module "vdom" {
       iframe: { [key: string]: any };
       span: { [key: string]: any };
       canvas: { [key: string]: any };
+      audio: { [key: string]: any };
+      source: { [key: string]: any };
     }
   }
 }

@@ -10,22 +10,54 @@ import * as VDom from "vdom";
  * @returns
  */
 async function containerPost(post: any) {
+  const styleButtonApprove: string = "";
+  const styleButtonBlock: string = "";
+  // const styleButtonApprove: string =
+  //   "background-color: green; color: white; border: none; padding: 10px; cursor: pointer;";
+  // const styleButtonBlock: string =
+  //   "background-color: red; color: white; border: none; padding: 10px; cursor: pointer;";
+  let styleButtons: string = "";
+  const status: string = "PUBLISHED";
+  let flag: string = "";
+  let styleStatus: string = "";
+  const styleShowButtons: string =
+    "display: flex; align-items: center; justify-content: center; gap: 10px;";
+  if (status && status == "PUBLISHED") {
+    flag = "На проверке";
+    styleStatus = "background-color: yellow";
+    styleButtons = styleShowButtons;
+  } else if (status == "COMPLAINED") {
+    flag = "Жалоба";
+    styleStatus = "background-color: gray";
+    styleButtons = styleShowButtons;
+  } else if (status == "ALLOWED") {
+    flag = "Проверен";
+    styleStatus = "background-color: green";
+    styleButtons = "display: none";
+  } else if (status == "BLOCKED") {
+    flag = "Заблокирован";
+    styleStatus = "background-color: red";
+    styleButtons = "display: none";
+  }
   return (
     <div>
       <div class="post-container">
-        <div class="menu-icon">
-          ⋮
-          <div class="dropdown-menu">
-            <div class="interaction-post">
-              <div class="button-delete-post">Пожаловаться</div>
-            </div>
-          </div>
-        </div>
         <div class="author-section">
           <img class="author-avatar avatar"></img>
           <div class="info-post-section">
             <div class="author-name"></div>
             <div class="date"></div>
+          </div>
+          <div class="post-status" style={styleStatus}>
+            <h5
+              style="height: 0px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;"
+            >
+              {flag}
+            </h5>
           </div>
         </div>
         <div class="title">{post.title}</div>
@@ -35,9 +67,13 @@ async function containerPost(post: any) {
         </div>
         <div class="container-image-photos"></div>
         <div class="iteraction-section">
-          <div class="likes-container">
-            <div class="likes"></div>
-            <h3 class="amount-likes"></h3>
+          <div class="button-container" style={styleButtons}>
+            <button class="block-button" style={styleButtonBlock}>
+              Заблокировать
+            </button>
+            <button class="approve-button" style={styleButtonApprove}>
+              Одобрить
+            </button>
           </div>
         </div>
       </div>
@@ -59,13 +95,14 @@ export async function fetchFileFromImage(postId: any) {
   return result;
 }
 export async function containerMediaPost(postId: any) {
+  if (!postId) return;
   const propertiesPost: any = await getUrlFiles(postId);
   let arrayMedia: any = [];
   let mediaId: any = [];
   const imageExtensions = [".jpeg", ".png"];
   const mp3Extensions = [".mp3"];
   const mp4Extensions = [".mp4"];
-  if (propertiesPost.mediaContent.length <= 0) return;
+  if (propertiesPost.message || propertiesPost.mediaContent.length <= 0) return;
   for (const content of propertiesPost.mediaContent) {
     const url: any = content.mediaURL;
     mediaId.push(content.mediaID);

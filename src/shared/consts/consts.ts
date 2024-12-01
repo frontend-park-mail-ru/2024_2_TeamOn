@@ -93,6 +93,10 @@ export const LINKS = {
     HREF: "/profile/updateepost",
     TEXT: "Редактирование поста",
   },
+  MODERATION: {
+    HREF: "/moderation",
+    TEXT: "Модерация",
+  },
 };
 export const QUERY = {
   LIMIT: 10,
@@ -400,6 +404,12 @@ export const sidebarLinks = [
     icon: "icon-settings",
     active: false,
     href: LINKS.SETTINGS.HREF,
+  },
+  {
+    text: " Модерация",
+    icon: "icon-moderation",
+    active: false,
+    href: LINKS.MODERATION.HREF,
   },
   {
     text: " Профиль",

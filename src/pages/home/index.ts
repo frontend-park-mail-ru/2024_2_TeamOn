@@ -13,11 +13,18 @@ import { containerHome } from "./ui/home";
 
 import { showSearch } from "../../entities/searchbar/index";
 import { setTitle } from "../../shared/settitle/setTitle";
+import { getStatic } from "../../shared/getStatic/getStatic";
 
+async function setStatic(container: any, url: string) {
+  const staticUrl: string = await getStatic(url);
+  container.style.backgroundImage = `url(${staticUrl})`;
+  console.log(staticUrl);
+  return staticUrl;
+}
 /**
  * Обработка домашней страницы
  */
-export function renderHome() {
+export async function renderHome() {
   sessionStorage.clear();
   if (hasLogged()) {
     route(LINKS.FEED.HREF);
@@ -29,6 +36,14 @@ export function renderHome() {
     const vdom: VNode = containerHome();
 
     const container = update(pageContainer, vdom);
+
+    const homeContainer: any = container.querySelector(`.home-container`);
+    const homeContainerSec: any =
+      container.querySelector(`.home-container-sec`);
+
+    await setStatic(homeContainer, "/fon.png");
+
+    await setStatic(homeContainerSec, "/human.jpg");
 
     const button: any = container.querySelector(
       `.${ELEMENTS_CLASS.HOME_BUTTONS.BLOCK}`,
@@ -51,9 +66,6 @@ export function renderHome() {
       `.${ELEMENTS_CLASS.HOME.HOME_CONTAINER_SEC}`,
     ) as HTMLElement;
 
-    const homeContainer: any = container.querySelector(
-      `.${ELEMENTS_CLASS.HOME.HOME_CONTAINER}`,
-    ) as HTMLElement;
     showSearch(container);
     if (window.location.pathname == LINKS.HOME.HREF) {
       // Создаем маску для выжигания

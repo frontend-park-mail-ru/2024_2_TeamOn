@@ -1278,12 +1278,41 @@ async function createButtonSetAuthor() {
     button.classList.add("active");
     return button;
   }
+  // const handleClick = async () => {
+  //   const setrole = await setAuthor();
+  //   button.classList.add("active");
+  //   const profile: any = document.querySelector(`.profile`);
+  //   profile.style.display = "block";
+  //   button.removeEventListener("click", handleClick);
+  // };
+  const div: any = document.querySelector(`.become-a-creator`);
+
   const handleClick = async () => {
-    const setrole = await setAuthor();
-    button.classList.add("active");
-    const profile: any = document.querySelector(`.profile`);
-    profile.style.display = "block";
+    if (!hasLogged()) {
+      route(LINKS.LOGIN.HREF);
+      return;
+    }
+    if (hasLogged()) {
+      const setrole = await setAuthor();
+    }
+
+    // Запускаем анимацию
+    div.classList.add("fade-out");
+
+    // Ждем окончания анимации перед изменением display
+    setTimeout(() => {
+      div.style.display = "none";
+      const profile: any = document.querySelector(`.profile`);
+
+      // profile.classList.add("new");
+      const span: any = pageContainer.querySelector(".new-badge");
+
+      span.style.display = "block";
+      profile.style.display = "flex";
+    }, 500); // Должно совпадать с длительностью анимации в CSS
+
     button.removeEventListener("click", handleClick);
+    button.classList.add("active");
   };
   button.addEventListener("click", handleClick);
   return button;

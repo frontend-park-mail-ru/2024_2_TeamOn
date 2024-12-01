@@ -2,7 +2,7 @@ import { ELEMENTS_CLASS, LINKS, QUERY } from "../../shared/consts/consts";
 import { getPopularPosts } from "../getPopularPosts/getPopularPosts";
 import { getRecentlyPosts } from "../getRecentlyPosts/getRecentlyPosts";
 import { containerPost } from "../../widgest/feed";
-import { renderTo } from "../../../lib/vdom/lib";
+import { renderTo, update } from "../../../lib/vdom/lib";
 import { AddLikeOnPost } from "../../entities/likes";
 import { convertISOToRussianDate } from "../../shared/utils/parsedate";
 import { route } from "../../shared/routing/routing";
@@ -11,6 +11,8 @@ import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { showOverlay } from "../../shared/overlay/overlay";
+import { renderComplaintPost } from "../../pages/feed/ui/feed";
+import { fetchAjax } from "../../shared/fetch/fetchAjax";
 
 export function controlSlideShow(container: any, rightContainer: any) {
   const modalPhotos: any = document.querySelector(`.modal-view-photos`); //
@@ -257,7 +259,71 @@ export function controlSlideShow(container: any, rightContainer: any) {
     }, 500); // Время совпадает с временем анимации
   }
 }
+async function complaintPost(postID: any) {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "POST",
+      "/api/moderation/moderation/post/complaint",
+      { postID: postID },
+      (response) => {
+        if (response.ok) {
+          resolve(true);
+        } else if (response.status === 400) {
+          response.json().then((data) => {
+            resolve(data);
+          });
+        } else {
+          reject(new Error("Внутреняя ошибка сервера"));
+        }
+      },
+    );
+  });
+}
+function modifierModalComplaintPost(
+  dropdownmenu: any,
+  mainContent: any,
+  container: any,
+  post: any,
+) {
+  dropdownmenu.classList.remove(ELEMENTS_CLASS.ACTIVE);
+  const place = document.querySelector(`.complaint-form`);
+  const modal: any = renderComplaintPost(post);
+  update(place, modal);
 
+  const modalsDelete: any = document.querySelector(".modal__deletepost");
+  const overlay: any = showOverlay(modalsDelete, mainContent);
+  const buttonCancel: any = modalsDelete.querySelector(`.cancel`);
+  const buttonBlock: any = modalsDelete.querySelector(`.delete`);
+
+  modalsDelete.style.display = "block";
+  mainContent.classList.add("blur");
+
+  const handleClickCancel = (e: any) => {
+    e.preventDefault();
+    modalsDelete.style.display = "none";
+    mainContent.classList.remove("blur");
+    document.body.style.overflow = "auto";
+    overlay.remove();
+    return;
+  };
+
+  const handleClickBlock = async (e: any) => {
+    e.preventDefault();
+    const response: any = await complaintPost({
+      postID: post.postId,
+    });
+    console.log(post);
+    container.style.display = "none";
+    modalsDelete.style.display = "none";
+    mainContent.classList.remove("blur");
+    document.body.style.overflow = "auto";
+    overlay.remove();
+  };
+
+  buttonBlock.addEventListener("click", handleClickBlock);
+  buttonCancel.addEventListener("click", handleClickCancel);
+  overlay.addEventListener("click", handleClickCancel);
+}
 /**
  * Кастомизирует каждый пост, который к нему пришел
  * @param container Контейнер ( популярных | недавних постов )
@@ -345,6 +411,30 @@ async function customizePost(container: any, post: any = null) {
 
   const rightContainer = document.querySelector(`.right-content`);
   controlSlideShow(container, rightContainer);
+
+  const menu = container.querySelector(`.menu-icon`);
+  const alldropdownMenu = document.querySelectorAll(`.dropdown-menu`);
+  const dropdownmenu: any = container.querySelector(`.dropdown-menu`);
+
+  if (!menu) return;
+  const handleClickMenu = async (event: any) => {
+    if (event.target.classList.contains("button-delete-post")) {
+      modifierModalComplaintPost(dropdownmenu, rightContainer, container, post);
+      return;
+    }
+    event.stopPropagation();
+
+    const isActive = dropdownmenu.classList.contains(ELEMENTS_CLASS.ACTIVE);
+
+    alldropdownMenu.forEach((dropdown: any, dropdownIndex: number) => {
+      dropdown.classList.remove(ELEMENTS_CLASS.ACTIVE);
+    });
+    if (!isActive) {
+      dropdownmenu.classList.toggle(ELEMENTS_CLASS.ACTIVE);
+    }
+  };
+
+  menu.addEventListener("click", handleClickMenu);
 }
 
 /**
@@ -479,9 +569,12 @@ async function paginate(
     activeLinkFeed == "0"
       ? (stopLoadPopularPosts = false)
       : (stopLoadRecentlyPosts = false);
-
     try {
-      if (!stopLoadPopularPosts && window.location.pathname === "/feed") {
+      if (
+        !stopLoadPopularPosts &&
+        (window.location.pathname === "/feed" ||
+          window.location.pathname === "/moderation")
+      ) {
         // Загружаем популярные посты
         const requestId = `popular-${offsetPopular}`;
         if (activeRequests.has(requestId)) return; // Проверяем, был ли этот запрос уже отправлен
@@ -509,7 +602,8 @@ async function paginate(
 
       if (
         !stopLoadRecentlyPosts &&
-        window.location.pathname === "/feed" &&
+        (window.location.pathname === "/feed" ||
+          window.location.pathname === "/moderation") &&
         hasLogged()
       ) {
         // Загружаем недавние посты

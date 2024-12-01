@@ -49,7 +49,7 @@ async function saveBackground(background: FormData) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "POST",
-      "/api/authors/author/update/background",
+      "/api/pages/author/update/background",
       background,
       (response) => {
         if (response.ok) {

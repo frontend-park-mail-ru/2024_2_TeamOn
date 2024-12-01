@@ -6,7 +6,9 @@ import { LINKS } from "../../../shared/consts/consts";
  * @returns
  */
 function renderSearchbar() {
-  const isFeedPage = window.location.pathname === LINKS.FEED.HREF;
+  const isFeedPage =
+    window.location.pathname === LINKS.FEED.HREF ||
+    window.location.pathname === LINKS.MODERATION.HREF;
   const customClass = isFeedPage
     ? "searchbar-wrapper-feed"
     : "searchbar-wrapper";

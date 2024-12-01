@@ -112,6 +112,7 @@ export function showSubscriptions(authorData: any, container: any) {
     const handleClickCancel = () => {
       modalSubscriptions.style.display = "none";
       profileForm.classList.remove("blur");
+      document.body.style.overflow = "auto";
       overlay.remove();
     };
     const buttonCancel: any =

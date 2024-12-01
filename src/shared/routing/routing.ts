@@ -40,6 +40,7 @@ interface MenuElements {
   signup: HTMLElement;
   createPost: HTMLLIElement;
   updatePost: HTMLElement;
+  moderation: HTMLElement;
 }
 /**
  * Функция обновления контента на странице
@@ -60,6 +61,7 @@ function updatePageContent(render: string): void {
       LINKS.NOTIFICATIONS.HREF,
       LINKS.CREATE_POST.HREF,
       LINKS.UPDATE_POST.HREF,
+      LINKS.MODERATION.HREF,
     ].includes(render)
   ) {
     const pageMap: Record<string, keyof MenuElements> = {
@@ -69,6 +71,7 @@ function updatePageContent(render: string): void {
       [LINKS.NOTIFICATIONS.HREF]: "notifications",
       [LINKS.CREATE_POST.HREF]: "createPost",
       [LINKS.UPDATE_POST.HREF]: "updatePost",
+      [LINKS.MODERATION.HREF]: "moderation",
     };
     goToPage(menuElements[pageMap[render]] || menuElements.profile);
     return;

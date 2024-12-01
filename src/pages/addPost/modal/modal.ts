@@ -116,7 +116,6 @@ async function modifireCreatePost() {
             containerCreatePost.querySelectorAll(`.form-group-add`)[2];
           const error = input.querySelector("p");
           if (!error) {
-            alert("naaa");
             const error = document.createElement("p");
             error.style.color = "red";
             error.textContent = post.message;
