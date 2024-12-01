@@ -1,4 +1,4 @@
-import { urlIconHome, urlIconProfile, urlIconSettings } from "../../app";
+import { urlIconHome, urlIconModeration, urlIconProfile, urlIconSettings } from "../../app";
 import { controlBecomeCreator } from "../../pages/profile";
 import { ELEMENTS_CLASS, sidebarLinks } from "../consts/consts";
 import { setStatic } from "../getStatic/getStatic";
@@ -23,10 +23,13 @@ function modifierSidebar(mainContainer?: any) {
   });
   const iconHome: any = sidebar.querySelector(`.icon-home`);
   setStatic(iconHome, urlIconHome);
+
   const iconSettings: any = sidebar.querySelector(`.icon-settings`);
   setStatic(iconSettings, urlIconSettings);
-  const urlIconModeration: any = sidebar.querySelector(`.icon-moderation`);
-  setStatic(urlIconModeration, urlIconModeration);
+
+  const iconModeration: any = sidebar.querySelector(`.icon-moderation`);
+  setStatic(iconModeration, urlIconModeration);
+  
   const iconProfile: any = sidebar.querySelector(`.icon-profile`);
   setStatic(iconProfile, urlIconProfile);
 
