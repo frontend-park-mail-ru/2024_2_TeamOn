@@ -15,19 +15,21 @@ async function containerPost(post: any) {
   return (
     <div>
       <div class="post-container">
-        <div class="menu-icon" style={flag}>
-          ⋮
-          <div class="dropdown-menu">
-            <div class="interaction-post">
-              <div class="button-delete-post">Пожаловаться</div>
+        <div class="header-post" style="display: flex">
+          <div class="menu-icon" style={flag}>
+            ⋮
+            <div class="dropdown-menu">
+              <div class="interaction-post">
+                <div class="button-delete-post">Пожаловаться</div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="author-section">
-          <img class="author-avatar avatar"></img>
-          <div class="info-post-section">
-            <div class="author-name"></div>
-            <div class="date"></div>
+          <div class="author-section">
+            <img class="author-avatar avatar"></img>
+            <div class="info-post-section">
+              <div class="author-name"></div>
+              <div class="date"></div>
+            </div>
           </div>
         </div>
         <div class="title">{post.title}</div>
