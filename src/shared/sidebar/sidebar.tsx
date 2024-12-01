@@ -1,6 +1,7 @@
 import * as VDom from "vdom";
 import { hasLogged } from "../utils/hasLogged";
 import { getAccount } from "../../features/getAccount/getAccount";
+import { urlIconHome, urlIconModeration, urlIconProfile, urlIconSettings } from "../../app";
 
 /**
  * Функция рендера сайдбара
@@ -28,19 +29,19 @@ async function Sidebar() {
         <div class="sidebar">
           <div class="nav-menu">
             <a class="referens">
-              <i class="icon-home"></i>
+              <i class="icon-home" src={urlIconHome}></i>
               Главная
             </a>
             <a class="referens">
-              <i class="icon-settings"></i>
+              <i class="icon-settings" src={urlIconSettings}></i>
               Настройки
             </a>
             <a class="referens">
-              <i class="icon-moderation"></i>
+              <i class="icon-moderation" src={urlIconModeration}></i>
               Модерация
             </a>
             <a class="referens profile" style={styleProfileIcon}>
-              <i class="icon-profile"></i>
+              <i class="icon-profile" src={urlIconProfile}></i>
               Профиль
               <span style="display: none;" class="new-badge">
                 НОВОЕ

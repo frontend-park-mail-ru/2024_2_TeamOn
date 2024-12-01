@@ -22,6 +22,8 @@ import { getPayments } from "../getpayments/getpayments";
 import { renderUserStats } from "../../entities/profileInfo/ui/ui";
 import { VNode } from "lib/vdom/src/source";
 import { showOverlay } from "../../shared/overlay/overlay";
+import { setStatic } from "../../shared/getStatic/getStatic";
+import { urlPushbackIcon } from "../../app";
 
 function foundCancel(div: any) {
   const buttonCancel: any = div.querySelector(`.cancel`);
@@ -157,6 +159,8 @@ function modifireModalConfirmSubscription(
       modalRealize.style.display = "block";
 
       pushback.style.display = "block";
+      setStatic(pushback, urlPushbackIcon);
+
       pushback.addEventListener("click", handlePushBack);
     }
   };

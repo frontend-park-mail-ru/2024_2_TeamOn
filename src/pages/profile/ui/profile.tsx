@@ -10,6 +10,7 @@ import {
   followersForm,
 } from "../../../widgest/profile";
 import { renderUserInfo } from "../../../entities/profileInfo/index";
+import { urlAddCustomSubs } from "../../../app";
 
 /**
  * Рендер основного контента
@@ -98,7 +99,7 @@ function renderContainerAddCustomSubs() {
 
   return (
     <div class="add-customsubs" style={flag}>
-      <i class="add-customsubs-icon"></i>
+      <i class="add-customsubs-icon" src={urlAddCustomSubs}></i>
     </div>
   );
 }

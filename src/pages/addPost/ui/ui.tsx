@@ -1,5 +1,6 @@
 import * as VDom from "vdom";
 import { Sidebar } from "../../../shared/sidebar/sidebar";
+import { urlIconAttache } from "../../../app";
 
 function containerLayer(layer: any) {
   const name: any = layer.title ? layer.title : layer.layerName;
@@ -45,7 +46,7 @@ async function containerCreatePost() {
               htmlFor="media-upload"
             >
               <div class="attache-info">
-                <i class="icon-attache"></i>
+                <i class="icon-attache" src={urlIconAttache}></i>
                 <h4>Поддерживаемые форматы:</h4>
               </div>
               <div class="formats">

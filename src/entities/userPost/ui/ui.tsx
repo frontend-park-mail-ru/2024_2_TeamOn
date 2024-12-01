@@ -1,3 +1,4 @@
+import { urlIconLike } from "../../../app";
 import { createText } from "../../../../lib/vdom/lib";
 import * as VDom from "vdom";
 
@@ -38,7 +39,7 @@ async function renderUserPost(post: any) {
         <div class="date">{createText(post.createdAt)}</div>
         <div class="interaction-section">
           <div class="likes-container">
-            <div class="likes"></div>
+            <div class="likes" src={urlIconLike}></div>
             <h3 class="amount-likes">{createText(post.likes)}</h3>
           </div>
         </div>

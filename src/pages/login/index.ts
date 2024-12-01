@@ -24,10 +24,6 @@ export async function renderLogin() {
 
   const container = update(pageContainer, vdom);
 
-  const mainContainer: any = container.querySelector(`.login`);
-
-  setStatic(mainContainer, urlLogin);
-
   const iconEye: any = container.querySelector(`.password-eye`);
 
   const closeBtn: any = container.querySelector(
@@ -39,6 +35,8 @@ export async function renderLogin() {
   closeBtn.innerHTML = "x";
 
   const passwordEye: any = container.querySelector(".password-eye");
+
+  setStatic(passwordEye, urlEyeNoSeePassword);
 
   passwordEye.addEventListener("click", () => {
     if (inputPassword.type === "password") {
