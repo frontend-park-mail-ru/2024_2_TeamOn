@@ -1,6 +1,6 @@
 import { renderTo, update } from "../../../lib/vdom/lib";
 import { containerCreatePost, containerLayer } from "./ui/ui";
-import { pageContainer, urlIconAttache } from "../../app";
+import { pageContainer, urlCloseModal, urlIconAttache, urlLeftArrowModal, urlRightArrowModal } from "../../app";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { modifireCreatePost } from "./modal/modal";
 import { getCustomSubscription } from "../../features/getCustomSubs/getCustomSubs";
@@ -32,8 +32,20 @@ export async function renderCreatePost() {
     const vdom: any = await containerCreatePost();
     const container = update(pageContainer, vdom);
     const mainContent = container.querySelector(".main-content");
+
     const iconAttache = container.querySelector(`.icon-attache`);
     setStatic(iconAttache, urlIconAttache);
+    
+    const closeModalView: any = container.querySelector(`.close-modal-view`);
+    setStatic(closeModalView, urlCloseModal);
+    const leftArrowModalView: any = container.querySelector(
+      `.leftarrow-modal-view`,
+    );
+    setStatic(leftArrowModalView, urlLeftArrowModal);
+    const rightArrowModalView: any = container.querySelector(
+      `.rightarrow-modal-view `,
+    );
+    setStatic(rightArrowModalView, urlRightArrowModal);
 
     const placeLayers: any = container.querySelector(`.layers`);
     const subs: any = await getCustomSubscription("/profile");
