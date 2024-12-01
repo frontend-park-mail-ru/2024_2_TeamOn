@@ -1,3 +1,4 @@
+import { hasLogged } from "../../../../shared/utils/hasLogged";
 import { renderTo } from "../../../../../lib/vdom/lib";
 import { getMediaFiles } from "../../../../features/getMediaFiles/getMediaFiles";
 import { getUrlFiles } from "../../../../features/getUrlFiles/getUrlFiiles";
@@ -10,10 +11,11 @@ import * as VDom from "vdom";
  * @returns
  */
 async function containerPost(post: any) {
+  const flag: string = hasLogged() ? "display: block" : "display: none";
   return (
     <div>
       <div class="post-container">
-        <div class="menu-icon">
+        <div class="menu-icon" style={flag}>
           ⋮
           <div class="dropdown-menu">
             <div class="interaction-post">
