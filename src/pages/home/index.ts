@@ -40,7 +40,9 @@ export async function renderHome() {
     const homeContainerSec: any =
       container.querySelector(`.home-container-sec`);
     setStatic(homeContainerSec, urlHomeContainerSec);
-
+    if ( window.innerWidth <= 768) {
+      setStatic(homeContainer, urlHomeContainerSec);
+    }
     const button: any = container.querySelector(
       `.${ELEMENTS_CLASS.HOME_BUTTONS.BLOCK}`,
     );

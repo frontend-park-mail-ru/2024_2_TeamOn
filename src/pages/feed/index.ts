@@ -146,7 +146,6 @@ export async function renderFeed() {
       containerPopularPosts,
       containerRecentlyPosts,
     );
-
     return container;
   } catch (error) {
     console.log("ERROR in feed");

@@ -51,7 +51,13 @@ module.exports = {
   },
   optimization: {
     minimize: true,
-    minimizer: [new TerserPlugin()],
+    minimizer: [new TerserPlugin({
+      terserOptions: {
+        compress: {
+          drop_console: true,
+        },
+      }
+    })],
   },
   devServer: {
     static: [
