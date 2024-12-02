@@ -132,7 +132,6 @@ export async function renderFeed() {
     const containerRecentlyPosts = container.querySelector(
       ".main-container-recently",
     );
-    alert("as")
     const mainContent = container.querySelector(`.main-content`);
     if (mainContent) {
       modifierSidebar(mainContent);

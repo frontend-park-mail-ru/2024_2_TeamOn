@@ -89,13 +89,14 @@ export async function containerMediaPost(postId: any) {
 
       if (isImage) {
         containerFile = <img class="image-photo" src={response.url}></img>;
-      } else if (isAudio) {
-        containerFile =
-        <audio>
-          <source src={response.url} type={`audio/${extension}`}></source>
-          Ваш браузер не поддерживает аудио.
-        </audio>
       } else {
+      // } else if (isAudio) {
+      //   containerFile =
+      //   <audio>
+      //     <source src={response.url} type={`audio/${extension}`}></source>
+      //     Ваш браузер не поддерживает аудио.
+      //   </audio>
+      // } else {
         containerFile = (
           <a style="margin-left: 5px;" href={response.url}>
             Файл.{extension}

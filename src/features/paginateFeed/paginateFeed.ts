@@ -646,11 +646,16 @@ async function paginate(
   await loadPosts();
 
   // Обработчик события прокрутки
+let isLoadingTop = false;
+
   window.addEventListener("scroll", async () => {
-    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+    const { scrollTop, clientHeight, scrollWidth } = document.documentElement;
+
     // Проверяем, достиг ли пользователь нижней части страницы
-    if (scrollTop + clientHeight >= scrollHeight - 1000) {
+    if (scrollTop + clientHeight >= 3000 && !isLoadingTop) {
+      isLoadingTop = true;
       await loadPosts();
+      isLoadingTop = false;
     }
   });
 }
