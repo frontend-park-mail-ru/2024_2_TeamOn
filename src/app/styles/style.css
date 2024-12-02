@@ -2046,6 +2046,7 @@ span {
 .container-image-photos .image-photo {
   max-width: 300px;
   max-height: 300px;
+  cursor: pointer;
 }
 
 .become-a-creator {

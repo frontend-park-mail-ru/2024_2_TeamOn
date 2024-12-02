@@ -83,28 +83,28 @@ async function controlIFRAME() {
 /**
  * Функция рендера ленты
  * @returns
-*/
+ */
 export async function renderFeed() {
   try {
     setTitle(LINKS.FEED.TEXT);
     const allPopularPosts: any = []; // Массив для хранения всех загруженных популярных постов
     const allRecentlyPosts: any = []; // Массив для хранения всех загруженных недавних постов
-    
+
     const user: any = state.currentUser;
     if (!user) {
       throw new Error("Пользователь не найден");
     }
     user.role === "Reader"
-    ? (state.currentUser.reader = user)
-    : (state.currentUser.author = user);
-    
+      ? (state.currentUser.reader = user)
+      : (state.currentUser.author = user);
+
     const doc = document.body;
     doc.style.height = "100%";
-    
+
     const vdom = await renderFeedForm();
-    
+
     const container = update(pageContainer, vdom);
-    
+
     const closeModalView: any = container.querySelector(`.close-modal-view`);
     setStatic(closeModalView, urlCloseModal);
     const leftArrowModalView: any = container.querySelector(
@@ -115,17 +115,17 @@ export async function renderFeed() {
       `.rightarrow-modal-view `,
     );
     setStatic(rightArrowModalView, urlRightArrowModal);
-    
+
     state.currentUser = user;
-    
+
     showSearch(container);
-    
+
     const tabs = container.querySelector(".tabs");
-    
+
     const rightContent = container.querySelector(`.right-content`);
-    
+
     controlActiveLink(tabs, rightContent);
-    
+
     const containerPopularPosts = container.querySelector(
       ".main-container-popular",
     );
@@ -139,7 +139,7 @@ export async function renderFeed() {
     if (hasLogged()) {
       controlLogout(container, user);
     }
-    
+
     await paginate(
       allPopularPosts,
       allRecentlyPosts,

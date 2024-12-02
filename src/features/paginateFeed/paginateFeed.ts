@@ -646,7 +646,7 @@ async function paginate(
   await loadPosts();
 
   // Обработчик события прокрутки
-let isLoadingTop = false;
+  let isLoadingTop = false;
 
   window.addEventListener("scroll", async () => {
     const { scrollTop, clientHeight, scrollWidth } = document.documentElement;

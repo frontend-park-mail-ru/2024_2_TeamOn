@@ -40,7 +40,7 @@ export async function renderHome() {
     const homeContainerSec: any =
       container.querySelector(`.home-container-sec`);
     setStatic(homeContainerSec, urlHomeContainerSec);
-    if ( window.innerWidth <= 768) {
+    if (window.innerWidth <= 768) {
       setStatic(homeContainer, urlHomeContainerSec);
     }
     const button: any = container.querySelector(
@@ -65,7 +65,10 @@ export async function renderHome() {
     ) as HTMLElement;
 
     showSearch(container);
-    if (window.location.pathname == LINKS.HOME.HREF) {
+    if (
+      window.location.pathname == LINKS.HOME.HREF &&
+      window.innerWidth >= 1024
+    ) {
       // Создаем маску для выжигания
       const mask = createMask();
 

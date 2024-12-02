@@ -76,27 +76,30 @@ export async function containerMediaPost(postId: any) {
     try {
       const response = await fetch("/" + url);
       const isImage = imageExtensions.some((extension) =>
-        response.url.toLowerCase().endsWith(extension));
+        response.url.toLowerCase().endsWith(extension),
+      );
       const isAudio = mp3Extensions.some((extension) =>
-        response.url.toLowerCase().endsWith(extension));
+        response.url.toLowerCase().endsWith(extension),
+      );
       const isVideo = mp4Extensions.some((extension) =>
-        response.url.toLowerCase().endsWith(extension));
+        response.url.toLowerCase().endsWith(extension),
+      );
 
       let containerFile = 0;
 
-      const fileName = url.split('/').pop(); // Извлекаем имя файла из URL
-      const extension = fileName.split('.').pop(); // Получаем расширение файла
+      const fileName = url.split("/").pop(); // Извлекаем имя файла из URL
+      const extension = fileName.split(".").pop(); // Получаем расширение файла
 
       if (isImage) {
         containerFile = <img class="image-photo" src={response.url}></img>;
       } else {
-      // } else if (isAudio) {
-      //   containerFile =
-      //   <audio>
-      //     <source src={response.url} type={`audio/${extension}`}></source>
-      //     Ваш браузер не поддерживает аудио.
-      //   </audio>
-      // } else {
+        // } else if (isAudio) {
+        //   containerFile =
+        //   <audio>
+        //     <source src={response.url} type={`audio/${extension}`}></source>
+        //     Ваш браузер не поддерживает аудио.
+        //   </audio>
+        // } else {
         containerFile = (
           <a style="margin-left: 5px;" href={response.url}>
             Файл.{extension}
