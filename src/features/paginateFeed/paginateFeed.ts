@@ -371,22 +371,25 @@ function controlVideo(container: any) {
     slideShow.style.userSelect = "none";
 
     if (container.style.width == "800px" || !container.style.width) {
-      if ( window.innerWidth > 768) {
+      if (window.innerWidth > 768) {
         container.style.width = "100%";
         videoPlayer.style.height = "1045px";
       }
-      if (!document.fullscreenElement) { // Проверяем, в полноэкранном ли режиме
+      if (!document.fullscreenElement) {
+        // Проверяем, в полноэкранном ли режиме
         if (videoPlayer.requestFullscreen) {
           videoPlayer.requestFullscreen();
-        } else if (videoPlayer.webkitRequestFullscreen) { // Safari
+        } else if (videoPlayer.webkitRequestFullscreen) {
+          // Safari
           videoPlayer.webkitRequestFullscreen();
-        } else if (videoPlayer.msRequestFullscreen) { // IE11
+        } else if (videoPlayer.msRequestFullscreen) {
+          // IE11
           videoPlayer.msRequestFullscreen();
         }
-    } 
+      }
       // videoPlayer.webkitRequestFullscreen();
     } else {
-      if ( window.innerWidth <= 768) {
+      if (window.innerWidth <= 768) {
         // videoPlayer.style.
         container.style.width = "390px";
         return;
@@ -399,7 +402,7 @@ function controlVideo(container: any) {
   };
   const handleKeyPress = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
-      if ( window.innerWidth <= 768) {
+      if (window.innerWidth <= 768) {
         // videoPlayer.style.
         container.style.width = "390px";
         return;
@@ -488,23 +491,23 @@ function controlVideo(container: any) {
   function videoChangeTime(e: MouseEvent) {
     // Получаем координаты клика относительно прогресс-бара
     const rect = progressBar.getBoundingClientRect(); // Получаем размеры и положение прогресс-бара
-    let mouseX: number = e.clientX - rect.left; 
+    let mouseX: number = e.clientX - rect.left;
 
     if (mouseX < 0) {
-        mouseX = 0;
+      mouseX = 0;
     } else if (mouseX > rect.width) {
-        mouseX = rect.width;
+      mouseX = rect.width;
     }
 
     const progress = (mouseX / rect.width) * 100;
 
     videoPlayer.currentTime = videoPlayer.duration * (progress / 100);
-}
+  }
 
-// Отображение времени
-videoPlayer.addEventListener("timeupdate", videoProgress);
-// Перемотка
-progressBar.addEventListener("click", videoChangeTime);
+  // Отображение времени
+  videoPlayer.addEventListener("timeupdate", videoProgress);
+  // Перемотка
+  progressBar.addEventListener("click", videoChangeTime);
 
   // function videoChangeTime(e: any) {
   //   // progressBar.removeEventListener("click", videoChangeTime);
