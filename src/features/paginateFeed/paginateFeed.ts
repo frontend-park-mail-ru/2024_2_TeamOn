@@ -49,10 +49,6 @@ export function controlSlideShow(container: any, rightContainer: any) {
 
   const updateImage = (currentIndex: any) => {
     if (!imageModal || imgPhotos.length == 0) return;
-    imageModal.style.display = "block";
-    videoModal.style.display = "none";
-    videoHud.style.display = "none";
-    imageModal.src = imgPhotos[currentIndex].src;
     if (allContent[currentIndex].querySelector(`.video-player`)) {
       const placeVideo =
         allContent[currentIndex].querySelector(`.video-player`);
@@ -66,6 +62,10 @@ export function controlSlideShow(container: any, rightContainer: any) {
       );
       modalContainerPhotos.appendChild(videoHud);
     }
+    imageModal.style.display = "block";
+    videoModal.style.display = "none";
+    videoHud.style.display = "none";
+    imageModal.src = allContent[currentIndex].src;
   };
 
   const showAvatar = () => {
