@@ -53,11 +53,11 @@ module.exports = {
     minimize: true,
     minimizer: [
       new TerserPlugin({
-        terserOptions: {
-          compress: {
-            drop_console: true,
-          },
-        },
+        // terserOptions: {
+        //   compress: {
+        //     drop_console: true,
+        //   },
+        // },
       }),
     ],
   },
@@ -72,7 +72,7 @@ module.exports = {
       },
     ],
     open: true,
-    port: 8099,
+    port: 8011,
     historyApiFallback: true,
     headers: {
       "Access-Control-Allow-Origin": "*",

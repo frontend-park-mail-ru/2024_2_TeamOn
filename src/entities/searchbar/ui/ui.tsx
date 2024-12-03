@@ -5,7 +5,8 @@ import { LINKS } from "../../../shared/consts/consts";
  * Функция рендера серчбара
  * @returns
  */
-function renderSearchbar() {
+const renderSearchbar = () => {
+  // function renderSearchbar() {
   const isFeedPage =
     window.location.pathname === LINKS.FEED.HREF ||
     window.location.pathname === LINKS.MODERATION.HREF;
@@ -32,6 +33,6 @@ function renderSearchbar() {
       </div>
     </div>
   );
-}
+};
 
 export { renderSearchbar };

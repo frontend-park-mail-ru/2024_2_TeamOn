@@ -57,9 +57,9 @@ table tbody tr:hover {
 .close-modal-view {
   width: 20px;
   height: 20px;
-  position: absolute;
-  left: 101%;
-  bottom: 101%;
+  position: fixed;
+  right: 20px;
+  z-index: 10101010101;
 }
 
 .subscription-select {
@@ -2989,6 +2989,10 @@ canvas {
     margin-left: 57%;
   }
 }
+.container-image-photos {
+  width: 100%;
+}
+
 .label-check {
   display: flex;
   margin-bottom: 5px;
@@ -2996,6 +3000,89 @@ canvas {
   align-items: center;
   top: 32px;
   position: relative;
+}
+
+.image-photos-modal.video-modal {
+  width: 100%;
+  height: 450px;
+  background-color: black;
+  color: white;
+  margin-bottom: -46px;
+}
+
+@media (max-width: 768px) {
+  .image-photos-modal.video-modal {
+    width: 100% !important;
+  }
+}
+.video-container {
+  background: #000;
+  color: #fff;
+}
+
+.video-player {
+  background-size: cover;
+  width: 100%;
+  margin: 0;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  display: flex;
+}
+
+.video-hud {
+  margin: 0;
+  padding: 1px;
+  color: white;
+  height: 44px;
+  z-index: 2;
+  position: relative;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.video-hud.active {
+  opacity: 1;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 100%);
+}
+
+.video-hud__element {
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  height: 30px;
+}
+
+.video-hud__action {
+  width: 30px;
+}
+
+.video-hud__action_play {
+  background: #ccc;
+  border-radius: 0 100px 100px 0;
+}
+
+.video-hud__action_pause {
+  background: #c00;
+}
+
+.video-hud__mute {
+  width: 30px;
+  border-radius: 100px 100px 100px 100px;
+}
+
+.video-hud__mute_true {
+  background: #c00;
+}
+
+.video-hud__mute_false {
+  background: #ccc;
+}
+
+.video-hud__download {
+  background: #ccc;
+  width: 30px;
+  border-radius: 0 0 100px 100px;
 }
 
 /*# sourceMappingURL=style.css.map */

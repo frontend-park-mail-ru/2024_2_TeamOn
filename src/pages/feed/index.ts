@@ -17,6 +17,7 @@ import { showSearch } from "../../entities/searchbar";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { setTitle } from "../../shared/settitle/setTitle";
 import { setStatic } from "../../shared/getStatic/getStatic";
+import { createElement, render, useState } from "../../../lib/wo";
 
 export async function controlEventIFrame(container: any = pageContainer) {
   const div: any = document.querySelector(`#rating-iframe`);
@@ -139,8 +140,10 @@ export async function renderFeed() {
     if (hasLogged()) {
       controlLogout(container, user);
     }
+    const activeRequests = new Set();
 
     await paginate(
+      activeRequests,
       allPopularPosts,
       allRecentlyPosts,
       containerPopularPosts,

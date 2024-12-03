@@ -32,6 +32,13 @@ export function controlSlideShow(container: any, rightContainer: any) {
     rightArrow = modalPhotos.querySelector(".rightarrow-modal-view"); //
   }
   const imgPhotos: any = Array.from(container.querySelectorAll(`.image-photo`)); //
+  const videoModal: any = modalPhotos.querySelector(`.video-modal`);
+  const videoHud: any = modalPhotos.querySelector(`.video-hud`);
+  const video: any = Array.from(container.querySelectorAll(".video-player"));
+  console.log(video);
+  const allContent: any = Array.from(
+    container.querySelectorAll(".content-media"),
+  );
 
   let imgAvatar: any = container.querySelector(`.author-avatar`);
   const toggleButton: any = container.querySelector(".toggleButton");
@@ -42,7 +49,22 @@ export function controlSlideShow(container: any, rightContainer: any) {
 
   const updateImage = (currentIndex: any) => {
     if (!imageModal || imgPhotos.length == 0) return;
+    imageModal.style.display = "block";
+    videoModal.style.display = "none";
+    videoHud.style.display = "none";
     imageModal.src = imgPhotos[currentIndex].src;
+    if (allContent[currentIndex].querySelector(`.video-player`)) {
+      const placeVideo =
+        allContent[currentIndex].querySelector(`.video-player`);
+      imageModal.style.display = "none";
+      videoModal.style.display = "block";
+      videoHud.style.display = "flex";
+      videoModal.src = placeVideo.src;
+      const modalContainerPhotos: any = document.querySelector(
+        `.modal-container-photos`,
+      );
+      modalContainerPhotos.appendChild(videoHud);
+    }
   };
 
   const showAvatar = () => {
@@ -64,6 +86,8 @@ export function controlSlideShow(container: any, rightContainer: any) {
     currentIndex = index;
     callback(currentIndex);
     document.body.style.overflow = "hidden";
+    controlVideo(modalPhotos);
+
     if (leftArrow) {
       leftArrow.addEventListener("click", touchLeftArrow);
     }
@@ -72,13 +96,14 @@ export function controlSlideShow(container: any, rightContainer: any) {
       rightArrow.addEventListener("click", touchRightArrow);
     }
 
-    if (isMobile()) {
+    if (isMobile() && imageModal.style.display !== "none") {
       let startX = 0;
       let endX = 0;
       modalPhotos.addEventListener("click", (event: any) => {
         document.body.style.overflow = "auto";
         modalPhotos.style.display = "none";
         rightContent.classList.remove("blackout");
+        videoModal.pause();
         overlay.remove();
       });
       modalPhotos.addEventListener("touchstart", (event: any) => {
@@ -108,52 +133,57 @@ export function controlSlideShow(container: any, rightContainer: any) {
 
     if (!isMobile()) {
       // Обработка кликов
-      modalPhotos.addEventListener("click", (event: any) => {
-        event.stopPropagation();
-        const width = modalPhotos.clientWidth; // Получаем ширину элемента slideshow
-        const midPoint = 1018; // Находим середину элемента
-        // Если клик был в правой половине
-        if (event.clientX > midPoint) {
-          currentIndex = (currentIndex + 1) % imgPhotos.length;
-          updateImage(currentIndex);
-        }
-        // Если клик был в левой половине
-        else {
-          currentIndex =
-            (currentIndex - 1 + imgPhotos.length) % imgPhotos.length;
-          updateImage(currentIndex);
-        }
-      });
+      if (imageModal.style.display !== "none")
+        modalPhotos.addEventListener("click", (event: any) => {
+          event.stopPropagation();
+          const width = modalPhotos.clientWidth; // Получаем ширину элемента slideshow
+          const midPoint = 1018; // Находим середину элемента
+          // Если клик был в правой половине
+          if (event.clientX > midPoint) {
+            currentIndex = (currentIndex + 1) % imgPhotos.length;
+            updateImage(currentIndex);
+          }
+          // Если клик был в левой половине
+          else {
+            currentIndex =
+              (currentIndex - 1 + imgPhotos.length) % imgPhotos.length;
+            updateImage(currentIndex);
+          }
+        });
     }
     if (closeModal) {
       closeModal.addEventListener("click", () => {
         document.body.style.overflow = "auto";
         modalPhotos.style.display = "none";
         rightContent.classList.remove("blackout");
+        videoModal.pause();
         overlay.remove();
       });
     }
 
-    if (main) {
-      main.addEventListener("click", (event: any) => {
-        event.stopImmediatePropagation();
-        event.stopPropagation();
-        document.body.style.overflow = "auto";
-        modalPhotos.style.display = "none";
-        rightContent.classList.remove("blackout");
-        overlay.remove();
-      });
-    }
+    // if (main) {
+    //   main.addEventListener("click", (event: any) => {
+    //     event.stopImmediatePropagation();
+    //     event.stopPropagation();
+    //     document.body.style.overflow = "auto";
+    //     modalPhotos.style.display = "none";
+    //     rightContent.classList.remove("blackout");
+    //     videoModal.pause();
+    //     overlay.remove();
+    //   });
+    // }
   };
   const touchRightArrow = (event: any) => {
     event.stopPropagation();
-    currentIndex = (currentIndex + 1) % imgPhotos.length;
+    videoModal.pause();
+    currentIndex = (currentIndex + 1) % allContent.length;
     updateImage(currentIndex);
   };
 
   const touchLeftArrow = (event: any) => {
     event.stopPropagation();
-    currentIndex = (currentIndex - 1 + imgPhotos.length) % imgPhotos.length;
+    videoModal.pause();
+    currentIndex = (currentIndex - 1 + allContent.length) % allContent.length;
     updateImage(currentIndex);
   };
 
@@ -226,7 +256,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
     }
   });
 
-  imgPhotos.forEach((img: any, index: any) => {
+  allContent.forEach((img: any, index: any) => {
     img.addEventListener("click", (event: any) => {
       handleOpenSlideshow(event, updateImage, index);
     });
@@ -260,6 +290,280 @@ export function controlSlideShow(container: any, rightContainer: any) {
       }, 50); // Небольшая задержка для применения стиля
     }, 500); // Время совпадает с временем анимации
   }
+}
+function controlVideo(container: any) {
+  if (container.videoInitialized) {
+    return; // Если да, выходим из функции
+  }
+  container.videoInitialized = true; // Устанавливаем флаг инициализации
+
+  //Плеер
+  var videoPlayer = container.querySelector(".video-modal");
+  //Время
+  var progressBar = container.querySelector(".video-hud__progress-bar");
+  var currTime = container.querySelector(".video-hud__curr-time");
+  var durationTime = container.querySelector(".video-hud__duration");
+  // //Кнопки
+  var actionButton = container.querySelector(".video-hud__action");
+  var muteButton = container.querySelector(".video-hud__mute");
+  var volumeScale = container.querySelector(".video-hud__volume");
+  var speedSelect = container.querySelector(".video-hud__speed");
+  const buttonFullHD = container.querySelector(`.full_hd`);
+  const slideShow: any = document.querySelector(`.slideshow`);
+
+  actionButton.removeEventListener("click", videoAct);
+  videoPlayer.removeEventListener("click", videoAct);
+  videoPlayer.removeEventListener("timeupdate", videoProgress);
+  progressBar.removeEventListener("click", videoChangeTime);
+  muteButton.removeEventListener("click", videoMute);
+  volumeScale.removeEventListener("change", videoChangeVolume);
+  speedSelect.removeEventListener("change", videoChangeSpeed);
+
+  const buttonDownload: any = container.querySelector(`.video-hud__download`);
+  buttonDownload.href = videoPlayer.src;
+  // const handleMouseMove = () => {
+  //   const videoHud: any = container.querySelector(`.video-hud`);
+  //   videoHud.style.opacity = "1";
+  // };
+  // const handleMouseOut = () => {
+  //   const videoHud: any = container.querySelector(`.video-hud`);
+  //   videoHud.style.opacity = "0";
+  // };
+
+  let hideHudTimeout: any;
+
+  const handleMouseMove = () => {
+    const videoHud: any = container.querySelector(`.video-hud`);
+    if (window.innerWidth <= 768) {
+      videoHud.style.opacity = 1;
+      return;
+    }
+    // videoHud.style.opacity = "1";
+    videoHud.classList.add("active");
+    // Если мышь движется, сбрасываем таймер
+    if (hideHudTimeout) {
+      clearTimeout(hideHudTimeout);
+    }
+
+    // Устанавливаем новый таймер для скрытия элементов управления через 3 секунды (3000 мс)
+    hideHudTimeout = setTimeout(() => {
+      videoHud.classList.remove("active");
+      // videoHud.style.opacity = "0";
+    }, 3000); // Вы можете изменить время на ваше усмотрение
+  };
+
+  const handleMouseOut = () => {
+    const videoHud: any = container.querySelector(`.video-hud`);
+    if (window.innerWidth <= 768) {
+      videoHud.style.opacity = 1;
+      return;
+    }
+    // videoHud.style.opacity = "0";
+    videoHud.classList.remove("active");
+    // Очищаем таймер, если мышь выходит за пределы контейнера
+    if (hideHudTimeout) {
+      clearTimeout(hideHudTimeout);
+    }
+  };
+  const handleClickFullHD = (e: any) => {
+    e.stopPropagation();
+    slideShow.style.pointerEvents = "none";
+    slideShow.style.userSelect = "none";
+
+    if (container.style.width == "800px" || !container.style.width) {
+      if ( window.innerWidth > 768) {
+        container.style.width = "100%";
+        videoPlayer.style.height = "1045px";
+      }
+      if (!document.fullscreenElement) { // Проверяем, в полноэкранном ли режиме
+        if (videoPlayer.requestFullscreen) {
+          videoPlayer.requestFullscreen();
+        } else if (videoPlayer.webkitRequestFullscreen) { // Safari
+          videoPlayer.webkitRequestFullscreen();
+        } else if (videoPlayer.msRequestFullscreen) { // IE11
+          videoPlayer.msRequestFullscreen();
+        }
+    } 
+      // videoPlayer.webkitRequestFullscreen();
+    } else {
+      if ( window.innerWidth <= 768) {
+        // videoPlayer.style.
+        container.style.width = "390px";
+        return;
+      }
+      container.style.width = "800px";
+      videoPlayer.style.height = "450px";
+      slideShow.style.userSelect = "";
+      slideShow.style.pointerEvents = "";
+    }
+  };
+  const handleKeyPress = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      if ( window.innerWidth <= 768) {
+        // videoPlayer.style.
+        container.style.width = "390px";
+        return;
+      }
+      container.style.width = "800px"; // Возвращаем ширину к 800px
+      videoPlayer.style.height = "450px"; // Возвращаем высоту к 450px
+      slideShow.style.userSelect = ""; // Включаем выделение
+      slideShow.style.pointerEvents = ""; // Включаем взаимодействие
+    }
+  };
+
+  buttonFullHD.removeEventListener("click", handleClickFullHD);
+  buttonFullHD.addEventListener("click", handleClickFullHD);
+  const videoHud: any = container.querySelector(`.video-hud`);
+  videoHud.addEventListener("mousemove", handleMouseMove);
+  videoHud.addEventListener("mouseout", handleMouseOut);
+  videoPlayer.addEventListener("mousemove", handleMouseMove);
+  videoPlayer.addEventListener("mouseout", handleMouseOut);
+  document.addEventListener("keydown", handleKeyPress);
+  function videoAct(e: any) {
+    e.stopPropagation();
+    //Запускаем или ставим на паузу
+    if (videoPlayer.paused) {
+      videoPlayer.play();
+      actionButton.setAttribute(
+        "class",
+        "video-hud__element video-hud__action video-hud__action_play",
+      );
+    } else {
+      videoPlayer.pause();
+      actionButton.setAttribute(
+        "class",
+        "video-hud__element video-hud__action video-hud__action_pause",
+      );
+    }
+    if (durationTime.innerHTML == "00:00") {
+      durationTime.innerHTML = videoTime(videoPlayer.duration); //Об этой функции чуть ниже
+    }
+  }
+  if (window.innerWidth <= 768) {
+    videoHud.style.opacity = 1;
+  }
+  // Запуск, пауза
+  actionButton.addEventListener("click", videoAct);
+  videoPlayer.addEventListener("click", videoAct);
+
+  function videoTime(time: any) {
+    //Рассчитываем время в секундах и минутах
+    time = Math.floor(time);
+    var minutes = Math.floor(time / 60);
+    var seconds = Math.floor(time - minutes * 60);
+    var minutesVal: any = minutes;
+    var secondsVal: any = seconds;
+    if (minutes < 10) {
+      minutesVal = "0" + minutes;
+    }
+    if (seconds < 10) {
+      secondsVal = "0" + seconds;
+    }
+    return minutesVal + ":" + secondsVal;
+  }
+  function videoProgress() {
+    // videoPlayer.removeEventListener("timeupdate", videoProgress);
+    // Ensure the video is loaded and has a valid duration
+    if (!videoPlayer.duration || videoPlayer.duration === Infinity) {
+      return; // Exit if duration is not valid
+    }
+
+    // Calculate progress
+    const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
+
+    // Ensure progress is between 0 and 100
+    progressBar.value = Math.max(0, Math.min(progress, 100));
+
+    // Display current time
+    currTime.innerHTML = videoTime(videoPlayer.currentTime);
+  }
+  // function videoProgress() {
+  //   //Отображаем время воспроизведения
+  //   const progress =
+  //     Math.floor(videoPlayer.currentTime) /
+  //     (Math.floor(videoPlayer.duration) / 100);
+  //   progressBar.value = progress;
+  //   currTime.innerHTML = videoTime(videoPlayer.currentTime);
+  // }
+  function videoChangeTime(e: MouseEvent) {
+    // Получаем координаты клика относительно прогресс-бара
+    const rect = progressBar.getBoundingClientRect(); // Получаем размеры и положение прогресс-бара
+    let mouseX: number = e.clientX - rect.left; 
+
+    if (mouseX < 0) {
+        mouseX = 0;
+    } else if (mouseX > rect.width) {
+        mouseX = rect.width;
+    }
+
+    const progress = (mouseX / rect.width) * 100;
+
+    videoPlayer.currentTime = videoPlayer.duration * (progress / 100);
+}
+
+// Отображение времени
+videoPlayer.addEventListener("timeupdate", videoProgress);
+// Перемотка
+progressBar.addEventListener("click", videoChangeTime);
+
+  // function videoChangeTime(e: any) {
+  //   // progressBar.removeEventListener("click", videoChangeTime);
+  //   //Перематываем
+  //   var mouseX = Math.floor(e.pageX - progressBar.offsetLeft) - 152;
+  //   alert(mouseX)
+  //   var progress = mouseX / (progressBar.offsetWidth / 100);
+  //   alert(progress)
+  //   videoPlayer.currentTime = videoPlayer.duration * (progress / 100);
+  // }
+
+  // //Отображение времени
+  // videoPlayer.addEventListener("timeupdate", videoProgress);
+  // //Перемотка
+  // progressBar.addEventListener("click", videoChangeTime);
+
+  function videoChangeVolume() {
+    //Меняем громкость
+    var volume = volumeScale.value / 100;
+    videoPlayer.volume = volume;
+    if (videoPlayer.volume == 0) {
+      muteButton.setAttribute(
+        "class",
+        "video-hud__element video-hud__mute video-hud__mute_true",
+      );
+    } else {
+      muteButton.setAttribute(
+        "class",
+        "video-hud__element video-hud__mute video-hud__mute_false",
+      );
+    }
+  }
+  function videoMute() {
+    //Убираем звук
+    if (videoPlayer.volume == 0) {
+      videoPlayer.volume = volumeScale.value / 100;
+      muteButton.setAttribute(
+        "class",
+        "video-hud__element video-hud__mute video-hud__mute_false",
+      );
+    } else {
+      videoPlayer.volume = 0;
+      muteButton.setAttribute(
+        "class",
+        "video-hud__element video-hud__mute video-hud__mute_true",
+      );
+    }
+  }
+  function videoChangeSpeed() {
+    //Меняем скорость
+    var speed = speedSelect.value / 100;
+    videoPlayer.playbackRate = speed;
+  }
+
+  //Звук
+  muteButton.addEventListener("click", videoMute);
+  volumeScale.addEventListener("change", videoChangeVolume);
+  //Работа со скоростью
+  speedSelect.addEventListener("change", videoChangeSpeed);
 }
 async function complaintPost(postID: any) {
   return new Promise((resolve, reject) => {
@@ -440,6 +744,9 @@ async function customizePost(container: any, post: any = null) {
   };
 
   menu.addEventListener("click", handleClickMenu);
+
+  //Получаем объекты
+  // controlVideo(container);
 }
 
 /**
@@ -508,10 +815,11 @@ async function renderPopularPosts(popularPosts: any) {
     const div = renderTo(container);
 
     const containerMedia: any = await containerMediaPost(post.postId);
+    console.log(containerMedia);
     if (containerMedia) {
       let arrayMedia: any = [];
       containerMedia[0].forEach((media: any) => {
-        const divMedia = renderTo(media);
+        const divMedia = renderTo(media, "content-media");
         arrayMedia.push(divMedia);
       });
       const place: any = div.querySelector(`.container-image-photos`);
@@ -552,6 +860,7 @@ async function renderRecentlyPosts(recentlyPosts: any) {
 }
 
 async function paginate(
+  activeRequests: any,
   allPopularPosts: any,
   allRecentlyPosts: any,
   containerPopularPosts: any,
@@ -564,7 +873,6 @@ async function paginate(
   let isLoading = false;
 
   // Используем Set для отслеживания активных запросов
-  const activeRequests = new Set();
 
   async function loadPosts() {
     if (isLoading) return; // Если загрузка уже идет, выходим из функции
@@ -602,7 +910,7 @@ async function paginate(
         } else {
           stopLoadPopularPosts = true;
         }
-        activeRequests.delete(requestId); // Удаляем запрос из активных
+        // activeRequests.delete(requestId); // Удаляем запрос из активных
       }
 
       if (
@@ -635,7 +943,6 @@ async function paginate(
         } else {
           stopLoadRecentlyPosts = true;
         }
-        activeRequests.delete(requestId); // Удаляем запрос из активных
       }
     } finally {
       isLoading = false; // Сбрасываем флаг загрузки

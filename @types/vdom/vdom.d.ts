@@ -40,6 +40,9 @@ declare module "vdom" {
       canvas: { [key: string]: any };
       audio: { [key: string]: any };
       source: { [key: string]: any };
+      function: { [key: string]: any };
+      video: { [key: string]: any };
+      progress: { [key: string]: any };
     }
   }
 }

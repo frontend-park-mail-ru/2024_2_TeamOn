@@ -13,7 +13,8 @@ import {
  * @param userdata Информация о юзере
  * @returns
  */
-async function Sidebar() {
+const Sidebar = async () => {
+  // async function Sidebar() {
   let result: any;
   if (hasLogged()) {
     const userdata: any = await getAccount();
@@ -97,6 +98,6 @@ async function Sidebar() {
     );
   }
   return result;
-}
+};
 
 export { Sidebar };

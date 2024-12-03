@@ -345,7 +345,6 @@ async function paginateModeration(
         } else {
           stopLoadApprovePosts = true;
         }
-        activeRequests.delete(requestId); // Удаляем запрос из активных
       }
 
       if (
@@ -378,7 +377,6 @@ async function paginateModeration(
         } else {
           stopLoadReportedPosts = true;
         }
-        activeRequests.delete(requestId); // Удаляем запрос из активных
       }
     } finally {
       isLoading = false; // Сбрасываем флаг загрузки
