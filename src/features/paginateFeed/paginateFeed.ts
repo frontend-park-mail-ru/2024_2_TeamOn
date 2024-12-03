@@ -60,6 +60,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
       videoModal.style.display = "block";
       videoHud.style.display = "flex";
       videoModal.src = placeVideo.src;
+
       const modalContainerPhotos: any = document.querySelector(
         `.modal-container-photos`,
       );
@@ -119,13 +120,13 @@ export function controlSlideShow(container: any, rightContainer: any) {
           // Свайп влево
           const oldIndex = currentIndex;
 
-          currentIndex = (currentIndex + 1) % imgPhotos.length; // Увеличиваем индекс
+          currentIndex = (currentIndex + 1) % allContent.length; // Увеличиваем индекс
           animateImageTransition(oldIndex, currentIndex, -100); // Сдвигаем влево
         } else if (startX + 50 < endX) {
           // Свайп вправо
           const oldIndex = currentIndex;
           currentIndex =
-            (currentIndex - 1 + imgPhotos.length) % imgPhotos.length; // Уменьшаем индекс
+            (currentIndex - 1 + allContent.length) % allContent.length; // Уменьшаем индекс
           animateImageTransition(oldIndex, currentIndex, 100); // Сдвигаем вправо
         }
       });
@@ -140,13 +141,13 @@ export function controlSlideShow(container: any, rightContainer: any) {
           const midPoint = 1018; // Находим середину элемента
           // Если клик был в правой половине
           if (event.clientX > midPoint) {
-            currentIndex = (currentIndex + 1) % imgPhotos.length;
+            currentIndex = (currentIndex + 1) % allContent.length;
             updateImage(currentIndex);
           }
           // Если клик был в левой половине
           else {
             currentIndex =
-              (currentIndex - 1 + imgPhotos.length) % imgPhotos.length;
+              (currentIndex - 1 + allContent.length) % allContent.length;
             updateImage(currentIndex);
           }
         });
@@ -201,8 +202,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
     let resheight = 0;
     let reswidth = 0;
     let limitExceeded = false; // Флаг для отслеживания превышения лимита
-
-    imgPhotos.forEach((img: any) => {
+    allContent.forEach((img: any) => {
       const imgHeight = img.naturalHeight;
       const imgWidth = img.clientWidth;
       if (reswidth + imgWidth <= MAX_SIZE) {
@@ -229,7 +229,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
     toggleButton.addEventListener("click", () => {
       const isHidden = toggleButton.textContent === "Показать...";
       if (isHidden) {
-        imgPhotos.forEach((img: any) => {
+        allContent.forEach((img: any) => {
           img.style.display = "block"; // Показываем все изображения
         });
       } else {
@@ -241,16 +241,18 @@ export function controlSlideShow(container: any, rightContainer: any) {
 
   // Добавляем обработчик события загрузки для каждого изображения
   let imagesLoaded = 0;
-  imgPhotos.forEach((img: any) => {
+  allContent.forEach((img: any) => {
+    onImagesLoaded();
     img.onload = () => {
+      console.log(img);
       imagesLoaded++;
-      if (imagesLoaded === imgPhotos.length) {
+      if (imagesLoaded === allContent.length) {
         onImagesLoaded(); // Все изображения загружены
       }
     };
     if (img.complete) {
       imagesLoaded++;
-      if (imagesLoaded === imgPhotos.length) {
+      if (imagesLoaded === allContent.length) {
         onImagesLoaded(); // Все изображения загружены
       }
     }
@@ -720,7 +722,13 @@ async function customizePost(container: any, post: any = null) {
       amountLike.innerHTML = `${post.likes}`; // Обновляем отображаемое количество лайков
     });
   }
-
+  const videos: any = container.querySelectorAll(`.video-container`);
+  videos.forEach((video: any) => {
+    const vi: any = video.querySelector(`.video-player`);
+    vi.addEventListener("loadeddata", () => {
+      captureFrame(vi);
+    });
+  });
   const rightContainer = document.querySelector(`.right-content`);
   controlSlideShow(container, rightContainer);
 
@@ -806,6 +814,33 @@ async function modifirePosts(
     throw error;
   }
 }
+// Функция для извлечения кадра
+function captureFrame(video: HTMLVideoElement) {
+  // Установите текущее время видео на 1 секунду
+  video.currentTime = 1;
+
+  // Добавьте обработчик события, который сработает, когда видео переместится на 1 секунду
+  video.addEventListener("seeked", function onSeeked() {
+    const canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const context: any = canvas.getContext("2d");
+
+    // Проверка размеров видео
+    if (video.videoWidth > 0 && video.videoHeight > 0) {
+      // Извлечение кадра из видео
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Преобразование canvas в изображение и установка его в качестве постера
+      video.poster = canvas.toDataURL("image/*");
+    } else {
+      console.error("Video dimensions are not valid");
+    }
+
+    // Удаляем обработчик, чтобы он не срабатывал снова
+    video.removeEventListener("seeked", onSeeked);
+  });
+}
 
 /**
  * Рендерит скелет популярных постов
@@ -818,7 +853,6 @@ async function renderPopularPosts(popularPosts: any) {
     const div = renderTo(container);
 
     const containerMedia: any = await containerMediaPost(post.postId);
-    console.log(containerMedia);
     if (containerMedia) {
       let arrayMedia: any = [];
       containerMedia[0].forEach((media: any) => {
