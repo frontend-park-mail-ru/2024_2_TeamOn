@@ -23,33 +23,32 @@ import { renderStatics, renderTableTitle } from "../statistics/ui/ui";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { setTitle } from "../../shared/settitle/setTitle";
 import { hideLoader, showLoader } from "../feed";
-import { containerApprovePosts } from "src/widgest/moderation";
 
 function showLoadSet(container: any) {
-  const load = container.querySelector(`.mask_popular`);
+  const load = container.querySelector(`.mask_settings`);
   if (!load) {
     const form = document.body.querySelector(`.content-container`);
     const newmask = document.createElement("div");
-    newmask.classList.add("mask_popular");
+    newmask.classList.add("mask_settings");
     const newloader = document.createElement("div");
-    newloader.classList.add("loader_popular");
+    newloader.classList.add("loader_settings");
     newmask.appendChild(newloader);
     form?.appendChild(newmask);
     newmask.style.display = "flex";
     newmask.style.opacity = "1";
   }
   if (load) {
-    load.style.display = "flex"; // Показываем лоадер
-    load.style.opacity = 1; // Убедитесь, что он видим
+    load.style.display = "flex";
+    load.style.opacity = 1;
   }
 }
 function hideLoadSet(container: any) {
-  const mask: any = container.querySelector(".mask_popular");
+  const mask: any = container.querySelector(".mask_settings");
   if (mask) {
-    mask.style.opacity = 0; // Убираем видимость
+    mask.style.opacity = 0;
     setTimeout(() => {
-      mask.style.display = "none"; // Скрываем элемент после анимации
-    }, 600); // Время должно совпадать с вашей анимацией
+      mask.style.display = "none";
+    }, 600);
   }
 }
 /**

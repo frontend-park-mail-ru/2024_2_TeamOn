@@ -103,6 +103,7 @@ export function hideLoader() {
 export async function renderFeed() {
   try {
     showLoader();
+
     setTitle(LINKS.FEED.TEXT);
     const allPopularPosts: any = []; // Массив для хранения всех загруженных популярных постов
     const allRecentlyPosts: any = []; // Массив для хранения всех загруженных недавних постов

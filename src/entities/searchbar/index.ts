@@ -33,7 +33,7 @@ async function showSearch(container: any) {
   });
 
   pageContainer.addEventListener("click", (e: any) => {
-    if (e.target === results) {
+    if (e.target === results || find) {
       return;
     }
     results.style.display = "none";
@@ -51,7 +51,7 @@ async function showSearch(container: any) {
       loader.style.display = "flex";
       const resultItems = container.querySelectorAll(`.result-item`);
       resultItems.forEach((item: any) => {
-        item.remove();
+        item.style.display = "none";
       });
       try {
         const authors: any = await searchAuthor(authorName);

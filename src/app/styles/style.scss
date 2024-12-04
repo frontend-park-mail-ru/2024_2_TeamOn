@@ -17,9 +17,13 @@ body {
   width: 100%;
 }
 :root {
-  --main-color: #d9534f;
+  --new-color: #8abae3;
+  --main-test-color: #337ab7;
+  --main-color: #337ab7;
+  // --main-color: #d9534f;
   --main-background-color: #f5f5f5;
-  --main-color-hover: rgba(217, 84, 79, 0.7960784314);
+  // --main-color-hover: rgba(217, 84, 79, 0.7960784314);
+  --main-color-hover: #4f80aa;
 }
 .blur {
   filter: blur(8px);
@@ -453,6 +457,7 @@ form input[type="text"]:focus {
   color: white;
   font-size: 16px;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 .login__container input[type="submit"]:hover {
   background-color: #555;
@@ -542,6 +547,7 @@ form input[type="text"]:focus {
   color: #fff;
   font-size: 16px;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 .signup__container input[type="submit"]:hover {
   background-color: #333;
@@ -733,7 +739,7 @@ form input[type="text"]:focus {
   padding: 10px;
   border: none;
   border-radius: 5px;
-  background-color: #d9534f;
+  background-color: var(--main-color);
   color: white;
   font-size: 16px;
   transition: background 0.3s ease;
@@ -837,11 +843,16 @@ form input[type="text"]:focus {
   background-color: white;
 }
 .subscription-level {
-  background-color: white;
+  background-color: var(--new-color);
   padding: 20px;
   margin: 10px;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.1);
+  // background-color: white;
+  // padding: 20px;
+  // margin: 10px;
+  // border-radius: 10px;
+  // box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .subscription-levels h2 {
   font-size: 18px;
@@ -863,10 +874,11 @@ form input[type="text"]:focus {
   padding: 10px;
   border: none;
   border-radius: 5px;
-  background-color: #d9534f;
+  background-color: var(--main-color);
   color: white;
   font-size: 16px;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 .feed-profile {
   background-color: white;
@@ -898,13 +910,13 @@ form input[type="text"]:focus {
 }
 .nav-tabs-profile a {
   text-decoration: none;
-  color: #d9534f;
+  color: var(--main-color);
   font-size: 16px;
   padding: 10px;
   border-bottom: 2px solid transparent;
 }
 .nav-tabs-profile a.active {
-  border-bottom: 2px solid #d9534f;
+  border-bottom: 2px solid var(--main-color);
 }
 @media (max-width: 1024px) {
   .right-column,
@@ -1085,6 +1097,7 @@ form input[type="text"]:focus {
   padding: 8px 12px;
   cursor: pointer;
   font-size: 14px;
+  transition: background 0.3s ease;
 }
 
 .dropdown-menu .interaction-post:hover {
@@ -1402,8 +1415,9 @@ form input[type="text"]:focus {
   gap: 10px;
 }
 .sidebar a.active {
-  background-color: #e0e0e0;
+  background-color: var(--main-color);
   font-weight: bold;
+  color: white;
 }
 
 .sidebar .user-info .user-name {
@@ -1568,8 +1582,9 @@ form input[type="text"]:focus {
 
 .user-info:hover,
 .sidebar a:hover {
-  background-color: #f0f0f0;
+  background-color: var(--main-color-hover);
   cursor: pointer;
+  color: white;
 }
 .close-modal-view:hover,
 .rightarrow-modal-view:hover,
@@ -1860,7 +1875,6 @@ span {
 .tabs a {
   text-decoration: none;
   padding: 10px 20px;
-  color: #333;
 
   font-weight: bold;
   position: relative;
@@ -1959,7 +1973,7 @@ span {
 }
 
 .join-button:hover {
-  background-color: #d9544fcb;
+  background-color: var(--main-color-hover);
 }
 .tabs a::after {
   content: "";
@@ -1968,24 +1982,27 @@ span {
   bottom: 0;
   width: 0;
   height: 2px;
-  background-color: #000;
+  background-color: var(--main-color);
   transition:
+    background 0.3s ease,
     width 0.3s ease,
     left 0.3s ease;
 }
-
+.tabs a::after:hover {
+  background-color: var(--main-color-hover);
+}
 .tabs a.active::after {
   width: 50%;
   left: 25%;
 }
 
 .tabs a:hover {
-  color: #666;
+  color: var(--main-color-hover);
 }
 
-.tabs a.active {
-  color: #000;
-}
+// .tabs a.active {
+//   color: #000;
+// }
 
 .tabs::-webkit-scrollbar {
   height: 0px;
@@ -2332,7 +2349,7 @@ select {
   width: 100px;
   position: fixed;
   left: 80%;
-  top: 10%;
+  top: 11%;
   z-index: 101010101010;
   border-radius: 15px;
   width: 250px;
@@ -2878,7 +2895,7 @@ canvas {
 }
 
 .mask,
-.mask_popular {
+.mask_settings {
   top: 0;
   z-index: 10101010;
   transition: 0.6s;
@@ -2892,22 +2909,22 @@ canvas {
   display: flex;
   position: fixed;
 }
-.mask_popular {
+.mask_settings {
   max-width: 1000px;
   height: 480px;
   display: flex;
 }
-.loader_popular {
+.loader_settings {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
   height: 100%;
   border-radius: 10px;
-  background: linear-gradient(90deg, #3498db, #f3f3f3);
+  background: linear-gradient(90deg, var(--main-color), #f3f3f3);
   background-size: 200% 100%;
-  animation: loading_popular 1s linear infinite;
+  animation: loading_settings 1s linear infinite;
 }
 
-@keyframes loading_popular {
+@keyframes loading_settings {
   0% {
     background-position: 100% 0; /* Начальная позиция */
   }
@@ -2916,14 +2933,20 @@ canvas {
   }
 }
 .loader {
-  width: 75px;
-  height: 75px;
-  border: 10px solid #f3f3f3;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  border-left-color: #3498db;
-  animation: loader 1.3s linear infinite;
+  display: inline-block;
+  border-top: 3px solid #6ebeff;
+  border-right: 3px solid transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
 }
-@keyframes loader {
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
   100% {
     transform: rotate(360deg);
   }
@@ -2996,4 +3019,10 @@ canvas {
   top: 18px;
   width: 0%;
   left: 50%;
+}
+#bg-img {
+  background: url("https://atuin.ru/demo/i/snow.jpg");
+  background-position: center center;
+  background-size: cover;
+  width: 100%;
 }

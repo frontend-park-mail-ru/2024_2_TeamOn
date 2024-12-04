@@ -73,6 +73,9 @@ export function controlSlideShow(container: any, rightContainer: any) {
 
   const showAvatar = () => {
     if (!imageModal) return;
+    imageModal.style.display = "block";
+    videoModal.style.display = "none";
+    videoHud.style.display = "none";
     imageModal.src = imgAvatar.src;
     return;
   };

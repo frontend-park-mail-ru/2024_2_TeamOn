@@ -23,10 +23,12 @@ function modifierSidebar(mainContainer?: any) {
 
   const sidebar = mainContainer.querySelector(".sidebar");
   const burger: any = mainContainer.querySelector(`.burger2`);
-  burger.addEventListener("click", () => {
-    burger.classList.toggle("open");
-    sidebar.classList.toggle(ELEMENTS_CLASS.ACTIVE);
-  });
+  if (burger) {
+    burger.addEventListener("click", () => {
+      burger.classList.toggle("open");
+      sidebar.classList.toggle(ELEMENTS_CLASS.ACTIVE);
+    });
+  }
   const iconHome: any = sidebar.querySelector(`.icon-home`);
   setStatic(iconHome, urlIconHome);
 

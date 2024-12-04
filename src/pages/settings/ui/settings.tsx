@@ -11,9 +11,8 @@ export async function settingsContainer() {
         <h1>Настройки</h1>
         <div class="tabs"></div>
         <div class="content-container">
-          s
-          <div class="mask_popular">
-            <div class="loader_popular "></div>
+          <div class="mask_settings">
+            <div class="loader_settings"></div>
           </div>
         </div>
       </div>

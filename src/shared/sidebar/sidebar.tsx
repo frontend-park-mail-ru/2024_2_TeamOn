@@ -33,11 +33,7 @@ const Sidebar = async () => {
           <span></span>
           <span></span>
         </div>
-        {/* <div class="burger">
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-        </div> */}
+
         <div class="sidebar">
           <div class="nav-menu">
             <a class="referens">
@@ -81,11 +77,13 @@ const Sidebar = async () => {
   } else {
     result = (
       <div class="side">
-        <div class="burger">
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
+        <div class="burger2 burger" id="nav-icon3">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
+
         <div class="sidebar">
           <div class="nav-menu">
             <a class="referens">

@@ -17,6 +17,7 @@ import { validateLoginForm } from "../../shared/validateLoginForm/validateLoginF
 import { setTitle } from "../../shared/settitle/setTitle";
 import { setStatic } from "../../shared/getStatic/getStatic";
 import { hideLoader, showLoader } from "../feed";
+import { snow } from "../../shared/snow/snow";
 /**
  * Рендерит форму входа на страницу.
  * @returns
