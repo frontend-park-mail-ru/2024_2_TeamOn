@@ -4,12 +4,16 @@ import { getPageAuthor } from "../../features/getpageauthor/getpageauthor";
 import { pageContainer } from "../../app";
 import { getAvatar } from "../../features/getavatar/getavatar";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
+import { Input } from "postcss";
 
 async function showSearch(container: any) {
   const results: any = container.querySelector(`.results`);
   const closeBtn: any = container.querySelector(`.searchbar-icon--right`);
+  const find: any = container.querySelector(`.searchbar-icon--left`);
+  console.log(find);
   const searchInput: any = container.querySelector(`.searchbar-input`);
-
+  const loader: any = container.querySelector(".loader__search");
+  console.log(closeBtn);
   results.style.maxHeight = "300px";
   results.style.overflowY = "auto";
 
@@ -32,52 +36,67 @@ async function showSearch(container: any) {
     if (e.target === results) {
       return;
     }
-    searchInput.value = "";
-    results.style.display = "none";
   });
 
   const handleInput = async (e: Event) => {
-    const authorName = (e.target as HTMLInputElement).value;
+    const authorName = searchInput.value;
     if (authorName.trim().length < 4) {
       results.style.display = "none";
+      loader.style.display = "none";
       return;
     }
     if (authorName.trim()) {
-      const authors: any = await searchAuthor(authorName);
-      if (authors && authors.length > 0) {
-        results.style.display = "block";
-        results.innerHTML = "";
-        authors.forEach(async (author: any) => {
-          const user: any = await getPageAuthor(
-            window.location.pathname,
-            author,
-          );
-          const authorElement = document.createElement("div");
-          authorElement.classList.add("result-item");
-          authorElement.textContent = user.authorUsername;
-
-          const avatarImage = document.createElement("img");
-
-          const avatarload: any = await getAvatar(
-            window.location.pathname,
-            author,
-          );
-          avatarImage.src = avatarload;
-          avatarImage.height = 50;
-          avatarImage.width = 50;
-
-          authorElement.addEventListener("click", async () => {
-            gotoauthor(author);
+      results.style.display = "block";
+      loader.style.display = "flex";
+      const resultItems = container.querySelectorAll(`.result-item`);
+      resultItems.forEach((item: any) => {
+        item.remove();
+      });
+      try {
+        const authors: any = await searchAuthor(authorName);
+        if (authors && authors.length > 0) {
+          const resultItems = container.querySelectorAll(`.result-item`);
+          resultItems.forEach((item: any) => {
+            item.remove();
           });
-          authorElement.appendChild(avatarImage);
-          results.appendChild(authorElement);
-        });
-      } else {
-        results.style.display = "none";
+          authors.forEach(async (author: any) => {
+            const user: any = await getPageAuthor(
+              window.location.pathname,
+              author,
+            );
+            const authorElement = document.createElement("div");
+            authorElement.classList.add("result-item");
+            authorElement.textContent = user.authorUsername;
+
+            const avatarImage = document.createElement("img");
+
+            const avatarload: any = await getAvatar(
+              window.location.pathname,
+              author,
+            );
+            avatarImage.src = avatarload;
+            avatarImage.height = 50;
+            avatarImage.width = 50;
+
+            authorElement.addEventListener("click", async () => {
+              gotoauthor(author);
+            });
+            authorElement.appendChild(avatarImage);
+            results.appendChild(authorElement);
+          });
+        } else {
+          results.style.display = "none";
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        loader.style.display = "none"; // Скрываем лоадер после завершения всех операций
       }
     }
   };
-
+  find.addEventListener("click", () => {
+    handleInput(searchInput);
+  });
   searchInput.addEventListener("input", throttle(handleInput, 300)); // 300 мс
 }
 function throttle<T extends (...args: any[]) => any>(func: T, limit: number) {
@@ -85,7 +104,7 @@ function throttle<T extends (...args: any[]) => any>(func: T, limit: number) {
   let lastRan: number;
 
   return function (this: unknown, ...args: Parameters<T>): void {
-    const context = this; // Используем this без явного указания типа
+    const context = this;
     if (!lastRan) {
       func.apply(context, args);
       lastRan = Date.now();

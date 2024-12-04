@@ -17,6 +17,8 @@ import { renderUpdatePost } from "../entities/userPost";
 import { hasLogged } from "../shared/utils/hasLogged";
 import { renderModeration } from "../pages/moderation";
 import { getUrlStatic } from "../shared/getStatic/getStatic";
+import { showOverlay } from "src/shared/overlay/overlay";
+
 /**
  * Объект, содержащий конфигурацию меню приложения.
  */
@@ -133,7 +135,6 @@ export function setupScrollPositionHandlers() {
 
     // Сохраняем позицию прокрутки перед выгрузкой страницы
     window.addEventListener("beforeunload", saveScrollPosition);
-
     // Обработка события popstate для навигации
     window.addEventListener("popstate", () => {
       const savedScrollPosition = sessionStorage.getItem("scrollPosition");
@@ -202,7 +203,6 @@ export const urlEyeNoSeePassword: any = await getUrlStatic("/eye_nsee.png");
 if (flag) {
   let root: HTMLElement | null = startA(config.menu, state);
   render(Virtual);
-
   root?.appendChild(pageContainer);
   root?.append(pushmodal);
   route(LINKS.HOME.HREF, window.location.pathname);

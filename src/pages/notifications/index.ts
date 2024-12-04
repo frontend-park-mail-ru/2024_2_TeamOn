@@ -7,12 +7,14 @@ import { notificationContainer } from "./ui/notifications";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { setTitle } from "../../shared/settitle/setTitle";
 import { setStatic } from "../../shared/getStatic/getStatic";
+import { hideLoader, showLoader } from "../feed";
 /**
  * Функция рендера уведомлений (в обработке)
  * @returns
  */
 export async function renderNotifications() {
   try {
+    showLoader();
     setTitle(LINKS.NOTIFICATIONS.TEXT);
     const user: any = state.currentUser;
 
@@ -45,5 +47,7 @@ export async function renderNotifications() {
   } catch (error) {
     console.log("ERROR");
     throw error;
+  } finally {
+    hideLoader();
   }
 }

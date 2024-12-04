@@ -43,6 +43,7 @@ declare module "vdom" {
       function: { [key: string]: any };
       video: { [key: string]: any };
       progress: { [key: string]: any };
+      main: { [key: string]: any };
     }
   }
 }

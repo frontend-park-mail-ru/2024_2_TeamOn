@@ -119,12 +119,18 @@ async function renderFeedForm() {
       </div>
       {complaintForm()}
       <div class="modal-view-photos" style="display: none; z-index=10101010">
-        \{modal()}
+        {modal()}
       </div>
     </div>
   );
 }
-
+export function renderLoader() {
+  return (
+    <div class="mask">
+      <div class="loader"></div>
+    </div>
+  );
+}
 function renderComplaintPost(post: any) {
   if (!hasLogged()) return;
 

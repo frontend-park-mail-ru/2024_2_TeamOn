@@ -29,6 +29,7 @@ const renderSearchbar = () => {
         <button class="fas fa-times searchbar-icon searchbar-icon--right"></button>
       </div>
       <div class="results" style="display: none;">
+        <div class="loader__search" style="display: none;"></div>
         <div class="result-item"></div>
       </div>
     </div>

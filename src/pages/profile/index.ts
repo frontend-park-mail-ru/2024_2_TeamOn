@@ -42,6 +42,7 @@ import { showOverlay } from "../../shared/overlay/overlay";
 import { renderUserSubscriptins } from "../../entities/profileInfo";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { setStatic } from "../../shared/getStatic/getStatic";
+import { hideLoader, showLoader } from "../feed";
 
 async function renderContainerSubscriptions(authorData: any, overlay: any) {
   const modalSubscriptions: any = document.querySelector(
@@ -379,6 +380,7 @@ export async function controlBecomeCreator(div: any) {
  */
 export async function renderProfile() {
   try {
+    showLoader();
     document.body.style.overflow = "auto";
     setTitle(LINKS.PROFILE.TEXT);
     const posts: any = [];
@@ -474,5 +476,7 @@ export async function renderProfile() {
   } catch (error) {
     console.log("ERROR in profile");
     throw error;
+  } finally {
+    hideLoader();
   }
 }

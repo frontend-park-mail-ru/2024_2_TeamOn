@@ -12,6 +12,7 @@ import { showSearch } from "../../entities/searchbar";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { setTitle } from "../../shared/settitle/setTitle";
 import { paginateModeration } from "../../features/paginateModeration/paginateModeration";
+import { hideLoader, showLoader } from "../feed";
 
 export async function controlEventIFrame(container: any = pageContainer) {
   const div: any = document.querySelector(`#rating-iframe`);
@@ -81,6 +82,7 @@ async function controlIFRAME() {
  */
 export async function renderModeration() {
   try {
+    showLoader();
     setTitle(LINKS.MODERATION.TEXT);
     const allApprovePosts: any = []; // Массив для хранения всех загруженных популярных постов
     const allReportedPosts: any = []; // Массив для хранения всех загруженных недавних постов
@@ -134,5 +136,7 @@ export async function renderModeration() {
   } catch (error) {
     console.log("ERROR in feed");
     throw error;
+  } finally {
+    hideLoader();
   }
 }

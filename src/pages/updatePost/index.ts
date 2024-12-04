@@ -17,6 +17,7 @@ import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 import { controlSlideShow } from "../../features/paginateFeed/paginateFeed";
 import { deleteMediaInPost } from "./api/api";
 import { setStatic } from "../../shared/getStatic/getStatic";
+import { hideLoader, showLoader } from "../feed";
 
 async function mofireUpdatePost() {
   const currentPost: any = state.currentPostId;
@@ -303,6 +304,7 @@ async function mofireUpdatePost() {
 
 async function renderUpdatePost() {
   try {
+    showLoader();
     const postId: any = state.currentPostId;
     if (!postId) route(LINKS.PROFILE.HREF);
     const vdom: any = await containerUpdatePost();
@@ -328,6 +330,8 @@ async function renderUpdatePost() {
     return container;
   } catch (error) {
     console.error("Error in updatepost");
+  } finally {
+    hideLoader();
   }
 }
 

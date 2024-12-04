@@ -10,7 +10,12 @@ export async function settingsContainer() {
       <div class="container">
         <h1>Настройки</h1>
         <div class="tabs"></div>
-        <div class="content-container"></div>
+        <div class="content-container">
+          s
+          <div class="mask_popular">
+            <div class="loader_popular "></div>
+          </div>
+        </div>
       </div>
     </div>
   );
