@@ -36,6 +36,7 @@ async function showSearch(container: any) {
     if (e.target === results) {
       return;
     }
+    results.style.display = "none";
   });
 
   const handleInput = async (e: Event) => {

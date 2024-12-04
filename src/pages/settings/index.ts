@@ -272,22 +272,22 @@ async function updateContent(
       }, 600);
       break;
     case 1:
-      setTimeout(()=> {
+      setTimeout(() => {
         containerPersonalize.style.display = "none";
         containerPassword.style.display = "block";
-      }, 600)
+      }, 600);
       break;
     case 2:
-      setTimeout( ()=> {
+      setTimeout(() => {
         containerPersonalize.style.display = "none";
         containerStatistics.style.display = "block";
-      }, 600)
+      }, 600);
       break;
     case 3:
-      setTimeout( ()=> {
+      setTimeout(() => {
         containerPersonalize.style.display = "none";
         containerFeedback.style.display = "block";
-      }, 600)
+      }, 600);
       break;
     default:
       return [buttonPersonalize, buttonPassword];

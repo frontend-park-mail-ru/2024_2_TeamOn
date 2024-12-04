@@ -20,12 +20,11 @@ function modifierSidebar(mainContainer?: any) {
   if (!mainContainer) {
     return;
   }
-  const burger: any = mainContainer.querySelector(
-    `.${ELEMENTS_CLASS.BURGER.BLOCK}`,
-  );
 
   const sidebar = mainContainer.querySelector(".sidebar");
+  const burger: any = mainContainer.querySelector(`.burger2`);
   burger.addEventListener("click", () => {
+    burger.classList.toggle("open");
     sidebar.classList.toggle(ELEMENTS_CLASS.ACTIVE);
   });
   const iconHome: any = sidebar.querySelector(`.icon-home`);
