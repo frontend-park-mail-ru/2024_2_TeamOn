@@ -18,6 +18,7 @@ function showOverlay(modal: any, profileForm: any) {
     modal.style.display = "none";
     profileForm.classList.remove("blur");
     profileForm.classList.remove("blackout");
+
     if (document.body.style.overflow == "auto") {
       document.body.style.overflow = "hidden";
     } else {

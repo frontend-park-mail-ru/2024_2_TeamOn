@@ -11,13 +11,15 @@ import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { showOverlay } from "../../shared/overlay/overlay";
-import { renderComplaintPost } from "../../pages/feed/ui/feed";
+import { modal, renderComplaintPost } from "../../pages/feed/ui/feed";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { setStatic } from "../../shared/getStatic/getStatic";
 import { urlIconLike } from "../../app";
 
 export function controlSlideShow(container: any, rightContainer: any) {
   const modalPhotos: any = document.querySelector(`.modal-view-photos`); //
+  // modalPhotos.innerHTML = "";
+  // update(modalPhotos, modal());
   const rightContent: any = rightContainer;
   const closeModal: any = document.querySelector(`.close-modal-view`); //
   const main: any = document.querySelector("main");
@@ -46,9 +48,14 @@ export function controlSlideShow(container: any, rightContainer: any) {
     imgAvatar = container.querySelector(`.profile-avatar`);
   }
   var currentIndex = 0;
+  let isTransitioning = false;
 
   const updateImage = (currentIndex: any) => {
     if (!imageModal || imgPhotos.length == 0) return;
+    imageModal.style.display = "block";
+    videoModal.style.display = "none";
+    videoHud.style.display = "none";
+    imageModal.src = imgPhotos[currentIndex].src;
     if (allContent[currentIndex].querySelector(`.video-player`)) {
       const placeVideo =
         allContent[currentIndex].querySelector(`.video-player`);
@@ -62,10 +69,6 @@ export function controlSlideShow(container: any, rightContainer: any) {
       );
       modalContainerPhotos.appendChild(videoHud);
     }
-    imageModal.style.display = "block";
-    videoModal.style.display = "none";
-    videoHud.style.display = "none";
-    imageModal.src = allContent[currentIndex].src;
   };
 
   const showAvatar = () => {
@@ -100,6 +103,9 @@ export function controlSlideShow(container: any, rightContainer: any) {
     if (isMobile() && imageModal.style.display !== "none") {
       let startX = 0;
       let endX = 0;
+      let startY = 0;
+      let endY = 0;
+
       modalPhotos.addEventListener("click", (event: any) => {
         document.body.style.overflow = "auto";
         modalPhotos.style.display = "none";
@@ -109,34 +115,39 @@ export function controlSlideShow(container: any, rightContainer: any) {
       });
       modalPhotos.addEventListener("touchstart", (event: any) => {
         startX = event.touches[0].clientX;
+        startY = event.touches[0].clientY;
       });
 
       modalPhotos.addEventListener("touchmove", (event: any) => {
         endX = event.touches[0].clientX;
+        endY = event.touches[0].clientY;
       });
-
-      modalPhotos.addEventListener("touchend", (event: any) => {
+      var handleTouched = (e: any) => {
+        if (allContent.length == 1) return;
         if (startX > endX + 50) {
           // Свайп влево
           const oldIndex = currentIndex;
-
           currentIndex = (currentIndex + 1) % allContent.length; // Увеличиваем индекс
           animateImageTransition(oldIndex, currentIndex, -100); // Сдвигаем влево
-        } else if (startX + 50 < endX) {
+        } else if (startX < endX + 50) {
           // Свайп вправо
           const oldIndex = currentIndex;
           currentIndex =
             (currentIndex - 1 + allContent.length) % allContent.length; // Уменьшаем индекс
           animateImageTransition(oldIndex, currentIndex, 100); // Сдвигаем вправо
+        } else if (startY > endY + 50) {
+          animateImageTransition(0, currentIndex, -100); // Сдвигаем влево
         }
-      });
+      };
+      modalPhotos.addEventListener("touchend", handleTouched);
     }
-
+    // const handleM
     if (!isMobile()) {
       // Обработка кликов
       if (imageModal.style.display !== "none")
         modalPhotos.addEventListener("click", (event: any) => {
           event.stopPropagation();
+
           const width = modalPhotos.clientWidth; // Получаем ширину элемента slideshow
           const midPoint = 1018; // Находим середину элемента
           // Если клик был в правой половине
@@ -153,15 +164,19 @@ export function controlSlideShow(container: any, rightContainer: any) {
         });
     }
     if (closeModal) {
-      closeModal.addEventListener("click", () => {
+      const handleCliclCancel = () => {
         document.body.style.overflow = "auto";
         modalPhotos.style.display = "none";
         rightContent.classList.remove("blackout");
         videoModal.pause();
         overlay.remove();
-      });
+        rightArrow.removeEventListener("click", touchRightArrow);
+        leftArrow.removeEventListener("click", touchLeftArrow);
+        modalPhotos.removeEventListener("touchend", handleTouched);
+      };
+      closeModal.addEventListener("click", handleCliclCancel);
+      overlay.addEventListener("click", handleCliclCancel);
     }
-
     // if (main) {
     //   main.addEventListener("click", (event: any) => {
     //     event.stopImmediatePropagation();
@@ -176,18 +191,28 @@ export function controlSlideShow(container: any, rightContainer: any) {
   };
   const touchRightArrow = (event: any) => {
     event.stopPropagation();
+    if (isTransitioning) return;
+    isTransitioning = true;
     videoModal.pause();
     currentIndex = (currentIndex + 1) % allContent.length;
     updateImage(currentIndex);
+    setTimeout(() => {
+      isTransitioning = false; // Сбрасываем флаг после завершения анимации
+    }, 500);
+    // rightArrow.removeEventListener("click", touchRightArrow);
   };
 
   const touchLeftArrow = (event: any) => {
     event.stopPropagation();
+    if (isTransitioning) return;
+    isTransitioning = true;
     videoModal.pause();
     currentIndex = (currentIndex - 1 + allContent.length) % allContent.length;
     updateImage(currentIndex);
+    setTimeout(() => {
+      isTransitioning = false; // Сбрасываем флаг после завершения анимации
+    }, 500); // Время совпадает с временем анимации
   };
-
   function isMobile() {
     return window.innerWidth <= 768;
   }
@@ -293,6 +318,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
     }, 500); // Время совпадает с временем анимации
   }
 }
+
 function controlVideo(container: any) {
   if (container.videoInitialized) {
     return; // Если да, выходим из функции
@@ -467,29 +493,17 @@ function controlVideo(container: any) {
     return minutesVal + ":" + secondsVal;
   }
   function videoProgress() {
-    // videoPlayer.removeEventListener("timeupdate", videoProgress);
-    // Ensure the video is loaded and has a valid duration
     if (!videoPlayer.duration || videoPlayer.duration === Infinity) {
-      return; // Exit if duration is not valid
+      return;
     }
 
-    // Calculate progress
     const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
 
-    // Ensure progress is between 0 and 100
     progressBar.value = Math.max(0, Math.min(progress, 100));
 
-    // Display current time
     currTime.innerHTML = videoTime(videoPlayer.currentTime);
   }
-  // function videoProgress() {
-  //   //Отображаем время воспроизведения
-  //   const progress =
-  //     Math.floor(videoPlayer.currentTime) /
-  //     (Math.floor(videoPlayer.duration) / 100);
-  //   progressBar.value = progress;
-  //   currTime.innerHTML = videoTime(videoPlayer.currentTime);
-  // }
+
   function videoChangeTime(e: MouseEvent) {
     // Получаем координаты клика относительно прогресс-бара
     const rect = progressBar.getBoundingClientRect(); // Получаем размеры и положение прогресс-бара
@@ -510,21 +524,6 @@ function controlVideo(container: any) {
   videoPlayer.addEventListener("timeupdate", videoProgress);
   // Перемотка
   progressBar.addEventListener("click", videoChangeTime);
-
-  // function videoChangeTime(e: any) {
-  //   // progressBar.removeEventListener("click", videoChangeTime);
-  //   //Перематываем
-  //   var mouseX = Math.floor(e.pageX - progressBar.offsetLeft) - 152;
-  //   alert(mouseX)
-  //   var progress = mouseX / (progressBar.offsetWidth / 100);
-  //   alert(progress)
-  //   videoPlayer.currentTime = videoPlayer.duration * (progress / 100);
-  // }
-
-  // //Отображение времени
-  // videoPlayer.addEventListener("timeupdate", videoProgress);
-  // //Перемотка
-  // progressBar.addEventListener("click", videoChangeTime);
 
   function videoChangeVolume() {
     //Меняем громкость

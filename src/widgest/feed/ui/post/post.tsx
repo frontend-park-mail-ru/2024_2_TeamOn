@@ -106,6 +106,23 @@ export async function containerMediaPost(postId: any) {
   // arrayMedia.push(containerFileDevImg);
   // arrayMedia.push(containerFileDev3);
 
+  // function removeRandomElements(arr: any, count: number) {
+  //   const result = [...arr]; // Создаем копию массива, чтобы не изменять оригинал
+  //   for (let i = 0; i < count; i++) {
+  //     if (result.length === 0) break; // Если массив пуст, выходим из цикла
+  //     const randomIndex = Math.floor(Math.random() * result.length); // Генерируем случайный индекс
+  //     result.splice(randomIndex, 1); // Удаляем элемент по случайному индексу
+  //   }
+  //   return result; // Возвращаем новый массив
+  // }
+
+  // // Удаляем 1-2 случайных элемента из массива
+  // const modifiedArray = removeRandomElements(
+  //   arrayMedia,
+  //   Math.floor(Math.random() * 2) + 1,
+  // );
+
+  // arrayMedia = modifiedArray;
   if (propertiesPost.mediaContent.length <= 0) return [arrayMedia, mediaId];
   for (const content of propertiesPost.mediaContent) {
     const url: any = content.mediaURL;
