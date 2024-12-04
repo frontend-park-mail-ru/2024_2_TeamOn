@@ -566,6 +566,7 @@ function controlVideo(container: any) {
   //Звук
   muteButton.addEventListener("click", videoMute);
   volumeScale.addEventListener("change", videoChangeVolume);
+  volumeScale.addEventListener("input", videoChangeVolume);
   //Работа со скоростью
   speedSelect.addEventListener("change", videoChangeSpeed);
 }
