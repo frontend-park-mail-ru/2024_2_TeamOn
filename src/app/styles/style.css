@@ -1466,6 +1466,7 @@ form input[type=text]:focus {
   width: 30px;
   height: 30px;
   background-size: contain;
+  transition: filter 0.3s ease;
 }
 
 .icon-notification-big {
@@ -1690,6 +1691,14 @@ form input[type=text]:focus {
   background-color: var(--main-color-hover);
   cursor: pointer;
   color: white;
+}
+
+.sidebar a:hover i {
+  filter: brightness(0) invert(1);
+}
+
+.sidebar a i.active {
+  filter: brightness(0) invert(1);
 }
 
 .close-modal-view:hover,

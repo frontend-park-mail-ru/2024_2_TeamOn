@@ -58,6 +58,8 @@ function modifierSidebar(mainContainer?: any) {
     }
     if (link.active) {
       sidebarReferenses[index].className = ELEMENTS_CLASS.ACTIVE;
+      const i = sidebarReferenses[index].querySelector("i");
+      i.classList.add("active");
     }
     const span: any = mainContainer.querySelector(".new");
     if (span) {
