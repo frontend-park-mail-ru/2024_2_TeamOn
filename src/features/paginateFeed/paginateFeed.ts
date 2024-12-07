@@ -16,6 +16,7 @@ import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { setStatic } from "../../shared/getStatic/getStatic";
 import {
   urlFullHD,
+  urlIconComment,
   urlIconLike,
   urlRemoveButtonFile,
   urlVideoDownload,
@@ -866,7 +867,11 @@ async function customizePost(container: any, post: any) {
   date.textContent = convertISOToRussianDate(post.createdAt);
 
   const iconLike: any = container.querySelector(`.likes`);
+  const iconComment: any = container.querySelector(`.comments`);
+
   setStatic(iconLike, urlIconLike);
+
+  setStatic(iconComment, urlIconComment);
 
   setComments(container, post);
 

@@ -191,6 +191,7 @@ export async function customizePostProfile(
 ) {
   const iconLike: any = container.querySelector(`.likes`);
   const iconComment: any = container.querySelector(`.comments`);
+
   setStatic(iconLike, urlIconLike);
   setStatic(iconComment, urlIconComment);
   
