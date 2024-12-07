@@ -31,7 +31,7 @@ import {
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { showOverlay } from "../../shared/overlay/overlay";
 import { setStatic } from "../../shared/getStatic/getStatic";
-import { urlComments, urlIconLike, urlSendComment } from "../../app";
+import { urlIconComment, urlIconLike, urlSendComment } from "../../app";
 import { getPopularPosts } from "../getPopularPosts/getPopularPosts";
 import { getAvatar } from "../getavatar/getavatar";
 import { addComment } from "../../entities/comments/api/api";
@@ -192,7 +192,8 @@ export async function customizePostProfile(
   const iconLike: any = container.querySelector(`.likes`);
   const iconComment: any = container.querySelector(`.comments`);
   setStatic(iconLike, urlIconLike);
-  setStatic(iconComment, urlComments);
+  setStatic(iconComment, urlIconComment);
+  
   setTitle(container, post);
 
   setContent(container, post);

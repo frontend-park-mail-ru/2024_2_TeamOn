@@ -416,7 +416,7 @@ function controlVideo(container: any) {
   container.videoInitialized = true; // Устанавливаем флаг инициализации
   const fullhdButton = container.querySelector(`.full_hd`);
   const iconVolume = container.querySelector(`.volume-icon-test`);
-  const iconDownload = container.querySelector(`..video-hud__download`);
+  const iconDownload = container.querySelector(`.video-hud__download`);
   const iconPlay = container.querySelector(`.play-button`);
   if (fullhdButton) {
     setStatic(fullhdButton, urlFullHD);
