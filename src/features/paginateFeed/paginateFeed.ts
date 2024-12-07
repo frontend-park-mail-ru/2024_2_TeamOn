@@ -497,13 +497,12 @@ function controlVideo(container: any) {
     }, 3000); // Вы можете изменить время на ваше усмотрение
   };
 
-  const handleMouseOut = () => {
+  const handleMouseOut = (e: any) => {
     const videoHud: any = container.querySelector(`.video-hud`);
     if (window.innerWidth <= 768) {
       videoHud.style.opacity = 1;
       return;
     }
-    closeButton.style.opacity = "0";
     videoHud.classList.remove("active");
     // Очищаем таймер, если мышь выходит за пределы контейнера
     if (hideHudTimeout) {
