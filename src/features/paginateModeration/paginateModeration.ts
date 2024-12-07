@@ -7,7 +7,7 @@ import {
 } from "../../shared/consts/consts";
 import { getModerationPosts } from "../getModerationPosts/getModerationPosts";
 import { renderTo, update } from "../../../lib/vdom/lib";
-import { containerMediaPost } from "../../widgest/moderation/ui/post/post";
+import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 import { getAvatar } from "../getavatar/getavatar";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { convertISOToRussianDate } from "../../shared/utils/parsedate";
@@ -40,11 +40,11 @@ async function renderModalBlockPost(container: any, post: any) {
 
   // Обработчик события change для чекбокса
   inputCheck.addEventListener("change", () => {
-    const dontShowAgain = inputCheck.checked; // Используем checked вместо check
+    const dontShowAgain = inputCheck.checked;
     if (dontShowAgain) {
       localStorage.setItem("dontShowBlockPostModal", "true");
     } else {
-      localStorage.setItem("dontShowBlockPostModal", "false"); // Удаляем, если чекбокс снят
+      localStorage.setItem("dontShowBlockPostModal", "false");
     }
   });
 
@@ -246,15 +246,17 @@ async function modifirePostsModeration(
  * Рендерит скелет популярных постов
  * @returns
  */
-async function renderApprovePosts(approvePosts: any) {
+async function renderPublishPosts(approvePosts: any) {
   const postsPromises = approvePosts.map(async (post: any) => {
     const container = await containerPost(post);
+
     const div = renderTo(container);
+
     const containerMedia: any = await containerMediaPost(post.postID);
     if (containerMedia) {
       let arrayMedia: any = [];
       containerMedia[0].forEach((media: any) => {
-        const divMedia = renderTo(media);
+        const divMedia = renderTo(media, "content-media");
         arrayMedia.push(divMedia);
       });
       const place: any = div.querySelector(`.container-image-photos`);
@@ -264,6 +266,7 @@ async function renderApprovePosts(approvePosts: any) {
   });
 
   const posts = await Promise.all(postsPromises);
+  console.log(posts);
   return posts;
 }
 
@@ -324,22 +327,22 @@ async function paginateModeration(
         if (activeRequests.has(requestId)) return; // Проверяем, был ли этот запрос уже отправлен
         activeRequests.add(requestId);
 
-        const approvePosts: any = await getModerationPosts(
+        const publishPosts: any = await getModerationPosts(
           offsetApprove,
           "PUBLISHED",
         );
-        const nextApprovePosts = approvePosts.slice(0, QUERY.LIMIT);
-        if (nextApprovePosts.length > 0) {
-          allApprovePosts.push(...nextApprovePosts);
+        const nextPublishPosts = publishPosts.slice(0, QUERY.LIMIT);
+        if (nextPublishPosts.length > 0) {
+          allApprovePosts.push(...nextPublishPosts);
           console.log(allApprovePosts);
           offsetApprove += QUERY.LIMIT;
           containerApprovePosts.append(
-            ...(await renderApprovePosts(nextApprovePosts)),
+            ...(await renderPublishPosts(nextPublishPosts)),
           );
           modifirePostsModeration(
             containerApprovePosts,
             containerReportedPosts,
-            nextApprovePosts.reverse(),
+            nextPublishPosts.reverse(),
             [],
           );
         } else {

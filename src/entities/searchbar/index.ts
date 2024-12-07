@@ -33,7 +33,7 @@ async function showSearch(container: any) {
   });
 
   pageContainer.addEventListener("click", (e: any) => {
-    if (e.target === results || find) {
+    if (e.target === results || e.target === find) {
       return;
     }
     results.style.display = "none";

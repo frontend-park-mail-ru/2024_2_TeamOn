@@ -9,7 +9,7 @@ export async function settingsContainer() {
       {await Sidebar()}
       <div class="container">
         <h1>Настройки</h1>
-        <div class="tabs"></div>
+        <div class="tabs settings"></div>
         <div class="content-container">
           <div class="mask_settings">
             <div class="loader_settings"></div>
@@ -30,11 +30,11 @@ async function renderStat() {
   return (
     <div class="container-static" style={inlineStyleFlag}>
       <div class="stat-posts">
-        <div class="graphic-posts">
+        <div class="graphic-posts" style="width: 905px">
           <p>
             <i style="font-weight: bold;">Статистика постов </i>
           </p>
-          <canvas class="canv-posts" width="800" height="300"></canvas>
+          <canvas class="canv-posts" width="900" height="300"></canvas>
         </div>
         <div class="table-posts">
           <table class="table-stat-posts">
@@ -56,11 +56,11 @@ async function renderStat() {
         </div>
       </div>
       <div class="stat-posts">
-        <div class="graphic-payments">
+        <div class="graphic-payments" style="width: 905px">
           <p>
             <i style="font-weight: bold;">Статистика выплат</i>
           </p>
-          <canvas class="canv-payments" width="800" height="300"></canvas>
+          <canvas class="canv-payments" width="900" height="300"></canvas>
         </div>
         <div class="tables">
           <div class="table-payments">

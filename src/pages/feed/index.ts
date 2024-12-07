@@ -10,7 +10,10 @@ import {
 import { renderFeedForm } from "./ui/feed";
 import { paginate } from "../../features/paginateFeed/paginateFeed";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
-import { controlActiveLink } from "../../features/controlActiveLink/controlActiveLink";
+import {
+  controlActiveLink,
+  controlFeed,
+} from "../../features/controlActiveLink/controlActiveLink";
 import { renderRating } from "../../entities/rating";
 import { addResult, getQuestion } from "../settings";
 import { showSearch } from "../../entities/searchbar";
@@ -138,9 +141,7 @@ export async function renderFeed() {
 
     const tabs = container.querySelector(".tabs");
 
-    const rightContent = container.querySelector(`.right-content`);
-
-    controlActiveLink(tabs, rightContent);
+    controlActiveLink(tabs, controlFeed);
 
     const containerPopularPosts = container.querySelector(
       ".main-container-popular",

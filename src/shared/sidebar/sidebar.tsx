@@ -18,13 +18,15 @@ const Sidebar = async () => {
   let result: any;
   if (hasLogged()) {
     const userdata: any = await getAccount();
-
     sessionStorage.setItem("account", userdata.username);
     const role = userdata.role;
+    sessionStorage.setItem("role", role);
     const styleProfileIcon =
-      role === "Reader" ? "display: none" : "display: flex;";
+      role === "Reader" || role === "Moderator"
+        ? "display: none"
+        : "display: flex;";
     const styleModerationIcon =
-      role === "Reader" ? "display: none" : "display: flex;";
+      role === "Moderator" ? "display: flex" : "display: none;";
     result = (
       <div class="side">
         <div class="burger2 burger" id="nav-icon3">
@@ -48,7 +50,7 @@ const Sidebar = async () => {
               <i class="icon-settings"></i>
               Настройки
             </a>
-            <a class="referens">
+            <a class="referens" style={styleModerationIcon}>
               <i class="icon-moderation"></i>
               Модерация
             </a>

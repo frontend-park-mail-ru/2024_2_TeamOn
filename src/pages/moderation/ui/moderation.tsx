@@ -6,7 +6,7 @@ import { Sidebar } from "../../../shared/sidebar/sidebar";
 import { renderSearchbar } from "../../../entities/searchbar/index";
 import * as VDom from "vdom";
 import {
-  containerApprovePosts,
+  containerPublishPosts,
   containerBlockPost,
   containerReportedPosts,
 } from "../../../widgest/moderation";
@@ -21,7 +21,7 @@ async function renderModerationForm() {
           <a class="active"> Опубликованные </a>
           <a> Жалобы </a>
         </div>
-        {containerApprovePosts()}
+        {containerPublishPosts()}
         {containerReportedPosts()}
       </div>
       <div class="modal-view-photos" style="display: none; z-index=10101010">

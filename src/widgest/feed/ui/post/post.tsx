@@ -3,6 +3,7 @@ import { renderTo } from "../../../../../lib/vdom/lib";
 import { getMediaFiles } from "../../../../features/getMediaFiles/getMediaFiles";
 import { getUrlFiles } from "../../../../features/getUrlFiles/getUrlFiiles";
 import * as VDom from "vdom";
+import { renderPlaceAddComment } from "../../../../entities/comments";
 
 /**
  * Рендер контейнера поста
@@ -38,12 +39,17 @@ async function containerPost(post: any) {
           Показать...
         </div>
         <div class="container-image-photos"></div>
-        <div class="iteraction-section">
+        <div class="iteraction-section" style="display: flex; gap: 10px;">
           <div class="likes-container">
             <div class="likes"></div>
-            <h3 class="amount-likes"></h3>
+            <h3 class="amount-likes"> {post.likes}</h3>
+          </div>
+          <div class="comments-container">
+            <div class="comments"></div>
+            <h3 class="amount-comments"></h3>
           </div>
         </div>
+        {renderPlaceAddComment()}
       </div>
     </div>
   );
@@ -89,6 +95,13 @@ export async function containerMediaPost(postId: any) {
   //     src="https://png.pngtree.com/thumb_back/fw800/background/20230527/pngtree-phoenix-bird-in-flames-wallpapers-wallpapershd-image_2697352.jpg"
   //   ></img>
   // );
+  // const containerAudio = (
+  //   <figure class="audio">
+  //     <figcaption></figcaption>
+  //     <audio controls src="https://samplelib.com/lib/preview/mp3/sample-3s.mp3"></audio>
+
+  //   </figure>
+  // )
   // const containerFileDev3 = (
   //   <div class="image-photo video-container">
   //     <video
@@ -105,6 +118,7 @@ export async function containerMediaPost(postId: any) {
   // arrayMedia.push(containerFileDev);
   // arrayMedia.push(containerFileDevImg);
   // arrayMedia.push(containerFileDev3);
+  // arrayMedia.push(containerAudio);
 
   // function removeRandomElements(arr: any, count: number) {
   //   const result = [...arr]; // Создаем копию массива, чтобы не изменять оригинал
@@ -156,6 +170,13 @@ export async function containerMediaPost(postId: any) {
               preload="metadata"
             ></video>
           </div>
+        );
+      } else if (isAudio) {
+        containerFile = (
+          <figure class="audio">
+            <figcaption></figcaption>
+            <audio controls src={response.url}></audio>
+          </figure>
         );
       } else {
         containerFile = (

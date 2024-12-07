@@ -557,7 +557,7 @@ async function createStat() {
   const formContainer = document.createElement("div");
   formContainer.className = "form-container-stat";
   update(formContainer, await renderStat());
-
+  if (sessionStorage.getItem("settings") !== "2") return formContainer;
   const postsYear: any = {
     valuesY: [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3],
     valuesX: [
@@ -799,7 +799,7 @@ async function createStat() {
   buttonSetDayPayments.addEventListener("click", () => {
     const canv: any = formContainer.querySelector(`.canv-payments`);
     const ctx = canv.getContext("2d");
-
+    canv.innerHTML = "";
     // Очистка канваса
     ctx.clearRect(0, 0, canv.width, canv.height);
     renderContainerGraphicPayments(formContainer, paymentsDay, "Часы");
@@ -898,7 +898,7 @@ function renderContainerGraphicPosts(
   const dataPosts = posts.valuesY;
   const labelsPosts = posts.valuesX;
 
-  adjustCanvasWidth(canvas, posts.valuesX.length);
+  // adjustCanvasWidth(canvas, posts.valuesX.length);
 
   renderGraphics(
     canvas,
@@ -921,7 +921,7 @@ function renderContainerGraphicPayments(
 
   const labelsPayments = payments.valuesX;
 
-  adjustCanvasWidth(canvasPayments, payments.valuesX.length);
+  // adjustCanvasWidth(canvasPayments, payments.valuesX.length);
 
   renderGraphics(
     canvasPayments,
@@ -964,6 +964,7 @@ function renderGraphics(
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Рисуем оси
+  ctx.strokeStyle = "black";
   ctx.beginPath();
   ctx.moveTo(padding + leftOffset, padding);
   ctx.lineTo(padding + leftOffset, canvas.height - padding);
@@ -1012,6 +1013,7 @@ function renderGraphics(
 
   function animateLine() {
     if (currentIndex < data.length - 1) {
+      ctx.strokeStyle = "black";
       ctx.beginPath();
       const startX =
         padding + leftOffset + (width / (data.length - 1)) * currentIndex;
@@ -1034,7 +1036,6 @@ function renderGraphics(
         }
       }
 
-      ctx.strokeStyle = "blue";
       ctx.stroke();
       currentIndex++;
       setTimeout(animateLine, animationSpeed); // Задержка перед следующим кадром
@@ -1045,7 +1046,7 @@ function renderGraphics(
   animateLine();
 
   // Рисуем точки на графике
-  ctx.strokeStyle = "blue"; // Цвет обводки точек
+  ctx.strokeStyle = "black"; // Цвет обводки точек
   data.forEach((value: any, index: number) => {
     const x = padding + leftOffset + (width / (data.length - 1)) * index;
     const y = canvas.height - padding - value * scaleY;
@@ -1096,7 +1097,7 @@ function renderGraphics(
 async function createFeedback() {
   const formContainer = document.createElement("div");
   formContainer.className = "form-container-feedback";
-
+  if (sessionStorage.getItem("settings") !== "3") return formContainer;
   const formTitle = document.createElement("h2");
   formTitle.textContent = "Статистика";
   formContainer.appendChild(formTitle);

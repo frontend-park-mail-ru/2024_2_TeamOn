@@ -236,6 +236,7 @@ async function controlCustomSubscriptions(container: any) {
     const handleClickCancel = (e: any) => {
       modalAddSubs.style.display = "none";
       profileForm.classList.remove("blur");
+      document.body.style.overflow = "auto";
       overlay.remove();
       return;
     };
@@ -380,6 +381,14 @@ export async function controlBecomeCreator(div: any) {
  */
 export async function renderProfile() {
   try {
+    if (
+      (sessionStorage.getItem("role") === "Reader" ||
+        sessionStorage.getItem("role") === "Moderator") &&
+      window.location.pathname === "/profile"
+    ) {
+      route(LINKS.FEED.HREF);
+      return;
+    }
     showLoader();
     document.body.style.overflow = "auto";
     setTitle(LINKS.PROFILE.TEXT);

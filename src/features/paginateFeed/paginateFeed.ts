@@ -1,9 +1,9 @@
 import { ELEMENTS_CLASS, LINKS, QUERY } from "../../shared/consts/consts";
 import { getPopularPosts } from "../getPopularPosts/getPopularPosts";
 import { getRecentlyPosts } from "../getRecentlyPosts/getRecentlyPosts";
-import { containerPost } from "../../widgest/feed";
+import { containerComment, containerPost } from "../../widgest/feed";
 import { renderTo, update } from "../../../lib/vdom/lib";
-import { AddLikeOnPost } from "../../entities/likes";
+import { AddLikeOnPost, setLike } from "../../entities/likes";
 import { convertISOToRussianDate } from "../../shared/utils/parsedate";
 import { route } from "../../shared/routing/routing";
 import { getAvatar } from "../getavatar/getavatar";
@@ -11,10 +11,25 @@ import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { showOverlay } from "../../shared/overlay/overlay";
-import { modal, renderComplaintPost } from "../../pages/feed/ui/feed";
+import { modal, renderComplaint } from "../../pages/feed/ui/feed";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { setStatic } from "../../shared/getStatic/getStatic";
-import { urlIconLike } from "../../app";
+import {
+  urlFullHD,
+  urlIconLike,
+  urlRemoveButtonFile,
+  urlVideoDownload,
+  urlVideoPlay,
+  urlVideoStop,
+  urlVideoVolume,
+  urlVideoVolumeMute,
+} from "../../app";
+import { getPageAuthor } from "../getpageauthor/getpageauthor";
+import { hideLoader, showLoader } from "../../pages/feed";
+import { addUserPost } from "../../entities/userPost";
+import { getUserPosts } from "../getuserposts/getUserPosts";
+import { addComment } from "../../entities/comments/api/api";
+import { setComments } from "../controlAdaptivePageAuthor/controlAdaptivePageAuthor";
 
 export function controlSlideShow(container: any, rightContainer: any) {
   const modalPhotos: any = document.querySelector(`.modal-view-photos`); //
@@ -38,10 +53,20 @@ export function controlSlideShow(container: any, rightContainer: any) {
   const videoHud: any = modalPhotos.querySelector(`.video-hud`);
   const video: any = Array.from(container.querySelectorAll(".video-player"));
   console.log(video);
-  const allContent: any = Array.from(
+  let allContent: any = Array.from(
     container.querySelectorAll(".content-media"),
   );
+  // Функция для проверки, является ли элемент видео
+  const isAudio = (element: any) => {
+    // Предположим, что видео имеет тег <video> внутри элемента
+    return element.querySelector(".audio") !== null;
+  };
 
+  // Фильтруем массив, исключая элементы, которые содержат видео
+  const filteredContent = allContent.filter(
+    (element: any) => !isAudio(element),
+  );
+  allContent = filteredContent;
   let imgAvatar: any = container.querySelector(`.author-avatar`);
   const toggleButton: any = container.querySelector(".toggleButton");
   if (!imgAvatar) {
@@ -61,7 +86,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
         allContent[currentIndex].querySelector(`.video-player`);
       imageModal.style.display = "none";
       videoModal.style.display = "block";
-      videoHud.style.display = "flex";
+      videoHud.style.display = "block";
       videoModal.src = placeVideo.src;
 
       const modalContainerPhotos: any = document.querySelector(
@@ -103,13 +128,20 @@ export function controlSlideShow(container: any, rightContainer: any) {
       rightArrow.addEventListener("click", touchRightArrow);
     }
 
-    if (isMobile() && imageModal.style.display !== "none") {
+    if (isMobile() && videoModal.style.display === "none") {
       let startX = 0;
       let endX = 0;
       let startY = 0;
       let endY = 0;
+      let isClick = false;
+      let isSwipe = false;
+      let fullScreen = false;
 
       modalPhotos.addEventListener("click", (event: any) => {
+        if (isMobile()) {
+          return;
+        }
+
         document.body.style.overflow = "auto";
         modalPhotos.style.display = "none";
         rightContent.classList.remove("blackout");
@@ -119,13 +151,70 @@ export function controlSlideShow(container: any, rightContainer: any) {
       modalPhotos.addEventListener("touchstart", (event: any) => {
         startX = event.touches[0].clientX;
         startY = event.touches[0].clientY;
+        isClick = true; // Предполагаем, что это клик
+        isSwipe = false; // Сбрасываем флаг свайпа
       });
 
       modalPhotos.addEventListener("touchmove", (event: any) => {
         endX = event.touches[0].clientX;
         endY = event.touches[0].clientY;
+        // Проверяем, достаточно ли перемещение для свайпа
+        const deltaX = endX - startX;
+        const deltaY = endY - startY;
+
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+          isSwipe = true;
+          isClick = false;
+        }
       });
+
+      var handleClick = () => {
+        if (isSwipe) return;
+        if (videoModal.style.display === "block") {
+          const slideShow: any = document.querySelector(`.slideshow`);
+          var videoPlayer: any = document.querySelector(".video-modal");
+
+          slideShow.style.pointerEvents = "none";
+          slideShow.style.userSelect = "none";
+
+          if (container.style.width == "800px" || !container.style.width) {
+            if (window.innerWidth > 768) {
+              container.style.width = "100%";
+              videoPlayer.style.height = "1045px";
+            }
+            if (!document.fullscreenElement) {
+              // Проверяем, в полноэкранном ли режиме
+              if (videoPlayer.requestFullscreen) {
+                videoPlayer.requestFullscreen();
+                fullScreen = true;
+              } else if (videoPlayer.webkitRequestFullscreen) {
+                // Safari
+                videoPlayer.webkitRequestFullscreen();
+                fullScreen = true;
+              } else if (videoPlayer.msRequestFullscreen) {
+                // IE11
+                videoPlayer.msRequestFullscreen();
+                fullScreen = true;
+              }
+            }
+          } else {
+            if (window.innerWidth <= 768) {
+              container.style.width = "390px";
+              return;
+            }
+            container.style.width = "800px";
+            videoPlayer.style.height = "450px";
+            slideShow.style.userSelect = "";
+            slideShow.style.pointerEvents = "";
+          }
+          isClick = true;
+          return;
+        }
+      };
       var handleTouched = (e: any) => {
+        if (isClick) return;
+        e.stopPropagation();
+        if (document.fullscreenElement) return;
         if (allContent.length == 1) return;
         if (startX > endX + 50) {
           // Свайп влево
@@ -141,30 +230,31 @@ export function controlSlideShow(container: any, rightContainer: any) {
         } else if (startY > endY + 50) {
           animateImageTransition(0, currentIndex, -100); // Сдвигаем влево
         }
+        isSwipe = true;
       };
+      videoModal.addEventListener("click", handleClick);
       modalPhotos.addEventListener("touchend", handleTouched);
     }
     // const handleM
     if (!isMobile()) {
       // Обработка кликов
-      if (imageModal.style.display !== "none")
-        modalPhotos.addEventListener("click", (event: any) => {
-          event.stopPropagation();
-
-          const width = modalPhotos.clientWidth; // Получаем ширину элемента slideshow
-          const midPoint = 1018; // Находим середину элемента
-          // Если клик был в правой половине
-          if (event.clientX > midPoint) {
-            currentIndex = (currentIndex + 1) % allContent.length;
-            updateImage(currentIndex);
-          }
-          // Если клик был в левой половине
-          else {
-            currentIndex =
-              (currentIndex - 1 + allContent.length) % allContent.length;
-            updateImage(currentIndex);
-          }
-        });
+      modalPhotos.addEventListener("click", (event: any) => {
+        if (videoModal.style.display === "block") return;
+        event.stopPropagation();
+        const width = modalPhotos.clientWidth; // Получаем ширину элемента slideshow
+        const midPoint = 1018; // Находим середину элемента
+        // Если клик был в правой половине
+        if (event.clientX > midPoint) {
+          currentIndex = (currentIndex + 1) % allContent.length;
+          updateImage(currentIndex);
+        }
+        // Если клик был в левой половине
+        else {
+          currentIndex =
+            (currentIndex - 1 + allContent.length) % allContent.length;
+          updateImage(currentIndex);
+        }
+      });
     }
     if (closeModal) {
       const handleCliclCancel = () => {
@@ -323,25 +413,37 @@ export function controlSlideShow(container: any, rightContainer: any) {
 }
 
 function controlVideo(container: any) {
-  if (container.videoInitialized) {
-    return; // Если да, выходим из функции
-  }
   container.videoInitialized = true; // Устанавливаем флаг инициализации
-
+  const fullhdButton = container.querySelector(`.full_hd`);
+  const iconVolume = container.querySelector(`.volume-icon-test`);
+  const iconDownload = container.querySelector(`..video-hud__download`);
+  const iconPlay = container.querySelector(`.play-button`);
+  if (fullhdButton) {
+    setStatic(fullhdButton, urlFullHD);
+  }
+  if (iconVolume) {
+    setStatic(iconVolume, urlVideoVolume);
+  }
+  if (iconDownload) {
+    setStatic(iconDownload, urlVideoDownload);
+  }
+  if (iconPlay) {
+    setStatic(iconPlay, urlVideoPlay);
+  }
   //Плеер
   var videoPlayer = container.querySelector(".video-modal");
   //Время
-  var progressBar = container.querySelector(".video-hud__progress-bar");
+  var progressBar = container.querySelector(".progress-test");
   var currTime = container.querySelector(".video-hud__curr-time");
   var durationTime = container.querySelector(".video-hud__duration");
   // //Кнопки
   var actionButton = container.querySelector(".video-hud__action");
-  var muteButton = container.querySelector(".video-hud__mute");
+  var muteButton = container.querySelector(".volume-icon-test");
   var volumeScale = container.querySelector(".video-hud__volume");
   var speedSelect = container.querySelector(".video-hud__speed");
   const buttonFullHD = container.querySelector(`.full_hd`);
   const slideShow: any = document.querySelector(`.slideshow`);
-
+  var divVolumeScale = container.querySelector(".div-volumescale");
   actionButton.removeEventListener("click", videoAct);
   videoPlayer.removeEventListener("click", videoAct);
   videoPlayer.removeEventListener("timeupdate", videoProgress);
@@ -350,18 +452,27 @@ function controlVideo(container: any) {
   volumeScale.removeEventListener("change", videoChangeVolume);
   speedSelect.removeEventListener("change", videoChangeSpeed);
 
-  const buttonDownload: any = container.querySelector(`.video-hud__download`);
+  const buttonDownload: any = container.querySelector(`.download_video`);
   buttonDownload.href = videoPlayer.src;
-  // const handleMouseMove = () => {
-  //   const videoHud: any = container.querySelector(`.video-hud`);
-  //   videoHud.style.opacity = "1";
-  // };
-  // const handleMouseOut = () => {
-  //   const videoHud: any = container.querySelector(`.video-hud`);
-  //   videoHud.style.opacity = "0";
-  // };
 
   let hideHudTimeout: any;
+  const hideVolumeScale = () => {
+    divVolumeScale.style.display = "none";
+    volumeScale.style.display = "none";
+  };
+  const showVolumeScale = (e: any) => {
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    if (e.target === volumeScale || e.target === muteButton) {
+      divVolumeScale.style.display = "block";
+      volumeScale.style.display = "block";
+    }
+  };
+  muteButton.removeEventListener("mouseleave", hideVolumeScale);
+  muteButton.removeEventListener("mouseenter", showVolumeScale);
+
+  muteButton.addEventListener("mouseleave", hideVolumeScale);
+  muteButton.addEventListener("mouseenter", showVolumeScale);
 
   const handleMouseMove = () => {
     const videoHud: any = container.querySelector(`.video-hud`);
@@ -369,7 +480,6 @@ function controlVideo(container: any) {
       videoHud.style.opacity = 1;
       return;
     }
-    // videoHud.style.opacity = "1";
     videoHud.classList.add("active");
     // Если мышь движется, сбрасываем таймер
     if (hideHudTimeout) {
@@ -379,7 +489,6 @@ function controlVideo(container: any) {
     // Устанавливаем новый таймер для скрытия элементов управления через 3 секунды (3000 мс)
     hideHudTimeout = setTimeout(() => {
       videoHud.classList.remove("active");
-      // videoHud.style.opacity = "0";
     }, 3000); // Вы можете изменить время на ваше усмотрение
   };
 
@@ -389,15 +498,14 @@ function controlVideo(container: any) {
       videoHud.style.opacity = 1;
       return;
     }
-    // videoHud.style.opacity = "0";
     videoHud.classList.remove("active");
     // Очищаем таймер, если мышь выходит за пределы контейнера
     if (hideHudTimeout) {
       clearTimeout(hideHudTimeout);
     }
   };
-  const handleClickFullHD = (e: any) => {
-    e.stopPropagation();
+  const handleClickFullHD = (e: any = null) => {
+    if (e) e.stopPropagation();
     slideShow.style.pointerEvents = "none";
     slideShow.style.userSelect = "none";
 
@@ -431,6 +539,13 @@ function controlVideo(container: any) {
       slideShow.style.pointerEvents = "";
     }
   };
+  if (window.innerWidth <= 768) {
+    const modalPhotos: any = document.querySelector(`.modal-view-photos`); //
+    const videoHud: any = modalPhotos.querySelector(`.video-hud`);
+    if (videoHud.style.display === "none") return;
+    handleClickFullHD();
+    return;
+  }
   const handleKeyPress = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
       if (window.innerWidth <= 768) {
@@ -453,21 +568,23 @@ function controlVideo(container: any) {
   videoPlayer.addEventListener("mousemove", handleMouseMove);
   videoPlayer.addEventListener("mouseout", handleMouseOut);
   document.addEventListener("keydown", handleKeyPress);
-  function videoAct(e: any) {
-    e.stopPropagation();
+  function videoAct() {
+    // e.stopPropagation();
     //Запускаем или ставим на паузу
     if (videoPlayer.paused) {
       videoPlayer.play();
       actionButton.setAttribute(
         "class",
-        "video-hud__element video-hud__action video-hud__action_play",
+        "play-button video-hud__element video-hud__action video-hud__action_play",
       );
+      setStatic(iconPlay, urlVideoPlay);
     } else {
       videoPlayer.pause();
       actionButton.setAttribute(
         "class",
-        "video-hud__element video-hud__action video-hud__action_pause",
+        "play-button stop video-hud__element video-hud__action",
       );
+      setStatic(iconPlay, urlVideoStop);
     }
     if (durationTime.innerHTML == "00:00") {
       durationTime.innerHTML = videoTime(videoPlayer.duration); //Об этой функции чуть ниже
@@ -475,6 +592,13 @@ function controlVideo(container: any) {
   }
   if (window.innerWidth <= 768) {
     videoHud.style.opacity = 1;
+  }
+
+  if (videoPlayer.paused) {
+    actionButton.setAttribute(
+      "class",
+      "play-button stop video-hud__element video-hud__action",
+    );
   }
   // Запуск, пауза
   actionButton.addEventListener("click", videoAct);
@@ -532,32 +656,23 @@ function controlVideo(container: any) {
     //Меняем громкость
     var volume = volumeScale.value / 100;
     videoPlayer.volume = volume;
-    if (videoPlayer.volume == 0) {
-      muteButton.setAttribute(
-        "class",
-        "video-hud__element video-hud__mute video-hud__mute_true",
-      );
-    } else {
-      muteButton.setAttribute(
-        "class",
-        "video-hud__element video-hud__mute video-hud__mute_false",
-      );
+    muteButton.classList.remove("stop");
+    setStatic(iconVolume, urlVideoVolume);
+    if (volume === 0) {
+      muteButton.classList.add("stop");
+      setStatic(iconVolume, urlVideoVolumeMute);
     }
   }
-  function videoMute() {
+  function videoMute(event: any) {
+    event.stopImmediatePropagation();
+    if (event.target == container.querySelector(`.video-hud__volume`)) return;
     //Убираем звук
     if (videoPlayer.volume == 0) {
+      muteButton.classList.remove("stop");
       videoPlayer.volume = volumeScale.value / 100;
-      muteButton.setAttribute(
-        "class",
-        "video-hud__element video-hud__mute video-hud__mute_false",
-      );
     } else {
+      muteButton.classList.add("stop");
       videoPlayer.volume = 0;
-      muteButton.setAttribute(
-        "class",
-        "video-hud__element video-hud__mute video-hud__mute_true",
-      );
     }
   }
   function videoChangeSpeed() {
@@ -601,7 +716,7 @@ function modifierModalComplaintPost(
 ) {
   dropdownmenu.classList.remove(ELEMENTS_CLASS.ACTIVE);
   const place = document.querySelector(`.complaint-form`);
-  const modal: any = renderComplaintPost(post);
+  const modal: any = renderComplaint(post);
   update(place, modal);
 
   const modalsDelete: any = document.querySelector(".modal__deletepost");
@@ -638,12 +753,78 @@ function modifierModalComplaintPost(
   buttonCancel.addEventListener("click", handleClickCancel);
   overlay.addEventListener("click", handleClickCancel);
 }
+async function customizeComment(container: any, comment: any) {
+  const content: any = container.querySelector(`.comment-title`);
+  content.innerHTML = `${comment.content}`;
+
+  const username = container.querySelector(`.author-comment-name`);
+  username.addEventListener("click", () => {
+    gotoauthor(comment.authorId);
+  });
+  const buttonDelete = container.querySelector(`.button-delete-comment`);
+  const divDeleteButton = container.querySelector(`.container-delete-comment`);
+  const handleClickDeleteComent = () => {
+    modifierModalDeleteComment(comment);
+  };
+  if (
+    sessionStorage.getItem("account") === comment.authorUsername &&
+    hasLogged()
+  ) {
+    divDeleteButton.style.display = "flex"; // ИСПРАВИТЬ!
+    buttonDelete.addEventListener("click", handleClickDeleteComent);
+  }
+
+  const rightContainer = document.querySelector(`.right-content`);
+  controlSlideShow(container, rightContainer);
+}
+function modifierModalDeleteComment(comment: any) {
+  const mainContent: any = document.querySelector(`.right-content`);
+  const place = document.querySelector(`.delete-comment-form`);
+  const modal: any = renderComplaint(comment, true);
+  update(place, modal);
+
+  const modalsDelete: any = document.querySelector(".modal__deletepost");
+  const overlay: any = showOverlay(modalsDelete, mainContent);
+  const buttonCancel: any = modalsDelete.querySelector(`.cancel`);
+  const buttonBlock: any = modalsDelete.querySelector(`.delete`);
+
+  modalsDelete.style.display = "block";
+  mainContent.classList.add("blur");
+
+  const handleClickCancel = (e: any) => {
+    e.preventDefault();
+    modalsDelete.style.display = "none";
+    mainContent.classList.remove("blur");
+    document.body.style.overflow = "auto";
+    overlay.remove();
+    return;
+  };
+
+  const handleClickBlock = async (e: any) => {
+    // e.preventDefault();
+    showLoader();
+    try {
+      const response: any = await complaintPost({
+        postID: comment.postId,
+      });
+      modalsDelete.style.display = "none";
+      mainContent.classList.remove("blur");
+      document.body.style.overflow = "auto";
+      overlay.remove();
+    } finally {
+      hideLoader();
+    }
+  };
+  buttonBlock.addEventListener("click", handleClickBlock);
+  buttonCancel.addEventListener("click", handleClickCancel);
+  overlay.addEventListener("click", handleClickCancel);
+}
 /**
  * Кастомизирует каждый пост, который к нему пришел
  * @param container Контейнер ( популярных | недавних постов )
  * @param post Пост
  */
-async function customizePost(container: any, post: any = null) {
+async function customizePost(container: any, post: any) {
   const authorSection: any = container.querySelector(
     `.${ELEMENTS_CLASS.POST.AUTHOR.NAME}`,
   );
@@ -684,54 +865,15 @@ async function customizePost(container: any, post: any = null) {
   const date: any = container.querySelector(`.${ELEMENTS_CLASS.POST.DATE}`);
   date.textContent = convertISOToRussianDate(post.createdAt);
 
-  const divLikes: any = container.querySelector(`.likes-container`);
-  const iconLike: any = divLikes.querySelector(`.likes`);
+  const iconLike: any = container.querySelector(`.likes`);
   setStatic(iconLike, urlIconLike);
 
-  if (divLikes) {
-    const amountLike: any = container.querySelector(
-      `.${ELEMENTS_CLASS.POST.LIKES.AMOUNT}`,
-    );
-    amountLike.innerHTML = `${post.likes}`;
+  setComments(container, post);
 
-    // Установка состояния лайка
-    if (post.isLiked) {
-      divLikes.classList.add("active");
-    } else {
-      divLikes.classList.remove("active");
-    }
+  setLike(container, post);
 
-    const divLike: any = container.querySelector(
-      `.${ELEMENTS_CLASS.POST.LIKES.BLOCK}`,
-    );
-    divLike.addEventListener("click", async () => {
-      if (!hasLogged()) {
-        route(LINKS.LOGIN.HREF);
-        return;
-      }
-      if (post.isLiked) {
-        // Удалить лайк
-        const likeCount: any = await AddLikeOnPost(post.postId);
-        post.isLiked = false; // Обновляем состояние
-        post.likes = likeCount.count; // Обновляем количество лайков
-        divLikes.classList.remove("active");
-      } else {
-        // Добавить лайк
-        const likeCount: any = await AddLikeOnPost(post.postId);
-        post.isLiked = true; // Обновляем состояние
-        post.likes = likeCount.count; // Обновляем количество лайков
-        divLikes.classList.add("active");
-      }
-      amountLike.innerHTML = `${post.likes}`; // Обновляем отображаемое количество лайков
-    });
-  }
-  const videos: any = container.querySelectorAll(`.video-container`);
-  videos.forEach((video: any) => {
-    const vi: any = video.querySelector(`.video-player`);
-    vi.addEventListener("loadeddata", () => {
-      captureFrame(vi);
-    });
-  });
+  setCapture(container);
+
   const rightContainer = document.querySelector(`.right-content`);
   controlSlideShow(container, rightContainer);
 
@@ -758,11 +900,38 @@ async function customizePost(container: any, post: any = null) {
   };
 
   menu.addEventListener("click", handleClickMenu);
-
-  //Получаем объекты
-  // controlVideo(container);
 }
+export function setCapture(container: any) {
+  const videos: any = container.querySelectorAll(`.video-container`);
+  videos.forEach((video: any) => {
+    const vi: any = video.querySelector(`.video-player`);
+    vi.addEventListener("loadeddata", () => {
+      captureFrame(vi);
+    });
+  });
+}
+export async function modifireComments(containerComments: any, comments: any) {
+  try {
+    if (comments.length > 0) {
+      const containersComments =
+        containerComments.querySelectorAll(`.comment-item`);
 
+      await Promise.all(
+        Array.from(containersComments)
+          .slice(-comments.length)
+          .map((container: any, index: any) => {
+            return customizeComment(
+              container,
+              comments[comments.length - 1 - index],
+            );
+          }),
+      );
+    }
+  } catch (error) {
+    console.log("ERROR in modifireComments in feed");
+    throw error;
+  }
+}
 /**
  * Берет каждый пост и наполняет его
  * @param containerPopularPosts Контейнер популярных постов
@@ -780,7 +949,6 @@ async function modifirePosts(
       const containersPopularPosts = containerPopularPosts.querySelectorAll(
         `.${ELEMENTS_CLASS.POST.FEED.BLOCK}`,
       );
-
       // Используем Promise.all для обработки популярных постов параллельно
       await Promise.all(
         Array.from(containersPopularPosts)
@@ -813,12 +981,29 @@ async function modifirePosts(
       );
     }
   } catch (error) {
-    console.log("ERROR");
+    console.log("ERROR in modifirePosts in feed");
     throw error;
   }
 }
+function isVideoElement(video: any) {
+  return (
+    video instanceof HTMLVideoElement &&
+    video.videoWidth > 0 &&
+    video.videoHeight > 0
+  );
+}
 // Функция для извлечения кадра
-function captureFrame(video: HTMLVideoElement) {
+function captureFrame(video: any) {
+  const src = video.src;
+  if (!src) {
+    console.error("Video source (src) is not set.");
+    return false;
+  }
+
+  if (!isVideoElement(video)) {
+    console.error("Provided element is not a valid video element.");
+    return;
+  }
   // Установите текущее время видео на 1 секунду
   video.currentTime = 1;
 
@@ -898,7 +1083,74 @@ async function renderRecentlyPosts(recentlyPosts: any) {
   const posts = await Promise.all(postsPromises);
   return posts;
 }
+export async function paginateComments(
+  activeRequests: any,
+  allComments: any,
+  containerComments: any,
+) {
+  let stopLoadComments: boolean = false;
+  let offset = 0;
+  let isLoading = false;
+  async function loadComments() {
+    if (isLoading) return;
+    isLoading = true;
 
+    try {
+      if (!stopLoadComments) {
+        const requestId = `comments-${offset}`;
+        if (activeRequests.has(requestId)) return;
+        activeRequests.add(requestId);
+
+        const comments: any = await getPopularPosts(offset);
+        const nextComments = comments.slice(0, QUERY.LIMIT);
+        if (nextComments.length > 0) {
+          allComments.push(...nextComments);
+          offset += QUERY.LIMIT;
+          containerComments.append(...(await renderComments(nextComments)));
+          modifireComments(containerComments, nextComments.reverse());
+        } else {
+          stopLoadComments = true;
+        }
+      }
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  await loadComments();
+
+  // Обработчик события прокрутки
+  let isLoadingTop = false;
+
+  window.addEventListener("scroll", async () => {
+    const { scrollTop, clientHeight, scrollWidth } = document.documentElement;
+
+    // Проверяем, достиг ли пользователь нижней части страницы
+    if (scrollTop + clientHeight >= 3000 && !isLoadingTop) {
+      isLoadingTop = true;
+      await loadComments();
+      isLoadingTop = false;
+    }
+  });
+}
+export async function renderComments(comments: any) {
+  const commentsPromises = comments.map(async (comment: any) => {
+    const container = await containerComment(comment);
+
+    const div = renderTo(container, "container-comment");
+    const avatarImage: any = div.querySelector(`.author-comment-avatar`);
+    const avatarLoad: any = await getAvatar(
+      window.location.pathname,
+      comment.authorId,
+    );
+    avatarImage.src = avatarLoad;
+    avatarImage.height = 50;
+    avatarImage.width = 50;
+    return div;
+  });
+  const commentsRes = await Promise.all(commentsPromises);
+  return commentsRes;
+}
 async function paginate(
   activeRequests: any,
   allPopularPosts: any,

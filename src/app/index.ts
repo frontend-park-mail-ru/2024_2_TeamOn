@@ -199,6 +199,14 @@ export const urlLogin: any = await getUrlStatic("/login.png");
 export const urlSignup: any = await getUrlStatic("/signup.png");
 export const urlEyeSeePassword: any = await getUrlStatic("/eye_see.png");
 export const urlEyeNoSeePassword: any = await getUrlStatic("/eye_nsee.png");
+export const urlComments: any = await getUrlStatic("/send.png");
+export const urlVideoDownload: any = await getUrlStatic("/forward.png");
+export const urlSendComment: any = await getUrlStatic("/sendblue.png");
+export const urlVideoVolume: any = await getUrlStatic("/volume.png");
+export const urlVideoVolumeMute: any = await getUrlStatic("/volumeStop.png");
+export const urlFullHD: any = await getUrlStatic("/shar.png");
+export const urlVideoPlay: any = await getUrlStatic("/playArrow.png");
+export const urlVideoStop: any = await getUrlStatic("/stopArrow.png");
 
 if (flag) {
   let root: HTMLElement | null = startA(config.menu, state);

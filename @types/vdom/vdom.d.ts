@@ -44,6 +44,8 @@ declare module "vdom" {
       video: { [key: string]: any };
       progress: { [key: string]: any };
       main: { [key: string]: any };
+      figure: { [key: string]: any };
+      figcaption: { [key: string]: any };
     }
   }
 }

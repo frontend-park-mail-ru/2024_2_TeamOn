@@ -21,11 +21,20 @@ import { setLike } from "../../entities/likes";
 import { following } from "../../entities/profileInfo";
 import { route } from "../../shared/routing/routing";
 import { containerMediaPost } from "../../widgest/feed/ui/post/post";
-import { controlSlideShow } from "../paginateFeed/paginateFeed";
+import {
+  controlSlideShow,
+  modifireComments,
+  paginateComments,
+  renderComments,
+  setCapture,
+} from "../paginateFeed/paginateFeed";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { showOverlay } from "../../shared/overlay/overlay";
 import { setStatic } from "../../shared/getStatic/getStatic";
-import { urlIconLike } from "../../app";
+import { urlComments, urlIconLike, urlSendComment } from "../../app";
+import { getPopularPosts } from "../getPopularPosts/getPopularPosts";
+import { getAvatar } from "../getavatar/getavatar";
+import { addComment } from "../../entities/comments/api/api";
 
 /**
  * Управление адаптивностью на странице автора
@@ -181,8 +190,9 @@ export async function customizePostProfile(
   postId: any = null,
 ) {
   const iconLike: any = container.querySelector(`.likes`);
+  const iconComment: any = container.querySelector(`.comments`);
   setStatic(iconLike, urlIconLike);
-
+  setStatic(iconComment, urlComments);
   setTitle(container, post);
 
   setContent(container, post);
@@ -190,6 +200,11 @@ export async function customizePostProfile(
   setDate(container, post);
 
   setLike(container, post);
+
+  setComments(container, post);
+
+  setCapture(container);
+
   const key = new Set();
 
   const menu = container.querySelector(`.menu-icon`);
@@ -233,7 +248,104 @@ export async function customizePostProfile(
   const rightContainer = document.querySelector(`.profile-form`);
   controlSlideShow(container, rightContainer);
 }
+export function setComments(container: any, post: any) {
+  const divComments: any = container.querySelector(`.comments-container`);
+  const text = container.querySelector(`.textarea-group`);
+  const handleInput = () => {
+    const input = container.querySelector(`.form-group-add`);
+    const error = input.querySelector("p");
+    if (error) {
+      error.remove();
+    }
+  };
+  const handleClickKeySendComment = async (e: any) => {
+    if (e.key === "Enter" && e.shiftKey) return;
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendComment();
+    }
+  };
+  text.addEventListener("keydown", handleClickKeySendComment);
+  text.addEventListener("input", handleInput);
+  const sendComment = async () => {
+    if (!hasLogged()) {
+      route(LINKS.LOGIN.HREF);
+      return;
+    }
+    const placeContent = container.querySelector(`.place-content`);
+    const formGroup = container.querySelector(`.form-group-comment`);
 
+    // const response: any = await sendComment();
+    try {
+      const post: any = await addComment(formGroup, text.value, text.value, 0);
+      if (!post || post.message) {
+        const input = container.querySelector(`.form-group-add`);
+        const error = input.querySelector("p");
+        if (!error) {
+          const error = document.createElement("p");
+          error.style.color = "red";
+          error.textContent = post.message;
+          input.appendChild(error);
+        }
+        return;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    const comments: any = await getUserPosts("/profile", 0);
+
+    placeContent.append(...(await renderComments([comments[0]])));
+    modifireComments(placeContent, [comments[0]]);
+  };
+  const handleClickButtonSendComment = async (e: any) => {
+    e.preventDefault();
+    sendComment();
+  };
+
+  if (divComments) {
+    const divLoader: any = container.querySelector(`.comments-loader`);
+    const loader: any = container.querySelector(`.loader__search`);
+    const formComment: any = container.querySelector(`.form-group-comment`);
+    const amountComments: any = container.querySelector(`.amount-comments`);
+    amountComments.innerHTML = `${post.comments}`;
+
+    divComments.addEventListener(`click`, async () => {
+      const placeComments: any = container.querySelector(`.place-comments`);
+      if (placeComments.style.display == "none") {
+        placeComments.style.display = "block";
+        divLoader.style.display = "block";
+        loader.style.display = "flex";
+        try {
+          const allComments: any = await getPopularPosts(0);
+          const avatar: any = formComment.querySelector(`.author-avatar`);
+          const avatarload: any = await getAvatar("/profile");
+          avatar.src = avatarload;
+          const activeRequests = new Set();
+          const placeContent = container.querySelector(`.place-content`);
+          await paginateComments(activeRequests, [], placeContent);
+        } finally {
+          divLoader.style.display = "none";
+          loader.style.display = "none";
+          formComment.style.display = "flex";
+        }
+        const buttonSendComment: any =
+          container.querySelector(`.button-send-comment`);
+        setStatic(buttonSendComment, urlSendComment);
+        buttonSendComment.addEventListener(
+          "click",
+          handleClickButtonSendComment,
+        );
+      } else {
+        placeComments.style.display = "none";
+        const allItems: any =
+          placeComments.querySelectorAll(`.container-comment`);
+        allItems.forEach((item: any) => {
+          item.remove();
+        });
+      }
+    });
+  }
+}
 /**
  * Установка заголовка поста
  * @param container Контейнер, в котором нужно установить заголовок поста
