@@ -445,6 +445,8 @@ function controlVideo(container: any) {
   const buttonFullHD = container.querySelector(`.full_hd`);
   const slideShow: any = document.querySelector(`.slideshow`);
   var divVolumeScale = container.querySelector(".div-volumescale");
+  const closeButton = container.querySelector(`.close-modal-view`);
+
   actionButton.removeEventListener("click", videoAct);
   videoPlayer.removeEventListener("click", videoAct);
   videoPlayer.removeEventListener("timeupdate", videoProgress);
@@ -481,6 +483,7 @@ function controlVideo(container: any) {
       videoHud.style.opacity = 1;
       return;
     }
+    closeButton.style.opacity = "1";
     videoHud.classList.add("active");
     // Если мышь движется, сбрасываем таймер
     if (hideHudTimeout) {
@@ -489,6 +492,7 @@ function controlVideo(container: any) {
 
     // Устанавливаем новый таймер для скрытия элементов управления через 3 секунды (3000 мс)
     hideHudTimeout = setTimeout(() => {
+      closeButton.style.opacity = "0";
       videoHud.classList.remove("active");
     }, 3000); // Вы можете изменить время на ваше усмотрение
   };
@@ -499,6 +503,7 @@ function controlVideo(container: any) {
       videoHud.style.opacity = 1;
       return;
     }
+    closeButton.style.opacity = "0";
     videoHud.classList.remove("active");
     // Очищаем таймер, если мышь выходит за пределы контейнера
     if (hideHudTimeout) {

@@ -55,6 +55,7 @@ table tbody tr:hover {
   position: fixed;
   right: 20px;
   z-index: 10101010101;
+  transition: opacity 0.5s;
 }
 .subscription-select {
   width: 100%;

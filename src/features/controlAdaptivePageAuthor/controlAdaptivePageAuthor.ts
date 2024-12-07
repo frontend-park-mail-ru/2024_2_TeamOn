@@ -194,7 +194,7 @@ export async function customizePostProfile(
 
   setStatic(iconLike, urlIconLike);
   setStatic(iconComment, urlIconComment);
-  
+
   setTitle(container, post);
 
   setContent(container, post);
