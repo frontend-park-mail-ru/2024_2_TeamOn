@@ -47,20 +47,39 @@ async function renderModerationForm() {
 function renderBlockPost(post: any) {
   const flag: string =
     localStorage.getItem("dontShowBlockPostModal") == "true"
-      ? "display: none"
-      : "display: flex";
+      ? ` display: flex;
+    flex-direction: row-reverse;
+    gap: 10px; display: none`
+      : `display: flex;
+    flex-direction: row-reverse;
+    gap: 10px;`;
   return (
     <div class="modal__deletepost">
       <div class="modal-header">
         <h2>Блокировка поста</h2>
       </div>
-      <div class="form-group">
+      <div
+        class="form-group"
+        style="display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;"
+      >
         <p class="textarea-group-delete">
-          Вы действительно хотите заблокировать пост {post.title} ?
+          Вы действительно хотите заблокировать пост{" "}
+          <strong>{post.title}</strong> ?
         </p>
         <label class="label-check" style={flag}>
-          <input type="checkbox" class="input-check" />
-          <h4 style="width: 500px">Не показывать это сообщение</h4>
+          <input
+            style="flex-grow: 1;
+    width: 20px;
+    height: 20px;
+    "
+            type="checkbox"
+            class="input-check"
+          />
+          <span style="cursor: pointer;" class="slider"></span>
+          <h4>Не показывать это сообщение</h4>
         </label>
       </div>
       <div class="form-actions">

@@ -1757,7 +1757,7 @@ form input[type="text"]:focus {
 // }
 .form-group label {
   display: flex;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
   color: #333;
   align-items: center;
 }
@@ -2461,9 +2461,7 @@ select {
 }
 .modal-overlay {
   position: fixed;
-  width: 100px;
-  height: 20px;
-  left: 5%;
+  right: 0;
   top: 80%;
   z-index: 10000000;
 }
@@ -2868,10 +2866,10 @@ canvas {
 }
 .label-check {
   display: flex;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
   color: #333;
   align-items: center;
-  top: 32px;
+  /* top: 32px; */
   position: relative;
 }
 .image-photos-modal.video-modal {
@@ -3365,4 +3363,38 @@ progress::-moz-progress-bar {
 }
 .change-post-fast:hover {
   color: var(--main-color-hover);
+}
+.input-check {
+  display: none; /* Скрываем стандартный чекбокс */
+}
+
+.slider {
+  position: relative;
+  width: 34px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 34px;
+  margin-right: 10px;
+  transition: background-color 0.2s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.input-check:checked + .slider {
+  background-color: var(--main-color);
+  // background-color: #4caf50; /* Цвет ползунка при включении */
+}
+
+.input-check:checked + .slider:before {
+  transform: translateX(14px); /* Сдвиг ползунка при включении */
 }

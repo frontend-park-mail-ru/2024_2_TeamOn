@@ -156,9 +156,14 @@ export function renderLoader() {
 function renderComplaint(content: any, flag: any = null) {
   if (!hasLogged()) return;
   const title = flag ? "Удаление комментария" : "Жалоба на пост";
-  const text = flag
-    ? `Вы действительно хотите удалить комментарий ?`
-    : `Вы действительно хотите подать жалобу на пост ${content.title} ?`;
+  const text = flag ? (
+    `Вы действительно хотите удалить комментарий ?`
+  ) : (
+    <>
+      Вы действительно хотите подать жалобу на пост{" "}
+      <strong>{content.title}</strong> ?
+    </>
+  );
   const buttonSave = flag ? "Удалить" : "Пожаловаться";
   return (
     <div class="modal__deletepost">

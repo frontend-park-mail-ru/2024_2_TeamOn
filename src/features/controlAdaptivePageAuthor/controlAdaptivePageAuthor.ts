@@ -208,7 +208,7 @@ export async function customizePostProfile(
     setStatic(iconSad, urlSad);
   }
   if (iconOk) {
-    setStatic(iconSad, iconStatusPublished);
+    setStatic(iconOk, iconStatusPublished);
   }
   setTitle(container, post);
 

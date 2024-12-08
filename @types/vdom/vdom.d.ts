@@ -46,6 +46,7 @@ declare module "vdom" {
       main: { [key: string]: any };
       figure: { [key: string]: any };
       figcaption: { [key: string]: any };
+      strong: { [key: string]: any };
     }
   }
 }

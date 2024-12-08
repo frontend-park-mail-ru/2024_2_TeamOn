@@ -171,6 +171,7 @@ module.exports = {
           "^/api/csat/check": "/csat/check",
           "^/api/csat/question": "/csat/question",
           "^/api/csat/table": "/csat/table",
+          "^/api/stat/posts": "/stat/posts",
         },
       },
       {

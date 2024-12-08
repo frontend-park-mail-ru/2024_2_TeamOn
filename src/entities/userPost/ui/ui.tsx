@@ -21,7 +21,7 @@ async function renderUserPost(post: any) {
   if (post.status === "PUBLISHED") {
     styleStatus += " ok";
     titleStatus = "Опубликован";
-  } else {
+  } else if (post.status === "BLOCKED") {
     styleStatus += " display: none";
     titleStatus = "Заблокирован";
     styleInitial = "filter: blur(8px);";

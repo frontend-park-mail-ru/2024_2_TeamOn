@@ -56,7 +56,6 @@ function modifireModalConfirmSubscription(
   profileForm.classList.add("blur");
   modalConfirm.style.display = "block";
 
-  let selectedDuration: number = 1;
   const subscriptionSelect: HTMLSelectElement = modalConfirm.querySelector(
     `#subscription-duration`,
   );
@@ -98,7 +97,7 @@ function modifireModalConfirmSubscription(
     update(placeStats, arrayStats);
     return;
   };
-
+  let selectedDuration: number = 1;
   const handleChange = (event: any) => {
     selectedDuration = Number(event.target.value);
   };
@@ -178,7 +177,7 @@ function modifireModalConfirmSubscription(
 
     const buttonCancel: any = foundCancel(div);
     const buttonSave: any = foundSave(div);
-
+    selectedDuration = 1;
     const subscriptionSelect: HTMLSelectElement = modalRealize.querySelector(
       `#subscription-duration`,
     );
