@@ -22,6 +22,8 @@ import { getPayments } from "../getpayments/getpayments";
 import { renderUserStats } from "../../entities/profileInfo/ui/ui";
 import { VNode } from "lib/vdom/src/source";
 import { showOverlay } from "../../shared/overlay/overlay";
+import { setStatic } from "../../shared/getStatic/getStatic";
+import { urlPushbackIcon } from "../../app";
 
 function foundCancel(div: any) {
   const buttonCancel: any = div.querySelector(`.cancel`);
@@ -54,7 +56,6 @@ function modifireModalConfirmSubscription(
   profileForm.classList.add("blur");
   modalConfirm.style.display = "block";
 
-  let selectedDuration: number = 1;
   const subscriptionSelect: HTMLSelectElement = modalConfirm.querySelector(
     `#subscription-duration`,
   );
@@ -96,7 +97,7 @@ function modifireModalConfirmSubscription(
     update(placeStats, arrayStats);
     return;
   };
-
+  let selectedDuration: number = 1;
   const handleChange = (event: any) => {
     selectedDuration = Number(event.target.value);
   };
@@ -157,6 +158,9 @@ function modifireModalConfirmSubscription(
       modalRealize.style.display = "block";
 
       pushback.style.display = "block";
+      const pushbackIcon: any = pushback.querySelector(`.pushback-icon`);
+      setStatic(pushbackIcon, urlPushbackIcon);
+
       pushback.addEventListener("click", handlePushBack);
     }
   };
@@ -173,7 +177,7 @@ function modifireModalConfirmSubscription(
 
     const buttonCancel: any = foundCancel(div);
     const buttonSave: any = foundSave(div);
-
+    selectedDuration = 1;
     const subscriptionSelect: HTMLSelectElement = modalRealize.querySelector(
       `#subscription-duration`,
     );

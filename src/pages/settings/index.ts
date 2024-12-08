@@ -22,12 +22,42 @@ import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { renderStatics, renderTableTitle } from "../statistics/ui/ui";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { setTitle } from "../../shared/settitle/setTitle";
+import { hideLoader, showLoader } from "../feed";
+
+function showLoadSet(container: any) {
+  const load = container.querySelector(`.mask_settings`);
+  if (!load) {
+    const form = document.body.querySelector(`.content-container`);
+    const newmask = document.createElement("div");
+    newmask.classList.add("mask_settings");
+    const newloader = document.createElement("div");
+    newloader.classList.add("loader_settings");
+    newmask.appendChild(newloader);
+    form?.appendChild(newmask);
+    newmask.style.display = "flex";
+    newmask.style.opacity = "1";
+  }
+  if (load) {
+    load.style.display = "flex";
+    load.style.opacity = 1;
+  }
+}
+function hideLoadSet(container: any) {
+  const mask: any = container.querySelector(".mask_settings");
+  if (mask) {
+    mask.style.opacity = 0;
+    setTimeout(() => {
+      mask.style.display = "none";
+    }, 600);
+  }
+}
 /**
  * Рендер настроек
  * @returns
  */
 export async function renderSettings() {
   try {
+    hideLoader();
     setTitle(LINKS.SETTINGS.TEXT);
 
     const user = state.currentUser;
@@ -38,7 +68,7 @@ export async function renderSettings() {
     const vdom: VNode = await settingsContainer();
 
     const container = update(pageContainer, vdom);
-
+    showLoadSet(container);
     const mainContent = container.querySelector(".main-content");
 
     const tabs = container.querySelector(`.tabs`);
@@ -52,7 +82,7 @@ export async function renderSettings() {
 
     setupTabs(tabs, contentContainer, userdata);
     const index: any = sessionStorage.getItem("settings");
-    updateContent(
+    await updateContent(
       contentContainer,
       index == null ? 0 : Number(index),
       userdata,
@@ -67,6 +97,9 @@ export async function renderSettings() {
     console.log("EROR");
     throw error;
   }
+  // } finally {
+  //   hideLoadSet(document.body);
+  // }
 }
 /**
  * Функция стать автором
@@ -187,7 +220,6 @@ function setupTabs(
 
 let buttonPersonalize: any;
 let buttonPassword: any;
-
 /**
  * Обновление контейнера
  * @param contentContainer Основной контейнер
@@ -201,10 +233,24 @@ async function updateContent(
   userdata: any,
 ) {
   contentContainer.innerHTML = "";
-  contentContainer.appendChild(await createProfileForm(userdata));
-  contentContainer.appendChild(createSecurityForm());
-  contentContainer.appendChild(await createStat());
-  contentContainer.appendChild(await createFeedback());
+  try {
+    showLoadSet(document.body);
+    const profileForm = await createProfileForm(userdata);
+    const securityForm = createSecurityForm();
+    const stat = await createStat();
+    const fb = await createFeedback();
+    hideLoadSet(document.body);
+
+    contentContainer.appendChild(profileForm);
+    contentContainer.appendChild(securityForm);
+    contentContainer.appendChild(stat);
+    contentContainer.appendChild(fb);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    hideLoadSet(document.body);
+  }
+  // hideLoadSet(document.body);
   let containerPersonalize: any =
     contentContainer.querySelector(`.form-container`);
   let containerPassword: any = contentContainer.querySelector(
@@ -218,20 +264,28 @@ async function updateContent(
 
   switch (index) {
     case 0:
-      containerPersonalize.style.display = "block";
-      containerPassword.style.display = "none";
+      setTimeout(() => {
+        containerPersonalize.style.display = "block";
+        containerPassword.style.display = "none";
+      }, 600);
       break;
     case 1:
-      containerPersonalize.style.display = "none";
-      containerPassword.style.display = "block";
+      setTimeout(() => {
+        containerPersonalize.style.display = "none";
+        containerPassword.style.display = "block";
+      }, 600);
       break;
     case 2:
-      containerPersonalize.style.display = "none";
-      containerStatistics.style.display = "block";
+      setTimeout(() => {
+        containerPersonalize.style.display = "none";
+        containerStatistics.style.display = "block";
+      }, 600);
       break;
     case 3:
-      containerPersonalize.style.display = "none";
-      containerFeedback.style.display = "block";
+      setTimeout(() => {
+        containerPersonalize.style.display = "none";
+        containerFeedback.style.display = "block";
+      }, 600);
       break;
     default:
       return [buttonPersonalize, buttonPassword];
@@ -502,7 +556,7 @@ async function createStat() {
   const formContainer = document.createElement("div");
   formContainer.className = "form-container-stat";
   update(formContainer, await renderStat());
-
+  if (sessionStorage.getItem("settings") !== "2") return formContainer;
   const postsYear: any = {
     valuesY: [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3],
     valuesX: [
@@ -744,7 +798,7 @@ async function createStat() {
   buttonSetDayPayments.addEventListener("click", () => {
     const canv: any = formContainer.querySelector(`.canv-payments`);
     const ctx = canv.getContext("2d");
-
+    canv.innerHTML = "";
     // Очистка канваса
     ctx.clearRect(0, 0, canv.width, canv.height);
     renderContainerGraphicPayments(formContainer, paymentsDay, "Часы");
@@ -843,7 +897,7 @@ function renderContainerGraphicPosts(
   const dataPosts = posts.valuesY;
   const labelsPosts = posts.valuesX;
 
-  adjustCanvasWidth(canvas, posts.valuesX.length);
+  // adjustCanvasWidth(canvas, posts.valuesX.length);
 
   renderGraphics(
     canvas,
@@ -866,7 +920,7 @@ function renderContainerGraphicPayments(
 
   const labelsPayments = payments.valuesX;
 
-  adjustCanvasWidth(canvasPayments, payments.valuesX.length);
+  // adjustCanvasWidth(canvasPayments, payments.valuesX.length);
 
   renderGraphics(
     canvasPayments,
@@ -909,6 +963,7 @@ function renderGraphics(
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Рисуем оси
+  ctx.strokeStyle = "black";
   ctx.beginPath();
   ctx.moveTo(padding + leftOffset, padding);
   ctx.lineTo(padding + leftOffset, canvas.height - padding);
@@ -957,6 +1012,7 @@ function renderGraphics(
 
   function animateLine() {
     if (currentIndex < data.length - 1) {
+      ctx.strokeStyle = "black";
       ctx.beginPath();
       const startX =
         padding + leftOffset + (width / (data.length - 1)) * currentIndex;
@@ -979,7 +1035,6 @@ function renderGraphics(
         }
       }
 
-      ctx.strokeStyle = "blue";
       ctx.stroke();
       currentIndex++;
       setTimeout(animateLine, animationSpeed); // Задержка перед следующим кадром
@@ -990,7 +1045,7 @@ function renderGraphics(
   animateLine();
 
   // Рисуем точки на графике
-  ctx.strokeStyle = "blue"; // Цвет обводки точек
+  ctx.strokeStyle = "black"; // Цвет обводки точек
   data.forEach((value: any, index: number) => {
     const x = padding + leftOffset + (width / (data.length - 1)) * index;
     const y = canvas.height - padding - value * scaleY;
@@ -1041,7 +1096,7 @@ function renderGraphics(
 async function createFeedback() {
   const formContainer = document.createElement("div");
   formContainer.className = "form-container-feedback";
-
+  if (sessionStorage.getItem("settings") !== "3") return formContainer;
   const formTitle = document.createElement("h2");
   formTitle.textContent = "Статистика";
   formContainer.appendChild(formTitle);

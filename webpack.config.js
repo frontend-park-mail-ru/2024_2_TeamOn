@@ -51,7 +51,15 @@ module.exports = {
   },
   optimization: {
     minimize: true,
-    minimizer: [new TerserPlugin()],
+    minimizer: [
+      new TerserPlugin({
+        // terserOptions: {
+        //   compress: {
+        //     drop_console: true,
+        //   },
+        // },
+      }),
+    ],
   },
   devServer: {
     static: [
@@ -64,7 +72,7 @@ module.exports = {
       },
     ],
     open: true,
-    port: 8099,
+    port: 8011,
     historyApiFallback: true,
     headers: {
       "Access-Control-Allow-Origin": "*",
@@ -163,6 +171,7 @@ module.exports = {
           "^/api/csat/check": "/csat/check",
           "^/api/csat/question": "/csat/question",
           "^/api/csat/table": "/csat/table",
+          "^/api/stat/posts": "/stat/posts",
         },
       },
       {

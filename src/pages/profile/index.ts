@@ -2,7 +2,13 @@ import { LINKS, state } from "../../shared/consts/consts";
 import { getAccount } from "../../features/getAccount/getAccount";
 import { renderAbout } from "../../entities/profileabout/index";
 import { update } from "../../../lib/vdom/lib";
-import { pageContainer } from "../../app/index";
+import {
+  pageContainer,
+  urlAddCustomSubs,
+  urlCloseModal,
+  urlLeftArrowModal,
+  urlRightArrowModal,
+} from "../../app/index";
 import { mobilepr, profileContent } from "./ui/profile";
 import { getBackgroundAuthor } from "../../entities/profileDesktopHeader";
 import { getPageAuthor } from "../../features/getpageauthor/getpageauthor";
@@ -35,6 +41,8 @@ import { setTitle } from "../../shared/settitle/setTitle";
 import { showOverlay } from "../../shared/overlay/overlay";
 import { renderUserSubscriptins } from "../../entities/profileInfo";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
+import { setStatic } from "../../shared/getStatic/getStatic";
+import { hideLoader, showLoader } from "../feed";
 
 async function renderContainerSubscriptions(authorData: any, overlay: any) {
   const modalSubscriptions: any = document.querySelector(
@@ -228,6 +236,7 @@ async function controlCustomSubscriptions(container: any) {
     const handleClickCancel = (e: any) => {
       modalAddSubs.style.display = "none";
       profileForm.classList.remove("blur");
+      document.body.style.overflow = "auto";
       overlay.remove();
       return;
     };
@@ -320,16 +329,6 @@ async function controlCustomSubscriptions(container: any) {
 }
 
 export async function controlBecomeCreator(div: any) {
-  if (hasLogged()) {
-    const userdata: any = await getAccount();
-    const role = userdata.role;
-    if (role === "Reader") {
-      div.classList.add("fade"); // Добавляем класс для анимации
-      div.style.display = "flex";
-    } else {
-      div.style.display = "none";
-    }
-  }
   const button: any = div.querySelector(`.join-button`);
 
   if (!hasLogged()) {
@@ -342,6 +341,7 @@ export async function controlBecomeCreator(div: any) {
     }
     if (hasLogged()) {
       const setrole = await setAuthor();
+      sessionStorage.setItem("role", "Author");
     }
 
     // Запускаем анимацию
@@ -363,6 +363,16 @@ export async function controlBecomeCreator(div: any) {
   };
 
   button.addEventListener("click", handleClick);
+  if (hasLogged()) {
+    const userdata: any = await getAccount();
+    const role = userdata.role;
+    if (role === "Reader") {
+      div.classList.add("fade"); // Добавляем класс для анимации
+      div.style.display = "flex";
+    } else {
+      div.style.display = "none";
+    }
+  }
   return;
 }
 /**
@@ -372,6 +382,15 @@ export async function controlBecomeCreator(div: any) {
  */
 export async function renderProfile() {
   try {
+    if (
+      (sessionStorage.getItem("role") === "Reader" ||
+        sessionStorage.getItem("role") === "Moderator") &&
+      window.location.pathname === "/profile"
+    ) {
+      route(LINKS.FEED.HREF);
+      return;
+    }
+    showLoader();
     document.body.style.overflow = "auto";
     setTitle(LINKS.PROFILE.TEXT);
     const posts: any = [];
@@ -421,6 +440,19 @@ export async function renderProfile() {
       update(mobile, await mobileContaine2);
       controlAdaptiveProfile(container);
     }
+    const addCustomSubs: any = container.querySelector(`.add-customsubs-icon`);
+    setStatic(addCustomSubs, urlAddCustomSubs);
+
+    const closeModalView: any = container.querySelector(`.close-modal-view`);
+    setStatic(closeModalView, urlCloseModal);
+    const leftArrowModalView: any = container.querySelector(
+      `.leftarrow-modal-view`,
+    );
+    setStatic(leftArrowModalView, urlLeftArrowModal);
+    const rightArrowModalView: any = container.querySelector(
+      `.rightarrow-modal-view `,
+    );
+    setStatic(rightArrowModalView, urlRightArrowModal);
 
     // Отрисовка информации о пользователе
     const content = renderAbout(authorData);
@@ -454,5 +486,7 @@ export async function renderProfile() {
   } catch (error) {
     console.log("ERROR in profile");
     throw error;
+  } finally {
+    hideLoader();
   }
 }

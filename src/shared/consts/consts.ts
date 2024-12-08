@@ -392,13 +392,13 @@ export const sidebarLinks = [
     active: false,
     href: LINKS.FEED.HREF,
   },
-  // {
-  //   text: " Уведомления",
-  //   icon: "icon-notification",
-  //   active: false,
-  //   new: true,
-  //   href: LINKS.NOTIFICATIONS.HREF,
-  // },
+  {
+    text: " Уведомления",
+    icon: "icon-notification",
+    active: false,
+    new: true,
+    href: LINKS.NOTIFICATIONS.HREF,
+  },
   {
     text: " Настройки",
     icon: "icon-settings",

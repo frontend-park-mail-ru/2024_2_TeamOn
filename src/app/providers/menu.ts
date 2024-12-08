@@ -1,4 +1,6 @@
+import { renderLoader } from "../../pages/feed/ui/feed";
 import { ELEMENTS, ELEMENTS_CLASS } from "../../shared/consts/consts";
+import { renderTo } from "../../../lib/vdom/lib";
 
 /**
  * Функция инициализирует приложение.
@@ -28,7 +30,8 @@ export function startA(conf: any, state: any) {
   }
   const root = document.getElementById("root");
   const menuContainer = document.createElement("aside");
-
+  // const loader = renderTo(renderLoader(), "my-loader");
+  // root?.appendChild(loader);
   renderMenu(conf);
   return root;
 }

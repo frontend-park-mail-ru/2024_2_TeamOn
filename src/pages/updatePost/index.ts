@@ -1,6 +1,12 @@
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { renderTo, update } from "../../../lib/vdom/lib";
-import { pageContainer } from "../../app";
+import {
+  pageContainer,
+  urlCloseModal,
+  urlIconAttache,
+  urlLeftArrowModal,
+  urlRightArrowModal,
+} from "../../app";
 import { containerUpdatePost } from "./ui/ui";
 import { route } from "../../shared/routing/routing";
 import { allowedExtensions, LINKS, state } from "../../shared/consts/consts";
@@ -10,6 +16,8 @@ import { uploadMediaFiles } from "../../features/uploadMediaFiles/uploadMediaFil
 import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 import { controlSlideShow } from "../../features/paginateFeed/paginateFeed";
 import { deleteMediaInPost } from "./api/api";
+import { setStatic } from "../../shared/getStatic/getStatic";
+import { hideLoader, showLoader } from "../feed";
 
 async function mofireUpdatePost() {
   const currentPost: any = state.currentPostId;
@@ -27,6 +35,7 @@ async function mofireUpdatePost() {
   const content: any = containerUpdatePost.querySelector(`.textarea-group`);
   title.value = currentPost.title;
   content.textContent = currentPost.content;
+  const saveFiles: any = [];
 
   const containerMedia: any = await containerMediaPost(currentPost.postId);
   if (containerMedia) {
@@ -56,10 +65,7 @@ async function mofireUpdatePost() {
       fileDiv.append(removeButton);
       removeButton.addEventListener("click", async () => {
         fileDiv.remove();
-        const response = await deleteMediaInPost(
-          currentPost.postId,
-          containerMedia[1][index],
-        );
+        saveFiles.push(containerMedia[1][index]);
         selectedFiles = selectedFiles.filter((file) => file !== media.file);
       });
 
@@ -79,7 +85,9 @@ async function mofireUpdatePost() {
   if (buttonSave) {
     buttonSave.addEventListener("click", async (event: any) => {
       event.preventDefault();
-
+      saveFiles.forEach(async (file: any) => {
+        const response = await deleteMediaInPost(currentPost.postId, file);
+      });
       const sanitizedTitle = DOMPurify.sanitize(title.value);
       const sanitizedContent = DOMPurify.sanitize(content.value);
 
@@ -296,11 +304,25 @@ async function mofireUpdatePost() {
 
 async function renderUpdatePost() {
   try {
+    showLoader();
     const postId: any = state.currentPostId;
     if (!postId) route(LINKS.PROFILE.HREF);
     const vdom: any = await containerUpdatePost();
     const container: any = update(pageContainer, vdom);
     const mainContent = container.querySelector(".main-content");
+    const iconAttache = container.querySelector(`.icon-attache`);
+    setStatic(iconAttache, urlIconAttache);
+
+    const closeModalView: any = container.querySelector(`.close-modal-view`);
+    setStatic(closeModalView, urlCloseModal);
+    const leftArrowModalView: any = container.querySelector(
+      `.leftarrow-modal-view`,
+    );
+    setStatic(leftArrowModalView, urlLeftArrowModal);
+    const rightArrowModalView: any = container.querySelector(
+      `.rightarrow-modal-view `,
+    );
+    setStatic(rightArrowModalView, urlRightArrowModal);
 
     modifierSidebar(mainContent);
 
@@ -308,6 +330,8 @@ async function renderUpdatePost() {
     return container;
   } catch (error) {
     console.error("Error in updatepost");
+  } finally {
+    hideLoader();
   }
 }
 

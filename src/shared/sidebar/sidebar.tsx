@@ -1,30 +1,41 @@
 import * as VDom from "vdom";
 import { hasLogged } from "../utils/hasLogged";
 import { getAccount } from "../../features/getAccount/getAccount";
+import {
+  urlIconHome,
+  urlIconModeration,
+  urlIconProfile,
+  urlIconSettings,
+} from "../../app";
 
 /**
  * Функция рендера сайдбара
  * @param userdata Информация о юзере
  * @returns
  */
-async function Sidebar() {
+const Sidebar = async () => {
+  // async function Sidebar() {
   let result: any;
   if (hasLogged()) {
     const userdata: any = await getAccount();
-
     sessionStorage.setItem("account", userdata.username);
     const role = userdata.role;
+    sessionStorage.setItem("role", role);
     const styleProfileIcon =
-      role === "Reader" ? "display: none" : "display: flex;";
+      role === "Reader" || role === "Moderator"
+        ? "display: none"
+        : "display: flex;";
     const styleModerationIcon =
-      role === "Reader" ? "display: none" : "display: flex;";
+      role === "Moderator" ? "display: flex" : "display: none;";
     result = (
       <div class="side">
-        <div class="burger">
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
+        <div class="burger2 burger" id="nav-icon3">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
+
         <div class="sidebar">
           <div class="nav-menu">
             <a class="referens">
@@ -32,10 +43,14 @@ async function Sidebar() {
               Главная
             </a>
             <a class="referens">
+              <i class="icon-notification"></i>
+              Уведомления
+            </a>
+            <a class="referens">
               <i class="icon-settings"></i>
               Настройки
             </a>
-            <a class="referens">
+            <a class="referens" style={styleModerationIcon}>
               <i class="icon-moderation"></i>
               Модерация
             </a>
@@ -64,11 +79,13 @@ async function Sidebar() {
   } else {
     result = (
       <div class="side">
-        <div class="burger">
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
+        <div class="burger2 burger" id="nav-icon3">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
+
         <div class="sidebar">
           <div class="nav-menu">
             <a class="referens">
@@ -87,6 +104,6 @@ async function Sidebar() {
     );
   }
   return result;
-}
+};
 
 export { Sidebar };
