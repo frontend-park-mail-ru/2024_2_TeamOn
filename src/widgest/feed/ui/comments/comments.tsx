@@ -24,9 +24,8 @@ function containerComment(comment: any, flagEdit: any = null) {
           </div>
           <div
             class="control-comment"
-            style="    margin-left: auto;
-    display: flex;
-    flex-direction: column;"
+            style="margin-left: auto;
+                  display: flex;"
           >
             <div
               class="container-edit-comment"
@@ -34,7 +33,7 @@ function containerComment(comment: any, flagEdit: any = null) {
         display: none;
         justify-content: flex-end;"
             >
-              <div class="button-edit-comment">Редактировать</div>
+              <div class="button-edit-comment"></div>
             </div>
             <div
               class="container-delete-comment"
@@ -42,7 +41,7 @@ function containerComment(comment: any, flagEdit: any = null) {
         display: none;
         justify-content: flex-end;"
             >
-              <div class="button-delete-comment">Удалить</div>
+              <div class="button-delete-comment"></div>
             </div>
           </div>
         </div>

@@ -14,11 +14,46 @@ async function renderUserPost(post: any) {
     window.location.pathname === "/profile"
       ? "display: block;"
       : "display: none;";
-
+  let styleStatus = "status-post";
+  let titleStatus;
+  let styleInitial;
+  let flagBlock = "display: none";
+  if (post.status === "PUBLISHED") {
+    styleStatus += " ok";
+    titleStatus = "Опубликован";
+  } else {
+    styleStatus += " display: none";
+    titleStatus = "Заблокирован";
+    styleInitial = "filter: blur(8px);";
+    flagBlock = `
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 100%;
+    position: absolute;
+    flex-direction: column;
+    `;
+  }
+  const flagStatus = post.status
+    ? "align-items: center; display: flex;"
+    : "align-items: center; display: none;";
   return (
-    <div class="posts">
+    <div class="posts" style="position: relative;">
+      <div style={flagBlock}>
+        <div class="sad"></div>
+        <h3 style="text-align: center; color: var(--main-color);">
+          Твой пост заблокирован. Измени его содержание!
+        </h3>
+        <div>
+          <h2 class="change-post-fast">Изменить</h2>
+        </div>
+      </div>
       <div class="post">
-        <div style="display: flex;">
+        <div style="align-items: center; display: flex;">
           <div class="menu-icon" style={flag}>
             ⋮
             <div class="dropdown-menu">
@@ -30,15 +65,26 @@ async function renderUserPost(post: any) {
               </div>
             </div>
           </div>
-          <h4 class="title">{createText(post.title)}</h4>
+          <h4 style={styleInitial} class="title">
+            {createText(post.title)}
+          </h4>
+          <div title={titleStatus} class={styleStatus} style={flagStatus}></div>
         </div>
-        <p class="content">{createText(post.content)}</p>
-        <div class="toggleButton" style="display: none;">
+
+        <p style={styleInitial} class="content">
+          {createText(post.content)}
+        </p>
+        <div
+          style={styleInitial ? styleInitial : "" + " display: none"}
+          class="toggleButton"
+        >
           Показать...
         </div>
-        <div class="container-image-photos"></div>
-        <div class="date">{createText(post.createdAt)}</div>
-        <div class="interaction-section">
+        <div style={styleInitial} class="container-image-photos"></div>
+        <div style={styleInitial} class="date">
+          {createText(post.createdAt)}
+        </div>
+        <div style={styleInitial} class="interaction-section">
           <div class="likes-container">
             <div class="likes"></div>
             <h3 class="amount-likes">{createText(post.likes)}</h3>

@@ -206,6 +206,11 @@ export const urlVideoVolumeMute: any = await getUrlStatic("/volumeStop.png");
 export const urlFullHD: any = await getUrlStatic("/shar.png");
 export const urlVideoPlay: any = await getUrlStatic("/playArrow.png");
 export const urlVideoStop: any = await getUrlStatic("/stopArrow.png");
+export const urlEditComment: any = await getUrlStatic("/penEdit.png");
+export const urlDeleteComment: any = await getUrlStatic("/deleteComm.png");
+export const urlSad: any = await getUrlStatic("/sad.png");
+export const iconStatusBlock: any = await getUrlStatic("/blocked.png");
+export const iconStatusPublished: any = await getUrlStatic("/published.png");
 
 if (flag) {
   let root: HTMLElement | null = startA(config.menu, state);

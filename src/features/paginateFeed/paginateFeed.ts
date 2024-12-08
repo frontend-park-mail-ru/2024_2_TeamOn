@@ -15,6 +15,8 @@ import { modal, renderComplaint } from "../../pages/feed/ui/feed";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { setStatic } from "../../shared/getStatic/getStatic";
 import {
+  urlDeleteComment,
+  urlEditComment,
   urlFullHD,
   urlIconComment,
   urlIconLike,
@@ -84,12 +86,12 @@ export function controlSlideShow(container: any, rightContainer: any) {
     imageModal.style.display = "block";
     videoModal.style.display = "none";
     videoHud.style.display = "none";
-    if (target !== "arrow" && target != "swipe" ) {
+    if (target !== "arrow" && target != "swipe") {
       imageModal.src = target.src;
     } else {
       imageModal.src = imgPhotos[currentIndex].src;
     }
-    console.log(imgPhotos[currentIndex])
+    console.log(imgPhotos[currentIndex]);
     if (
       (target && target instanceof HTMLVideoElement) ||
       (target === "arrow" &&
@@ -346,11 +348,13 @@ export function controlSlideShow(container: any, rightContainer: any) {
     allContent.forEach((img: any) => {
       const imgHeight = img.naturalHeight;
       const imgWidth = img.clientWidth;
+      alert(reswidth + imgWidth);
       if (reswidth + imgWidth <= MAX_SIZE) {
         img.style.display = "block";
         resheight += imgHeight;
         reswidth += imgWidth;
       } else {
+        alert("chto");
         img.style.display = "none";
         limitExceeded = true; // Устанавливаем флаг, если лимит превышен
       }
@@ -797,6 +801,8 @@ async function customizeComment(container: any, comment: any) {
   const buttonEdit = container.querySelector(`.button-edit-comment`);
   const buttonSave = container.querySelector(".save-comment");
   const buttonCancel = container.querySelector(`.cancel-comment`);
+  setStatic(buttonEdit, urlEditComment);
+  setStatic(buttonDelete, urlDeleteComment);
 
   const handleSaveComment = () => {
     const newContent = container.querySelector(`.comment-edit`);

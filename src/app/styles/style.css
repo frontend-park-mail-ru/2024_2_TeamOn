@@ -2193,18 +2193,25 @@ span {
     overflow: auto;
   }
 }
+.mask_settings,
 .form-container,
 .form-container-security,
 .form-container-stat,
 .form-container-feedback {
   background-color: #fff;
-  padding: 40px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   max-width: 1000px;
   margin: 0 auto;
   display: none;
   height: 400px;
+}
+
+.form-container,
+.form-container-security,
+.form-container-stat,
+.form-container-feedback {
+  padding: 40px;
 }
 
 .form-container-load {
@@ -2992,6 +2999,11 @@ canvas {
   .graphic-payments {
     max-width: 225px;
   }
+  figure audio {
+    max-width: 270px;
+    left: -6%;
+    position: relative;
+  }
 }
 .section {
   flex: 1;
@@ -3148,8 +3160,8 @@ canvas {
 }
 
 .mask_settings {
-  max-width: 1000px;
-  height: 480px;
+  max-width: 1080px;
+  height: 520px;
   display: flex;
 }
 
@@ -3331,27 +3343,19 @@ canvas {
 
 .button-delete-comment,
 .button-edit-comment {
+  width: 20px;
+  height: 20px;
+  background-size: cover;
   font-weight: bold;
   cursor: pointer;
   display: flex;
   justify-content: flex-end;
-  transition: color 0.3s ease;
+  transition: filter 0.3s ease;
 }
 
-.button-edit-comment {
-  color: var(--main-color);
-}
-
-.button-delete-comment {
-  color: rgba(255, 0, 0, 0.616);
-}
-
-.button-delete-comment:hover {
-  color: red;
-}
-
+.button-delete-comment:hover,
 .button-edit-comment:hover {
-  color: var(--main-test-color);
+  filter: brightness(0.85);
 }
 
 .container-send-comment {
@@ -3374,7 +3378,6 @@ canvas {
   width: 40px;
   height: 40px;
   background-size: cover;
-  background-image: url("../styles/photos/sendblue.png");
   transition: filter 0.3s ease;
 }
 
@@ -3483,6 +3486,30 @@ progress::-moz-progress-bar {
 .play-button.stop {
   cursor: pointer;
   background-size: cover;
+}
+
+.status-post {
+  height: 20px;
+  width: 20px;
+  background-size: cover;
+  justify-content: center;
+  margin-left: 10px;
+}
+
+.sad {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+}
+
+.change-post-fast {
+  cursor: pointer;
+  color: var(--main-color);
+  transition: color 0.3s ease;
+}
+
+.change-post-fast:hover {
+  color: var(--main-color-hover);
 }
 
 /*# sourceMappingURL=style.css.map */

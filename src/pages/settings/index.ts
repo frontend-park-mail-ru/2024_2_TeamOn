@@ -220,7 +220,6 @@ function setupTabs(
 
 let buttonPersonalize: any;
 let buttonPassword: any;
-
 /**
  * Обновление контейнера
  * @param contentContainer Основной контейнер

@@ -31,7 +31,13 @@ import {
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { showOverlay } from "../../shared/overlay/overlay";
 import { setStatic } from "../../shared/getStatic/getStatic";
-import { urlIconComment, urlIconLike, urlSendComment } from "../../app";
+import {
+  iconStatusPublished,
+  urlIconComment,
+  urlIconLike,
+  urlSad,
+  urlSendComment,
+} from "../../app";
 import { getPopularPosts } from "../getPopularPosts/getPopularPosts";
 import { getAvatar } from "../getavatar/getavatar";
 import { addComment } from "../../entities/comments/api/api";
@@ -191,10 +197,18 @@ export async function customizePostProfile(
 ) {
   const iconLike: any = container.querySelector(`.likes`);
   const iconComment: any = container.querySelector(`.comments`);
+  const iconSad: any = container.querySelector(`.sad`);
+  const iconOk: any = container.querySelector(`.ok`);
 
   setStatic(iconLike, urlIconLike);
   setStatic(iconComment, urlIconComment);
 
+  if (post.status === "BLOCKED") {
+    setStatic(iconSad, urlSad);
+  }
+  if (iconOk) {
+    setStatic(iconSad, iconStatusPublished);
+  }
   setTitle(container, post);
 
   setContent(container, post);
@@ -219,7 +233,14 @@ export async function customizePostProfile(
   const buttonedit: any = dropdownmenu.querySelector(`.button-edit-post`);
   const buttondelete: any = dropdownmenu.querySelector(`.button-delete-post`);
   const mediaPlace: any = container.querySelector(`.container-image-photos`);
+  const buttonFastChange: any = container.querySelector(`.change-post-fast`);
 
+  const handleClickFastChange = () => {
+    state.currentPostId = post;
+    if (!state.currentPostId) return;
+    route(LINKS.UPDATE_POST.HREF);
+    return;
+  };
   // mediaPlace.append(...await containerMediaPost(post.postId));
   if (!menu) return;
   const handleClickMenu = async (event: any) => {
@@ -247,6 +268,7 @@ export async function customizePostProfile(
     }
   };
   menu.addEventListener("click", handleClickMenu);
+  buttonFastChange.addEventListener("click", handleClickFastChange);
   const rightContainer = document.querySelector(`.profile-form`);
   controlSlideShow(container, rightContainer);
 }

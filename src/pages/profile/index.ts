@@ -329,16 +329,6 @@ async function controlCustomSubscriptions(container: any) {
 }
 
 export async function controlBecomeCreator(div: any) {
-  if (hasLogged()) {
-    const userdata: any = await getAccount();
-    const role = userdata.role;
-    if (role === "Reader") {
-      div.classList.add("fade"); // Добавляем класс для анимации
-      div.style.display = "flex";
-    } else {
-      div.style.display = "none";
-    }
-  }
   const button: any = div.querySelector(`.join-button`);
 
   if (!hasLogged()) {
@@ -351,6 +341,7 @@ export async function controlBecomeCreator(div: any) {
     }
     if (hasLogged()) {
       const setrole = await setAuthor();
+      sessionStorage.setItem("role", "Author");
     }
 
     // Запускаем анимацию
@@ -372,6 +363,16 @@ export async function controlBecomeCreator(div: any) {
   };
 
   button.addEventListener("click", handleClick);
+  if (hasLogged()) {
+    const userdata: any = await getAccount();
+    const role = userdata.role;
+    if (role === "Reader") {
+      div.classList.add("fade"); // Добавляем класс для анимации
+      div.style.display = "flex";
+    } else {
+      div.style.display = "none";
+    }
+  }
   return;
 }
 /**
