@@ -84,11 +84,12 @@ export function controlSlideShow(container: any, rightContainer: any) {
     imageModal.style.display = "block";
     videoModal.style.display = "none";
     videoHud.style.display = "none";
-    if (target !== "arrow") {
+    if (target !== "arrow" && target != "swipe" ) {
       imageModal.src = target.src;
     } else {
       imageModal.src = imgPhotos[currentIndex].src;
     }
+    console.log(imgPhotos[currentIndex])
     if (
       (target && target instanceof HTMLVideoElement) ||
       (target === "arrow" &&
@@ -425,7 +426,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
 
     // Обновить изображение через 500 мс (время анимации)
     setTimeout(() => {
-      updateImage(newIndex); // Обновляем изображение
+      updateImage(newIndex, "swipe"); // Обновляем изображение
 
       // Вернуть изображение на место
       imageModal.style.transition = "none"; // Отключаем анимацию на время обновления
