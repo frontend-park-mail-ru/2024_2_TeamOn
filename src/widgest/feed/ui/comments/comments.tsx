@@ -13,11 +13,7 @@ function containerComment(comment: any, flagEdit: any = null) {
   return (
     <div class="comment-item">
       <img class="author-avatar author-comment-avatar"></img>
-      <div
-        class="iteraction-section-comment"
-        style="    width: 100%;
-    height: 100%;"
-      >
+      <div class="iteraction-section-comment">
         <div class="favorite-info" style="display: flex;">
           <div class="author-comment-name" style="display: inline-block;">
             {comment.authorUsername}

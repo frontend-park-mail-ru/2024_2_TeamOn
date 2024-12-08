@@ -15,6 +15,7 @@ import { modal, renderComplaint } from "../../pages/feed/ui/feed";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { setStatic } from "../../shared/getStatic/getStatic";
 import {
+  pageContainer,
   urlDeleteComment,
   urlEditComment,
   urlFullHD,
@@ -348,13 +349,11 @@ export function controlSlideShow(container: any, rightContainer: any) {
     allContent.forEach((img: any) => {
       const imgHeight = img.naturalHeight;
       const imgWidth = img.clientWidth;
-      alert(reswidth + imgWidth);
       if (reswidth + imgWidth <= MAX_SIZE) {
         img.style.display = "block";
         resheight += imgHeight;
         reswidth += imgWidth;
       } else {
-        alert("chto");
         img.style.display = "none";
         limitExceeded = true; // Устанавливаем флаг, если лимит превышен
       }
@@ -987,6 +986,13 @@ async function customizePost(container: any, post: any) {
     }
   };
 
+  pageContainer.addEventListener("click", (event: any) => {
+    if (event.target !== menu) {
+      alldropdownMenu.forEach((dropdown: any, dropdownIndex: number) => {
+        dropdown.classList.remove(ELEMENTS_CLASS.ACTIVE);
+      });
+    }
+  });
   menu.addEventListener("click", handleClickMenu);
 }
 export function setCapture(container: any) {

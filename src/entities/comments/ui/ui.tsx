@@ -4,7 +4,10 @@ import * as VDom from "vdom";
 
 function renderPlaceAddComment() {
   return (
-    <div class="place-comments" style="display: none;">
+    <div
+      class="place-comments"
+      style="display: none; border-top: 1px solid #e8e9eb;"
+    >
       <div class="comments-loader" style="display: none;">
         <div class="loader__search" style="display: none;"></div>
         <div class="result-item"></div>

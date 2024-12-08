@@ -12,8 +12,8 @@ import { renderPlaceAddComment } from "../../../entities/comments";
 async function renderUserPost(post: any) {
   const flag: any =
     window.location.pathname === "/profile"
-      ? "display: block;"
-      : "display: none;";
+      ? "padding: 10px; display: block;"
+      : "padding: 10px; display: none;";
   let styleStatus = "status-post";
   let titleStatus;
   let styleInitial;
@@ -53,7 +53,15 @@ async function renderUserPost(post: any) {
         </div>
       </div>
       <div class="post">
-        <div style="align-items: center; display: flex;">
+        <div
+          style="align-items: center;
+    display: flex;
+    justify-content: space-between;"
+        >
+          <h4 style={styleInitial} class="title">
+            {createText(post.title)}
+          </h4>
+          <div title={titleStatus} class={styleStatus} style={flagStatus}></div>
           <div class="menu-icon" style={flag}>
             ⋮
             <div class="dropdown-menu">
@@ -65,10 +73,6 @@ async function renderUserPost(post: any) {
               </div>
             </div>
           </div>
-          <h4 style={styleInitial} class="title">
-            {createText(post.title)}
-          </h4>
-          <div title={titleStatus} class={styleStatus} style={flagStatus}></div>
         </div>
 
         <p style={styleInitial} class="content">

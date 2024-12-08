@@ -1094,7 +1094,6 @@ form input[type="text"]:focus {
 }
 .menu-icon {
   top: 0;
-  left: 98%;
   position: relative;
   font-size: 24px;
   cursor: pointer;
@@ -1561,6 +1560,10 @@ form input[type="text"]:focus {
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 10px;
+  padding: 10px;
+}
+.header-post {
+  padding: 10px;
 }
 .content {
   font-size: 14px;
@@ -1582,7 +1585,7 @@ form input[type="text"]:focus {
   resize: vertical;
 }
 .date {
-  width: 120px;
+  width: 100%;
   font-size: 12px;
   color: #999;
   text-align: right;

@@ -133,7 +133,7 @@ async function renderFeedForm() {
       <div class="right-content">
         <div class="tabs feed">
           <a class="active"> Популярное </a>
-          <a> Недавние </a>
+          <a> Подписки </a>
         </div>
         {containerPopularposts()}
         {containerRecentlyposts()}

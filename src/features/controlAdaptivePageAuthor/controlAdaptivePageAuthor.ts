@@ -33,6 +33,7 @@ import { showOverlay } from "../../shared/overlay/overlay";
 import { setStatic } from "../../shared/getStatic/getStatic";
 import {
   iconStatusPublished,
+  pageContainer,
   urlIconComment,
   urlIconLike,
   urlSad,
@@ -267,6 +268,13 @@ export async function customizePostProfile(
       dropdownmenu.classList.toggle(ELEMENTS_CLASS.ACTIVE);
     }
   };
+  pageContainer.addEventListener("click", (event: any) => {
+    if (event.target !== menu) {
+      alldropdownMenu.forEach((dropdown: any, dropdownIndex: number) => {
+        dropdown.classList.remove(ELEMENTS_CLASS.ACTIVE);
+      });
+    }
+  });
   menu.addEventListener("click", handleClickMenu);
   buttonFastChange.addEventListener("click", handleClickFastChange);
   const rightContainer = document.querySelector(`.profile-form`);
