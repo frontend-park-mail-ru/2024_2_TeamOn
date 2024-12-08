@@ -31,6 +31,10 @@ import { addUserPost } from "../../entities/userPost";
 import { getUserPosts } from "../getuserposts/getUserPosts";
 import { addComment } from "../../entities/comments/api/api";
 import { setComments } from "../controlAdaptivePageAuthor/controlAdaptivePageAuthor";
+import {
+  contentComment,
+  editContentComment,
+} from "../../widgest/feed/ui/comments/comments";
 
 export function controlSlideShow(container: any, rightContainer: any) {
   const modalPhotos: any = document.querySelector(`.modal-view-photos`); //
@@ -53,7 +57,6 @@ export function controlSlideShow(container: any, rightContainer: any) {
   const videoModal: any = modalPhotos.querySelector(`.video-modal`);
   const videoHud: any = modalPhotos.querySelector(`.video-hud`);
   const video: any = Array.from(container.querySelectorAll(".video-player"));
-  console.log(video);
   let allContent: any = Array.from(
     container.querySelectorAll(".content-media"),
   );
@@ -63,7 +66,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
     return element.querySelector(".audio") !== null;
   };
 
-  // Фильтруем массив, исключая элементы, которые содержат видео
+  // Фильтруем массив, исключая элементы, которые содержат audio
   const filteredContent = allContent.filter(
     (element: any) => !isAudio(element),
   );
@@ -76,20 +79,29 @@ export function controlSlideShow(container: any, rightContainer: any) {
   var currentIndex = 0;
   let isTransitioning = false;
 
-  const updateImage = (currentIndex: any) => {
+  const updateImage = (currentIndex: any, target: any = null) => {
     if (!imageModal || imgPhotos.length == 0) return;
     imageModal.style.display = "block";
     videoModal.style.display = "none";
     videoHud.style.display = "none";
-    imageModal.src = imgPhotos[currentIndex].src;
-    if (allContent[currentIndex].querySelector(`.video-player`)) {
-      const placeVideo =
-        allContent[currentIndex].querySelector(`.video-player`);
+    if (target !== "arrow") {
+      imageModal.src = target.src;
+    } else {
+      imageModal.src = imgPhotos[currentIndex].src;
+    }
+    if (
+      (target && target instanceof HTMLVideoElement) ||
+      (target === "arrow" &&
+        allContent[currentIndex].querySelector(`.video-player`))
+    ) {
+      let placeVideo = allContent[currentIndex].querySelector(`.video-player`);
+      if (target !== "arrow") {
+        placeVideo = target;
+      }
       imageModal.style.display = "none";
       videoModal.style.display = "block";
       videoHud.style.display = "block";
       videoModal.src = placeVideo.src;
-
       const modalContainerPhotos: any = document.querySelector(
         `.modal-container-photos`,
       );
@@ -110,14 +122,23 @@ export function controlSlideShow(container: any, rightContainer: any) {
     event: any,
     callback: any,
     index: any = null,
+    target: any = null,
   ) => {
     event.stopPropagation();
+    callback(currentIndex, target);
+    if (
+      isMobile() &&
+      videoModal.style.display == "block" &&
+      imageModal.style.display == "none"
+    ) {
+      window.location.href = videoModal.src;
+      return;
+    }
     modalPhotos.style.display = "block";
     rightContent.classList.add("blackout");
     overlay = showOverlay(modalPhotos, rightContent);
 
     currentIndex = index;
-    callback(currentIndex);
     document.body.style.overflow = "hidden";
     controlVideo(modalPhotos);
 
@@ -289,7 +310,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
     isTransitioning = true;
     videoModal.pause();
     currentIndex = (currentIndex + 1) % allContent.length;
-    updateImage(currentIndex);
+    updateImage(currentIndex, "arrow");
     setTimeout(() => {
       isTransitioning = false; // Сбрасываем флаг после завершения анимации
     }, 500);
@@ -302,7 +323,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
     isTransitioning = true;
     videoModal.pause();
     currentIndex = (currentIndex - 1 + allContent.length) % allContent.length;
-    updateImage(currentIndex);
+    updateImage(currentIndex, "arrow");
     setTimeout(() => {
       isTransitioning = false; // Сбрасываем флаг после завершения анимации
     }, 500); // Время совпадает с временем анимации
@@ -363,7 +384,6 @@ export function controlSlideShow(container: any, rightContainer: any) {
   allContent.forEach((img: any) => {
     onImagesLoaded();
     img.onload = () => {
-      console.log(img);
       imagesLoaded++;
       if (imagesLoaded === allContent.length) {
         onImagesLoaded(); // Все изображения загружены
@@ -379,7 +399,11 @@ export function controlSlideShow(container: any, rightContainer: any) {
 
   allContent.forEach((img: any, index: any) => {
     img.addEventListener("click", (event: any) => {
-      handleOpenSlideshow(event, updateImage, index);
+      if (img.querySelector(".video-player") && isMobile()) {
+        window.location.href = img.querySelector(".video-player").src;
+        return;
+      }
+      handleOpenSlideshow(event, updateImage, index, event.target);
     });
   });
   if (imgAvatar) {
@@ -393,6 +417,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
     newIndex: any,
     direction: any,
   ) {
+    if (allContent[newIndex].querySelector(`.video-player`)) return;
     const imageModal: any = document.querySelector(".image-photos-modal");
 
     // Сдвинуть текущее изображение
@@ -746,7 +771,6 @@ function modifierModalComplaintPost(
     const response: any = await complaintPost({
       postID: post.postId,
     });
-    console.log(post);
     container.style.display = "none";
     modalsDelete.style.display = "none";
     mainContent.classList.remove("blur");
@@ -768,15 +792,63 @@ async function customizeComment(container: any, comment: any) {
   });
   const buttonDelete = container.querySelector(`.button-delete-comment`);
   const divDeleteButton = container.querySelector(`.container-delete-comment`);
+  const divEditButton = container.querySelector(`.container-edit-comment`);
+  const buttonEdit = container.querySelector(`.button-edit-comment`);
+  const buttonSave = container.querySelector(".save-comment");
+  const buttonCancel = container.querySelector(`.cancel-comment`);
+
+  const handleSaveComment = () => {
+    const newContent = container.querySelector(`.comment-edit`);
+    const containerContent = contentComment(newContent.value);
+    update(content, containerContent);
+    buttonSave.style.display = "none";
+    buttonCancel.style.display = "none";
+  };
+  const handleClickSaveComment = (e: any) => {
+    e.preventDefault();
+    handleSaveComment();
+  };
+  const handleClickKeySaveComment = (e: any) => {
+    if (e.key === "Enter" && e.shiftKey) return;
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSaveComment();
+    }
+  };
+  const handleClickEditCancelComment = () => {
+    // запрашиваю все комментарии у поста при помощи функции getComments
+    // нахожу нужный комментарий при помощи функции findCommentByPostId
+    const containerContent = contentComment(comment.content); // <-- сюда его вставляю
+    update(content, containerContent);
+    buttonSave.style.display = "none";
+    buttonCancel.style.display = "none";
+  };
   const handleClickDeleteComent = () => {
     modifierModalDeleteComment(comment);
   };
+  const handleClickEditComment = () => {
+    const containerContent = editContentComment();
+    const editContent = update(content, containerContent);
+    const title = editContent.querySelector(`.comment-edit`);
+    title.textContent = `${comment.content}`; // Вставляем текст комментария
+    title.setAttribute("contenteditable", "true"); // Делаем элемент редактируемым
+    title.focus(); // Устанавливаем фокус на элемент
+
+    buttonSave.style.display = "block";
+    buttonCancel.style.display = "block";
+    buttonSave.addEventListener("click", handleClickSaveComment);
+    title.addEventListener("keydown", handleClickKeySaveComment);
+    buttonCancel.addEventListener("click", handleClickEditCancelComment);
+  };
+
   if (
     sessionStorage.getItem("account") === comment.authorUsername &&
     hasLogged()
   ) {
+    divEditButton.style.display = "flex";
     divDeleteButton.style.display = "flex"; // ИСПРАВИТЬ!
     buttonDelete.addEventListener("click", handleClickDeleteComent);
+    buttonEdit.addEventListener("click", handleClickEditComment);
   }
 
   const rightContainer = document.querySelector(`.right-content`);
@@ -914,6 +986,7 @@ export function setCapture(container: any) {
   const videos: any = container.querySelectorAll(`.video-container`);
   videos.forEach((video: any) => {
     const vi: any = video.querySelector(`.video-player`);
+    captureFrame(vi);
     vi.addEventListener("loadeddata", () => {
       captureFrame(vi);
     });
@@ -1009,10 +1082,10 @@ function captureFrame(video: any) {
     return false;
   }
 
-  if (!isVideoElement(video)) {
-    console.error("Provided element is not a valid video element.");
-    return;
-  }
+  // if (!isVideoElement(video)) {
+  //   console.error("Provided element is not a valid video element.");
+  //   return;
+  // }
   // Установите текущее время видео на 1 секунду
   video.currentTime = 1;
 

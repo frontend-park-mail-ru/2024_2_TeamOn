@@ -10,6 +10,7 @@ import {
   containerBlockPost,
   containerReportedPosts,
 } from "../../../widgest/moderation";
+import { modal } from "../../../pages/feed/ui/feed";
 
 async function renderModerationForm() {
   return (
@@ -25,14 +26,15 @@ async function renderModerationForm() {
         {containerReportedPosts()}
       </div>
       <div class="modal-view-photos" style="display: none; z-index=10101010">
-        <div class="close-modal-view"></div>
+        {modal()}
+        {/* <div class="close-modal-view"></div>
         <div class="modal-container-photos">
           <img class="image-photos-modal"></img>
         </div>
         <div class="slideshow">
           <div class="leftarrow-modal-view"></div>
           <div class="rightarrow-modal-view"></div>
-        </div>
+        </div> */}
       </div>
       {containerBlockPost()}
     </div>

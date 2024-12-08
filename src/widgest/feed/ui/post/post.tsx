@@ -95,15 +95,15 @@ export async function containerMediaPost(postId: any) {
   //     src="https://png.pngtree.com/thumb_back/fw800/background/20230527/pngtree-phoenix-bird-in-flames-wallpapers-wallpapershd-image_2697352.jpg"
   //   ></img>
   // );
-  // const containerAudio = (
-  //   <figure class="audio">
-  //     <figcaption></figcaption>
-  //     <audio
-  //       controls
-  //       src="https://samplelib.com/lib/preview/mp3/sample-3s.mp3"
-  //     ></audio>
-  //   </figure>
-  // );
+  // // const containerAudio = (
+  // //   <figure class="audio">
+  // //     <figcaption></figcaption>
+  // //     <audio
+  // //       controls
+  // //       src="https://samplelib.com/lib/preview/mp3/sample-3s.mp3"
+  // //     ></audio>
+  // //   </figure>
+  // // );
   // const containerFileDev3 = (
   //   <div class="image-photo video-container">
   //     <video
@@ -120,7 +120,7 @@ export async function containerMediaPost(postId: any) {
   // arrayMedia.push(containerFileDev);
   // arrayMedia.push(containerFileDevImg);
   // arrayMedia.push(containerFileDev3);
-  // arrayMedia.push(containerAudio);
+  // // arrayMedia.push(containerAudio);
 
   // function removeRandomElements(arr: any, count: number) {
   //   const result = [...arr]; // Создаем копию массива, чтобы не изменять оригинал
@@ -133,12 +133,12 @@ export async function containerMediaPost(postId: any) {
   // }
 
   // // Удаляем 1-2 случайных элемента из массива
-  // const modifiedArray = removeRandomElements(
-  //   arrayMedia,
-  //   Math.floor(Math.random() * 2) + 1,
-  // );
+  // // const modifiedArray = removeRandomElements(
+  // //   arrayMedia,
+  // //   Math.floor(Math.random() * 2) + 1,
+  // // );
 
-  // arrayMedia = modifiedArray;
+  // // arrayMedia = modifiedArray;
   if (propertiesPost.mediaContent.length <= 0) return [arrayMedia, mediaId];
   for (const content of propertiesPost.mediaContent) {
     const url: any = content.mediaURL;

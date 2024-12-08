@@ -320,8 +320,8 @@ export function setComments(container: any, post: any) {
         try {
           const allComments: any = await getPopularPosts(0);
           const avatar: any = formComment.querySelector(`.author-avatar`);
-          const avatarload: any = await getAvatar("/profile");
-          avatar.src = avatarload;
+          // const avatarload: any = await getAvatar("/profile");
+          // avatar.src = avatarload;
           const activeRequests = new Set();
           const placeContent = container.querySelector(`.place-content`);
           await paginateComments(activeRequests, [], placeContent);

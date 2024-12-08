@@ -159,6 +159,7 @@ function renderComplaint(content: any, flag: any = null) {
   const text = flag
     ? `Вы действительно хотите удалить комментарий ?`
     : `Вы действительно хотите подать жалобу на пост ${content.title} ?`;
+  const buttonSave = flag ? "Удалить" : "Пожаловаться";
   return (
     <div class="modal__deletepost">
       <div class="modal-header">
@@ -172,7 +173,7 @@ function renderComplaint(content: any, flag: any = null) {
           Закрыть
         </button>
         <button class="delete delete__button delete__button__effects">
-          Пожаловаться
+          {buttonSave}
         </button>
       </div>
     </div>

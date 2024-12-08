@@ -630,7 +630,7 @@ form input[type=text]:focus {
   margin: 10px 0;
   padding: 10px;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   background-color: var(--main-color);
   color: white;
   font-size: 16px;
@@ -643,12 +643,35 @@ form input[type=text]:focus {
   margin: 10px 0;
   padding: 10px;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   background-color: black;
   color: white;
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
+}
+
+.save-comment,
+.cancel-comment {
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.save-comment {
+  background-color: var(--main-color);
+}
+
+.cancel-comment {
+  background-color: black;
+}
+
+.save-comment:hover,
+.cancel-comment:hover {
+  background-color: var(--main-color-hover);
 }
 
 .cancel-info-button:hover {
@@ -3306,15 +3329,29 @@ canvas {
   color: gray; /* Цвет текста заголовка комментария */
 }
 
-.button-delete-comment {
+.button-delete-comment,
+.button-edit-comment {
+  font-weight: bold;
   cursor: pointer;
   display: flex;
   justify-content: flex-end;
   transition: color 0.3s ease;
 }
 
+.button-edit-comment {
+  color: var(--main-color);
+}
+
+.button-delete-comment {
+  color: rgba(255, 0, 0, 0.616);
+}
+
 .button-delete-comment:hover {
   color: red;
+}
+
+.button-edit-comment:hover {
+  color: var(--main-test-color);
 }
 
 .container-send-comment {
@@ -3328,9 +3365,6 @@ canvas {
 }
 
 @media (max-width: 768px) {
-  .container-delete-comment {
-    margin-left: -28%;
-  }
   .iteraction-section-comment {
     width: 200px;
   }

@@ -1,5 +1,7 @@
-import { ELEMENTS_CLASS } from "../../../shared/consts/consts";
+import { hasLogged } from "../../../shared/utils/hasLogged";
+import { ELEMENTS_CLASS, LINKS } from "../../../shared/consts/consts";
 import { AddLikeOnPost } from "../api/api";
+import { route } from "../../../shared/routing/routing";
 
 /**
  * Установка взаимодействия с лайком у поста
@@ -26,6 +28,10 @@ function setLike(container: any, post: any) {
     );
 
     divLike.addEventListener("click", async () => {
+      if (!hasLogged()) {
+        route(LINKS.LOGIN.HREF);
+        return;
+      }
       if (post.isLiked) {
         // Удалить лайк
         const likeCount: any = await AddLikeOnPost(post.postId);
