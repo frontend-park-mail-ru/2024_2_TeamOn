@@ -1,21 +1,8 @@
-import { ELEMENTS_CLASS, LINKS, QUERY } from "../../shared/consts/consts";
-import { getPopularPosts } from "../getPopularPosts/getPopularPosts";
-import { getRecentlyPosts } from "../getRecentlyPosts/getRecentlyPosts";
-import { containerPost } from "../../widgest/feed";
+import { ELEMENTS_CLASS, QUERY } from "../../shared/consts/consts";
 import { renderTo, update } from "../../../lib/vdom/lib";
-import { AddLikeOnPost } from "../../entities/likes";
 import { convertISOToRussianDate } from "../../shared/utils/parsedate";
-import { route } from "../../shared/routing/routing";
 import { getAvatar } from "../getavatar/getavatar";
-import { containerMediaPost } from "../../widgest/feed/ui/post/post";
-import { hasLogged } from "../../shared/utils/hasLogged";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
-import { showOverlay } from "../../shared/overlay/overlay";
-import { renderComplaintPost } from "../../pages/feed/ui/feed";
-import { fetchAjax } from "../../shared/fetch/fetchAjax";
-import { setStatic } from "../../shared/getStatic/getStatic";
-import { urlIconLike } from "../../app";
-import { renderNotification } from "../../pages/notifications";
 import { getNotification } from "../getNotification/getNotification";
 import { containerNotification } from "../../widgest/notification/notification";
 import { parseUsername } from "../parseUsername/parseUsername";
@@ -120,56 +107,49 @@ async function renderNotifications(notifications: any[]) {
 }
 
 async function paginateNotifications(
-  allNotifications: any[], // Все уведомления, которые будем загружать
-  containerNotifications: HTMLElement, // Контейнер для уведомлений
+  allNotifications: any[], 
+  containerNotifications: HTMLElement, 
 ) {
-  let stopLoadNotifications = false; // Переменная для остановки загрузки уведомлений
-  let offset = 0; // Сдвиг для пагинации
-  let isLoading = false; // Флаг, чтобы не загружать одновременно несколько запросов
+  let stopLoadNotifications = false; 
+  let offset = 0; 
+  let isLoading = false; 
 
-  const activeRequests = new Set(); // Набор для отслеживания активных запросов
+  const activeRequests = new Set(); 
 
-  // Функция для загрузки уведомлений
   async function loadNotifications() {
-    if (isLoading || stopLoadNotifications) return; // Если загрузка идет или стоп-флаг активирован, не выполняем запрос
-    isLoading = true; // Устанавливаем флаг загрузки
+    if (isLoading || stopLoadNotifications) return; 
+    isLoading = true;
 
     try {
-      const requestId = `notifications-${offset}`; // Уникальный идентификатор запроса
-      if (activeRequests.has(requestId)) return; // Проверка, есть ли активный запрос для этого offset
-      activeRequests.add(requestId); // Добавляем запрос в активные
+      const requestId = `notifications-${offset}`; 
+      if (activeRequests.has(requestId)) return; 
+      activeRequests.add(requestId); 
 
-      // Получаем уведомления с бэкенда
       const notifications: any = await getNotification(offset);
-      const nextNotifications = notifications.slice(0, QUERY.LIMIT); // Ограничиваем количество уведомлений
+      const nextNotifications = notifications.slice(0, QUERY.LIMIT); 
 
       if (nextNotifications.length > 0) {
-        allNotifications.push(...nextNotifications); // Добавляем новые уведомления в общий список
-        offset += QUERY.LIMIT; // Обновляем сдвиг для следующей порции
-
-        // Рендерим уведомления и добавляем их в DOM
+        allNotifications.push(...nextNotifications); 
+        offset += QUERY.LIMIT; 
         const notificationElements =
           await renderNotifications(nextNotifications);
         containerNotifications.append(...notificationElements);
       } else {
-        stopLoadNotifications = true; // Если уведомлений больше нет, останавливаем загрузку
+        stopLoadNotifications = true; 
       }
 
-      activeRequests.delete(requestId); // Удаляем запрос из активных
+      activeRequests.delete(requestId); 
     } finally {
-      isLoading = false; // Сбрасываем флаг загрузки
+      isLoading = false; 
     }
   }
 
-  // Инициализация загрузки уведомлений
   await loadNotifications();
 
-  // Обработчик события прокрутки
   window.addEventListener("scroll", async () => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
     if (scrollTop + clientHeight >= scrollHeight - 1000) {
-      // Если прокрутка близка к низу страницы
-      await loadNotifications(); // Загружаем новые уведомления
+      await loadNotifications(); 
     }
   });
 }
