@@ -2,6 +2,8 @@ import {
   allowedExtensions,
   ELEMENTS_CLASS,
   LINKS,
+  months,
+  monthsSkl,
   state,
 } from "../../shared/consts/consts";
 import { pageContainer } from "../../app/index";
@@ -22,12 +24,49 @@ import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { renderStatics, renderTableTitle } from "../statistics/ui/ui";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { setTitle } from "../../shared/settitle/setTitle";
+import { hideLoader, showLoader } from "../feed";
+import {
+  customStatDay,
+  customStatMonth,
+  customStatYear,
+  filterStat,
+  filterStatDay,
+} from "../../shared/utils/filterStat";
+
+function showLoadSet(container: any) {
+  const load = container.querySelector(`.mask_settings`);
+  if (!load) {
+    const form = document.body.querySelector(`.content-container`);
+    const newmask = document.createElement("div");
+    newmask.classList.add("mask_settings");
+    const newloader = document.createElement("div");
+    newloader.classList.add("loader_settings");
+    newmask.appendChild(newloader);
+    form?.appendChild(newmask);
+    newmask.style.display = "flex";
+    newmask.style.opacity = "1";
+  }
+  if (load) {
+    load.style.display = "flex";
+    load.style.opacity = 1;
+  }
+}
+function hideLoadSet(container: any) {
+  const mask: any = container.querySelector(".mask_settings");
+  if (mask) {
+    mask.style.opacity = 0;
+    setTimeout(() => {
+      mask.style.display = "none";
+    }, 600);
+  }
+}
 /**
  * Рендер настроек
  * @returns
  */
 export async function renderSettings() {
   try {
+    hideLoader();
     setTitle(LINKS.SETTINGS.TEXT);
 
     const user = state.currentUser;
@@ -38,7 +77,7 @@ export async function renderSettings() {
     const vdom: VNode = await settingsContainer();
 
     const container = update(pageContainer, vdom);
-
+    showLoadSet(container);
     const mainContent = container.querySelector(".main-content");
 
     const tabs = container.querySelector(`.tabs`);
@@ -52,7 +91,7 @@ export async function renderSettings() {
 
     setupTabs(tabs, contentContainer, userdata);
     const index: any = sessionStorage.getItem("settings");
-    updateContent(
+    await updateContent(
       contentContainer,
       index == null ? 0 : Number(index),
       userdata,
@@ -67,6 +106,9 @@ export async function renderSettings() {
     console.log("EROR");
     throw error;
   }
+  // } finally {
+  //   hideLoadSet(document.body);
+  // }
 }
 /**
  * Функция стать автором
@@ -156,13 +198,18 @@ function setupTabs(
   contentContainer: HTMLDivElement,
   userdata: any,
 ) {
-  [
-    "Основная информация",
-    "Безопасность",
-    "Статистика",
-    "Оценки",
-    /** , "Получение дохода"*/
-  ].forEach((tabName, index) => {
+  const listPage =
+    sessionStorage.getItem("role") === "Author"
+      ? [
+          "Основная информация",
+          "Безопасность",
+          "Статистика",
+          "Оценки",
+          /** , "Получение дохода"*/
+        ]
+      : ["Основная информация", "Безопасность", "Оценки"];
+
+  listPage.forEach((tabName, index) => {
     const tabLink = document.createElement("a");
     tabLink.textContent = tabName;
     const initial: any =
@@ -178,6 +225,9 @@ function setupTabs(
         .querySelectorAll("a")
         .forEach((link) => link.classList.remove("active"));
       tabLink.classList.add("active");
+      if (tabName === "Оценки" && index === 2) {
+        index = index + 1;
+      }
       sessionStorage.setItem("settings", index.toString());
       updateContent(contentContainer, index, userdata);
     });
@@ -187,7 +237,6 @@ function setupTabs(
 
 let buttonPersonalize: any;
 let buttonPassword: any;
-
 /**
  * Обновление контейнера
  * @param contentContainer Основной контейнер
@@ -201,10 +250,31 @@ async function updateContent(
   userdata: any,
 ) {
   contentContainer.innerHTML = "";
-  contentContainer.appendChild(await createProfileForm(userdata));
-  contentContainer.appendChild(createSecurityForm());
-  contentContainer.appendChild(await createStat());
-  contentContainer.appendChild(await createFeedback());
+  try {
+    showLoadSet(document.body);
+    const profileForm = await createProfileForm(userdata);
+    const securityForm = createSecurityForm();
+    let stat: any = null;
+    if (sessionStorage.getItem("role") === "Author") {
+      stat = await createStat();
+    }
+    const fb = await createFeedback();
+    hideLoadSet(document.body);
+
+    contentContainer.appendChild(profileForm);
+    contentContainer.appendChild(securityForm);
+    if (stat) {
+      contentContainer.appendChild(stat);
+    }
+    if (fb) {
+      contentContainer.appendChild(fb);
+    }
+  } catch (error) {
+    console.error(error);
+  } finally {
+    hideLoadSet(document.body);
+  }
+  // hideLoadSet(document.body);
   let containerPersonalize: any =
     contentContainer.querySelector(`.form-container`);
   let containerPassword: any = contentContainer.querySelector(
@@ -218,20 +288,32 @@ async function updateContent(
 
   switch (index) {
     case 0:
-      containerPersonalize.style.display = "block";
-      containerPassword.style.display = "none";
+      setTimeout(() => {
+        containerPersonalize.style.display = "block";
+        containerPassword.style.display = "none";
+      }, 600);
       break;
     case 1:
-      containerPersonalize.style.display = "none";
-      containerPassword.style.display = "block";
+      setTimeout(() => {
+        containerPersonalize.style.display = "none";
+        containerPassword.style.display = "block";
+      }, 600);
       break;
     case 2:
-      containerPersonalize.style.display = "none";
-      containerStatistics.style.display = "block";
+      setTimeout(() => {
+        containerPersonalize.style.display = "none";
+        if (containerStatistics) {
+          containerStatistics.style.display = "block";
+        }
+      }, 600);
       break;
     case 3:
-      containerPersonalize.style.display = "none";
-      containerFeedback.style.display = "block";
+      setTimeout(() => {
+        containerPersonalize.style.display = "none";
+        if (containerFeedback) {
+          containerFeedback.style.display = "block";
+        }
+      }, 600);
       break;
     default:
       return [buttonPersonalize, buttonPassword];
@@ -498,212 +580,123 @@ function createSecurityForm(): HTMLDivElement {
   });
   return formContainer;
 }
+/**
+ * Функция получения популярных постов
+ * @param offsetPopular Оффсет для популярных постов
+ * @returns
+ */
+async function getStatisticsForPost(time: string) {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "GET",
+      "/api/pages/stat/posts" + `?time=${time}`,
+      null,
+      (response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            resolve(data);
+          });
+        } else if (response.status === 400) {
+          resolve(false);
+        } else {
+          reject(new Error("Внутреняя ошибка сервера"));
+        }
+      },
+    );
+  });
+}
+
+/**
+ * Функция получения популярных постов
+ * @param offsetPopular Оффсет для популярных постов
+ * @returns
+ */
+async function getStatisticsForPayments(time: string) {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "GET",
+      "/api/pages/stat/payments" + `?time=${time}`,
+      null,
+      (response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            resolve(data);
+          });
+        } else if (response.status === 400) {
+          resolve(false);
+        } else {
+          reject(new Error("Внутреняя ошибка сервера"));
+        }
+      },
+    );
+  });
+}
+
 async function createStat() {
   const formContainer = document.createElement("div");
   formContainer.className = "form-container-stat";
   update(formContainer, await renderStat());
+  if (sessionStorage.getItem("settings") !== "2") return formContainer;
 
-  const postsYear: any = {
-    valuesY: [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3],
-    valuesX: [
-      "Январь",
-      "Февраль",
-      "Март",
-      "Апрель",
-      "Май",
-      "Июнь",
-      "Июль",
-      "Август",
-      "Сентябрь",
-      "Октябрь",
-      "Ноябрь",
-      "Декабрь",
-    ],
-  };
+  const postsYear: any = await getStatisticsForPost("year");
+  let [valuesX, valuesY] = filterStat(postsYear, 1);
+  postsYear.valueX = valuesX;
+  postsYear.valueY = valuesY;
 
-  const paymentsYear: any = {
-    valuesY: [
-      1200, 800, 500, 300, 5000, 10000, 12000, 8000, 5000, 3000, 50000, 100000,
-    ],
-    valuesX: [
-      "Январь",
-      "Февраль",
-      "Март",
-      "Апрель",
-      "Май",
-      "Июнь",
-      "Июль",
-      "Август",
-      "Сентябрь",
-      "Октябрь",
-      "Ноябрь",
-      "Декабрь",
-    ],
-  };
+  customStatYear(postsYear);
 
-  const postsMonth: any = {
-    valuesY: [
-      12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3, 12, 19, 3, 5,
-      2, 3, 12, 19, 3, 5, 2, 3,
-    ],
-    valuesX: [
-      "1",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "10",
-      "11",
-      "12",
-      "13",
-      "14",
-      "15",
-      "16",
-      "17",
-      "18",
-      "19",
-      "20",
-      "21",
-      "22",
-      "23",
-      "24",
-      "25",
-      "26",
-      "27",
-      "28",
-      "29",
-      "30",
-    ],
-  };
+  const paymentsYear: any = await getStatisticsForPayments("year");
+  [valuesX, valuesY] = filterStat(paymentsYear, 1);
+  paymentsYear.valueX = valuesX;
+  paymentsYear.valueY = valuesY;
+  customStatYear(paymentsYear);
 
-  const paymentsMonth: any = {
-    valuesY: [
-      1200, 800, 500, 300, 5000, 10000, 12000, 8000, 5000, 3000, 50000, 100000,
-      1200, 800, 500, 300, 5000, 10000,
-    ],
-    valuesX: [
-      "1",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "10",
-      "11",
-      "12",
-      "13",
-      "14",
-      "15",
-      "16",
-      "17",
-      "18",
-      "19",
-      "20",
-      "21",
-      "22",
-      "23",
-      "24",
-      "25",
-      "26",
-      "27",
-      "28",
-      "29",
-      "30",
-    ],
-  };
+  const postsMonth: any = await getStatisticsForPost("month");
+  [valuesX, valuesY] = filterStat(postsMonth, 1);
+  postsMonth.valueX = valuesX;
+  postsMonth.valueY = valuesY;
+  postsMonth.valueX = customStatMonth(postsMonth);
 
-  const postsDay: any = {
-    valuesY: [12, 8, 5, 3, 5, 10, 12, 8, 5, 3, 5, 10, 12, 8, 5, 3, 5, 1],
-    valuesX: [
-      "00:00",
-      "01:00",
-      "02:00",
-      "03:00",
-      "04:00",
-      "05:00",
-      "06:00",
-      "07:00",
-      "08:00",
-      "09:00",
-      "10:00",
-      "11:00",
-      "12:00",
-      "13:00",
-      "14:00",
-      "15:00",
-      "16:00",
-      "17:00",
-      "18:00",
-      "19:00",
-      "20:00",
-      "21:00",
-      "22:00",
-      "23:00",
-      "24:00",
-    ],
-  };
-  const paymentsDay: any = {
-    valuesY: [
-      1200, 800, 500, 300, 5000, 10000, 12000, 8000, 5000, 3000, 50000, 100000,
-      1200, 800, 500, 300, 5000, 10000,
-    ],
-    valuesX: [
-      "00:00",
-      "01:00",
-      "02:00",
-      "03:00",
-      "04:00",
-      "05:00",
-      "06:00",
-      "07:00",
-      "08:00",
-      "09:00",
-      "10:00",
-      "11:00",
-      "12:00",
-      "13:00",
-      "14:00",
-      "15:00",
-      "16:00",
-      "17:00",
-      "18:00",
-      "19:00",
-      "20:00",
-      "21:00",
-      "22:00",
-      "23:00",
-      "24:00",
-    ],
-  };
+  const paymentsMonth: any = await getStatisticsForPayments("month");
+  [valuesX, valuesY] = filterStat(paymentsMonth, 1);
+  paymentsMonth.valueX = valuesX;
+  paymentsMonth.valueY = valuesY;
+  paymentsMonth.valueX = customStatMonth(paymentsMonth);
 
-  const totalPaymentsDay = paymentsDay.valuesY.reduce(
+  const postsDay: any = await getStatisticsForPost("day");
+  [valuesX, valuesY] = filterStat(postsDay, 1);
+  postsDay.valueX = valuesX;
+  postsDay.valueY = valuesY;
+  postsDay.valueX = customStatDay(postsDay);
+  console.log(postsDay, "5");
+
+  const paymentsDay: any = await getStatisticsForPayments("day");
+  [valuesX, valuesY] = filterStat(paymentsDay, 1);
+  paymentsDay.valueX = valuesX;
+  paymentsDay.valueY = valuesY;
+  paymentsDay.valueX = customStatDay(paymentsDay);
+
+  const totalPaymentsDay = paymentsDay.valueY.reduce(
     (accumulator: any, currentValue: number) => accumulator + currentValue,
     0,
   );
-  const totalPaymentsMonth = paymentsMonth.valuesY.reduce(
+  const totalPaymentsMonth = paymentsMonth.valueY.reduce(
     (accumulator: any, currentValue: number) => accumulator + currentValue,
     0,
   );
-  const totalPaymentsYear = paymentsYear.valuesY.reduce(
+  const totalPaymentsYear = paymentsYear.valueY.reduce(
     (accumulator: any, currentValue: number) => accumulator + currentValue,
     0,
   );
-  const totalPostsDay = postsDay.valuesY.reduce(
+  const totalPostsDay = postsDay.valueY.reduce(
     (accumulator: any, currentValue: number) => accumulator + currentValue,
     0,
   );
-  const totalPostsMonth = postsMonth.valuesY.reduce(
+  const totalPostsMonth = postsMonth.valueY.reduce(
     (accumulator: any, currentValue: number) => accumulator + currentValue,
     0,
   );
-  const totalPostsYear = postsYear.valuesY.reduce(
+  const totalPostsYear = postsYear.valueY.reduce(
     (accumulator: any, currentValue: number) => accumulator + currentValue,
     0,
   );
@@ -725,11 +718,11 @@ async function createStat() {
   const tablePayments: any = formContainer.querySelector(`.table-payments`);
 
   let total = totalPaymentsYear;
-  let response: any = [{ theme: "Количество выплат", rating: total }];
+  let response: any = [{ theme: "Общее количество выплат, ₽", rating: total }];
   customizeTable(tablePayments, response);
 
   total = totalPostsYear;
-  response = [{ theme: "Количество постов", rating: total }];
+  response = [{ theme: "Общее количество постов, шт.", rating: total }];
   customizeTable(tablePosts, response);
 
   const buttonSetDayPosts: any = buttonsPosts.querySelector(`.btn-day`);
@@ -744,13 +737,15 @@ async function createStat() {
   buttonSetDayPayments.addEventListener("click", () => {
     const canv: any = formContainer.querySelector(`.canv-payments`);
     const ctx = canv.getContext("2d");
-
+    canv.innerHTML = "";
     // Очистка канваса
     ctx.clearRect(0, 0, canv.width, canv.height);
-    renderContainerGraphicPayments(formContainer, paymentsDay, "Часы");
+    renderContainerGraphicPayments(formContainer, paymentsDay, "");
 
     const total = totalPaymentsDay;
-    const response: any = [{ theme: "Количество выплат", rating: total }];
+    const response: any = [
+      { theme: "Общее количество выплат, ₽", rating: total },
+    ];
     customizeTable(tablePayments, response);
 
     // customizeTable(tablePayments, response);
@@ -762,10 +757,12 @@ async function createStat() {
 
     // Очистка канваса
     ctx.clearRect(0, 0, canv.width, canv.height);
-    renderContainerGraphicPosts(formContainer, postsDay, "Часы");
+    renderContainerGraphicPosts(formContainer, postsDay, "");
 
     const total = totalPostsDay;
-    const response: any = [{ theme: "Количество постов", rating: total }];
+    const response: any = [
+      { theme: "Общее количество постов, шт.", rating: total },
+    ];
     customizeTable(tablePosts, response);
   });
   buttonSetMonthPayments.addEventListener("click", () => {
@@ -774,14 +771,12 @@ async function createStat() {
 
     // Очистка канваса
     ctx.clearRect(0, 0, canv.width, canv.height);
-    renderContainerGraphicPayments(
-      formContainer,
-      paymentsMonth,
-      "Число месяца",
-    );
+    renderContainerGraphicPayments(formContainer, paymentsMonth, "");
 
     const total = totalPaymentsMonth;
-    const response: any = [{ theme: "Количество выплат", rating: total }];
+    const response: any = [
+      { theme: "Общее количество выплат, ₽", rating: total },
+    ];
     customizeTable(tablePayments, response);
   });
 
@@ -791,10 +786,12 @@ async function createStat() {
 
     // Очистка канваса
     ctx.clearRect(0, 0, canv.width, canv.height);
-    renderContainerGraphicPosts(formContainer, postsMonth, "Число месяца");
+    renderContainerGraphicPosts(formContainer, postsMonth, "");
 
     const total = totalPostsMonth;
-    const response: any = [{ theme: "Количество постов", rating: total }];
+    const response: any = [
+      { theme: "Общее количество постов, шт.", rating: total },
+    ];
     customizeTable(tablePosts, response);
   });
   buttonSetYearPayments.addEventListener("click", () => {
@@ -803,10 +800,12 @@ async function createStat() {
 
     // Очистка канваса
     ctx.clearRect(0, 0, canv.width, canv.height);
-    renderContainerGraphicPayments(formContainer, paymentsYear, "Месяц");
+    renderContainerGraphicPayments(formContainer, paymentsYear, "");
 
     const total = totalPaymentsYear;
-    const response: any = [{ theme: "Количество выплат", rating: total }];
+    const response: any = [
+      { theme: "Общее количество выплат, ₽", rating: total },
+    ];
     customizeTable(tablePayments, response);
   });
 
@@ -816,10 +815,12 @@ async function createStat() {
 
     // Очистка канваса
     ctx.clearRect(0, 0, canv.width, canv.height);
-    renderContainerGraphicPosts(formContainer, postsYear, "Месяц");
+    renderContainerGraphicPosts(formContainer, postsYear, "");
 
     const total = totalPostsYear;
-    const response: any = [{ theme: "Количество выплат", rating: total }];
+    const response: any = [
+      { theme: "Общее количество постов, ₽", rating: total },
+    ];
     customizeTable(tablePosts, response);
   });
 
@@ -840,17 +841,18 @@ function renderContainerGraphicPosts(
 ) {
   const canvas: any = formContainer.querySelector(".canv-posts");
 
-  const dataPosts = posts.valuesY;
-  const labelsPosts = posts.valuesX;
-
-  adjustCanvasWidth(canvas, posts.valuesX.length);
+  const dataPosts = posts.valueY;
+  const labelsPosts = posts.valueX;
+  console.log(labelsPosts);
+  console.log(dataPosts);
+  // adjustCanvasWidth(canvas, posts.valuesX.length);
 
   renderGraphics(
     canvas,
     dataPosts,
     labelsPosts,
     formContainer,
-    "Количество постов",
+    "Количество постов, шт.",
     labelX,
   );
 }
@@ -862,18 +864,18 @@ function renderContainerGraphicPayments(
   const canvasPayments: any = formContainer.querySelector(".canv-payments");
 
   // Данные для графика
-  const dataPayments = payments.valuesY;
+  const dataPayments = payments.valueY;
 
-  const labelsPayments = payments.valuesX;
+  const labelsPayments = payments.valueX;
 
-  adjustCanvasWidth(canvasPayments, payments.valuesX.length);
+  // adjustCanvasWidth(canvasPayments, payments.valuesX.length);
 
   renderGraphics(
     canvasPayments,
     dataPayments,
     labelsPayments,
     formContainer,
-    "Количество выплат",
+    "Количество выплат, ₽",
     labelX,
   );
 }
@@ -897,18 +899,35 @@ function renderGraphics(
   const ctx = canvas.getContext("2d");
   const padding = 40;
   const leftOffset = 30;
-  const width = canvas.width - padding * 2 - leftOffset;
+  const width = canvas.width - padding * 2 - leftOffset - 30;
   const height = canvas.height - padding * 2;
   ctx.lineWidth = 2;
 
   // Нормализация данных для отображения
   const maxDataValue = Math.max(...data);
-  const scaleY = height / maxDataValue;
+  if (maxDataValue === 0) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // Устанавливаем стиль текста
+    ctx.fillStyle = "#337ab7";
+    ctx.font = "20px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    // Рисуем текст "Нет данных"
+    ctx.fillText(
+      "Упс.. кажется нет данных",
+      canvas.width / 2,
+      canvas.height / 2,
+    );
+    return;
+  }
+  const scaleY = height / maxDataValue;
   // Очищаем канвас перед перерисовкой
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Рисуем оси
+  ctx.strokeStyle = "black";
   ctx.beginPath();
   ctx.moveTo(padding + leftOffset, padding);
   ctx.lineTo(padding + leftOffset, canvas.height - padding);
@@ -918,6 +937,7 @@ function renderGraphics(
   // Рисуем метки на оси X
   ctx.fillStyle = "black";
   labels.forEach((label: any, index: number) => {
+    if (index % 5 !== 0) return;
     const x = padding + leftOffset + (width / (data.length - 1)) * index;
     ctx.fillText(label, x - 10, canvas.height - padding + 15);
   });
@@ -928,7 +948,7 @@ function renderGraphics(
   for (let i = 0; i <= numberOfYLabels; i++) {
     const yValue = (maxDataValue / numberOfYLabels) * i;
     const y = canvas.height - padding - yValue * scaleY;
-    ctx.fillText(yValue.toFixed(0), padding + leftOffset - 30, y + 5);
+    ctx.fillText(Math.floor(yValue), padding + leftOffset - 30, y + 5);
 
     // Рисуем горизонтальную линию, если yValue не равно 0
     if (yValue !== 0) {
@@ -956,7 +976,16 @@ function renderGraphics(
   const animationSpeed = 50; // Задержка в миллисекундах
 
   function animateLine() {
+    const buttons: any = document.body.querySelectorAll(`.button-sort`);
+    buttons.forEach((button: any) => {
+      if (button) {
+        button.classList.add("disable");
+        button.disabled = true;
+        button.style.cursor = "not-allowed";
+      }
+    });
     if (currentIndex < data.length - 1) {
+      ctx.strokeStyle = "#337ab7";
       ctx.beginPath();
       const startX =
         padding + leftOffset + (width / (data.length - 1)) * currentIndex;
@@ -979,25 +1008,32 @@ function renderGraphics(
         }
       }
 
-      ctx.strokeStyle = "blue";
       ctx.stroke();
       currentIndex++;
       setTimeout(animateLine, animationSpeed); // Задержка перед следующим кадром
+    } else {
+      buttons.forEach((button: any) => {
+        if (button) {
+          button.classList.remove("disable");
+          button.disabled = false;
+          button.style.cursor = "pointer";
+        }
+      });
     }
   }
 
   // Начинаем анимацию
   animateLine();
 
-  // Рисуем точки на графике
-  ctx.strokeStyle = "blue"; // Цвет обводки точек
-  data.forEach((value: any, index: number) => {
-    const x = padding + leftOffset + (width / (data.length - 1)) * index;
-    const y = canvas.height - padding - value * scaleY;
-    ctx.beginPath();
-    ctx.arc(x, y, 5, 0, Math.PI * 2); // Радиус 5
-    ctx.stroke(); // Обводим точки
-  });
+  // // Рисуем точки на графике
+  // ctx.strokeStyle = "black"; // Цвет обводки точек
+  // data.forEach((value: any, index: number) => {
+  //   const x = padding + leftOffset + (width / (data.length - 1)) * index;
+  //   const y = canvas.height - padding - value * scaleY;
+  //   ctx.beginPath();
+  //   ctx.arc(x, y, 5, 0, Math.PI * 2); // Радиус 5
+  //   ctx.stroke(); // Обводим точки
+  // });
 
   // Модальное окно
   const modal: any = formContainer.querySelector(".modal-graphic");
@@ -1016,7 +1052,35 @@ function renderGraphics(
 
     if (xIndex >= 0 && xIndex < data.length) {
       const yValue = data[xIndex];
-      modalContent.textContent = `${labels[xIndex]} - ${yValue}`;
+      let currLabel = labels[xIndex];
+      const regex = /\b(0?[1-9]|[12][0-9]|3[01])\.(0?[1-9]|1[0-2])\b/g;
+      const matches = String(currLabel).match(regex);
+      let res;
+      if (matches) {
+        // Предполагаем, что вы хотите взять первое совпадение
+        const dateParts = matches[0].split(".");
+
+        // Проверяем, что у нас есть два элемента (день и месяц)
+        if (dateParts.length === 2) {
+          const day = dateParts[0];
+          let month = dateParts[1];
+
+          // Заменяем номер месяца на название
+          monthsSkl.forEach((item: any, index: number) => {
+            if (month === String(index + 1)) {
+              month = item;
+            }
+          });
+          res = `${day} ${month}`;
+        }
+      }
+      let extens;
+      if (label === "Количество выплат, ₽") {
+        extens = "₽";
+      } else {
+        extens = "шт.";
+      }
+      modalContent.textContent = `${yValue} ${extens ? extens : ""}, ${res ? res : currLabel} `;
 
       // Получаем координаты курсора
       const cursorX = event.clientX;
@@ -1041,7 +1105,7 @@ function renderGraphics(
 async function createFeedback() {
   const formContainer = document.createElement("div");
   formContainer.className = "form-container-feedback";
-
+  if (sessionStorage.getItem("settings") !== "3") return formContainer;
   const formTitle = document.createElement("h2");
   formTitle.textContent = "Статистика";
   formContainer.appendChild(formTitle);

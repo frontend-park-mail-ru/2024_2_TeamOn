@@ -16,88 +16,97 @@ import { authLogin } from "../../features/authLogin/authLogin";
 import { validateLoginForm } from "../../shared/validateLoginForm/validateLoginForm";
 import { setTitle } from "../../shared/settitle/setTitle";
 import { setStatic } from "../../shared/getStatic/getStatic";
+import { hideLoader, showLoader } from "../feed";
+import { snow } from "../../shared/snow/snow";
 /**
  * Рендерит форму входа на страницу.
  * @returns
  */
 export async function renderLogin() {
-  setTitle(LINKS.LOGIN.TEXT);
+  try {
+    showLoader();
+    setTitle(LINKS.LOGIN.TEXT);
 
-  let attempts = 0;
+    let attempts = 0;
 
-  const vdom: VNode = containerLogin();
+    const vdom: VNode = containerLogin();
 
-  const container = update(pageContainer, vdom);
+    const container = update(pageContainer, vdom);
 
-  const loginContainer: any = container.querySelector(`.login`);
-  setStatic(loginContainer, urlLogin);
+    const loginContainer: any = container.querySelector(`.login`);
+    setStatic(loginContainer, urlLogin);
 
-  const iconEye: any = container.querySelector(`.password-eye`);
+    const iconEye: any = container.querySelector(`.password-eye`);
 
-  const closeBtn: any = container.querySelector(
-    `.${ELEMENTS_CLASS.CLOSE_BTN.ELEMENT}`,
-  );
-  closeBtn.addEventListener("click", () => {
-    route(LINKS.HOME.HREF);
-  });
-  closeBtn.innerHTML = "x";
+    const closeBtn: any = container.querySelector(
+      `.${ELEMENTS_CLASS.CLOSE_BTN.ELEMENT}`,
+    );
+    closeBtn.addEventListener("click", () => {
+      route(LINKS.HOME.HREF);
+    });
+    closeBtn.innerHTML = "x";
 
-  const passwordEye: any = container.querySelector(".password-eye");
+    const passwordEye: any = container.querySelector(".password-eye");
 
-  setStatic(passwordEye, urlEyeNoSeePassword);
+    setStatic(passwordEye, urlEyeNoSeePassword);
 
-  passwordEye.addEventListener("click", () => {
-    if (inputPassword.type === "password") {
-      inputPassword.type = "text";
-      passwordEye.classList.add("active");
-      setStatic(passwordEye, urlEyeSeePassword);
-    } else {
-      passwordEye.classList.remove("active");
-      inputPassword.type = "password";
-      passwordEye.classList.remove("active");
-      setStatic(passwordEye, urlEyeNoSeePassword);
-    }
-  });
+    passwordEye.addEventListener("click", () => {
+      if (inputPassword.type === "password") {
+        inputPassword.type = "text";
+        passwordEye.classList.add("active");
+        setStatic(passwordEye, urlEyeSeePassword);
+      } else {
+        passwordEye.classList.remove("active");
+        inputPassword.type = "password";
+        passwordEye.classList.remove("active");
+        setStatic(passwordEye, urlEyeNoSeePassword);
+      }
+    });
 
-  const inputLogin: any = container.querySelector(".input-login");
-  inputLogin.type = "text";
-  inputLogin.placeholder = "Введите email или имя пользователя";
-  inputLogin.required = true;
+    const inputLogin: any = container.querySelector(".input-login");
+    inputLogin.type = "text";
+    inputLogin.placeholder = "Введите email или имя пользователя";
+    inputLogin.required = true;
 
-  const inputPassword: any = container.querySelector(".input-password");
-  inputPassword.type = "password";
-  inputPassword.placeholder = "Введите пароль";
-  inputPassword.required = true;
+    const inputPassword: any = container.querySelector(".input-password");
+    inputPassword.type = "password";
+    inputPassword.placeholder = "Введите пароль";
+    inputPassword.required = true;
 
-  const submitButton: any = container.querySelector(".submit-btn");
-  submitButton.type = "submit";
-  submitButton.value = "Войти";
+    const submitButton: any = container.querySelector(".submit-btn");
+    submitButton.type = "submit";
+    submitButton.value = "Войти";
 
-  const form: any = container.querySelector(".form-login");
-  const registerLinkAnchor: any = container.querySelector(
-    `.${ELEMENTS_CLASS.SIGNUP_LINK.ELEMENT}`,
-  );
-  registerLinkAnchor.addEventListener("click", () => {
-    route(LINKS.SIGNUP.HREF);
-  });
-  submitButton.addEventListener("click", (e: any) => {
-    e.preventDefault();
-    attempts++;
-    authLogin(form, inputLogin, inputPassword, attempts);
-  });
-
-  submitButton.addEventListener("keydown", (e: any) => {
-    if (e.key === "Enter") {
+    const form: any = container.querySelector(".form-login");
+    const registerLinkAnchor: any = container.querySelector(
+      `.${ELEMENTS_CLASS.SIGNUP_LINK.ELEMENT}`,
+    );
+    registerLinkAnchor.addEventListener("click", () => {
+      route(LINKS.SIGNUP.HREF);
+    });
+    submitButton.addEventListener("click", (e: any) => {
       e.preventDefault();
       attempts++;
       authLogin(form, inputLogin, inputPassword, attempts);
-    }
-  });
-  form.addEventListener("input", (e: any) => {
-    e.preventDefault();
-    validateLoginForm(form, inputLogin, inputPassword);
-  });
+    });
 
-  removeItemLocalStorage(findUsername());
-  return container;
+    submitButton.addEventListener("keydown", (e: any) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        attempts++;
+        authLogin(form, inputLogin, inputPassword, attempts);
+      }
+    });
+    form.addEventListener("input", (e: any) => {
+      e.preventDefault();
+      validateLoginForm(form, inputLogin, inputPassword);
+    });
+
+    removeItemLocalStorage(findUsername());
+    return container;
+  } catch (error) {
+    console.error("Error in login");
+  } finally {
+    hideLoader();
+  }
 }

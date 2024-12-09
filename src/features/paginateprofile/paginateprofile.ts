@@ -21,7 +21,7 @@ async function renderPosts(authorPosts: any[]) {
     if (containerMedia) {
       let arrayMedia: any = [];
       containerMedia[0].forEach((media: any) => {
-        const divMedia = renderTo(media);
+        const divMedia = renderTo(media, "content-media");
         arrayMedia.push(divMedia);
       });
       const place: any = div.querySelector(`.container-image-photos`);
@@ -86,6 +86,7 @@ async function paginateProfile(allPosts: any, containerPosts: any) {
     popular: [],
     recently: [],
   };
+  const activeRequests = new Set();
 
   /**
    * Загрузка постов в профиле
@@ -97,6 +98,10 @@ async function paginateProfile(allPosts: any, containerPosts: any) {
 
     try {
       if (!stopLoad) {
+        const requestId = `popular-${offset}`;
+        if (activeRequests.has(requestId)) return; // Проверяем, был ли этот запрос уже отправлен
+        activeRequests.add(requestId);
+
         // Загружаем популярные посты
         const posts: any = await getUserPosts(window.location.pathname, offset);
 
@@ -117,13 +122,18 @@ async function paginateProfile(allPosts: any, containerPosts: any) {
 
   // Инициализируем загрузку первых постов
   await loadProfilePost();
+
+  let isLoadingTop = false;
+
   // Обработчик события прокрутки
   window.addEventListener("scroll", async () => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
 
     // Проверяем, достиг ли пользователь нижней части страницы
-    if (scrollTop + clientHeight >= scrollHeight - 500) {
+    if (scrollTop + clientHeight >= 3000 && !isLoadingTop) {
+      isLoadingTop = true;
       await loadProfilePost();
+      isLoadingTop = false;
     }
   });
 }

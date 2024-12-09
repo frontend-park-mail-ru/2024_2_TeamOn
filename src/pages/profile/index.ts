@@ -42,6 +42,7 @@ import { showOverlay } from "../../shared/overlay/overlay";
 import { renderUserSubscriptins } from "../../entities/profileInfo";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { setStatic } from "../../shared/getStatic/getStatic";
+import { hideLoader, showLoader } from "../feed";
 
 async function renderContainerSubscriptions(authorData: any, overlay: any) {
   const modalSubscriptions: any = document.querySelector(
@@ -235,6 +236,7 @@ async function controlCustomSubscriptions(container: any) {
     const handleClickCancel = (e: any) => {
       modalAddSubs.style.display = "none";
       profileForm.classList.remove("blur");
+      document.body.style.overflow = "auto";
       overlay.remove();
       return;
     };
@@ -327,16 +329,6 @@ async function controlCustomSubscriptions(container: any) {
 }
 
 export async function controlBecomeCreator(div: any) {
-  if (hasLogged()) {
-    const userdata: any = await getAccount();
-    const role = userdata.role;
-    if (role === "Reader") {
-      div.classList.add("fade"); // Добавляем класс для анимации
-      div.style.display = "flex";
-    } else {
-      div.style.display = "none";
-    }
-  }
   const button: any = div.querySelector(`.join-button`);
 
   if (!hasLogged()) {
@@ -349,6 +341,7 @@ export async function controlBecomeCreator(div: any) {
     }
     if (hasLogged()) {
       const setrole = await setAuthor();
+      sessionStorage.setItem("role", "Author");
     }
 
     // Запускаем анимацию
@@ -370,6 +363,16 @@ export async function controlBecomeCreator(div: any) {
   };
 
   button.addEventListener("click", handleClick);
+  if (hasLogged()) {
+    const userdata: any = await getAccount();
+    const role = userdata.role;
+    if (role === "Reader") {
+      div.classList.add("fade"); // Добавляем класс для анимации
+      div.style.display = "flex";
+    } else {
+      div.style.display = "none";
+    }
+  }
   return;
 }
 /**
@@ -379,6 +382,15 @@ export async function controlBecomeCreator(div: any) {
  */
 export async function renderProfile() {
   try {
+    if (
+      (sessionStorage.getItem("role") === "Reader" ||
+        sessionStorage.getItem("role") === "Moderator") &&
+      window.location.pathname === "/profile"
+    ) {
+      route(LINKS.FEED.HREF);
+      return;
+    }
+    showLoader();
     document.body.style.overflow = "auto";
     setTitle(LINKS.PROFILE.TEXT);
     const posts: any = [];
@@ -474,5 +486,7 @@ export async function renderProfile() {
   } catch (error) {
     console.log("ERROR in profile");
     throw error;
+  } finally {
+    hideLoader();
   }
 }

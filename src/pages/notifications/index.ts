@@ -14,6 +14,7 @@ import { convertISOToRussianDate } from "../../shared/utils/parsedate";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { paginateNotifications } from "../../features/paginateNotification/paginateNotification";
 
+
 /**
  * Функция рендера уведомлений
  * @returns
@@ -61,6 +62,8 @@ export async function renderNotifications() {
   } catch (error) {
     console.log("ERROR");
     throw error;
+  } finally {
+    hideLoader();
   }
 }
 export { renderNotification };

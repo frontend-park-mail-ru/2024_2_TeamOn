@@ -83,8 +83,22 @@ function append(
 }
 
 const Fragment = ({ children }: { children: (VNode | string)[] }) => {
-  return createElement("div", {}, ...children);
+  // return createElement("div", {}, ...children);
+  return createElement(
+    "div",
+    {},
+    createElement("h1", {}, "Hello World!"),
+    createElement("div", {}),
+  );
 };
+// export function App2(): any {
+//   return createElement(
+//     "div",
+//     {},
+//     createElement("h1", {}, "Hello World!"),
+//     createElement("div", {})
+//   );
+// }
 
 export {
   createElement,

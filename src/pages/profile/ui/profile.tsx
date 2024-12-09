@@ -11,6 +11,7 @@ import {
 } from "../../../widgest/profile";
 import { renderUserInfo } from "../../../entities/profileInfo/index";
 import { urlAddCustomSubs } from "../../../app";
+import { modalMediaContainer } from "../../../pages/feed/ui/feed";
 
 /**
  * Рендер основного контента
@@ -34,9 +35,7 @@ export async function profileContent(
       {await profileForm(authorData, avatar, background, payments)}
       <div class="modal-view-photos" style="display: none; z-index=10101010">
         <div class="close-modal-view"></div>
-        <div class="modal-container-photos">
-          <img class="image-photos-modal"></img>
-        </div>
+        {modalMediaContainer()}
         <div class="slideshow">
           <div class="leftarrow-modal-view"></div>
           <div class="rightarrow-modal-view"></div>

@@ -20,14 +20,15 @@ function modifierSidebar(mainContainer?: any) {
   if (!mainContainer) {
     return;
   }
-  const burger: any = mainContainer.querySelector(
-    `.${ELEMENTS_CLASS.BURGER.BLOCK}`,
-  );
 
   const sidebar = mainContainer.querySelector(".sidebar");
-  burger.addEventListener("click", () => {
-    sidebar.classList.toggle(ELEMENTS_CLASS.ACTIVE);
-  });
+  const burger: any = mainContainer.querySelector(`.burger2`);
+  if (burger) {
+    burger.addEventListener("click", () => {
+      burger.classList.toggle("open");
+      sidebar.classList.toggle(ELEMENTS_CLASS.ACTIVE);
+    });
+  }
   const iconHome: any = sidebar.querySelector(`.icon-home`);
   setStatic(iconHome, urlIconHome);
 
@@ -57,6 +58,8 @@ function modifierSidebar(mainContainer?: any) {
     }
     if (link.active) {
       sidebarReferenses[index].className = ELEMENTS_CLASS.ACTIVE;
+      const i = sidebarReferenses[index].querySelector("i");
+      i.classList.add("active");
     }
     const span: any = mainContainer.querySelector(".new");
     if (span) {

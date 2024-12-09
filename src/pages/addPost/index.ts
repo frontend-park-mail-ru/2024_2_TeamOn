@@ -13,6 +13,7 @@ import { getCustomSubscription } from "../../features/getCustomSubs/getCustomSub
 import { setTitle } from "../../shared/settitle/setTitle";
 import { LINKS } from "../../shared/consts/consts";
 import { setStatic } from "../../shared/getStatic/getStatic";
+import { hideLoader } from "../feed";
 
 async function renderLayers(layers: any) {
   try {
@@ -62,5 +63,7 @@ export async function renderCreatePost() {
   } catch (error) {
     console.log("ERROR in createpost");
     throw error;
+  } finally {
+    hideLoader();
   }
 }

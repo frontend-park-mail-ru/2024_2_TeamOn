@@ -13,14 +13,19 @@ function showOverlay(modal: any, profileForm: any) {
   document.body.appendChild(overlay);
 
   overlay.addEventListener("click", () => {
+    console.log("overlay");
     overlay.remove();
     modal.style.display = "none";
     profileForm.classList.remove("blur");
     profileForm.classList.remove("blackout");
+
     if (document.body.style.overflow == "auto") {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
+      const videoModal: any = document.querySelector(`.video-modal`);
+
+      videoModal.pause();
     }
   });
   return overlay;

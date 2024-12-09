@@ -17,6 +17,8 @@ import { renderUpdatePost } from "../entities/userPost";
 import { hasLogged } from "../shared/utils/hasLogged";
 import { renderModeration } from "../pages/moderation";
 import { getUrlStatic } from "../shared/getStatic/getStatic";
+import { showOverlay } from "src/shared/overlay/overlay";
+
 /**
  * Объект, содержащий конфигурацию меню приложения.
  */
@@ -133,7 +135,6 @@ export function setupScrollPositionHandlers() {
 
     // Сохраняем позицию прокрутки перед выгрузкой страницы
     window.addEventListener("beforeunload", saveScrollPosition);
-
     // Обработка события popstate для навигации
     window.addEventListener("popstate", () => {
       const savedScrollPosition = sessionStorage.getItem("scrollPosition");
@@ -198,11 +199,28 @@ export const urlLogin: any = await getUrlStatic("/login.png");
 export const urlSignup: any = await getUrlStatic("/signup.png");
 export const urlEyeSeePassword: any = await getUrlStatic("/eye_see.png");
 export const urlEyeNoSeePassword: any = await getUrlStatic("/eye_nsee.png");
+export const urlVideoDownload: any = await getUrlStatic("/forward.png");
+export const urlSendComment: any = await getUrlStatic("/sendblue.png");
+export const urlVideoVolume: any = await getUrlStatic("/volume.png");
+export const urlVideoVolumeMute: any = await getUrlStatic("/volumeStop.png");
+export const urlFullHD: any = await getUrlStatic("/shar.png");
+export const urlVideoPlay: any = await getUrlStatic("/playArrow.png");
+export const urlVideoStop: any = await getUrlStatic("/stopArrow.png");
+export const urlEditComment: any = await getUrlStatic("/penEdit.png");
+export const urlDeleteComment: any = await getUrlStatic("/deleteComm.png");
+export const urlSad: any = await getUrlStatic("/sad.png");
+export const iconStatusBlock: any = await getUrlStatic("/blocked.png");
+export const iconStatusPublished: any = await getUrlStatic("/published.png");
+const favicon: any = await getUrlStatic("/fav.png");
+
+const link = document.createElement("link");
+link.rel = "icon";
+link.href = favicon;
+document.head.appendChild(link);
 
 if (flag) {
   let root: HTMLElement | null = startA(config.menu, state);
   render(Virtual);
-
   root?.appendChild(pageContainer);
   root?.append(pushmodal);
   route(LINKS.HOME.HREF, window.location.pathname);

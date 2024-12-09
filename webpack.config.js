@@ -55,7 +55,15 @@ module.exports = {
   },
   optimization: {
     minimize: true,
-    minimizer: [new TerserPlugin()],
+    minimizer: [
+      new TerserPlugin({
+        // terserOptions: {
+        //   compress: {
+        //     drop_console: true,
+        //   },
+        // },
+      }),
+    ],
   },
   devServer: {
     static: [
@@ -72,6 +80,7 @@ module.exports = {
     historyApiFallback: {
       rewrites: [{ from: /^\/sw\.js$/, to: "/sw.js" }],
     },
+
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers":
@@ -122,6 +131,8 @@ module.exports = {
           "^/api/pages/subscription/request": "/subscription/request",
           "^/api/pages/subscription/realize": "/subscription/realize",
           "^/api/pages/unsubscription": "/unsubscription",
+          "^/api/pages/stat/posts": "/stat/posts",
+          "^/api/pages/stat/payments": "/stat/payments",
         },
       },
 

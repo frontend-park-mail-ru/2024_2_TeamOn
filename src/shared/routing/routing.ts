@@ -51,6 +51,7 @@ function updatePageContent(render: string): void {
   const feedRegex = /^\/profile\/[0-9a-zA-Z-]+$/;
   const menuElements: MenuElements = state.menuElements as MenuElements;
   const authorPayRegex = /^\/profile\/[0-9a-zA-Z-]+(\?act=payments)?$/;
+
   if (
     feedRegex.test(render) ||
     authorPayRegex.test(render) ||

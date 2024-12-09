@@ -10,7 +10,11 @@ import {
 import { renderFeedForm } from "./ui/feed";
 import { paginate } from "../../features/paginateFeed/paginateFeed";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
-import { controlActiveLink } from "../../features/controlActiveLink/controlActiveLink";
+import {
+  controlActiveLink,
+  
+  ,
+} from "../../features/controlActiveLink/controlActiveLink";
 import { renderRating } from "../../entities/rating";
 import { addResult, getQuestion } from "../settings";
 import { showSearch } from "../../entities/searchbar";
@@ -80,12 +84,30 @@ async function controlIFRAME() {
     }
   });
 }
+export function showLoader() {
+  const mask: any = document.querySelector(".mask"); // Убедитесь, что этот элемент существует
+  if (mask) {
+    mask.style.display = "flex"; // Показываем лоадер
+    mask.style.opacity = 1; // Убедитесь, что он видим
+  }
+}
+export function hideLoader() {
+  const mask: any = document.querySelector(".mask");
+  if (mask) {
+    mask.style.opacity = 0; // Убираем видимость
+    setTimeout(() => {
+      mask.style.display = "none"; // Скрываем элемент после анимации
+    }, 600); // Время должно совпадать с вашей анимацией
+  }
+}
 /**
  * Функция рендера ленты
  * @returns
  */
 export async function renderFeed() {
   try {
+    showLoader();
+
     setTitle(LINKS.FEED.TEXT);
     const allPopularPosts: any = []; // Массив для хранения всех загруженных популярных постов
     const allRecentlyPosts: any = []; // Массив для хранения всех загруженных недавних постов
@@ -121,10 +143,7 @@ export async function renderFeed() {
     showSearch(container);
 
     const tabs = container.querySelector(".tabs");
-
-    const rightContent = container.querySelector(`.right-content`);
-
-    controlActiveLink(tabs, rightContent);
+    controlActiveLink(tabs, controlFeed);
 
     const containerPopularPosts = container.querySelector(
       ".main-container-popular",
@@ -140,7 +159,10 @@ export async function renderFeed() {
       controlLogout(container, user);
     }
 
+    const activeRequests = new Set();
+
     await paginate(
+      activeRequests,
       allPopularPosts,
       allRecentlyPosts,
       containerPopularPosts,
@@ -151,5 +173,7 @@ export async function renderFeed() {
   } catch (error) {
     console.log("ERROR in feed");
     throw error;
+  } finally {
+    hideLoader();
   }
 }

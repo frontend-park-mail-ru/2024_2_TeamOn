@@ -5,7 +5,8 @@ import { LINKS } from "../../../shared/consts/consts";
  * Функция рендера серчбара
  * @returns
  */
-function renderSearchbar() {
+const renderSearchbar = () => {
+  // function renderSearchbar() {
   const isFeedPage =
     window.location.pathname === LINKS.FEED.HREF ||
     window.location.pathname === LINKS.MODERATION.HREF;
@@ -28,10 +29,11 @@ function renderSearchbar() {
         <button class="fas fa-times searchbar-icon searchbar-icon--right"></button>
       </div>
       <div class="results" style="display: none;">
+        <div class="loader__search" style="display: none;"></div>
         <div class="result-item"></div>
       </div>
     </div>
   );
-}
+};
 
 export { renderSearchbar };
