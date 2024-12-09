@@ -12,7 +12,10 @@ import { renderPlaceAddComment } from "../../../../entities/comments";
  * @returns
  */
 async function containerPost(post: any) {
-  const flag: string = hasLogged() ? "display: block" : "display: none";
+  const flag: string =
+    hasLogged() && sessionStorage.getItem("role") !== "Moderator"
+      ? "display: block"
+      : "display: none";
   return (
     <div>
       <div class="post-container">

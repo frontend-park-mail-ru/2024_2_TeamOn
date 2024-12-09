@@ -86,7 +86,7 @@ async function controlAdaptivePageAuthors(
         `.${ELEMENTS_CLASS.SEND_TIP.BLOCK}`,
       );
 
-      containerTip.style.display = "block";
+      containerTip.style.display = "flex";
       profileForm.classList.add("blur");
 
       buttonSend.addEventListener("click", async (event: any) => {

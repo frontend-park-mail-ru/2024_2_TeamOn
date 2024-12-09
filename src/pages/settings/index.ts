@@ -3,6 +3,7 @@ import {
   ELEMENTS_CLASS,
   LINKS,
   months,
+  monthsSkl,
   state,
 } from "../../shared/consts/consts";
 import { pageContainer } from "../../app/index";
@@ -198,15 +199,15 @@ function setupTabs(
   userdata: any,
 ) {
   const listPage =
-    sessionStorage.getItem("role") === "Reader"
-      ? ["Основная информация", "Безопасность", "Оценки"]
-      : [
+    sessionStorage.getItem("role") === "Author"
+      ? [
           "Основная информация",
           "Безопасность",
           "Статистика",
           "Оценки",
           /** , "Получение дохода"*/
-        ];
+        ]
+      : ["Основная информация", "Безопасность", "Оценки"];
 
   listPage.forEach((tabName, index) => {
     const tabLink = document.createElement("a");
@@ -642,7 +643,6 @@ async function createStat() {
   postsYear.valueX = valuesX;
   postsYear.valueY = valuesY;
 
-  console.log(postsYear, "stat year");
   customStatYear(postsYear);
 
   const paymentsYear: any = await getStatisticsForPayments("year");
@@ -652,25 +652,26 @@ async function createStat() {
   customStatYear(paymentsYear);
 
   const postsMonth: any = await getStatisticsForPost("month");
-  [valuesX, valuesY] = filterStat(postsMonth, 4);
+  [valuesX, valuesY] = filterStat(postsMonth, 1);
   postsMonth.valueX = valuesX;
   postsMonth.valueY = valuesY;
   postsMonth.valueX = customStatMonth(postsMonth);
 
   const paymentsMonth: any = await getStatisticsForPayments("month");
-  [valuesX, valuesY] = filterStat(paymentsMonth, 4);
+  [valuesX, valuesY] = filterStat(paymentsMonth, 1);
   paymentsMonth.valueX = valuesX;
   paymentsMonth.valueY = valuesY;
   paymentsMonth.valueX = customStatMonth(paymentsMonth);
 
   const postsDay: any = await getStatisticsForPost("day");
-  [valuesX, valuesY] = filterStat(postsDay, 4);
+  [valuesX, valuesY] = filterStat(postsDay, 1);
   postsDay.valueX = valuesX;
   postsDay.valueY = valuesY;
   postsDay.valueX = customStatDay(postsDay);
+  console.log(postsDay, "5");
 
   const paymentsDay: any = await getStatisticsForPayments("day");
-  [valuesX, valuesY] = filterStat(paymentsDay, 4);
+  [valuesX, valuesY] = filterStat(paymentsDay, 1);
   paymentsDay.valueX = valuesX;
   paymentsDay.valueY = valuesY;
   paymentsDay.valueX = customStatDay(paymentsDay);
@@ -717,11 +718,11 @@ async function createStat() {
   const tablePayments: any = formContainer.querySelector(`.table-payments`);
 
   let total = totalPaymentsYear;
-  let response: any = [{ theme: "Количество выплат", rating: total }];
+  let response: any = [{ theme: "Общее количество выплат, ₽", rating: total }];
   customizeTable(tablePayments, response);
 
   total = totalPostsYear;
-  response = [{ theme: "Количество постов", rating: total }];
+  response = [{ theme: "Общее количество постов, шт.", rating: total }];
   customizeTable(tablePosts, response);
 
   const buttonSetDayPosts: any = buttonsPosts.querySelector(`.btn-day`);
@@ -739,10 +740,12 @@ async function createStat() {
     canv.innerHTML = "";
     // Очистка канваса
     ctx.clearRect(0, 0, canv.width, canv.height);
-    renderContainerGraphicPayments(formContainer, paymentsDay, "Часы");
+    renderContainerGraphicPayments(formContainer, paymentsDay, "");
 
     const total = totalPaymentsDay;
-    const response: any = [{ theme: "Количество выплат", rating: total }];
+    const response: any = [
+      { theme: "Общее количество выплат, ₽", rating: total },
+    ];
     customizeTable(tablePayments, response);
 
     // customizeTable(tablePayments, response);
@@ -754,10 +757,12 @@ async function createStat() {
 
     // Очистка канваса
     ctx.clearRect(0, 0, canv.width, canv.height);
-    renderContainerGraphicPosts(formContainer, postsDay, "Часы");
+    renderContainerGraphicPosts(formContainer, postsDay, "");
 
     const total = totalPostsDay;
-    const response: any = [{ theme: "Количество постов", rating: total }];
+    const response: any = [
+      { theme: "Общее количество постов, шт.", rating: total },
+    ];
     customizeTable(tablePosts, response);
   });
   buttonSetMonthPayments.addEventListener("click", () => {
@@ -766,14 +771,12 @@ async function createStat() {
 
     // Очистка канваса
     ctx.clearRect(0, 0, canv.width, canv.height);
-    renderContainerGraphicPayments(
-      formContainer,
-      paymentsMonth,
-      "Число месяца",
-    );
+    renderContainerGraphicPayments(formContainer, paymentsMonth, "");
 
     const total = totalPaymentsMonth;
-    const response: any = [{ theme: "Количество выплат", rating: total }];
+    const response: any = [
+      { theme: "Общее количество выплат, ₽", rating: total },
+    ];
     customizeTable(tablePayments, response);
   });
 
@@ -783,10 +786,12 @@ async function createStat() {
 
     // Очистка канваса
     ctx.clearRect(0, 0, canv.width, canv.height);
-    renderContainerGraphicPosts(formContainer, postsMonth, "Число месяца");
+    renderContainerGraphicPosts(formContainer, postsMonth, "");
 
     const total = totalPostsMonth;
-    const response: any = [{ theme: "Количество постов", rating: total }];
+    const response: any = [
+      { theme: "Общее количество постов, шт.", rating: total },
+    ];
     customizeTable(tablePosts, response);
   });
   buttonSetYearPayments.addEventListener("click", () => {
@@ -795,10 +800,12 @@ async function createStat() {
 
     // Очистка канваса
     ctx.clearRect(0, 0, canv.width, canv.height);
-    renderContainerGraphicPayments(formContainer, paymentsYear, "Месяц");
+    renderContainerGraphicPayments(formContainer, paymentsYear, "");
 
     const total = totalPaymentsYear;
-    const response: any = [{ theme: "Количество выплат", rating: total }];
+    const response: any = [
+      { theme: "Общее количество выплат, ₽", rating: total },
+    ];
     customizeTable(tablePayments, response);
   });
 
@@ -808,10 +815,12 @@ async function createStat() {
 
     // Очистка канваса
     ctx.clearRect(0, 0, canv.width, canv.height);
-    renderContainerGraphicPosts(formContainer, postsYear, "Месяц");
+    renderContainerGraphicPosts(formContainer, postsYear, "");
 
     const total = totalPostsYear;
-    const response: any = [{ theme: "Количество выплат", rating: total }];
+    const response: any = [
+      { theme: "Общее количество постов, ₽", rating: total },
+    ];
     customizeTable(tablePosts, response);
   });
 
@@ -834,7 +843,8 @@ function renderContainerGraphicPosts(
 
   const dataPosts = posts.valueY;
   const labelsPosts = posts.valueX;
-
+  console.log(labelsPosts);
+  console.log(dataPosts);
   // adjustCanvasWidth(canvas, posts.valuesX.length);
 
   renderGraphics(
@@ -842,7 +852,7 @@ function renderContainerGraphicPosts(
     dataPosts,
     labelsPosts,
     formContainer,
-    "Количество постов",
+    "Количество постов, шт.",
     labelX,
   );
 }
@@ -865,7 +875,7 @@ function renderContainerGraphicPayments(
     dataPayments,
     labelsPayments,
     formContainer,
-    "Количество выплат",
+    "Количество выплат, ₽",
     labelX,
   );
 }
@@ -896,7 +906,21 @@ function renderGraphics(
   // Нормализация данных для отображения
   const maxDataValue = Math.max(...data);
   if (maxDataValue === 0) {
-    return; // Прекращаем выполнение функции, если нет данных для отображения
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Устанавливаем стиль текста
+    ctx.fillStyle = "#337ab7";
+    ctx.font = "20px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    // Рисуем текст "Нет данных"
+    ctx.fillText(
+      "Упс.. кажется нет данных",
+      canvas.width / 2,
+      canvas.height / 2,
+    );
+    return;
   }
   const scaleY = height / maxDataValue;
   // Очищаем канвас перед перерисовкой
@@ -913,6 +937,7 @@ function renderGraphics(
   // Рисуем метки на оси X
   ctx.fillStyle = "black";
   labels.forEach((label: any, index: number) => {
+    if (index % 5 !== 0) return;
     const x = padding + leftOffset + (width / (data.length - 1)) * index;
     ctx.fillText(label, x - 10, canvas.height - padding + 15);
   });
@@ -1027,8 +1052,35 @@ function renderGraphics(
 
     if (xIndex >= 0 && xIndex < data.length) {
       const yValue = data[xIndex];
-      const currLabel = labels[xIndex];
-      modalContent.textContent = `${yValue}, ${currLabel} `;
+      let currLabel = labels[xIndex];
+      const regex = /\b(0?[1-9]|[12][0-9]|3[01])\.(0?[1-9]|1[0-2])\b/g;
+      const matches = String(currLabel).match(regex);
+      let res;
+      if (matches) {
+        // Предполагаем, что вы хотите взять первое совпадение
+        const dateParts = matches[0].split(".");
+
+        // Проверяем, что у нас есть два элемента (день и месяц)
+        if (dateParts.length === 2) {
+          const day = dateParts[0];
+          let month = dateParts[1];
+
+          // Заменяем номер месяца на название
+          monthsSkl.forEach((item: any, index: number) => {
+            if (month === String(index + 1)) {
+              month = item;
+            }
+          });
+          res = `${day} ${month}`;
+        }
+      }
+      let extens;
+      if (label === "Количество выплат, ₽") {
+        extens = "₽";
+      } else {
+        extens = "шт.";
+      }
+      modalContent.textContent = `${yValue} ${extens ? extens : ""}, ${res ? res : currLabel} `;
 
       // Получаем координаты курсора
       const cursorX = event.clientX;
