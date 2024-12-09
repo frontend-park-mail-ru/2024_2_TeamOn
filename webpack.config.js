@@ -124,6 +124,8 @@ module.exports = {
           "^/api/pages/subscription/request": "/subscription/request",
           "^/api/pages/subscription/realize": "/subscription/realize",
           "^/api/pages/unsubscription": "/unsubscription",
+          "^/api/pages/stat/posts": "/stat/posts",
+          "^/api/pages/stat/payments": "/stat/payments",
         },
       },
 
@@ -171,7 +173,6 @@ module.exports = {
           "^/api/csat/check": "/csat/check",
           "^/api/csat/question": "/csat/question",
           "^/api/csat/table": "/csat/table",
-          "^/api/stat/posts": "/stat/posts",
         },
       },
       {

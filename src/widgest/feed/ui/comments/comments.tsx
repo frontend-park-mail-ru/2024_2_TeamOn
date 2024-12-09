@@ -10,19 +10,21 @@ export function editContentComment() {
   );
 }
 function containerComment(comment: any, flagEdit: any = null) {
+  const flag =
+    sessionStorage.getItem("account") === comment.authorUsername
+      ? `margin-left: auto;
+                  display: flex;`
+      : "display: none;";
+  const flagMobile = window.innerWidth < 768 ? "" : "height: 100%; width: 100%";
   return (
     <div class="comment-item">
       <img class="author-avatar author-comment-avatar"></img>
-      <div class="iteraction-section-comment">
+      <div class="iteraction-section-comment" style={flagMobile}>
         <div class="favorite-info" style="display: flex;">
           <div class="author-comment-name" style="display: inline-block;">
             {comment.authorUsername}
           </div>
-          <div
-            class="control-comment"
-            style="margin-left: auto;
-                  display: flex;"
-          >
+          <div class="control-comment" style={flag}>
             <div
               class="container-edit-comment"
               style="height: 100%;width: 100%;
@@ -37,7 +39,7 @@ function containerComment(comment: any, flagEdit: any = null) {
         display: none;
         justify-content: flex-end;"
             >
-              <div class="button-delete-comment"></div>
+              <div class="button-delete-comment">ывы </div>
             </div>
           </div>
         </div>

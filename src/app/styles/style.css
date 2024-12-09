@@ -1670,6 +1670,11 @@ form input[type=text]:focus {
 }
 
 .content {
+  padding: 10px;
+}
+
+.content,
+.comment-title {
   font-size: 14px;
   color: #333;
   margin-bottom: 20px;
@@ -1679,8 +1684,6 @@ form input[type=text]:focus {
   width: 100%;
   max-width: 100%;
   height: auto;
-  min-height: 100px;
-  padding: 10px;
   font-size: 16px;
   line-height: 1.5;
   box-sizing: border-box;
@@ -1927,6 +1930,7 @@ form input[type=text]:focus {
 }
 
 .form-actions {
+  margin-top: 20px;
   display: flex;
   justify-content: space-between;
 }
@@ -3322,8 +3326,8 @@ canvas {
 
 .author-comment-avatar {
   cursor: pointer;
-  width: 50px; /* Ширина аватарки */
-  height: 50px; /* Высота аватарки */
+  width: 30px; /* Ширина аватарки */
+  height: 30px; /* Высота аватарки */
   border-radius: 50%; /* Круглая аватарка */
   margin-right: 10px; /* Отступ справа от аватарки */
 }
@@ -3546,6 +3550,10 @@ progress::-moz-progress-bar {
 
 .input-check:checked + .slider:before {
   transform: translateX(14px); /* Сдвиг ползунка при включении */
+}
+
+.button-sort.disable:hover {
+  background-color: gray;
 }
 
 /*# sourceMappingURL=style.css.map */
