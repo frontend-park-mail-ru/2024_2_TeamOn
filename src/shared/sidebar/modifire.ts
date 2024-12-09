@@ -23,27 +23,26 @@ function modifierSidebar(mainContainer?: any) {
   const burger: any = mainContainer.querySelector(
     `.${ELEMENTS_CLASS.BURGER.BLOCK}`,
   );
-  
+
   const sidebar = mainContainer.querySelector(".sidebar");
   burger.addEventListener("click", () => {
     sidebar.classList.toggle(ELEMENTS_CLASS.ACTIVE);
   });
   const iconHome: any = sidebar.querySelector(`.icon-home`);
   setStatic(iconHome, urlIconHome);
-  
+
   if (hasLogged()) {
     const iconSettings: any = sidebar.querySelector(`.icon-settings`);
     setStatic(iconSettings, urlIconSettings);
-    
+
     const iconModeration: any = sidebar.querySelector(`.icon-moderation`);
     setStatic(iconModeration, urlIconModeration);
-    
+
     const iconNotification: any = sidebar.querySelector(`.icon-notification`);
     setStatic(iconNotification, urlIconNotification);
-    
+
     const iconProfile: any = sidebar.querySelector(`.icon-profile`);
     setStatic(iconProfile, urlIconProfile);
-
   }
 
   const sidebarReferenses = sidebar.querySelectorAll(".referens");
