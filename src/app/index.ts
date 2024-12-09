@@ -226,3 +226,14 @@ if (flag) {
   route(LINKS.HOME.HREF, window.location.pathname);
   modifierSidebar(document.querySelector("#main"));
 }
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("/sw.js", { scope: "/" })
+    .then((reg) => {
+      console.log("sw registered", reg);
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+}

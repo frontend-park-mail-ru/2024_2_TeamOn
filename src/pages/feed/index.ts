@@ -12,7 +12,8 @@ import { paginate } from "../../features/paginateFeed/paginateFeed";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import {
   controlActiveLink,
-  controlFeed,
+  
+  ,
 } from "../../features/controlActiveLink/controlActiveLink";
 import { renderRating } from "../../entities/rating";
 import { addResult, getQuestion } from "../settings";
@@ -110,6 +111,7 @@ export async function renderFeed() {
     setTitle(LINKS.FEED.TEXT);
     const allPopularPosts: any = []; // Массив для хранения всех загруженных популярных постов
     const allRecentlyPosts: any = []; // Массив для хранения всех загруженных недавних постов
+
     const user: any = state.currentUser;
     if (!user) {
       throw new Error("Пользователь не найден");
@@ -124,6 +126,7 @@ export async function renderFeed() {
     const vdom = await renderFeedForm();
 
     const container = update(pageContainer, vdom);
+
     const closeModalView: any = container.querySelector(`.close-modal-view`);
     setStatic(closeModalView, urlCloseModal);
     const leftArrowModalView: any = container.querySelector(
@@ -140,7 +143,6 @@ export async function renderFeed() {
     showSearch(container);
 
     const tabs = container.querySelector(".tabs");
-
     controlActiveLink(tabs, controlFeed);
 
     const containerPopularPosts = container.querySelector(
@@ -156,6 +158,7 @@ export async function renderFeed() {
     if (hasLogged()) {
       controlLogout(container, user);
     }
+
     const activeRequests = new Set();
 
     await paginate(

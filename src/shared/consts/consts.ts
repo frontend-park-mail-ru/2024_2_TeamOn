@@ -218,6 +218,20 @@ export const LOCATIONS = {
       HREF: "/api/posts/delete/post", // + '/{postId}'
     },
   },
+  NOTIFICATION: {
+    GET_NOTIFICATION: {
+      METHOD: "GET",
+      HREF: "/api/notification",
+    },
+    GET_NEW_NOTIFICATION: {
+      METHOD: "GET",
+      HREF: "/api/notification/new",
+    },
+    UPDATE: {
+      METHOD: "POST",
+      HREF: "/api/notification/status/update",
+    },
+  },
 };
 /**
  * Объект, содержащий теги HTML-элементов.
@@ -251,6 +265,8 @@ export const REGEXP = {
   REGEXT_ERROR_LINK: new RegExp("^/[a-z0-9]+/[a-z0-9]+$"),
   REGEXP_EMAIL: new RegExp("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"),
 };
+
+export const username = /^@([a-zA-Z0-9_]+)/;
 
 /**
  * Объект, содержащий классы HTML-элементов.
@@ -393,6 +409,14 @@ export const ELEMENTS_CLASS = {
       bigICON: "icon-notification-big",
       noNOTIFICATIONS: "no-notifications",
       TEXT: "notification-text",
+    },
+    TITLE: "title",
+    CONTENT: "content",
+    DATE: "date",
+    AUTHOR: {
+      BLOCK: "author-section",
+      AVATAR: "author-avatar",
+      NAME: "author-name",
     },
   },
   BURGER: {
