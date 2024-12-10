@@ -19,8 +19,12 @@ async function generateNewNotification() {
   );
   notifications = await getPushNotification();
   const k = new Set();
-  if (containerNotificationsAll && containerNotificationsNotRead) {
-    paginateNotifications(
+  if (
+    notifications.length !== 0 &&
+    containerNotificationsAll &&
+    containerNotificationsNotRead
+  ) {
+    await paginateNotifications(
       k,
       [],
       [],

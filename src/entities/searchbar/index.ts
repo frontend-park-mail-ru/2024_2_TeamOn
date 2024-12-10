@@ -100,7 +100,10 @@ async function showSearch(container: any) {
   });
   searchInput.addEventListener("input", throttle(handleInput, 300)); // 300 мс
 }
-function throttle<T extends (...args: any[]) => any>(func: T, limit: number) {
+export function throttle<T extends (...args: any[]) => any>(
+  func: T,
+  limit: number,
+) {
   let lastFunc: ReturnType<typeof setTimeout>;
   let lastRan: number;
 

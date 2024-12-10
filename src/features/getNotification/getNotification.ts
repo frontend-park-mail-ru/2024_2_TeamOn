@@ -7,11 +7,15 @@ import { route } from "../../shared/routing/routing";
  * @param offsetPopular Оффсет для уведомлений
  * @returns
  */
-async function getNotification(offset: any, status: string = "") {
+async function getNotification(
+  offset: any,
+  status: string = "",
+  customLimit: number = 0,
+) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "GET",
-      `/api/accounts/notification?offset=${offset}&limit=${QUERY.LIMIT}${status === "" ? "" : "&status=NOTREAD"}`,
+      `/api/accounts/notification?offset=${offset}&limit=${customLimit === 0 ? QUERY.LIMIT : customLimit}${status === "" ? "" : "&status=NOTREAD"}`,
       null,
       (response) => {
         if (response.ok) {

@@ -75,6 +75,8 @@ async function getCSRFTokenForModeration() {
   const data = await response.json();
   return data;
 }
+let currentTokenPromise: Promise<any> | null = null;
+
 /**
  * Отправляет запрос AJAX с помощью Fetch API с включенным CORS.
  * @param {*} method    HTTP-метод
@@ -97,26 +99,33 @@ export async function fetchAjax(
 
   // Получаем CSRF-токен в зависимости от URL
   if (method === "POST" || method === "DELETE") {
-    let csrfToken;
-    if (url.startsWith("/api/posts")) {
-      csrfToken = await getCSRFTokenForPosts();
-    } else if (url.startsWith("/api/auth")) {
-      csrfToken = await getCSRFTokenForAuth();
-    } else if (url.startsWith("/api/accounts")) {
-      csrfToken = await getCSRFTokenForAccounts();
-    } else if (url.startsWith("/api/pages")) {
-      csrfToken = await getCSRFTokenForAuthor();
-    } else if (url.startsWith("/api/tech")) {
-      csrfToken = await getCSRFTokenForAccounts();
-    } else if (url.startsWith("/api/csat")) {
-      csrfToken = await getCSRFTokenForAuthor();
-    } else if (url.startsWith("/api/moderation")) {
-      csrfToken = await getCSRFTokenForAccounts();
+    const getCSRFToken = async () => {
+      if (url.startsWith("/api/posts")) {
+        return await getCSRFTokenForPosts();
+      } else if (url.startsWith("/api/auth")) {
+        return await getCSRFTokenForAuth();
+      } else if (url.startsWith("/api/accounts")) {
+        return await getCSRFTokenForAccounts();
+      } else if (url.startsWith("/api/pages")) {
+        return await getCSRFTokenForAuthor();
+      } else if (url.startsWith("/api/csat")) {
+        return await getCSRFTokenForCSAT();
+      } else if (url.startsWith("/api/moderation")) {
+        return await getCSRFTokenForModeration();
+      }
+      return null;
+    };
+    if (!currentTokenPromise) {
+      currentTokenPromise = getCSRFToken();
     }
 
+    const csrfToken = await currentTokenPromise;
     if (csrfToken) {
       headers["X-CSRF-Token"] = csrfToken.csrfToken;
     }
+    // if (csrfToken) {
+    //   headers["X-CSRF-Token"] = csrfToken.csrfToken;
+    // }
   }
   if (body instanceof FormData) {
     // Не устанавливаем Content-Type, он будет установлен автоматически
@@ -139,5 +148,9 @@ export async function fetchAjax(
     })
     .catch((error) => {
       throw error;
+    })
+    .finally(() => {
+      // Сбрасываем токен после завершения запроса
+      currentTokenPromise = null;
     });
 }

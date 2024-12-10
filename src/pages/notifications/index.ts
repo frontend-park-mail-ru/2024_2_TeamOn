@@ -73,11 +73,8 @@ export async function renderNotifications() {
     const containerNotificationsNotRead = container.querySelector(
       ".container-isnotread-notifications",
     );
-    const activeRequests = new Set();
-    // const currentLink =
-    //   sessionStorage.getItem("notification") === "0"
-    //     ? showZeroNotif(containerNotificationsAll)
-    //     : showZeroNotif(containerNotificationsNotRead);
+    const activeRequests: any = new Set();
+
     await paginateNotifications(
       activeRequests,
       allNotifications,
