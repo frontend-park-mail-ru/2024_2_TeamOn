@@ -2,7 +2,11 @@ import { ELEMENTS_CLASS, LINKS } from "../../shared/consts/consts";
 import { route } from "../../shared/routing/routing";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { clearHistoryBrowser } from "../../shared/utils/clearHistory";
-import { pageContainer } from "../../app/index";
+import {
+  pageContainer,
+  urlHomeContainer,
+  urlHomeContainerSec,
+} from "../../app/index";
 import { update } from "../../../lib/vdom/lib";
 import {
   controllerMask,
@@ -13,76 +17,80 @@ import { containerHome } from "./ui/home";
 
 import { showSearch } from "../../entities/searchbar/index";
 import { setTitle } from "../../shared/settitle/setTitle";
-import { getStatic } from "../../shared/getStatic/getStatic";
+import { setStatic } from "../../shared/getStatic/getStatic";
+import { hideLoader } from "../feed";
 
-async function setStatic(container: any, url: string) {
-  const staticUrl: string = await getStatic(url);
-  container.style.backgroundImage = `url(${staticUrl})`;
-  console.log(staticUrl);
-  return staticUrl;
-}
 /**
  * Обработка домашней страницы
  */
 export async function renderHome() {
-  sessionStorage.clear();
-  if (hasLogged()) {
-    route(LINKS.FEED.HREF);
-  } else {
-    setTitle(LINKS.HOME.TEXT);
-    document.body.style.height = "100vh";
-    clearHistoryBrowser();
-
-    const vdom: VNode = containerHome();
-
-    const container = update(pageContainer, vdom);
-
-    const homeContainer: any = container.querySelector(`.home-container`);
-    const homeContainerSec: any =
-      container.querySelector(`.home-container-sec`);
-
-    await setStatic(homeContainer, "/fon.png");
-
-    await setStatic(homeContainerSec, "/human.jpg");
-
-    const button: any = container.querySelector(
-      `.${ELEMENTS_CLASS.HOME_BUTTONS.BLOCK}`,
-    );
-    button.addEventListener("click", () => {
-      route(LINKS.LOGIN.HREF);
-    });
-    const buttonFeed: any = container.querySelector(
-      `.${ELEMENTS_CLASS.FEED_BUTTONS.BLOCK}`,
-    );
-    buttonFeed.addEventListener("click", () => {
+  try {
+    sessionStorage.clear();
+    if (hasLogged()) {
       route(LINKS.FEED.HREF);
-    });
+    } else {
+      setTitle(LINKS.HOME.TEXT);
+      document.body.style.height = "100vh";
+      clearHistoryBrowser();
 
-    if (window.location.pathname !== LINKS.HOME.HREF) {
-      route(LINKS.HOME.HREF, window.location.pathname);
-    }
+      const vdom: VNode = containerHome();
 
-    const containerSecond: any = container.querySelector(
-      `.${ELEMENTS_CLASS.HOME.HOME_CONTAINER_SEC}`,
-    ) as HTMLElement;
+      const container = update(pageContainer, vdom);
 
-    showSearch(container);
-    if (window.location.pathname == LINKS.HOME.HREF) {
-      // Создаем маску для выжигания
-      const mask = createMask();
+      const homeContainer: any = container.querySelector(`.home-container`);
+      setStatic(homeContainer, urlHomeContainer);
+      const homeContainerSec: any =
+        container.querySelector(`.home-container-sec`);
+      setStatic(homeContainerSec, urlHomeContainerSec);
+      if (window.innerWidth <= 768) {
+        setStatic(homeContainer, urlHomeContainerSec);
+      }
+      const button: any = container.querySelector(
+        `.${ELEMENTS_CLASS.HOME_BUTTONS.BLOCK}`,
+      );
+      button.addEventListener("click", () => {
+        route(LINKS.LOGIN.HREF);
+      });
+      const buttonFeed: any = container.querySelector(
+        `.${ELEMENTS_CLASS.FEED_BUTTONS.BLOCK}`,
+      );
+      buttonFeed.addEventListener("click", () => {
+        route(LINKS.FEED.HREF);
+      });
 
-      homeContainer.appendChild(mask);
-
-      // Запускаем анимацию с помощью requestAnimationFrame
-      function animate() {
-        controllerMask(homeContainer, containerSecond, mask);
-        // Запланировать следующий кадр анимации
-        requestAnimationFrame(animate);
+      if (window.location.pathname !== LINKS.HOME.HREF) {
+        route(LINKS.HOME.HREF, window.location.pathname);
       }
 
-      // Начинаем анимацию
-      requestAnimationFrame(animate);
+      const containerSecond: any = container.querySelector(
+        `.${ELEMENTS_CLASS.HOME.HOME_CONTAINER_SEC}`,
+      ) as HTMLElement;
+
+      showSearch(container);
+      if (
+        window.location.pathname == LINKS.HOME.HREF &&
+        window.innerWidth >= 1024
+      ) {
+        // Создаем маску для выжигания
+        const mask = createMask();
+
+        homeContainer.appendChild(mask);
+
+        // Запускаем анимацию с помощью requestAnimationFrame
+        function animate() {
+          controllerMask(homeContainer, containerSecond, mask);
+          // Запланировать следующий кадр анимации
+          requestAnimationFrame(animate);
+        }
+
+        // Начинаем анимацию
+        requestAnimationFrame(animate);
+      }
+      return container;
     }
-    return container;
+  } catch (error) {
+    console.error("Error in home");
+  } finally {
+    hideLoader();
   }
 }

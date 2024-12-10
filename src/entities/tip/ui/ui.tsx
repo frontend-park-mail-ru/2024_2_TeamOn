@@ -11,7 +11,11 @@ function renderTip() {
   }
 
   return (
-    <div class="modal__tip">
+    <div
+      class="modal__tip"
+      style="display: flex;
+    flex-direction: column;"
+    >
       <div class="modal-header">
         <h2>Пожертвование</h2>
       </div>
@@ -20,7 +24,7 @@ function renderTip() {
         <textarea class="input-group">10</textarea>
         <div class="amount-count">Минимум 10 рублей</div>
       </div>
-      <div class="form-group">
+      <div class="form-group" style="margin-top: 20px;">
         <label class="label-group">Сообщение</label>
         <textarea class="textarea-group"></textarea>
       </div>

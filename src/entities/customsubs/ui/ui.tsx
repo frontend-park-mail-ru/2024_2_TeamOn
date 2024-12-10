@@ -57,17 +57,31 @@ function renderModalRequestCustomSubs(subscription: any) {
       <div class="modal-header">
         <h2>Оформление подписки</h2>
       </div>
-      <div class="form-group">
-        <h4>{subscription.title}</h4>
-      </div>
-      <div class="form-group">
-        <h4>{subscription.description}</h4>
-        <div class="char-count"></div>
+      <div
+        style="    margin-top: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;"
+      >
+        <div class="form-group">
+          <h4>{subscription.title}</h4>
+        </div>
+        <div class="form-group">
+          <h4 style="font-weight: normal;">{subscription.description}</h4>
+          <div class="char-count"></div>
+        </div>
       </div>
       <div class="form-group">
         <h4>{subscription.cost}</h4>
       </div>
-      <div class="form-group">
+      <div
+        class="form-group"
+        style="display: flex;
+    flex-direction: column;
+    gap: 15px;"
+      >
         <label for="subscription-duration">Выберите срок подписки:</label>
         <select id="subscription-duration" class="subscription-select">
           <option value="1">1 месяц</option>

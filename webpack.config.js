@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const path = require("path");
 
@@ -41,6 +42,9 @@ module.exports = {
       filename: "index.html",
       inject: true,
     }),
+    new CopyWebpackPlugin({
+      patterns: [{ from: "src/app/sw.js", to: "sw.js" }],
+    }),
   ],
   resolve: {
     extensions: [".ts", ".js", ".tsx", ".jsx"],
@@ -51,7 +55,15 @@ module.exports = {
   },
   optimization: {
     minimize: true,
-    minimizer: [new TerserPlugin()],
+    minimizer: [
+      new TerserPlugin({
+        // terserOptions: {
+        //   compress: {
+        //     drop_console: true,
+        //   },
+        // },
+      }),
+    ],
   },
   devServer: {
     static: [
@@ -65,7 +77,10 @@ module.exports = {
     ],
     open: true,
     port: 8099,
-    historyApiFallback: true,
+    historyApiFallback: {
+      rewrites: [{ from: /^\/sw\.js$/, to: "/sw.js" }],
+    },
+
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers":
@@ -98,6 +113,7 @@ module.exports = {
           "^/api/accounts/account/update/role": "/account/update/role",
           "^/api/accounts/account/update": "/account/update",
           "^/api/accounts/account": "/account",
+          "^/api/accounts/notification": "/notification",
         },
       },
       {
@@ -116,6 +132,8 @@ module.exports = {
           "^/api/pages/subscription/request": "/subscription/request",
           "^/api/pages/subscription/realize": "/subscription/realize",
           "^/api/pages/unsubscription": "/unsubscription",
+          "^/api/pages/stat/posts": "/stat/posts",
+          "^/api/pages/stat/payments": "/stat/payments",
         },
       },
 
