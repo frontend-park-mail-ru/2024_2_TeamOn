@@ -39,7 +39,7 @@ function containerComment(comment: any, flagEdit: any = null) {
         display: none;
         justify-content: flex-end;"
             >
-              <div class="button-delete-comment">ывы </div>
+              <div class="button-delete-comment"></div>
             </div>
           </div>
         </div>

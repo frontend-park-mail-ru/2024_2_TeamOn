@@ -20,8 +20,8 @@ async function containerNotification(notification: any) {
             </div>
           </div>
         </div>
-        <div class="title">{notification.title}</div>
-        <div class="content">{notification.content}</div>
+        <div class="title">{notification.message}</div>
+        <div class="content">{notification.createdAt}</div>
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ import { setStatic } from "../../shared/getStatic/getStatic";
 import { convertISOToRussianDate } from "../../shared/utils/parsedate";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { paginateNotifications } from "../../features/paginateNotification/paginateNotification";
-
+import { hideLoader } from "../feed";
 
 /**
  * Функция рендера уведомлений
@@ -62,8 +62,9 @@ export async function renderNotifications() {
   } catch (error) {
     console.log("ERROR");
     throw error;
-  } finally {
-    hideLoader();
   }
+  // finally {
+  //   hideLoader();
+  // }
 }
 export { renderNotification };

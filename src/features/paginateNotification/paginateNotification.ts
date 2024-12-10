@@ -90,9 +90,8 @@ async function modifyNotifications(
 async function renderNotifications(notifications: any[]) {
   const notificationsPromises = notifications.map(async (notification: any) => {
     const container = await containerNotification(notification);
-
-    const statusClass = notification.isRead ? "read" : "unread";
-    container.classList.add(statusClass);
+    // const statusClass = notification.isRead ? "read" : "unread";
+    // кутвук.classList.add(statusClass);
 
     const username = parseUsername(notification.message);
     if (username) {
@@ -107,40 +106,38 @@ async function renderNotifications(notifications: any[]) {
 }
 
 async function paginateNotifications(
-  allNotifications: any[], 
-  containerNotifications: HTMLElement, 
+  allNotifications: any[],
+  containerNotifications: HTMLElement,
 ) {
-  let stopLoadNotifications = false; 
-  let offset = 0; 
-  let isLoading = false; 
+  let stopLoadNotifications = false;
+  let offset = 0;
+  let isLoading = false;
 
-  const activeRequests = new Set(); 
-
+  const activeRequests = new Set();
   async function loadNotifications() {
-    if (isLoading || stopLoadNotifications) return; 
+    if (isLoading || stopLoadNotifications) return;
     isLoading = true;
 
     try {
-      const requestId = `notifications-${offset}`; 
-      if (activeRequests.has(requestId)) return; 
-      activeRequests.add(requestId); 
-
+      const requestId = `notifications-${offset}`;
+      if (activeRequests.has(requestId)) return;
+      activeRequests.add(requestId);
       const notifications: any = await getNotification(offset);
-      const nextNotifications = notifications.slice(0, QUERY.LIMIT); 
+      const nextNotifications = notifications.slice(0, QUERY.LIMIT);
 
       if (nextNotifications.length > 0) {
-        allNotifications.push(...nextNotifications); 
-        offset += QUERY.LIMIT; 
+        allNotifications.push(...nextNotifications);
+        offset += QUERY.LIMIT;
         const notificationElements =
           await renderNotifications(nextNotifications);
         containerNotifications.append(...notificationElements);
       } else {
-        stopLoadNotifications = true; 
+        stopLoadNotifications = true;
       }
 
-      activeRequests.delete(requestId); 
+      activeRequests.delete(requestId);
     } finally {
-      isLoading = false; 
+      isLoading = false;
     }
   }
 
@@ -149,7 +146,7 @@ async function paginateNotifications(
   window.addEventListener("scroll", async () => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
     if (scrollTop + clientHeight >= scrollHeight - 1000) {
-      await loadNotifications(); 
+      await loadNotifications();
     }
   });
 }

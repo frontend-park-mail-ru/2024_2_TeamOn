@@ -8,7 +8,7 @@ export async function renderNotification() {
   return (
     <div class="main-content">
       {await Sidebar()}
-      <div class="container-notification">
+      <div class="container-notification main-container-notification">
         <h1>Уведомления</h1>
         <div class="notification-icon">
           <i class="icon-notification-big"></i>

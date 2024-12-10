@@ -14,8 +14,8 @@ async function getNotification(offsetNotifications = 0, status = "") {
   }
   return new Promise((resolve, reject) => {
     fetchAjax(
-      LOCATIONS.NOTIFICATION.GET_NOTIFICATION.HREF,
-      `${LOCATIONS.NOTIFICATION.GET_NOTIFICATION.METHOD}?${queryParams}`,
+      "GET",
+      `/api/accounts/notification?status=NOTREAD`,
       null,
       (response) => {
         if (response.ok) {
