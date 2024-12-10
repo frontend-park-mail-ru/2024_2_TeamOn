@@ -411,7 +411,7 @@ export async function renderProfile() {
       payments = await getPayments(window.location.pathname);
     }
 
-    document.body.style.height = "100%";
+    document.body.style.minHeight = "100%";
     state.currentUser = authorData;
 
     if (!authorData) {

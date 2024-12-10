@@ -7,21 +7,39 @@ import { hasLogged } from "../../shared/utils/hasLogged";
  * @returns
  */
 async function containerNotification(notification: any) {
-  const flag: string = hasLogged() ? "display: block" : "display: none";
+  const flag = notification.isRead ? "readed" : "";
+  const standartClass = "post-container notif-container " + flag;
+
   return (
-    <div>
-      <div class="post-container">
-        <div class="header-post" style="display: flex">
-          <div class="author-section">
-            <img class="author-avatar avatar"></img>
-            <div class="info-post-section">
-              <div class="author-name"></div>
-              <div class="date"></div>
+    <div class="container-notif">
+      <div
+        class={standartClass}
+        data-notification-id={notification.notificationID}
+      >
+        <div class="info-section" style="display: flex;">
+          <div class="header-post" style="display: flex">
+            <div class="author-section">
+              <img class="author-avatar avatar"></img>
+              <div class="info-post-section">
+                <div class="author-name"></div>
+                <div class="date"></div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="general-info-notif"
+            style="display: flex;
+              flex-direction: column;
+              justify-content: space-between;"
+          >
+            <div class="title-notif" style="font-weight: normal;">
+              {notification.message}
+            </div>
+            <div class="date" style="text-align: left;">
+              {notification.createdAt}
             </div>
           </div>
         </div>
-        <div class="title">{notification.message}</div>
-        <div class="content">{notification.createdAt}</div>
       </div>
     </div>
   );

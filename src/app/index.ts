@@ -17,7 +17,7 @@ import { renderUpdatePost } from "../entities/userPost";
 import { hasLogged } from "../shared/utils/hasLogged";
 import { renderModeration } from "../pages/moderation";
 import { getUrlStatic } from "../shared/getStatic/getStatic";
-import { showOverlay } from "src/shared/overlay/overlay";
+import { startPushNotifications } from "../shared/push/push";
 
 /**
  * Объект, содержащий конфигурацию меню приложения.
@@ -170,9 +170,22 @@ export function goToPage(targetLinkMenu: any, statusErr = null) {
 
 export const Virtual: any = new VirtualDOM();
 export const pageContainer = document.createElement("main");
+const placemodal = document.createElement("div");
+placemodal.classList.add("placemodal");
 const pushmodal = document.createElement("div");
+const message = document.createElement("div");
+message.classList.add("message-push");
+const close = document.createElement("div");
+close.classList.add("close");
+close.textContent = "X";
+
+const avatar = document.createElement("img");
+avatar.classList.add("avatar-push");
 pushmodal.className = "push-modal";
 pushmodal.style.display = "none";
+pushmodal.append(avatar, message, close);
+placemodal.appendChild(pushmodal);
+
 if (hasLogged()) {
   controlEventIFrame();
 }
@@ -221,9 +234,10 @@ document.head.appendChild(link);
 if (flag) {
   let root: HTMLElement | null = startA(config.menu, state);
   render(Virtual);
+  root?.appendChild(placemodal);
   root?.appendChild(pageContainer);
-  root?.append(pushmodal);
   route(LINKS.HOME.HREF, window.location.pathname);
+  startPushNotifications();
   modifierSidebar(document.querySelector("#main"));
 }
 

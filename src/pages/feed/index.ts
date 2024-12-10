@@ -119,7 +119,7 @@ export async function renderFeed() {
       : (state.currentUser.author = user);
 
     const doc = document.body;
-    doc.style.height = "100%";
+    doc.style.minHeight = "100%";
 
     const vdom = await renderFeedForm();
 

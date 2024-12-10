@@ -113,6 +113,9 @@ module.exports = {
           "^/api/accounts/account/update/role": "/account/update/role",
           "^/api/accounts/account/update": "/account/update",
           "^/api/accounts/account": "/account",
+          "^/api/accounts/notification/status/update":
+            "/notification/status/update",
+          "^/api/accounts/notification/new": "/notification/new",
           "^/api/accounts/notification": "/notification",
         },
       },

@@ -13,7 +13,6 @@ import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { route } from "../../shared/routing/routing";
 import { getAccount } from "../../features/getAccount/getAccount";
 import { controlLogout } from "../../features/controlLogout/controlLogout";
-import { renderModalStatusUpload } from "../../shared/pushstatus/pushstatus";
 import {
   validateSettingsPassword,
   validateMainInfo,
@@ -24,7 +23,7 @@ import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { renderStatics, renderTableTitle } from "../statistics/ui/ui";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { setTitle } from "../../shared/settitle/setTitle";
-import { hideLoader, showLoader } from "../feed";
+import { hideLoader } from "../feed";
 import {
   customStatDay,
   customStatMonth,
@@ -32,6 +31,7 @@ import {
   filterStat,
   filterStatDay,
 } from "../../shared/utils/filterStat";
+import { controlPush } from "../../shared/push/push";
 
 function showLoadSet(container: any) {
   const load = container.querySelector(`.mask_settings`);
@@ -71,7 +71,7 @@ export async function renderSettings() {
 
     const user = state.currentUser;
     const doc: any = document.body;
-    doc.style.height = "100%";
+    doc.style.minHeight = "100%";
     const userdata: any = await getAccount();
 
     const vdom: VNode = await settingsContainer();
@@ -819,7 +819,7 @@ async function createStat() {
 
     const total = totalPostsYear;
     const response: any = [
-      { theme: "Общее количество постов, ₽", rating: total },
+      { theme: "Общее количество постов, шт.", rating: total },
     ];
     customizeTable(tablePosts, response);
   });
@@ -1419,7 +1419,7 @@ async function createPhoto(): Promise<any> {
       const validFormats = ["image/jpeg", "image/png"];
       if (!validFormats.includes(file.type)) {
         const message = "Неверный формат файла";
-        renderModalStatusUpload(false, message);
+        controlPush({ status: false, message: message }, "isnotpush");
 
         return; // Прерываем выполнение, если формат не подходит
       }
@@ -1432,7 +1432,7 @@ async function createPhoto(): Promise<any> {
         try {
           const ok: any = await saveAvatar(formData);
           const message = "Аватар успешно применен";
-          renderModalStatusUpload(ok, message);
+          controlPush({ status: ok, message: message }, "isnotpush");
         } catch (error) {
           console.error("Ошибка при загрузке фонового изображения:", error);
         }

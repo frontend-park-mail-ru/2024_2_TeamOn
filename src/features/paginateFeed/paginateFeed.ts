@@ -50,15 +50,18 @@ export function controlSlideShow(container: any, rightContainer: any) {
   let leftArrow: any = null;
   let rightArrow: any = null;
   let overlay: any = null;
+  let imgPhotos: any = null;
+  let videoModal: any = null;
+  let videoHud: any = null;
   if (modalPhotos) {
     imageModal = modalPhotos.querySelector(".image-photos-modal"); //
     // Обработчики для кнопок переключения
     leftArrow = modalPhotos.querySelector(".leftarrow-modal-view"); //
     rightArrow = modalPhotos.querySelector(".rightarrow-modal-view"); //
+    imgPhotos = Array.from(container.querySelectorAll(`.image-photo`)); //
+    videoModal = modalPhotos.querySelector(`.video-modal`);
+    videoHud = modalPhotos.querySelector(`.video-hud`);
   }
-  const imgPhotos: any = Array.from(container.querySelectorAll(`.image-photo`)); //
-  const videoModal: any = modalPhotos.querySelector(`.video-modal`);
-  const videoHud: any = modalPhotos.querySelector(`.video-hud`);
   const video: any = Array.from(container.querySelectorAll(".video-player"));
   let allContent: any = Array.from(
     container.querySelectorAll(".content-media"),
@@ -85,8 +88,10 @@ export function controlSlideShow(container: any, rightContainer: any) {
   const updateImage = (currentIndex: any, target: any = null) => {
     if (!imageModal || imgPhotos.length == 0) return;
     imageModal.style.display = "block";
-    videoModal.style.display = "none";
-    videoHud.style.display = "none";
+    if (videoModal && videoHud) {
+      videoModal.style.display = "none";
+      videoHud.style.display = "none";
+    }
     if (target !== "arrow" && target != "swipe") {
       imageModal.src = target.src;
     } else {
@@ -103,21 +108,27 @@ export function controlSlideShow(container: any, rightContainer: any) {
         placeVideo = target;
       }
       imageModal.style.display = "none";
-      videoModal.style.display = "block";
-      videoHud.style.display = "block";
-      videoModal.src = placeVideo.src;
+      if (videoModal && videoHud) {
+        videoModal.style.display = "block";
+        videoHud.style.display = "block";
+        videoModal.src = placeVideo.src;
+      }
       const modalContainerPhotos: any = document.querySelector(
         `.modal-container-photos`,
       );
-      modalContainerPhotos.appendChild(videoHud);
+      if (videoHud) {
+        modalContainerPhotos.appendChild(videoHud);
+      }
     }
   };
 
   const showAvatar = () => {
     if (!imageModal) return;
     imageModal.style.display = "block";
-    videoModal.style.display = "none";
-    videoHud.style.display = "none";
+    if (videoModal && videoHud) {
+      videoModal.style.display = "none";
+      videoHud.style.display = "none";
+    }
     imageModal.src = imgAvatar.src;
     return;
   };
@@ -132,19 +143,24 @@ export function controlSlideShow(container: any, rightContainer: any) {
     callback(currentIndex, target);
     if (
       isMobile() &&
+      videoModal &&
       videoModal.style.display == "block" &&
       imageModal.style.display == "none"
     ) {
       window.location.href = videoModal.src;
       return;
     }
-    modalPhotos.style.display = "block";
+    if (modalPhotos) {
+      modalPhotos.style.display = "block";
+    }
     rightContent.classList.add("blackout");
     overlay = showOverlay(modalPhotos, rightContent);
 
     currentIndex = index;
     document.body.style.overflow = "hidden";
-    controlVideo(modalPhotos);
+    if (videoHud && videoModal) {
+      controlVideo(modalPhotos);
+    }
 
     if (leftArrow) {
       leftArrow.addEventListener("click", touchLeftArrow);
@@ -154,7 +170,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
       rightArrow.addEventListener("click", touchRightArrow);
     }
 
-    if (isMobile() && videoModal.style.display === "none") {
+    if (isMobile() && videoModal && videoModal.style.display === "none") {
       let startX = 0;
       let endX = 0;
       let startY = 0;
@@ -171,7 +187,9 @@ export function controlSlideShow(container: any, rightContainer: any) {
         document.body.style.overflow = "auto";
         modalPhotos.style.display = "none";
         rightContent.classList.remove("blackout");
-        videoModal.pause();
+        if (videoModal) {
+          videoModal.pause();
+        }
         overlay.remove();
       });
       modalPhotos.addEventListener("touchstart", (event: any) => {
@@ -196,7 +214,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
 
       var handleClick = () => {
         if (isSwipe) return;
-        if (videoModal.style.display === "block") {
+        if (videoModal && videoModal.style.display === "block") {
           const slideShow: any = document.querySelector(`.slideshow`);
           var videoPlayer: any = document.querySelector(".video-modal");
 
@@ -258,14 +276,19 @@ export function controlSlideShow(container: any, rightContainer: any) {
         }
         isSwipe = true;
       };
-      videoModal.addEventListener("click", handleClick);
+      if (videoModal) {
+        videoModal.addEventListener("click", handleClick);
+      }
       modalPhotos.addEventListener("touchend", handleTouched);
     }
     // const handleM
     if (!isMobile()) {
       // Обработка кликов
+      if (!modalPhotos) {
+        return;
+      }
       modalPhotos.addEventListener("click", (event: any) => {
-        if (videoModal.style.display === "block") return;
+        if (videoModal && videoModal.style.display === "block") return;
         event.stopPropagation();
         const width = modalPhotos.clientWidth; // Получаем ширину элемента slideshow
         const midPoint = 1018; // Находим середину элемента
@@ -287,7 +310,9 @@ export function controlSlideShow(container: any, rightContainer: any) {
         document.body.style.overflow = "auto";
         modalPhotos.style.display = "none";
         rightContent.classList.remove("blackout");
-        videoModal.pause();
+        if (videoModal) {
+          videoModal.pause();
+        }
         overlay.remove();
         rightArrow.removeEventListener("click", touchRightArrow);
         leftArrow.removeEventListener("click", touchLeftArrow);
@@ -312,7 +337,9 @@ export function controlSlideShow(container: any, rightContainer: any) {
     event.stopPropagation();
     if (isTransitioning) return;
     isTransitioning = true;
-    videoModal.pause();
+    if (videoModal) {
+      videoModal.pause();
+    }
     currentIndex = (currentIndex + 1) % allContent.length;
     updateImage(currentIndex, "arrow");
     setTimeout(() => {
@@ -325,7 +352,9 @@ export function controlSlideShow(container: any, rightContainer: any) {
     event.stopPropagation();
     if (isTransitioning) return;
     isTransitioning = true;
-    videoModal.pause();
+    if (videoModal) {
+      videoModal.pause();
+    }
     currentIndex = (currentIndex - 1 + allContent.length) % allContent.length;
     updateImage(currentIndex, "arrow");
     setTimeout(() => {

@@ -13,7 +13,6 @@ import {
 } from "../../widgest/profile/ui/profileform/profileform";
 import { renderTo, update } from "../../../lib/vdom/lib";
 import { route } from "../../shared/routing/routing";
-import { renderModalStatusUpload } from "../../shared/pushstatus/pushstatus";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { LINKS } from "../../shared/consts/consts";
 import { paginateProfile } from "../paginateprofile/paginateprofile";
@@ -24,6 +23,7 @@ import { VNode } from "lib/vdom/src/source";
 import { showOverlay } from "../../shared/overlay/overlay";
 import { setStatic } from "../../shared/getStatic/getStatic";
 import { urlPushbackIcon } from "../../app";
+import { controlPush } from "../../shared/push/push";
 
 function foundCancel(div: any) {
   const buttonCancel: any = div.querySelector(`.cancel`);
@@ -74,7 +74,7 @@ function modifireModalConfirmSubscription(
       return;
     }
     const media = "Оплата успешно проведена";
-    renderModalStatusUpload(true, media);
+    controlPush({ status: true, message: media }, "isnotpush");
     modalConfirmNew.style.display = "none";
     profileForm.classList.remove("blur");
     const newUrl = `/profile/${authorId}`;

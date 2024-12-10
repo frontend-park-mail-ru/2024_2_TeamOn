@@ -14,14 +14,25 @@ import { convertISOToRussianDate } from "../../shared/utils/parsedate";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { paginateNotifications } from "../../features/paginateNotification/paginateNotification";
 import { hideLoader } from "../feed";
+import {
+  controlActiveLink,
+  controlNotification,
+  showZeroNotif,
+} from "../../features/controlActiveLink/controlActiveLink";
 
+function controlZero() {
+  const zero: any = document.querySelector(`.zero-notif`);
+}
 /**
  * Функция рендера уведомлений
  * @returns
  */
 export async function renderNotifications() {
   try {
+    document.body.style.minHeight = "100%";
     const allNotifications: any = [];
+    const IsNotReadNotifications: any = [];
+
     setTitle(LINKS.NOTIFICATIONS.TEXT);
     const user: any = state.currentUser;
     if (!user) {
@@ -38,15 +49,14 @@ export async function renderNotifications() {
     const iconNotificationBig = container.querySelector(
       `.icon-notification-big`,
     );
-    const containerNotifications = container.querySelector(
-      ".main-container-notification",
-    );
     setStatic(iconNotificationBig, urlIconNotification);
 
     const mainContent = container.querySelector(".main-content");
 
     modifierSidebar(mainContent);
-    //const toggleButton: any = container.querySelector(".toggleButton");
+    const tab: any = container.querySelector(`.tab-notification`);
+
+    controlActiveLink(tab, controlNotification);
 
     const logoutbutton = container.querySelector(
       `.${ELEMENTS_CLASS.LOGOUT.BLOCK}`,
@@ -57,14 +67,30 @@ export async function renderNotifications() {
       removeItemLocalStorage(user.username);
       route(LINKS.HOME.HREF);
     });
-    await paginateNotifications(allNotifications, containerNotifications);
+    const containerNotificationsAll = container.querySelector(
+      ".container-all-notifications",
+    );
+    const containerNotificationsNotRead = container.querySelector(
+      ".container-isnotread-notifications",
+    );
+    const activeRequests = new Set();
+    // const currentLink =
+    //   sessionStorage.getItem("notification") === "0"
+    //     ? showZeroNotif(containerNotificationsAll)
+    //     : showZeroNotif(containerNotificationsNotRead);
+    await paginateNotifications(
+      activeRequests,
+      allNotifications,
+      IsNotReadNotifications,
+      containerNotificationsAll,
+      containerNotificationsNotRead,
+    );
     return container;
   } catch (error) {
     console.log("ERROR");
     throw error;
+  } finally {
+    hideLoader();
   }
-  // finally {
-  //   hideLoader();
-  // }
 }
 export { renderNotification };

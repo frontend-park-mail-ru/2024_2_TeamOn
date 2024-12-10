@@ -15,7 +15,9 @@ function showOverlay(modal: any, profileForm: any) {
   overlay.addEventListener("click", () => {
     console.log("overlay");
     overlay.remove();
-    modal.style.display = "none";
+    if (modal) {
+      modal.style.display = "none";
+    }
     profileForm.classList.remove("blur");
     profileForm.classList.remove("blackout");
 
@@ -24,8 +26,9 @@ function showOverlay(modal: any, profileForm: any) {
     } else {
       document.body.style.overflow = "auto";
       const videoModal: any = document.querySelector(`.video-modal`);
-
-      videoModal.pause();
+      if (videoModal) {
+        videoModal.pause();
+      }
     }
   });
   return overlay;

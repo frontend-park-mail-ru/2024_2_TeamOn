@@ -7,15 +7,11 @@ import { route } from "../../shared/routing/routing";
  * @param offsetPopular Оффсет для уведомлений
  * @returns
  */
-async function getNotification(offsetNotifications = 0, status = "") {
-  let queryParams = `limit=${QUERY.LIMIT}&offset=${offsetNotifications}`;
-  if (status) {
-    queryParams += `&status=${status}`;
-  }
+async function getNotification(offset: any, status: string = "") {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "GET",
-      `/api/accounts/notification?status=NOTREAD`,
+      `/api/accounts/notification?offset=${offset}&limit=${QUERY.LIMIT}${status === "" ? "" : "&status=NOTREAD"}`,
       null,
       (response) => {
         if (response.ok) {
@@ -23,7 +19,9 @@ async function getNotification(offsetNotifications = 0, status = "") {
             resolve(data);
           });
         } else if (response.status === 400) {
-          route(LINKS.ERROR.HREF);
+          response.json().then((data) => {
+            resolve(data);
+          });
         } else {
           reject(new Error("Внутренняя ошибка сервера"));
         }
@@ -32,4 +30,32 @@ async function getNotification(offsetNotifications = 0, status = "") {
   });
 }
 
-export { getNotification };
+/**
+ * Функция получения популярных постов
+ * @param offsetPopular Оффсет для уведомлений
+ * @returns
+ */
+async function getPushNotification() {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "GET",
+      `/api/accounts/notification/new?time=10`,
+      null,
+      (response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            resolve(data);
+          });
+        } else if (response.status === 400) {
+          response.json().then((data) => {
+            resolve(data);
+          });
+        } else {
+          reject(new Error("Внутренняя ошибка сервера"));
+        }
+      },
+    );
+  });
+}
+
+export { getNotification, getPushNotification };

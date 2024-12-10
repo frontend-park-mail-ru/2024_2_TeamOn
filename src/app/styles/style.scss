@@ -5,10 +5,10 @@
   font-style: normal;
 }
 body {
+  background-color: var(--main-background-color);
   margin: 0;
   padding: 0;
   scrollbar-width: none;
-  height: 100vh;
   font-family: "Roboto", sans-serif;
 }
 
@@ -1339,30 +1339,24 @@ form input[type="text"]:focus {
   transition: transform 0.3s ease;
   transition: left 0.3s ease;
 }
-.push-modal {
+.placemodal {
   position: fixed;
-  top: 75%;
-  width: 100px;
-  height: 40px;
-  z-index: 5000;
-  background-color: var(--main-background-color);
-  color: white;
-  text-align: center;
+  z-index: 101010101010101010;
+  bottom: 0;
+}
+.push-modal {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  width: 300px;
+  height: 90px;
   padding: 20px;
-  border-radius: 8px;
-  transition:
-    opacity 0.5s ease,
-    visibility 0.5s ease;
-  opacity: 0;
-  align-items: center;
-  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  // position: fixed;
+  bottom: 0;
+  margin: 10px;
   display: flex;
-  border: 1px solid gray;
-  border-radius: 8px;
-  left: 1%;
-  font-size: bold;
-  user-select: none;
-  visibility: hidden;
+  flex-direction: row;
 }
 .push-modal:hover {
   pointer-events: auto;
@@ -1543,7 +1537,6 @@ form input[type="text"]:focus {
 .author-section {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
 }
 .avatar {
   width: 50px;
@@ -1556,15 +1549,19 @@ form input[type="text"]:focus {
   font-size: 16px;
   font-weight: bold;
 }
+.title-notif {
+  padding-top: 10px;
+}
 .title {
+  padding: 10px;
+}
+.title,
+.title-notif {
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 10px;
-  padding: 10px;
 }
-.header-post {
-  padding: 10px;
-}
+
 .content {
   padding: 10px;
 }
@@ -1825,12 +1822,8 @@ form input[type="text"]:focus {
 span {
   vertical-align: top;
 }
-.container-notification {
-  flex-grow: 1;
-  padding: 50px;
-  text-align: center;
-  /* margin-left: 20%; */
-  height: 100%;
+.container-notif {
+  width: 600px;
 }
 .container-notification h1 {
   font-size: 24px;
@@ -1898,6 +1891,7 @@ span {
   flex-wrap: nowrap;
   left: 15%;
   border: 1px white;
+  justify-content: center;
 }
 
 .tabs.feed {
@@ -1922,7 +1916,7 @@ span {
   position: relative;
   transition: color 0.3s ease;
   cursor: pointer;
-  font-size: 30px;
+  font-size: 20px;
 }
 .tabs .settings {
   font-size: 20px;
@@ -1930,6 +1924,11 @@ span {
 @media (max-width: 768px) {
   .tabs a {
     font-size: 14px !important;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
   }
   .slideshow {
     display: none;
@@ -2572,6 +2571,7 @@ select {
   border: 2px solid black;
 }
 .searchbar-wrapper-feed {
+  top: 40px;
   height: 40px;
   position: fixed;
   width: 230px;
@@ -3404,7 +3404,58 @@ progress::-moz-progress-bar {
 .button-sort.disable:hover {
   background-color: gray;
 }
-// .container-comment {
-//   width: 80%;
-//   height: 80%;
-// }
+.user-mention {
+  font-weight: bold;
+}
+.user-mention.author {
+  cursor: pointer;
+}
+.notif-container {
+  border-radius: 20px;
+  background-color: #80808024;
+  transition: background 3s ease;
+}
+.notif-container.readed {
+  background-color: white;
+}
+
+.close {
+  height: 20px;
+  display: inline-block;
+  cursor: pointer;
+  /* -webkit-user-select: none; */
+  -moz-user-select: none;
+  user-select: none;
+  margin-left: auto;
+}
+.info-section {
+  gap: 5px;
+}
+.container-all-notifications,
+.container-isnotread-notifications {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+}
+
+.main-container-popular,
+.main-container-recently,
+.main-container-approve,
+.main-container-reported {
+  flex-direction: column;
+}
+
+.section-push {
+  gap: 10px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-push {
+  border-radius: 50%;
+  object-fit: cover;
+}
