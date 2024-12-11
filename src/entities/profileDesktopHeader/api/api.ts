@@ -14,7 +14,7 @@ async function getBackgroundAuthor(link: string, authorID: any) {
       "GET",
       link == "/profile"
         ? "/api/pages/author/me/background"
-        : `/api/pages/author/${authorID}/background`,
+        : `/api/pages/author/${authorID ? authorID : link.split("/").pop()}/background`,
       null,
       (response) => {
         if (response.ok) {

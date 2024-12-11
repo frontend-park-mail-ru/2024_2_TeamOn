@@ -1,11 +1,11 @@
 import { containerPost } from "./ui/post/post";
-import { containerApprovePosts } from "./ui/approveposts/approveposts";
+import { containerPublishPosts } from "./ui/publishposts/publishposts";
 import { containerReportedPosts } from "./ui/reportedposts/reportedposts";
 import { containerBlockPost } from "./ui/blockpost/blockpost";
 
 export {
   containerPost,
-  containerApprovePosts,
+  containerPublishPosts,
   containerReportedPosts,
   containerBlockPost,
 };

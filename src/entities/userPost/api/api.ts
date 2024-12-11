@@ -93,7 +93,7 @@ async function addUserPost(
           });
         } else if (response.status === 400) {
           response.json().then((data) => {
-            const input =
+            let input =
               containerCreatePost.querySelectorAll(`.form-group-add`)[1];
             const error = input.querySelector("p");
             if (!error) {

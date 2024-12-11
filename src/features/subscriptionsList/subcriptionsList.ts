@@ -13,7 +13,6 @@ import {
 } from "../../widgest/profile/ui/profileform/profileform";
 import { renderTo, update } from "../../../lib/vdom/lib";
 import { route } from "../../shared/routing/routing";
-import { renderModalStatusUpload } from "../../shared/pushstatus/pushstatus";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { LINKS } from "../../shared/consts/consts";
 import { paginateProfile } from "../paginateprofile/paginateprofile";
@@ -22,6 +21,9 @@ import { getPayments } from "../getpayments/getpayments";
 import { renderUserStats } from "../../entities/profileInfo/ui/ui";
 import { VNode } from "lib/vdom/src/source";
 import { showOverlay } from "../../shared/overlay/overlay";
+import { setStatic } from "../../shared/getStatic/getStatic";
+import { urlPushbackIcon } from "../../app";
+import { controlPush } from "../../shared/push/push";
 
 function foundCancel(div: any) {
   const buttonCancel: any = div.querySelector(`.cancel`);
@@ -54,7 +56,6 @@ function modifireModalConfirmSubscription(
   profileForm.classList.add("blur");
   modalConfirm.style.display = "block";
 
-  let selectedDuration: number = 1;
   const subscriptionSelect: HTMLSelectElement = modalConfirm.querySelector(
     `#subscription-duration`,
   );
@@ -73,7 +74,7 @@ function modifireModalConfirmSubscription(
       return;
     }
     const media = "Оплата успешно проведена";
-    renderModalStatusUpload(true, media);
+    controlPush({ status: true, message: media }, "isnotpush");
     modalConfirmNew.style.display = "none";
     profileForm.classList.remove("blur");
     const newUrl = `/profile/${authorId}`;
@@ -96,7 +97,7 @@ function modifireModalConfirmSubscription(
     update(placeStats, arrayStats);
     return;
   };
-
+  let selectedDuration: number = 1;
   const handleChange = (event: any) => {
     selectedDuration = Number(event.target.value);
   };
@@ -148,15 +149,21 @@ function modifireModalConfirmSubscription(
       const buttonCancel: any = foundCancel(modalRealize);
       const buttonSave: any = foundSave(modalRealize);
       buttonCancel.addEventListener("click", handleClickCancel);
-      if (buttonSave.value == "Оплатить") {
-        buttonSave.addEventListener("click", handleClickPayment);
-      }
-      buttonSave.addEventListener("click", handleClickPayment);
+      const linkKassa = modalRealize.querySelector(`a`);
+      linkKassa.href = "http://vk.com";
+      // linkKassa.href = subscriptionRequestID.confirmation_url;
+      // if (buttonSave.value == "Оплатить") {
+      //   buttonSave.addEventListener("click", handleClickPayment);
+      // }
+      // buttonSave.addEventListener("click", handleClickPayment);
 
       profileForm.classList.add("blur");
       modalRealize.style.display = "block";
 
       pushback.style.display = "block";
+      const pushbackIcon: any = pushback.querySelector(`.pushback-icon`);
+      setStatic(pushbackIcon, urlPushbackIcon);
+
       pushback.addEventListener("click", handlePushBack);
     }
   };
@@ -173,7 +180,7 @@ function modifireModalConfirmSubscription(
 
     const buttonCancel: any = foundCancel(div);
     const buttonSave: any = foundSave(div);
-
+    selectedDuration = 1;
     const subscriptionSelect: HTMLSelectElement = modalRealize.querySelector(
       `#subscription-duration`,
     );
