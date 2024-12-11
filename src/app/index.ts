@@ -224,6 +224,7 @@ export const urlDeleteComment: any = await getUrlStatic("/deleteComm.png");
 export const urlSad: any = await getUrlStatic("/sad.png");
 export const iconStatusBlock: any = await getUrlStatic("/blocked.png");
 export const iconStatusPublished: any = await getUrlStatic("/published.png");
+
 const favicon: any = await getUrlStatic("/fav.png");
 
 const link = document.createElement("link");

@@ -22,16 +22,63 @@ async function generateNewNotification() {
   if (
     notifications.length !== 0 &&
     containerNotificationsAll &&
-    containerNotificationsNotRead
+    containerNotificationsNotRead &&
+    window.location.pathname === "/notifications"
   ) {
-    await paginateNotifications(
-      k,
-      [],
-      [],
+    // const notificationElements = await renderNotifications(
+    //   notifications,
+    // );
+    // const divNewNotifAl = containerNotificationsAll.querySelector(`.new-notif-all`);
+    // const divNewNotifNotread = containerNotificationsNotRead.querySelector(`.new-notif-notread`);
+    // console.log(divNewNotifAl);
+    // console.log(notificationElements);
+    // const first = [...notificationElements];
+    // const sec = [...notificationElements];
+
+    // divNewNotifAl.append(
+    //   ...first,
+    // );
+    // divNewNotifNotread.append(
+    //   ...sec,
+    // );
+    // modifireNotifications(
+    //   containerNotificationsAll,
+    //   containerNotificationsNotRead,
+    //   notifications.reverse(),
+    //   notifications.reverse(),
+    // );
+
+    const notificationElements = await renderNotifications(notifications);
+    const notificationElements2 = await renderNotifications(notifications);
+    const divNewNotifAl =
+      containerNotificationsAll.querySelector(`.new-notif-all`);
+    const divNewNotifNotread =
+      containerNotificationsNotRead.querySelector(`.new-notif-notread`);
+
+    if (divNewNotifAl && notificationElements.length > 0) {
+      containerNotificationsAll.prepend(...notificationElements);
+    }
+
+    if (divNewNotifNotread && notificationElements2.length > 0) {
+      containerNotificationsNotRead.prepend(...notificationElements2);
+    }
+
+    modifireNotifications(
       containerNotificationsAll,
       containerNotificationsNotRead,
-      notifications,
+      notifications.reverse(),
+      notifications.reverse(),
+      "push",
     );
+
+    // await paginateNotifications(
+    //   k,
+    //   [],
+    //   [],
+    //   containerNotificationsAll,
+    //   containerNotificationsNotRead,
+    //   notifications,
+    // );
   }
 }
 

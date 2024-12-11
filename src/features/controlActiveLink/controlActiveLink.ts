@@ -88,18 +88,9 @@ function controlActiveLink(tab: any, callback: any) {
 const keyAvatar = new Set();
 
 export async function showZeroNotif(container: any, idx: number) {
+  if (window.location.pathname !== "/notifications") return;
   const zero: any = document.querySelector(`.zero-notif`);
-
-  // Проверяем, нужно ли показывать сообщение о нулевых уведомлениях
-  if (
-    zero &&
-    !container.querySelector("div") &&
-    window.location.pathname === "/notifications"
-  ) {
-    zero.style.display = "flex";
-  } else {
-    zero.style.display = "none";
-  }
+  const k = new Set();
 
   const containerNotificationsAll: any = document.querySelector(
     ".container-all-notifications",
@@ -108,37 +99,25 @@ export async function showZeroNotif(container: any, idx: number) {
     ".container-isnotread-notifications",
   );
 
-  // Управляем отображением контейнеров в зависимости от idx
-  let IsNotnotifications: any = await getNotification(0, "notread", 300);
-  let notifications: any = await getNotification(0, "", 300);
-  if (idx === 0) {
-    modifireNotifications(
+  if (!container.querySelector(".container-notif")) {
+    await paginateNotifications(
+      k,
+      [],
+      [],
       containerNotificationsAll,
       containerNotificationsNotRead,
-      notifications,
-      [],
     );
-    containerNotificationsAll.style.display = "flex";
-    containerNotificationsNotRead.style.display = "none";
-  } else {
-    modifireNotifications(
-      containerNotificationsAll,
-      containerNotificationsNotRead,
-      [],
-      IsNotnotifications,
-    );
-    containerNotificationsNotRead.style.display = "flex";
-    containerNotificationsAll.style.display = "none";
   }
 
-  // const k = new Set();
-  // await paginateNotifications(
-  //   k,
-  //   [],
-  //   [],
-  //   containerNotificationsAll,
-  //   containerNotificationsNotRead,
-  // );
+  if (
+    zero &&
+    !container.querySelector(".container-notif") &&
+    window.location.pathname === "/notifications"
+  ) {
+    zero.style.display = "flex";
+  } else if (container.querySelector(".container-notif")) {
+    zero.style.display = "none";
+  }
 }
 async function updateCtn(first: any, second: any, idx: any) {
   switch (idx) {

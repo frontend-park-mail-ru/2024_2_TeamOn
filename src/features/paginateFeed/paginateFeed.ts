@@ -82,6 +82,9 @@ export function controlSlideShow(container: any, rightContainer: any) {
   if (!imgAvatar) {
     imgAvatar = container.querySelector(`.profile-avatar`);
   }
+  if (window.location.pathname === "/notifications") {
+    imgAvatar = container.querySelector(`.notif-avatar`);
+  }
   var currentIndex = 0;
   let isTransitioning = false;
 
@@ -440,9 +443,10 @@ export function controlSlideShow(container: any, rightContainer: any) {
     });
   });
   if (imgAvatar) {
-    imgAvatar.addEventListener("click", (event: any) => {
+    const handleClick = (event: any) => {
       handleOpenSlideshow(event, showAvatar);
-    });
+    };
+    imgAvatar.addEventListener("click", handleClick);
   }
 
   function animateImageTransition(

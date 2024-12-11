@@ -37,8 +37,12 @@ export async function renderNotification() {
           </a>
         </div>
       </div>
-      <div class="container-all-notifications" style={flagFirst}></div>
-      <div class="container-isnotread-notifications" style={flagSec}></div>
+      <div class="container-all-notifications" style={flagFirst}>
+        <div class="new-notif-all"></div>
+      </div>
+      <div class="container-isnotread-notifications" style={flagSec}>
+        <div class="new-notif-notread"></div>
+      </div>
       <div
         class="zero-notif"
         style="    flex-direction: column;

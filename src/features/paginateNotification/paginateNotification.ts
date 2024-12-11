@@ -36,6 +36,7 @@ export function formatMessage2(message: any) {
 
   return message;
 }
+const notifID: any = new Set();
 /**
  * Инициализация компонентов уведомлений
  * @param container - корневой контейнер
@@ -43,6 +44,7 @@ export function formatMessage2(message: any) {
  */
 async function customizeNotification(container: any, notification: any = null) {
   if (!notification) return;
+  notifID.add(notification.notificationID);
 
   const message: any = container.querySelector(`.title-notif`);
 
@@ -57,7 +59,6 @@ async function customizeNotification(container: any, notification: any = null) {
     });
     username.classList.add("author");
   }
-
   const rightContent: any = document.querySelector(`.container-notification`);
   controlSlideShow(container, rightContent);
 }
@@ -123,20 +124,35 @@ export async function modifireNotifications(
   containerIsNotReadNotifications: any,
   AllNotifications: any,
   IsNotReadNotifications: any,
+  flag: string = "",
 ) {
   try {
     // Обработка всех уведомлений
     if (AllNotifications && AllNotifications.length > 0) {
+      const observer = new IntersectionObserver((entries) => {
+        if (AllNotifications.length === 1 || flag === "push") return;
+        entries.forEach(handleIntersection);
+      });
       const allcontainersNotif: any =
         containerAllNotifications.querySelectorAll(`.notif-container`);
-      console.log(allcontainersNotif, "OBSERV allcontainersNotif");
+      if (AllNotifications.length === 1 || flag === "push") {
+        AllNotifications.forEach(async (notif: any, idx: number) => {
+          [
+            customizeNotification(allcontainersNotif[idx], notif),
+            await markIsRead(notif.notificationID, allcontainersNotif[idx]),
+          ];
+        });
+      }
       const handleIntersection = async (entry: any) => {
+        if (AllNotifications.length === 1 || flag === "push") return;
         if (entry.isIntersecting) {
           const notificationElement = entry.target;
           const notificationId = notificationElement.dataset.notificationId;
-          const notificationIndex =
+          let notificationIndex =
             Array.from(allcontainersNotif).indexOf(notificationElement);
-
+          if (AllNotifications.length == 1) {
+            notificationIndex = 0;
+          }
           if (AllNotifications[notificationIndex]) {
             if (!AllNotifications[notificationIndex].isCustomized) {
               if (!AllNotifications[notificationIndex].isRead) {
@@ -155,42 +171,64 @@ export async function modifireNotifications(
                     error,
                   );
                 }
+              } else {
+                notificationElement.classList.add("readed");
               }
-              customizeNotification(
-                notificationElement,
-                AllNotifications[notificationIndex],
-              );
-              AllNotifications[notificationIndex].isCustomized = true;
             }
           }
         }
       };
 
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(handleIntersection);
-      });
+      // const observer = new IntersectionObserver((entries) => {
+      //   entries.forEach(handleIntersection);
+      // });
 
-      allcontainersNotif.forEach((notif: any, index: number) => {
-        observer.observe(notif);
-      });
+      await Promise.all(
+        Array.from(allcontainersNotif)
+          .slice(-AllNotifications.length)
+          .map((container: any, index: any) => {
+            if (AllNotifications.length === 1 || flag === "push") return;
+            return [
+              customizeNotification(
+                container,
+                AllNotifications[AllNotifications.length - 1 - index],
+              ),
+              observer.observe(container),
+            ];
+          }),
+      );
     }
 
     // Обработка непрочитанных уведомлений
     if (IsNotReadNotifications && IsNotReadNotifications.length > 0) {
+      const observerNotRead = new IntersectionObserver(async (entries) => {
+        if (IsNotReadNotifications.length === 1 || flag === "push") return;
+        entries.forEach(handleIntersectionNotRead);
+      });
       const allcontainersIsNotReadNotif: any =
         containerIsNotReadNotifications.querySelectorAll(`.notif-container`);
-      console.log(
-        allcontainersIsNotReadNotif,
-        "OBSERV allcontainersIsNotReadNotif",
-      );
+      if (IsNotReadNotifications.length === 1 || flag === "push") {
+        IsNotReadNotifications.forEach(async (notif: any, idx: number) => {
+          [
+            customizeNotification(allcontainersIsNotReadNotif[idx], notif),
+            await markIsRead(
+              notif.notificationID,
+              allcontainersIsNotReadNotif[idx],
+            ),
+          ];
+        });
+      }
       const handleIntersectionNotRead = async (entry: any) => {
+        if (IsNotReadNotifications.length === 1 || flag === "push") return;
         if (entry.isIntersecting) {
           const notificationElement = entry.target;
           const notificationId = notificationElement.dataset.notificationId;
-          const notificationIndex = Array.from(
+          let notificationIndex = Array.from(
             allcontainersIsNotReadNotif,
           ).indexOf(notificationElement);
-
+          if (allcontainersIsNotReadNotif.length === 1) {
+            notificationIndex = 0;
+          }
           if (IsNotReadNotifications[notificationIndex]) {
             // Проверяем, было ли уведомление уже кастомизировано
             if (!IsNotReadNotifications[notificationIndex].isCustomized) {
@@ -210,24 +248,33 @@ export async function modifireNotifications(
                     error,
                   );
                 }
+              } else {
+                notificationElement.classList.add("readed");
               }
-              customizeNotification(
-                notificationElement,
-                IsNotReadNotifications[notificationIndex],
-              );
-              IsNotReadNotifications[notificationIndex].isCustomized = true;
             }
           }
         }
       };
 
-      const observerNotRead = new IntersectionObserver((entries) => {
-        entries.forEach(handleIntersectionNotRead);
-      });
-
-      allcontainersIsNotReadNotif.forEach((notif: any, index: number) => {
-        observerNotRead.observe(notif);
-      });
+      // const observerNotRead = new IntersectionObserver((entries) => {
+      //   entries.forEach(handleIntersectionNotRead);
+      // });
+      await Promise.all(
+        Array.from(allcontainersIsNotReadNotif)
+          .slice(-IsNotReadNotifications.length)
+          .map((container: any, index: any) => {
+            if (IsNotReadNotifications.length === 1 || flag === "push") return;
+            return [
+              customizeNotification(
+                container,
+                IsNotReadNotifications[
+                  IsNotReadNotifications.length - 1 - index
+                ],
+              ),
+              observerNotRead.observe(container),
+            ];
+          }),
+      );
     }
   } catch (error) {
     console.log("ERROR in modifireNotifications in notifications");
@@ -259,14 +306,23 @@ async function paginateNotifications(
       : (stopLoadIsNotReadNotifications = false);
 
     try {
-      if (activeLinkNotification == "0" && !stopLoadAllNotifications) {
+      if (pushVariable || activeLinkNotification == "0") {
         const requestId = `allnotifications-${offsetAll}`;
         if (activeRequests.has(requestId)) return;
         activeRequests.add(requestId);
-        let notifications: any =
-          pushVariable || (await getNotification(offsetAll));
-        const nextAllNotifications = notifications.slice(0, QUERY.LIMIT);
+        let notifications: any;
+        let nextAllNotifications = [];
 
+        if (pushVariable && pushVariable !== "all") {
+          notifications = pushVariable;
+          nextAllNotifications = notifications;
+        } else if (pushVariable === "all") {
+          notifications = await getNotification(0, "", 300);
+          nextAllNotifications = notifications.slice(0, QUERY.LIMIT);
+        } else {
+          notifications = await getNotification(offsetAll);
+          nextAllNotifications = notifications.slice(0, QUERY.LIMIT);
+        }
         if (nextAllNotifications && nextAllNotifications.length > 0) {
           allNotifications.push(...nextAllNotifications);
           offsetAll += QUERY.LIMIT;
@@ -276,7 +332,7 @@ async function paginateNotifications(
           modifireNotifications(
             containerNotificationsAll,
             containerNotificationsNotRead,
-            nextAllNotifications,
+            nextAllNotifications.reverse(),
             [],
           );
         } else {
@@ -284,14 +340,24 @@ async function paginateNotifications(
         }
       }
 
-      if (activeLinkNotification == "1" && !stopLoadIsNotReadNotifications) {
+      if (pushVariable || activeLinkNotification == "1") {
         const requestId = `notreadnotifications-${offsetIsNotRead}`;
         if (activeRequests.has(requestId)) return;
         activeRequests.add(requestId);
-        let IsNotnotifications: any =
-          pushVariable ||
-          (await getNotification(offsetIsNotRead, "notread", 300));
-        const nextIsNotNotifications = IsNotnotifications.slice(0, QUERY.LIMIT);
+
+        let IsNotnotifications: any;
+        let nextIsNotNotifications: any = [];
+
+        if (pushVariable && pushVariable !== "all") {
+          IsNotnotifications = pushVariable;
+          nextIsNotNotifications = pushVariable;
+        } else if (pushVariable === "all") {
+          IsNotnotifications = await getNotification(0, "notread", 300);
+          nextIsNotNotifications = IsNotnotifications.slice(0, QUERY.LIMIT);
+        } else {
+          IsNotnotifications = await getNotification(offsetAll, "notread");
+          nextIsNotNotifications = IsNotnotifications.slice(0, QUERY.LIMIT);
+        }
 
         if (nextIsNotNotifications && nextIsNotNotifications.length > 0) {
           IsNotReadNotifications.push(...nextIsNotNotifications);
@@ -307,7 +373,7 @@ async function paginateNotifications(
             containerNotificationsAll,
             containerNotificationsNotRead,
             [],
-            nextIsNotNotifications,
+            nextIsNotNotifications.reverse(),
           );
         } else {
           stopLoadIsNotReadNotifications = true;

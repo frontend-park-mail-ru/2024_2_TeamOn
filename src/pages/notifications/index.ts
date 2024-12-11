@@ -29,6 +29,9 @@ function controlZero() {
  */
 export async function renderNotifications() {
   try {
+    if (!sessionStorage.getItem("notification")) {
+      sessionStorage.setItem("notification", "0");
+    }
     document.body.style.minHeight = "100%";
     const allNotifications: any = [];
     const IsNotReadNotifications: any = [];
@@ -82,6 +85,28 @@ export async function renderNotifications() {
       containerNotificationsAll,
       containerNotificationsNotRead,
     );
+
+    const zero: any = document.querySelector(`.zero-notif`);
+
+    // if (sessionStorage.getItem("notification") === "0" &&!containerNotificationsAll.querySelector(".container-notif")) {
+    //   zero.style.display = "flex"
+    // } else {
+    //   zero.style.display = "none"
+    // }
+    const timeCont =
+      sessionStorage.getItem("notification") === "0"
+        ? containerNotificationsAll
+        : containerNotificationsNotRead;
+    if (
+      zero &&
+      !timeCont.querySelector(".container-notif") &&
+      window.location.pathname === "/notifications"
+    ) {
+      zero.style.display = "flex";
+    } else if (container.querySelector(".container-notif")) {
+      zero.style.display = "none";
+    }
+
     return container;
   } catch (error) {
     console.log("ERROR");

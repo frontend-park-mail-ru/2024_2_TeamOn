@@ -1944,6 +1944,11 @@ span {
   vertical-align: top;
 }
 
+@media (max-width: 768px) {
+  .container-notif {
+    width: 100% !important;
+  }
+}
 .container-notif {
   width: 600px;
 }
@@ -2020,8 +2025,14 @@ span {
   justify-content: center;
 }
 
+@media (max-width: 768px) {
+  .tabs.feed {
+    left: -90px !important;
+  }
+}
 .tabs.feed {
-  margin-top: -50px;
+  left: 90px;
+  margin-top: -40px;
   bottom: 20px;
   position: relative;
   width: 500px;

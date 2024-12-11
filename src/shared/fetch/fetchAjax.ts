@@ -112,7 +112,10 @@ export async function fetchAjax(
         return await getCSRFTokenForCSAT();
       } else if (url.startsWith("/api/moderation")) {
         return await getCSRFTokenForModeration();
+      } else if (url.startsWith("/api/tech")) {
+        return await getCSRFTokenForTech();
       }
+
       return null;
     };
     if (!currentTokenPromise) {

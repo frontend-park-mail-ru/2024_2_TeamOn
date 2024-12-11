@@ -126,7 +126,7 @@ export function showSubscriptions(authorData: any, container: any) {
     const buttonCancel: any =
       modalSubscriptions.querySelector(`.close__button`);
     buttonCancel.addEventListener("click", handleClickCancel);
-
+    overlay.addEventListener("click", handleClickCancel);
     const resultItems = divResults.querySelectorAll(".result-item"); // Преобразуем NodeList в массив
     const input = modalSubscriptions.querySelector(".searchbar-input");
     input.addEventListener("input", () => {
@@ -305,6 +305,7 @@ async function controlCustomSubscriptions(container: any) {
       modalAddSubs.style.display = "none";
       profileForm.classList.remove("blur");
       overlay.remove();
+      document.body.style.overflow = "auto";
       const newsubs: any = await getCustomSubscription(
         window.location.pathname,
       );
@@ -414,10 +415,6 @@ export async function renderProfile() {
     document.body.style.minHeight = "100%";
     state.currentUser = authorData;
 
-    if (!authorData) {
-      throw new Error("Пользователь не найден");
-    }
-
     const vdom: any = await profileContent(
       authorData,
       avatar,
@@ -468,7 +465,6 @@ export async function renderProfile() {
 
     controlLogout(container, authorData);
     controlMediaProfile(container);
-
     controlInfo(authorData, placeEditInfo);
 
     const placeposts: any = container.querySelector(`.place-posts`);

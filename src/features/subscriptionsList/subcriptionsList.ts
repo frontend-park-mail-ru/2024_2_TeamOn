@@ -149,10 +149,13 @@ function modifireModalConfirmSubscription(
       const buttonCancel: any = foundCancel(modalRealize);
       const buttonSave: any = foundSave(modalRealize);
       buttonCancel.addEventListener("click", handleClickCancel);
-      if (buttonSave.value == "Оплатить") {
-        buttonSave.addEventListener("click", handleClickPayment);
-      }
-      buttonSave.addEventListener("click", handleClickPayment);
+      const linkKassa = modalRealize.querySelector(`a`);
+      linkKassa.href = "http://vk.com";
+      // linkKassa.href = subscriptionRequestID.confirmation_url;
+      // if (buttonSave.value == "Оплатить") {
+      //   buttonSave.addEventListener("click", handleClickPayment);
+      // }
+      // buttonSave.addEventListener("click", handleClickPayment);
 
       profileForm.classList.add("blur");
       modalRealize.style.display = "block";

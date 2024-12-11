@@ -11,9 +11,7 @@ function showOverlay(modal: any, profileForm: any) {
   overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
   overlay.style.zIndex = "1001";
   document.body.appendChild(overlay);
-
   overlay.addEventListener("click", () => {
-    console.log("overlay");
     overlay.remove();
     if (modal) {
       modal.style.display = "none";
@@ -26,6 +24,12 @@ function showOverlay(modal: any, profileForm: any) {
     } else {
       document.body.style.overflow = "auto";
       const videoModal: any = document.querySelector(`.video-modal`);
+      const modalsOverlay: any = document.querySelectorAll(`.modal-overlay`);
+      if (modalsOverlay) {
+        modalsOverlay.forEach((overl: any) => {
+          overl.remove();
+        });
+      }
       if (videoModal) {
         videoModal.pause();
       }

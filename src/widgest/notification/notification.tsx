@@ -19,7 +19,7 @@ async function containerNotification(notification: any) {
         <div class="info-section" style="display: flex;">
           <div class="header-post" style="display: flex">
             <div class="author-section">
-              <img class="author-avatar avatar"></img>
+              <img class="author-avatar avatar notif-avatar"></img>
               <div class="info-post-section">
                 <div class="author-name"></div>
                 <div class="date"></div>
