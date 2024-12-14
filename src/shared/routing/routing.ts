@@ -54,7 +54,11 @@ async function updatePageContent(render: string): Promise<void> {
   const feedRegex = /^\/profile\/[0-9a-zA-Z-]+$/;
   const menuElements: MenuElements = state.menuElements as MenuElements;
   const authorPayRegex = /^\/profile\/[0-9a-zA-Z-]+(\?act=payments)?$/;
-  if (feedRegex.test(render) && window.location.pathname !== "/profile") {
+  if (
+    feedRegex.test(render) &&
+    window.location.pathname !== "/profile" &&
+    window.location.pathname !== "/profile/createpost"
+  ) {
     const authorId: any = render.split("/").pop();
     sessionStorage.setItem("authorid", authorId);
     if (hasLogged()) {

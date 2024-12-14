@@ -4,6 +4,8 @@ import { getMediaFiles } from "../../../../features/getMediaFiles/getMediaFiles"
 import { getUrlFiles } from "../../../../features/getUrlFiles/getUrlFiiles";
 import * as VDom from "vdom";
 import { renderPlaceAddComment } from "../../../../entities/comments";
+import { getComments } from "../../../../features/controlAdaptivePageAuthor/controlAdaptivePageAuthor";
+import { containerComment } from "../comments/comments";
 
 /**
  * Рендер контейнера поста
@@ -16,6 +18,11 @@ async function containerPost(post: any) {
     hasLogged() && sessionStorage.getItem("role") !== "Moderator"
       ? "display: block"
       : "display: none";
+  const comment: any = await getComments(post.postId, 0, 1);
+  let flagComment: boolean = false;
+  if (comment) {
+    flagComment = true;
+  }
   return (
     <div>
       <div class="post-container">
@@ -56,6 +63,7 @@ async function containerPost(post: any) {
             <h3 class="amount-comments"></h3>
           </div>
         </div>
+        {/* {flagComment ? await containerComment(comment) : "" } */}
         {renderPlaceAddComment()}
       </div>
     </div>

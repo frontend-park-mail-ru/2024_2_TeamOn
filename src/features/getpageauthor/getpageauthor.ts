@@ -1,3 +1,4 @@
+import { pageContainer } from "../../app";
 import { LINKS } from "../../shared/consts/consts";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { route } from "../../shared/routing/routing";
@@ -33,7 +34,7 @@ async function getPageAuthor(link: string, authorId: any = null) {
               return response.text();
             })
             .then((data) => {
-              document.body.innerHTML = data;
+              pageContainer.innerHTML = data;
             })
             .catch((error) => {
               console.error(error);

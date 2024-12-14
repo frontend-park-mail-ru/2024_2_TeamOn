@@ -425,7 +425,6 @@ export async function renderProfile() {
     if (!vdom) {
       throw new Error("VirtualDOM не построился");
     }
-
     if (window.innerWidth <= 1024) {
       const mobileContaine2: any = await mobilepr(
         authorData,

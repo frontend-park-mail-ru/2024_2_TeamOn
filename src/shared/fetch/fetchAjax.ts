@@ -111,7 +111,7 @@ export async function fetchAjax(
       } else if (url.startsWith("/api/csat")) {
         return await getCSRFTokenForCSAT();
       } else if (url.startsWith("/api/moderation")) {
-        return await getCSRFTokenForModeration();
+        return await getCSRFTokenForTech();
       } else if (url.startsWith("/api/tech")) {
         return await getCSRFTokenForTech();
       }

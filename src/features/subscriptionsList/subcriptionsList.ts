@@ -150,8 +150,7 @@ function modifireModalConfirmSubscription(
       const buttonSave: any = foundSave(modalRealize);
       buttonCancel.addEventListener("click", handleClickCancel);
       const linkKassa = modalRealize.querySelector(`a`);
-      linkKassa.href = "http://vk.com";
-      // linkKassa.href = subscriptionRequestID.confirmation_url;
+      linkKassa.href = subscriptionRequestID;
       // if (buttonSave.value == "Оплатить") {
       //   buttonSave.addEventListener("click", handleClickPayment);
       // }

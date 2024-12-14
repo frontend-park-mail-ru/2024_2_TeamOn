@@ -156,10 +156,15 @@ async function controlPush(objSettings: any = null, flag: string = "") {
 
   // Если есть дополнительные уведомления, добавляем сообщение
   if (totalNotificationsCount > maxNotifications) {
-    const additionalMessage = document.createElement("div");
-    additionalMessage.classList.add("message-info");
-    additionalMessage.innerHTML = `И еще ${totalNotificationsCount - maxNotifications} уведом.`;
-    placeModal.appendChild(additionalMessage);
+    if (!document.querySelector(`.message-info`)) {
+      const additionalMessage = document.createElement("div");
+      additionalMessage.classList.add("message-info");
+      additionalMessage.innerHTML = `И еще ${totalNotificationsCount - maxNotifications} уведом.`;
+      placeModal.appendChild(additionalMessage);
+    } else {
+      const additionalMessage: any = document.querySelector(".message-info");
+      additionalMessage.innerHTML = `И еще ${totalNotificationsCount - maxNotifications} уведом.`;
+    }
   }
 
   // Функция для проверки и удаления сообщения о дополнительных уведомлениях
@@ -226,7 +231,7 @@ async function startPushNotifications(objSettings = null, flag = "") {
     setInterval(async () => {
       await generateNewNotification();
       controlPush(objSettings, flag); // Обновляем интерфейс после добавления нового уведомления
-    }, 10000); // Добавляем новые уведомления каждые 5 секунд
+    }, 5000); // Добавляем новые уведомления каждые 5 секунд
   }
 }
 

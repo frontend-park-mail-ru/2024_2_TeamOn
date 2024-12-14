@@ -157,6 +157,11 @@ module.exports = {
           "^/api/posts/delete/post/(.*)": "/delete/post/$1",
           "^/api/posts/author/post/(.*)": "/author/post/$1",
           "^/api/posts/post/delete/media/(.*)": "/post/delete/media/$1",
+
+          "^/api/posts/posts/comments/(.*)/update": "/posts/comments/$1/update",
+          "^/api/posts/posts/comments/(.*)/delete": "/posts/comments/$1/delete",
+          "^/api/posts/posts/(.*)/comments/create": "/posts/$1/comments/create",
+          "^/api/posts/posts/(.*)/comments": "/posts/$1/comments",
         },
       },
       {

@@ -43,7 +43,7 @@ async function getPushNotification() {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "GET",
-      `/api/accounts/notification/new?time=10`,
+      `/api/accounts/notification/new?time=5`,
       null,
       (response) => {
         if (response.ok) {

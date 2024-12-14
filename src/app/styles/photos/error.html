@@ -95,11 +95,22 @@
           <h1>404</h1>
         </div>
         <h2>Страница не найдена</h2>
-        <a href="/">
+        <a class="link" href="/feed">
           <span class="arrow"></span>
           Вернуться на главную
         </a>
       </div>
     </div>
+    <script>
+      function finx() {
+        return Array.from({ length: localStorage.length }).some((_, i) => {
+          const value = getItemLocalStorage(localStorage.key(i));
+          return value === "1"; // Проверяем, что значение не null
+        });
+      }
+
+      const link = document.querySelector(".link");
+      link.href = finx() === "1" ? "/feed" : "/";
+    </script>
   </body>
 </html>

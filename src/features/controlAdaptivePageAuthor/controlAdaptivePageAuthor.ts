@@ -9,7 +9,12 @@ import {
   //renderEditPost,
   renderUserPost,
 } from "../../entities/userPost";
-import { ELEMENTS_CLASS, LINKS, state } from "../../shared/consts/consts";
+import {
+  ELEMENTS_CLASS,
+  LINKS,
+  QUERY,
+  state,
+} from "../../shared/consts/consts";
 import { getUserPosts } from "../getuserposts/getUserPosts";
 import DOMPurify from "dompurify";
 import { getPayments } from "../getpayments/getpayments";
@@ -28,7 +33,7 @@ import {
   renderComments,
   setCapture,
 } from "../paginateFeed/paginateFeed";
-import { hasLogged } from "../../shared/utils/hasLogged";
+import { findUsername, hasLogged } from "../../shared/utils/hasLogged";
 import { showOverlay } from "../../shared/overlay/overlay";
 import { setStatic } from "../../shared/getStatic/getStatic";
 import {
@@ -42,6 +47,7 @@ import {
 import { getPopularPosts } from "../getPopularPosts/getPopularPosts";
 import { getAvatar } from "../getavatar/getavatar";
 import { addComment } from "../../entities/comments/api/api";
+import { fetchAjax } from "../../shared/fetch/fetchAjax";
 
 /**
  * Управление адаптивностью на странице автора
@@ -184,7 +190,32 @@ async function renderPosts(authorPosts: any[]) {
   });
   return posts;
 }
-
+export async function getComments(
+  postID: string,
+  offset: number,
+  limit: number = 0,
+) {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "GET",
+      "/api/posts/posts/" +
+        `${postID}/comments` +
+        `?limit=${limit ? limit : QUERY.LIMIT}&offset=${offset}`,
+      null,
+      (response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            resolve(data);
+          });
+        } else if (response.status === 400) {
+          route(LINKS.ERROR.HREF);
+        } else {
+          reject(new Error("Внутреняя ошибка сервера"));
+        }
+      },
+    );
+  });
+}
 /**
  * Кастомизация одного поста профиля
  * @param container Контейнер поста
@@ -280,7 +311,7 @@ export async function customizePostProfile(
   const rightContainer = document.querySelector(`.profile-form`);
   controlSlideShow(container, rightContainer);
 }
-export function setComments(container: any, post: any) {
+export async function setComments(container: any, post: any) {
   const divComments: any = container.querySelector(`.comments-container`);
   const text = container.querySelector(`.textarea-group`);
   const handleInput = () => {
@@ -309,25 +340,72 @@ export function setComments(container: any, post: any) {
 
     // const response: any = await sendComment();
     try {
-      const post: any = await addComment(formGroup, text.value, text.value, 0);
-      if (!post || post.message) {
+      if (text.value.length > 100) {
         const input = container.querySelector(`.form-group-add`);
         const error = input.querySelector("p");
         if (!error) {
           const error = document.createElement("p");
           error.style.color = "red";
-          error.textContent = post.message;
+          error.textContent = "Комментарий слишком большой";
           input.appendChild(error);
         }
         return;
       }
+      const response: any = await addComment(
+        formGroup,
+        post.postId,
+        text.value,
+      );
+      // alert(response)
+      // console.log(response)
+      // if (!response || response.message) {
+      //   const input = container.querySelector(`.form-group-add`);
+      //   const error = input.querySelector("p");
+      //   alert(input)
+      //   console.log(input, "INPUT")
+      //   if (!error) {
+      //     const error = document.createElement("p");
+      //     error.style.color = "red";
+      //     error.textContent = response.message;
+      //     input.appendChild(error);
+      //   }
+      //   return;
+      // }
     } catch (error) {
       console.error(error);
     }
-    const comments: any = await getUserPosts("/profile", 0);
+    const placeComments: any = container.querySelector(`.place-comments`);
+    const divLoader: any = container.querySelector(`.comments-loader`);
+    const loader: any = container.querySelector(`.loader__search`);
 
-    placeContent.append(...(await renderComments([comments[0]])));
-    modifireComments(placeContent, [comments[0]]);
+    placeComments.style.display = "block";
+    divLoader.style.display = "block";
+    loader.style.display = "flex";
+    console.log(placeContent);
+    const formComment: any = container.querySelector(`.form-group-comment`);
+    const nextCommentsButton: any = container.querySelector(`.next-comments`);
+    if (placeContent.querySelectorAll(".container-comment").length <= 1) {
+      try {
+        const activeRequests = new Set();
+        const placeContent = container.querySelector(`.place-content`);
+        await paginateComments(activeRequests, [], placeContent, post.postId);
+      } finally {
+        divLoader.style.display = "none";
+        loader.style.display = "none";
+        formComment.style.display = "flex";
+        nextCommentsButton.textContent = "Скрыть комментарии";
+      }
+    } else {
+      divLoader.style.display = "none";
+      loader.style.display = "none";
+      const comments: any = await getComments(post.postId, 0, 300);
+      placeContent.append(
+        ...(await renderComments([comments[comments.length - 1]])),
+      );
+      modifireComments(placeContent, [comments.pop()], post.postId);
+    }
+    console.log(placeContent);
+    text.value = "";
   };
   const handleClickButtonSendComment = async (e: any) => {
     e.preventDefault();
@@ -341,38 +419,45 @@ export function setComments(container: any, post: any) {
     const amountComments: any = container.querySelector(`.amount-comments`);
     amountComments.innerHTML = `${post.comments}`;
 
-    divComments.addEventListener(`click`, async () => {
-      const placeComments: any = container.querySelector(`.place-comments`);
-      if (placeComments.style.display == "none") {
+    const placeComments: any = container.querySelector(`.place-comments`);
+    const placeContent: any = container.querySelector(`.place-content`);
+    const nextCommentsButton: any = container.querySelector(`.next-comments`);
+
+    const comments: any = await getComments(post.postId, 1, 300);
+    const nextComments = comments.slice(0, 1);
+    placeContent.append(...(await renderComments(nextComments)));
+    modifireComments(placeContent, nextComments.reverse(), post.postId);
+    if (comments.length > 1) {
+      nextCommentsButton.style.display = "block";
+    }
+    const buttonSendComment: any =
+      container.querySelector(`.button-send-comment`);
+    setStatic(buttonSendComment, urlSendComment);
+    buttonSendComment.addEventListener("click", handleClickButtonSendComment);
+    nextCommentsButton.addEventListener(`click`, async () => {
+      if (placeContent.querySelectorAll(".container-comment").length <= 1) {
         placeComments.style.display = "block";
         divLoader.style.display = "block";
         loader.style.display = "flex";
         try {
-          const allComments: any = await getPopularPosts(0);
-          const avatar: any = formComment.querySelector(`.author-avatar`);
-          // const avatarload: any = await getAvatar("/profile");
-          // avatar.src = avatarload;
           const activeRequests = new Set();
           const placeContent = container.querySelector(`.place-content`);
-          await paginateComments(activeRequests, [], placeContent);
+          await paginateComments(activeRequests, [], placeContent, post.postId);
         } finally {
           divLoader.style.display = "none";
           loader.style.display = "none";
           formComment.style.display = "flex";
+          nextCommentsButton.textContent = "Скрыть комментарии";
         }
-        const buttonSendComment: any =
-          container.querySelector(`.button-send-comment`);
-        setStatic(buttonSendComment, urlSendComment);
-        buttonSendComment.addEventListener(
-          "click",
-          handleClickButtonSendComment,
-        );
       } else {
-        placeComments.style.display = "none";
+        nextCommentsButton.textContent = "Показать следующие комментарии...";
+        // placeComments.style.display = "none";
         const allItems: any =
           placeComments.querySelectorAll(`.container-comment`);
-        allItems.forEach((item: any) => {
-          item.remove();
+        allItems.forEach((item: any, index: number) => {
+          if (index !== 0) {
+            item.remove();
+          }
         });
       }
     });

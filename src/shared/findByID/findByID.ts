@@ -1,5 +1,5 @@
-function findCommentByPostId(postID: any, comments: any) {
-  return comments.find((comment: any) => comment.postID === postID);
+function findCommentById(commentID: any, comments: any) {
+  return comments.find((comment: any) => comment.commentID === commentID);
 }
 
-export { findCommentByPostId };
+export { findCommentById };

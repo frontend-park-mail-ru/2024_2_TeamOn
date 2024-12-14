@@ -6,14 +6,14 @@ function renderPlaceAddComment() {
   return (
     <div
       class="place-comments"
-      style="display: none; border-top: 1px solid #e8e9eb;"
+      style="display: block; border-top: 1px solid #e8e9eb;"
     >
+      <div class="place-content"></div>
       <div class="comments-loader" style="display: none;">
         <div class="loader__search" style="display: none;"></div>
         <div class="result-item"></div>
       </div>
-      <div class="place-content"></div>
-      <div class="form-group-comment" style="display: none;">
+      <div class="form-group-comment" style="display: flex;">
         <div
           class="container-avatar-comment-add"
           style="display: none;
@@ -28,6 +28,9 @@ function renderPlaceAddComment() {
           style="    height: 100%;
                   width: 100%;"
         >
+          <div class="next-comments" style="display: none;">
+            Показать следующие комментарии...
+          </div>
           <textarea
             class="textarea-group"
             placeholder="Написать комментарий..."

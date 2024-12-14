@@ -32,12 +32,16 @@ import { getPageAuthor } from "../getpageauthor/getpageauthor";
 import { hideLoader, showLoader } from "../../pages/feed";
 import { addUserPost } from "../../entities/userPost";
 import { getUserPosts } from "../getuserposts/getUserPosts";
-import { addComment } from "../../entities/comments/api/api";
-import { setComments } from "../controlAdaptivePageAuthor/controlAdaptivePageAuthor";
+import {
+  getComments,
+  setComments,
+} from "../controlAdaptivePageAuthor/controlAdaptivePageAuthor";
 import {
   contentComment,
   editContentComment,
 } from "../../widgest/feed/ui/comments/comments";
+import { findCommentById } from "../../shared/findByID/findByID";
+import DOMPurify from "dompurify";
 
 export function controlSlideShow(container: any, rightContainer: any) {
   const modalPhotos: any = document.querySelector(`.modal-view-photos`); //
@@ -819,9 +823,10 @@ function modifierModalComplaintPost(
   buttonCancel.addEventListener("click", handleClickCancel);
   overlay.addEventListener("click", handleClickCancel);
 }
-async function customizeComment(container: any, comment: any) {
+async function customizeComment(container: any, comment: any, postID: string) {
   const content: any = container.querySelector(`.comment-title`);
   content.innerHTML = `${comment.content}`;
+  const currentCommentID = comment.commentID;
 
   const username = container.querySelector(`.author-comment-name`);
   username.addEventListener("click", () => {
@@ -836,9 +841,36 @@ async function customizeComment(container: any, comment: any) {
   setStatic(buttonEdit, urlEditComment);
   setStatic(buttonDelete, urlDeleteComment);
 
-  const handleSaveComment = () => {
+  const handleSaveComment = async () => {
     const newContent = container.querySelector(`.comment-edit`);
     const containerContent = contentComment(newContent.value);
+    const sanitizedMessage = DOMPurify.sanitize(newContent.value);
+    if (sanitizedMessage == "") {
+      const error = container
+        .querySelector(`.iteraction-section-comment`)
+        .querySelector("p");
+      if (!error) {
+        const error = document.createElement("p");
+        error.style.color = "red";
+        error.textContent = "Ошибка. Комментарий не может быть пустым";
+        container
+          .querySelector(`.iteraction-section-comment`)
+          .appendChild(error);
+      }
+      return;
+    }
+    const response = await saveComment(
+      comment.commentID,
+      DOMPurify.sanitize(newContent.value),
+    );
+    if (response) {
+      const error = container
+        .querySelector(`.iteraction-section-comment`)
+        .querySelector("p");
+      if (error) {
+        error.remove();
+      }
+    }
     update(content, containerContent);
     buttonSave.style.display = "none";
     buttonCancel.style.display = "none";
@@ -854,18 +886,28 @@ async function customizeComment(container: any, comment: any) {
       handleSaveComment();
     }
   };
-  const handleClickEditCancelComment = () => {
-    // запрашиваю все комментарии у поста при помощи функции getComments
-    // нахожу нужный комментарий при помощи функции findCommentByPostId
-    const containerContent = contentComment(comment.content); // <-- сюда его вставляю
-    update(content, containerContent);
+  const handleClickEditCancelComment = async () => {
+    const comments: any = await getComments(postID, 0, 300);
+    const comment = findCommentById(currentCommentID, comments);
+    const content = container.querySelector(`.comment-edit`);
+    const currentText = comment.content;
+    const containerContent = contentComment(currentText); // <-- сюда его вставляю
+    const error = container
+      .querySelector(`.iteraction-section-comment`)
+      .querySelector("p");
+    if (error) {
+      error.remove();
+    }
+    update(container.querySelector(`.comment-title`), containerContent);
     buttonSave.style.display = "none";
     buttonCancel.style.display = "none";
   };
   const handleClickDeleteComent = () => {
-    modifierModalDeleteComment(comment);
+    modifierModalDeleteComment(container, comment);
   };
-  const handleClickEditComment = () => {
+  const handleClickEditComment = async () => {
+    const comments: any = await getComments(postID, 0, 300);
+    const comment = findCommentById(currentCommentID, comments);
     const containerContent = editContentComment();
     const editContent = update(content, containerContent);
     const title = editContent.querySelector(`.comment-edit`);
@@ -873,27 +915,96 @@ async function customizeComment(container: any, comment: any) {
     title.setAttribute("contenteditable", "true"); // Делаем элемент редактируемым
     title.focus(); // Устанавливаем фокус на элемент
 
-    buttonSave.style.display = "block";
-    buttonCancel.style.display = "block";
+    buttonSave.style.display = "flex";
+    buttonCancel.style.display = "flex";
     buttonSave.addEventListener("click", handleClickSaveComment);
     title.addEventListener("keydown", handleClickKeySaveComment);
     buttonCancel.addEventListener("click", handleClickEditCancelComment);
   };
 
-  if (
-    sessionStorage.getItem("account") === comment.authorUsername &&
-    hasLogged()
-  ) {
+  if (sessionStorage.getItem("account") === comment.username && hasLogged()) {
     divEditButton.style.display = "flex";
     divDeleteButton.style.display = "flex"; // ИСПРАВИТЬ!
     buttonDelete.addEventListener("click", handleClickDeleteComent);
     buttonEdit.addEventListener("click", handleClickEditComment);
   }
-
   const rightContainer = document.querySelector(`.right-content`);
   controlSlideShow(container, rightContainer);
 }
-function modifierModalDeleteComment(comment: any) {
+/**
+ * Функция добавления лайка
+ * @param postId
+ * @returns
+ */
+async function saveComment(postID: string, content: any) {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "POST",
+      `/api/posts/posts/comments/${postID}/update`,
+      { content: content },
+      (response) => {
+        if (response.ok) {
+          resolve(true);
+        } else if (response.status === 404) {
+          route(LINKS.ERROR.HREF);
+        } else {
+          reject(new Error("Внутреняя ошибка сервера"));
+        }
+      },
+    );
+  });
+}
+/**
+ * Функция добавления лайка
+ * @param postId
+ * @returns
+ */
+async function addComment(postID: string, content: any) {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "POST",
+      `/api/posts/posts/${postID}/comments/create`,
+      { content: content },
+      (response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            resolve(data);
+          });
+        } else if (response.status === 404) {
+          route(LINKS.ERROR.HREF);
+        } else {
+          reject(new Error("Внутреняя ошибка сервера"));
+        }
+      },
+    );
+  });
+}
+/**
+ * Функция добавления лайка
+ * @param postId
+ * @returns
+ */
+async function deleteComment(commentID: string) {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "DELETE",
+      `/api/posts/posts/comments/${commentID}/delete`,
+      null,
+      (response) => {
+        if (response.ok) {
+          resolve(true);
+        } else if (response.status === 404) {
+          route(LINKS.ERROR.HREF);
+        } else {
+          response.json().then((data: any) => {
+            resolve(data);
+          });
+        }
+      },
+    );
+  });
+}
+function modifierModalDeleteComment(container: any, comment: any) {
   const mainContent: any = document.querySelector(`.right-content`);
   const place = document.querySelector(`.delete-comment-form`);
   const modal: any = renderComplaint(comment, true);
@@ -902,7 +1013,7 @@ function modifierModalDeleteComment(comment: any) {
   const modalsDelete: any = document.querySelector(".modal__deletepost");
   const overlay: any = showOverlay(modalsDelete, mainContent);
   const buttonCancel: any = modalsDelete.querySelector(`.cancel`);
-  const buttonBlock: any = modalsDelete.querySelector(`.delete`);
+  const buttonDelete: any = modalsDelete.querySelector(`.delete`);
 
   modalsDelete.style.display = "block";
   mainContent.classList.add("blur");
@@ -916,14 +1027,24 @@ function modifierModalDeleteComment(comment: any) {
     return;
   };
 
-  const handleClickBlock = async (e: any) => {
-    // e.preventDefault();
+  const handleClickDelete = async (e: any) => {
+    e.preventDefault();
     showLoader();
     try {
-      const response: any = await complaintPost({
-        postID: comment.postId,
-      });
+      const response: any = await deleteComment(comment.commentID);
+      if (!response || response.message) {
+        const error = modalsDelete.querySelector(".error");
+        if (!error) {
+          const error = document.createElement("p");
+          error.classList.add("error");
+          error.style.color = "red";
+          error.textContent = response.message;
+          modalsDelete.appendChild(error);
+        }
+        return;
+      }
       modalsDelete.style.display = "none";
+      container.remove();
       mainContent.classList.remove("blur");
       document.body.style.overflow = "auto";
       overlay.remove();
@@ -931,7 +1052,7 @@ function modifierModalDeleteComment(comment: any) {
       hideLoader();
     }
   };
-  buttonBlock.addEventListener("click", handleClickBlock);
+  buttonDelete.addEventListener("click", handleClickDelete);
   buttonCancel.addEventListener("click", handleClickCancel);
   overlay.addEventListener("click", handleClickCancel);
 }
@@ -1038,12 +1159,18 @@ export function setCapture(container: any) {
     });
   });
 }
-export async function modifireComments(containerComments: any, comments: any) {
+export async function modifireComments(
+  containerComments: any,
+  comments: any,
+  postID: string,
+) {
   try {
     if (comments.length > 0) {
       const containersComments =
         containerComments.querySelectorAll(`.comment-item`);
-
+      // if (comments.length == 1) {
+      //   return customizeComment(containersComments[0], comments[0], postID);
+      // }
       await Promise.all(
         Array.from(containersComments)
           .slice(-comments.length)
@@ -1051,6 +1178,7 @@ export async function modifireComments(containerComments: any, comments: any) {
             return customizeComment(
               container,
               comments[comments.length - 1 - index],
+              postID,
             );
           }),
       );
@@ -1128,10 +1256,6 @@ function captureFrame(video: any) {
     return false;
   }
 
-  // if (!isVideoElement(video)) {
-  //   console.error("Provided element is not a valid video element.");
-  //   return;
-  // }
   // Установите текущее время видео на 1 секунду
   video.currentTime = 1;
 
@@ -1215,9 +1339,10 @@ export async function paginateComments(
   activeRequests: any,
   allComments: any,
   containerComments: any,
+  postID: string,
 ) {
   let stopLoadComments: boolean = false;
-  let offset = 0;
+  let offset = 1;
   let isLoading = false;
   async function loadComments() {
     if (isLoading) return;
@@ -1229,13 +1354,13 @@ export async function paginateComments(
         if (activeRequests.has(requestId)) return;
         activeRequests.add(requestId);
 
-        const comments: any = await getPopularPosts(offset);
+        const comments: any = await getComments(postID, offset);
         const nextComments = comments.slice(0, QUERY.LIMIT);
         if (nextComments.length > 0) {
           allComments.push(...nextComments);
           offset += QUERY.LIMIT;
           containerComments.append(...(await renderComments(nextComments)));
-          modifireComments(containerComments, nextComments.reverse());
+          modifireComments(containerComments, nextComments.reverse(), postID);
         } else {
           stopLoadComments = true;
         }
@@ -1269,7 +1394,7 @@ export async function renderComments(comments: any) {
     const avatarImage: any = div.querySelector(`.author-comment-avatar`);
     const avatarLoad: any = await getAvatar(
       window.location.pathname,
-      comment.authorId,
+      comment.userID,
     );
     avatarImage.src = avatarLoad;
     avatarImage.height = 50;

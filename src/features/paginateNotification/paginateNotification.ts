@@ -154,6 +154,7 @@ export async function modifireNotifications(
             notificationIndex = 0;
           }
           if (AllNotifications[notificationIndex]) {
+            console.log(AllNotifications[notificationIndex], "вот он я");
             if (!AllNotifications[notificationIndex].isCustomized) {
               if (!AllNotifications[notificationIndex].isRead) {
                 try {
@@ -179,15 +180,32 @@ export async function modifireNotifications(
         }
       };
 
-      // const observer = new IntersectionObserver((entries) => {
-      //   entries.forEach(handleIntersection);
-      // });
-
       await Promise.all(
         Array.from(allcontainersNotif)
           .slice(-AllNotifications.length)
-          .map((container: any, index: any) => {
+          .map(async (container: any, index: any) => {
             if (AllNotifications.length === 1 || flag === "push") return;
+            if (!AllNotifications[AllNotifications.length - 1 - index].isRead) {
+              try {
+                const response: any = await markIsRead(
+                  AllNotifications[AllNotifications.length - 1 - index]
+                    .notificationID,
+                  container,
+                );
+                if (response) {
+                  AllNotifications[AllNotifications.length - 1 - index].isRead =
+                    true;
+                  container.classList.add("readed");
+                }
+              } catch (error) {
+                console.error(
+                  `Ошибка при пометке уведомления как прочитанного:`,
+                  error,
+                );
+              }
+            } else {
+              container.classList.add("readed");
+            }
             return [
               customizeNotification(
                 container,
@@ -230,6 +248,8 @@ export async function modifireNotifications(
             notificationIndex = 0;
           }
           if (IsNotReadNotifications[notificationIndex]) {
+            console.log(IsNotReadNotifications[notificationIndex], "вот он я");
+
             // Проверяем, было ли уведомление уже кастомизировано
             if (!IsNotReadNotifications[notificationIndex].isCustomized) {
               if (!IsNotReadNotifications[notificationIndex].isRead) {
@@ -262,8 +282,34 @@ export async function modifireNotifications(
       await Promise.all(
         Array.from(allcontainersIsNotReadNotif)
           .slice(-IsNotReadNotifications.length)
-          .map((container: any, index: any) => {
+          .map(async (container: any, index: any) => {
             if (IsNotReadNotifications.length === 1 || flag === "push") return;
+            if (
+              !IsNotReadNotifications[IsNotReadNotifications.length - 1 - index]
+                .isRead
+            ) {
+              try {
+                const response: any = await markIsRead(
+                  IsNotReadNotifications[
+                    IsNotReadNotifications.length - 1 - index
+                  ].notificationID,
+                  container,
+                );
+                if (response) {
+                  IsNotReadNotifications[
+                    IsNotReadNotifications.length - 1 - index
+                  ].isRead = true;
+                  container.classList.add("readed");
+                }
+              } catch (error) {
+                console.error(
+                  `Ошибка при пометке уведомления как прочитанного:`,
+                  error,
+                );
+              }
+            } else {
+              container.classList.add("readed");
+            }
             return [
               customizeNotification(
                 container,
@@ -369,6 +415,7 @@ async function paginateNotifications(
           containerNotificationsNotRead.append(
             ...notificationElements.reverse(),
           );
+          alert("nuch");
           modifireNotifications(
             containerNotificationsAll,
             containerNotificationsNotRead,

@@ -657,8 +657,15 @@ form input[type=text]:focus {
   padding: 10px;
   border: none;
   border-radius: 10px;
-  font-size: 16px;
   transition: background-color 0.3s, color 0.3s;
+  font-size: 12px;
+  text-align: center;
+  width: 50px;
+  display: flex;
+  cursor: pointer;
+  height: 10px;
+  align-items: center;
+  justify-content: center;
 }
 
 .save-comment {
@@ -787,6 +794,10 @@ form input[type=text]:focus {
 .stats p {
   margin: 5px 0;
   font-size: 18px;
+}
+
+.buttons-comment {
+  padding: 10px;
 }
 
 .buttons-profile {
@@ -3309,6 +3320,7 @@ canvas {
 }
 
 .comment-item {
+  width: 90%;
   display: flex;
   align-items: center;
   border-bottom: 1px solid #e8e9eb;
@@ -3321,10 +3333,8 @@ canvas {
 
 .comments-loader {
   padding: 10px;
-  width: 100px;
   z-index: 101010101010;
   border-radius: 15px;
-  width: 250px;
 }
 
 .comment-item {
@@ -3387,7 +3397,7 @@ canvas {
 
 @media (max-width: 768px) {
   .iteraction-section-comment {
-    width: 200px;
+    min-width: 230px;
   }
 }
 .button-send-comment {
@@ -3628,6 +3638,27 @@ progress::-moz-progress-bar {
   border-radius: 50%;
   -o-object-fit: cover;
      object-fit: cover;
+}
+
+.container-edit-comment {
+  height: 100%;
+  display: none;
+  justify-content: flex-end;
+}
+
+.container-delete-comment {
+  height: 100%;
+  display: none;
+  justify-content: flex-end;
+}
+
+.next-comments {
+  font-weight: bold;
+  display: block;
+  color: var(--main-color);
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -10,36 +10,28 @@ import { LINKS } from "../../../shared/consts/consts";
  * @param contentEdit Контент редактирования
  * @returns
  */
-async function addComment(
-  place: any,
-  postIdEdit: any,
-  titleEdit: any,
-  contentEdit: any,
-) {
+async function addComment(place: any, postID: string, content: string) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "POST",
-      `/api/posts/post`,
+      `/api/posts/posts/${postID}/comments/create`,
       {
-        postId: postIdEdit,
-        title: titleEdit,
-        content: contentEdit,
+        content: content,
       },
       (response) => {
         if (response.ok) {
           resolve(true);
         } else if (response.status === 400) {
-          response.json().then((data) => {
-            resolve(data);
-            // let input =
-            //   place.querySelector(`.form-group-add`);
-            // const error = input.querySelector("p");
-            // if (!error) {
-            //   const error = document.createElement("p");
-            //   error.style.color = "red";
-            //   error.textContent = data.message;
-            //   input.appendChild(error);
-            // }
+          response.json().then((data: any) => {
+            let input = place.querySelector(`.form-group-add`);
+            const error = input.querySelector("p");
+            if (!error) {
+              const error = document.createElement("p");
+              error.style.color = "red";
+              error.textContent = data.message;
+              input.appendChild(error);
+            }
+            data.commentID = "123";
           });
         } else {
           reject(new Error("Ответ от фетча с ошибкой"));
