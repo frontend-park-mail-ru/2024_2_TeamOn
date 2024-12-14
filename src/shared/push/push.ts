@@ -44,7 +44,7 @@ async function generateNewNotification() {
 
 async function controlPush(objSettings: any = null, flag = "") {
   const placeModal: any = document.querySelector(`.placemodal`);
-  placeModal.innerHTML = ""; 
+  placeModal.innerHTML = "";
 
   const maxNotifications = 3;
   const displayedNotifications = notifications.slice(0, maxNotifications);

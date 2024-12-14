@@ -24,6 +24,7 @@ body {
   --main-color: #337ab7;
   --main-background-color: #f5f5f5;
   --main-color-hover: #4f80aa;
+  --main-color-focus: #829db480;
 }
 
 .blur {
@@ -1645,6 +1646,21 @@ form input[type=text]:focus {
   flex-direction: column;
 }
 
+.post-container.focus-timer {
+  animation: highlight 4s ease-in-out;
+}
+
+@keyframes highlight {
+  0% {
+    background-color: #ffffff;
+  }
+  50% {
+    background-color: var(--main-color-focus);
+  }
+  100% {
+    background-color: #ffffff;
+  }
+}
 .author-section {
   display: flex;
   align-items: center;

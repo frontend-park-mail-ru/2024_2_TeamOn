@@ -1340,9 +1340,11 @@ export async function paginateComments(
   allComments: any,
   containerComments: any,
   postID: string,
+  flag: number,
 ) {
   let stopLoadComments: boolean = false;
-  let offset = 1;
+  let offset = 0;
+  !flag || flag === -1 ? (offset = 0) : (offset = flag);
   let isLoading = false;
   async function loadComments() {
     if (isLoading) return;
@@ -1375,11 +1377,13 @@ export async function paginateComments(
   // Обработчик события прокрутки
   let isLoadingTop = false;
 
+  const comments: any = await getComments(postID, offset);
+  if (comments.length === 0) return;
   window.addEventListener("scroll", async () => {
     const { scrollTop, clientHeight, scrollWidth } = document.documentElement;
 
     // Проверяем, достиг ли пользователь нижней части страницы
-    if (scrollTop + clientHeight >= 3000 && !isLoadingTop) {
+    if (scrollTop + clientHeight >= 1000 && !isLoadingTop) {
       isLoadingTop = true;
       await loadComments();
       isLoadingTop = false;

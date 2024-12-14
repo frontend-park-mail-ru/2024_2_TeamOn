@@ -16,7 +16,9 @@ function containerComment(comment: any, flagEdit: any = null) {
                   display: flex; justify-content: flex-end;`
       : "display: none;";
   const flagMobile =
-    window.innerWidth < 768 ? "" : "height: 100%; min-width: 580px;";
+    window.innerWidth < 768 || window.location.pathname !== "/feed"
+      ? "height: 100%;"
+      : "height: 100%; min-width: 580px;";
   const flagButtons =
     sessionStorage.getItem("account") === comment.username
       ? "display: flex"

@@ -342,6 +342,7 @@ export async function setComments(container: any, post: any) {
   };
   text.addEventListener("keydown", handleClickKeySendComment);
   text.addEventListener("input", handleInput);
+  let sendCount = 0;
   const sendComment = async () => {
     if (!hasLogged()) {
       route(LINKS.LOGIN.HREF);
@@ -350,7 +351,6 @@ export async function setComments(container: any, post: any) {
     const placeContent = container.querySelector(`.place-content`);
     const formGroup = container.querySelector(`.form-group-comment`);
 
-    // const response: any = await sendComment();
     try {
       if (text.value.length > 100) {
         const input = container.querySelector(`.form-group-add`);
@@ -368,21 +368,6 @@ export async function setComments(container: any, post: any) {
         post.postId,
         text.value,
       );
-      // alert(response)
-      // console.log(response)
-      // if (!response || response.message) {
-      //   const input = container.querySelector(`.form-group-add`);
-      //   const error = input.querySelector("p");
-      //   alert(input)
-      //   console.log(input, "INPUT")
-      //   if (!error) {
-      //     const error = document.createElement("p");
-      //     error.style.color = "red";
-      //     error.textContent = response.message;
-      //     input.appendChild(error);
-      //   }
-      //   return;
-      // }
     } catch (error) {
       console.error(error);
     }
@@ -393,14 +378,19 @@ export async function setComments(container: any, post: any) {
     placeComments.style.display = "block";
     divLoader.style.display = "block";
     loader.style.display = "flex";
-    console.log(placeContent);
     const formComment: any = container.querySelector(`.form-group-comment`);
     const nextCommentsButton: any = container.querySelector(`.next-comments`);
     if (placeContent.querySelectorAll(".container-comment").length <= 1) {
       try {
         const activeRequests = new Set();
         const placeContent = container.querySelector(`.place-content`);
-        await paginateComments(activeRequests, [], placeContent, post.postId);
+        await paginateComments(
+          activeRequests,
+          [],
+          placeContent,
+          post.postId,
+          placeContent.querySelectorAll(".container-comment").length,
+        );
       } finally {
         divLoader.style.display = "none";
         loader.style.display = "none";
@@ -414,10 +404,12 @@ export async function setComments(container: any, post: any) {
       placeContent.append(
         ...(await renderComments([comments[comments.length - 1]])),
       );
+      console.log(placeComments);
       modifireComments(placeContent, [comments.pop()], post.postId);
     }
     console.log(placeContent);
     text.value = "";
+    sendCount++;
   };
   const handleClickButtonSendComment = async (e: any) => {
     e.preventDefault();
@@ -446,31 +438,53 @@ export async function setComments(container: any, post: any) {
       container.querySelector(`.button-send-comment`);
     setStatic(buttonSendComment, urlSendComment);
     buttonSendComment.addEventListener("click", handleClickButtonSendComment);
+    let currentScrollPositipn: any = null;
+
     nextCommentsButton.addEventListener(`click`, async () => {
+      const placeContent = container.querySelector(`.place-content`);
+      const placeComments = container.querySelector(`.place-comments`);
+      const divLoader = container.querySelector(`.comments-loader`);
+      const loader = container.querySelector(`.loader__search`);
+      const formComment = container.querySelector(`.form-group-comment`);
+
       if (placeContent.querySelectorAll(".container-comment").length <= 1) {
+        currentScrollPositipn = Number(
+          sessionStorage.getItem("scrollPosition"),
+        );
         placeComments.style.display = "block";
         divLoader.style.display = "block";
         loader.style.display = "flex";
         try {
           const activeRequests = new Set();
-          const placeContent = container.querySelector(`.place-content`);
-          await paginateComments(activeRequests, [], placeContent, post.postId);
+          await paginateComments(
+            activeRequests,
+            [],
+            placeContent,
+            post.postId,
+            -1,
+          );
         } finally {
           divLoader.style.display = "none";
           loader.style.display = "none";
           formComment.style.display = "flex";
           nextCommentsButton.textContent = "Скрыть комментарии";
         }
+
+        // Прокрутка вниз после загрузки комментариев
       } else {
         nextCommentsButton.textContent = "Показать следующие комментарии...";
-        // placeComments.style.display = "none";
-        const allItems: any =
-          placeComments.querySelectorAll(`.container-comment`);
+        const allItems = placeComments.querySelectorAll(`.container-comment`);
         allItems.forEach((item: any, index: number) => {
           if (index !== 0) {
             item.remove();
           }
         });
+        // Прокрутка обратно на сохраненное положение
+        window.scrollTo({ top: currentScrollPositipn, behavior: "smooth" });
+        container.classList.add("focus-timer");
+        setTimeout(() => {
+          container.classList.remove("focus-timer");
+        }, 4000);
       }
     });
   }
