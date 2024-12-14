@@ -188,6 +188,9 @@ placemodal.appendChild(pushmodal);
 
 if (hasLogged()) {
   controlEventIFrame();
+} else {
+  localStorage.clear();
+  sessionStorage.clear();
 }
 export const urlCloseModal: any = await getUrlStatic("/close.png");
 export const urlLeftArrowModal: any = await getUrlStatic("/left-arrow.png");

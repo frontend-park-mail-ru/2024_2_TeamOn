@@ -171,6 +171,8 @@ async function controlAdaptivePageAuthors(
           sanitizedMessage,
           cost,
         });
+        const newUrl: any = ok;
+        window.location.href = newUrl;
         containerTip.style.display = "none";
         profileForm.classList.remove("blur");
         document.body.style.overflow = "auto";

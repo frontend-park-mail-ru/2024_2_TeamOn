@@ -16,7 +16,9 @@ async function sendTip(authorId: any, body: any) {
       { message: body.sanitizedMessage, cost: Number(body.cost) },
       (response) => {
         if (response.ok) {
-          resolve(true);
+          response.json().then((data: any) => {
+            resolve(data)
+          })
         } else if (response.status === 401) {
           localStorage.clear();
           route(LINKS.HOME.HREF);
