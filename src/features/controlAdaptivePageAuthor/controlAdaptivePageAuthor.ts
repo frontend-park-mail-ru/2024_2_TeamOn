@@ -117,6 +117,16 @@ async function controlAdaptivePageAuthors(
           return;
         }
 
+        if (sanitizedMessage.length > 200) {
+          const error = input.querySelector("p");
+          if (!error) {
+            const error = document.createElement("p");
+            error.style.color = "red";
+            error.textContent = "Ошибка. Сообщение слишком большое";
+            input.appendChild(error);
+          }
+          return;
+        }
         let error = input.querySelector("p");
         if (error) {
           error.remove();

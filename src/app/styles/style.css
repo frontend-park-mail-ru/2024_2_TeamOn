@@ -1454,11 +1454,12 @@ form input[type=text]:focus {
 }
 
 .push-modal {
+  position: relative;
+  height: 100%;
   background-color: white;
   border: 1px solid #e0e0e0;
   border-radius: 5px;
   width: 300px;
-  height: 90px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   bottom: 0;
@@ -1663,7 +1664,7 @@ form input[type=text]:focus {
 }
 
 .title-notif {
-  padding-top: 10px;
+  padding: 10px;
 }
 
 .title {
@@ -3596,6 +3597,8 @@ progress::-moz-progress-bar {
 }
 
 .close {
+  right: 20px;
+  position: absolute;
   height: 20px;
   display: inline-block;
   cursor: pointer;
@@ -3619,6 +3622,12 @@ progress::-moz-progress-bar {
   align-items: center;
 }
 
+.container-all-notifications .content,
+.container-isnotread-notifications .content {
+  display: flex;
+  justify-content: center;
+}
+
 .main-container-popular,
 .main-container-recently,
 .main-container-approve,
@@ -3627,11 +3636,12 @@ progress::-moz-progress-bar {
 }
 
 .section-push {
+  max-width: 200px;
   gap: 10px;
   display: flex;
   align-content: center;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .avatar-push {
@@ -3659,6 +3669,15 @@ progress::-moz-progress-bar {
   cursor: pointer;
   font-size: 14px;
   margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .general-info-notif {
+    width: 180px !important;
+  }
+}
+.general-info-notif {
+  width: 500px;
 }
 
 /*# sourceMappingURL=style.css.map */

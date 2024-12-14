@@ -16,9 +16,12 @@ async function containerNotification(notification: any) {
         class={standartClass}
         data-notification-id={notification.notificationID}
       >
-        <div class="info-section" style="display: flex;">
+        <div
+          class="info-section"
+          style="display: flex; align-items: flex-start;"
+        >
           <div class="header-post" style="display: flex">
-            <div class="author-section">
+            <div class="author-section" style="padding-top: 10px;">
               <img class="author-avatar avatar notif-avatar"></img>
               <div class="info-post-section">
                 <div class="author-name"></div>

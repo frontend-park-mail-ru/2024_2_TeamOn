@@ -71,7 +71,7 @@ export async function renderNotifications(notifications: any[]) {
   const notificationsPromises = notifications.map(async (notification: any) => {
     const container = await containerNotification(notification);
 
-    const div = renderTo(container);
+    const div = renderTo(container, "content");
 
     const avatarImage: any = div.querySelector(`.author-avatar`);
     const avatarLoad: any = await getAvatar(
