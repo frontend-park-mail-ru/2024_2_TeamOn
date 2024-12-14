@@ -415,7 +415,6 @@ async function paginateNotifications(
           containerNotificationsNotRead.append(
             ...notificationElements.reverse(),
           );
-          alert("nuch");
           modifireNotifications(
             containerNotificationsAll,
             containerNotificationsNotRead,

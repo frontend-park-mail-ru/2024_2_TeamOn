@@ -1684,8 +1684,9 @@ form input[type=text]:focus {
   padding: 10px;
 }
 
-.title {
-  padding: 10px;
+.title,
+.content {
+  padding-top: 10px;
 }
 
 .title,
@@ -1693,10 +1694,6 @@ form input[type=text]:focus {
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 10px;
-}
-
-.content {
-  padding: 10px;
 }
 
 .content,
@@ -1762,7 +1759,7 @@ form input[type=text]:focus {
 .rightarrow-modal-view:hover,
 .leftarrow-modal-view:hover {
   cursor: pointer;
-  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(100%) contrast(100%);
+  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(65%) contrast(100%);
   transition: filter 0.3s ease;
 }
 
@@ -1819,7 +1816,7 @@ form input[type=text]:focus {
 .author-name:hover,
 .author-comment-name:hover {
   cursor: pointer;
-  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%) hue-rotate(0deg) brightness(100%) contrast(100%);
+  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%) hue-rotate(180deg) brightness(65%) contrast(100%);
   transition: filter 0.3s ease;
 }
 
@@ -3377,13 +3374,35 @@ canvas {
 }
 
 .author-comment-name {
-  margin-bottom: 10px;
   font-weight: bold; /* Жирный шрифт для имени */
 }
 
 .comment-title {
   margin: 0; /* Убираем отступы */
   color: gray; /* Цвет текста заголовка комментария */
+}
+
+.control-comment {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.iteraction-section-comment {
+  height: 100%;
+  width: 100%;
+}
+
+.favorite-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.info-post-section {
+  width: 250%;
+  display: flex;
+  flex-direction: column;
 }
 
 .button-delete-comment,

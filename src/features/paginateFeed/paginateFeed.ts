@@ -824,6 +824,9 @@ function modifierModalComplaintPost(
   overlay.addEventListener("click", handleClickCancel);
 }
 async function customizeComment(container: any, comment: any, postID: string) {
+  const date: any = container.querySelector(`.${ELEMENTS_CLASS.POST.DATE}`);
+  date.textContent = convertISOToRussianDate(comment.createdAt);
+
   const content: any = container.querySelector(`.comment-title`);
   content.innerHTML = `${comment.content}`;
   const currentCommentID = comment.commentID;

@@ -421,7 +421,9 @@ export async function setComments(container: any, post: any) {
     const loader: any = container.querySelector(`.loader__search`);
     const formComment: any = container.querySelector(`.form-group-comment`);
     const amountComments: any = container.querySelector(`.amount-comments`);
-    amountComments.innerHTML = `${post.comments}`;
+    const commentsCount: any = await getComments(post.postId, 0, 300);
+
+    amountComments.innerHTML = `${commentsCount.length}`;
 
     const placeComments: any = container.querySelector(`.place-comments`);
     const placeContent: any = container.querySelector(`.place-content`);

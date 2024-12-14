@@ -28,8 +28,10 @@ function containerComment(comment: any, flagEdit: any = null) {
       <img class="author-avatar author-comment-avatar"></img>
       <div class="iteraction-section-comment" style={flagMobile}>
         <div class="favorite-info" style="display: flex;">
-          <div class="author-comment-name" style="display: inline-block;">
-            {comment.username}
+          <div class="info-post-section">
+            <div class="author-comment-name" style="display: inline-block;">
+              {comment.username}
+            </div>
           </div>
           <div class="control-comment" style={flag}>
             <div class="container-edit-comment" style={flagButtons}>
@@ -41,6 +43,9 @@ function containerComment(comment: any, flagEdit: any = null) {
           </div>
         </div>
         {contentComment()}
+        <div class="date" style="text-align: left;">
+          {comment.createdAt}
+        </div>
         <div
           class="buttons-comment"
           style="display: flex;

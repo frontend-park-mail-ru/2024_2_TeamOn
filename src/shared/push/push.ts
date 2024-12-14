@@ -18,7 +18,10 @@ async function generateNewNotification() {
   );
 
   notifications = await getPushNotification();
-
+  // if (notifications.length !== 0 ) {
+  //   const iconNotif: any = document.querySelector(`.icon-notification`);
+  //   iconNotif.style.background = "gray"
+  // }
   if (
     notifications.length !== 0 &&
     containerNotificationsAll &&

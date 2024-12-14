@@ -23,6 +23,8 @@ async function containerPost(post: any) {
   if (comment) {
     flagComment = true;
   }
+  // const commentsCount: any = await getComments(post.pistId, 0, 300);
+
   return (
     <div>
       <div class="post-container">
@@ -60,7 +62,7 @@ async function containerPost(post: any) {
           </div>
           <div class="comments-container">
             <div class="comments"></div>
-            <h3 class="amount-comments"></h3>
+            <h3 class="amount-comments">2</h3>
           </div>
         </div>
         {/* {flagComment ? await containerComment(comment) : "" } */}

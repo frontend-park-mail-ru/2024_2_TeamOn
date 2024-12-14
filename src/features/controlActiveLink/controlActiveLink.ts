@@ -1,9 +1,11 @@
+import { setStatic } from "../../shared/getStatic/getStatic";
 import { getNotification } from "../getNotification/getNotification";
 import { paginate } from "../paginateFeed/paginateFeed";
 import {
   modifireNotifications,
   paginateNotifications,
 } from "../paginateNotification/paginateNotification";
+import { iconNotificationRead, urlIconNotification } from "../../app";
 
 function controlFeed(tab: any) {
   const containerPopularPosts: any = document.querySelector(
@@ -77,7 +79,7 @@ function controlNotification(tab: any) {
       });
       link.classList.add("active");
       sessionStorage.setItem("notification", index.toString());
-      updateCtn(containerPublishPosts, containerReportedPosts, index);
+      await updateCtn(containerPublishPosts, containerReportedPosts, index);
     });
   });
 }
@@ -114,9 +116,31 @@ export async function showZeroNotif(container: any, idx: number) {
     !container.querySelector(".container-notif") &&
     window.location.pathname === "/notifications"
   ) {
+    updateNotifText(zero, sessionStorage.getItem("notification"));
     zero.style.display = "flex";
   } else if (container.querySelector(".container-notif")) {
     zero.style.display = "none";
+  }
+}
+export function updateNotifText(zero: any, idx: any) {
+  const icon = zero.querySelector(`.icon-notification-big`);
+  const noNotifications = zero.querySelector(`.no-notifications`);
+  const notifText = zero.querySelector(`.notification-text`);
+  const iconNotificationBig = zero.querySelector(`.icon-notification-big`);
+
+  switch (idx) {
+    case "0":
+      noNotifications.textContent = "Уведомлений пока нет";
+      notifText.style.display = "block";
+      setStatic(iconNotificationBig, urlIconNotification);
+      // icon.classList.remove("read");
+      break;
+    case "1":
+      noNotifications.textContent = "Уже все прочитано!";
+      notifText.style.display = "none";
+      setStatic(iconNotificationBig, iconNotificationRead);
+      // icon.classList.add("read");
+      break;
   }
 }
 async function updateCtn(first: any, second: any, idx: any) {

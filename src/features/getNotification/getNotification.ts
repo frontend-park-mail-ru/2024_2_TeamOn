@@ -27,7 +27,7 @@ async function getNotification(
             resolve(data);
           });
         } else {
-          reject(new Error("Внутренняя ошибка сервера"));
+          reject(new Error("Внутренняя ошибка сервера2"));
         }
       },
     );

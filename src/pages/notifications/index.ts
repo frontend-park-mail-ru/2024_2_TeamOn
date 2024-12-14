@@ -18,6 +18,7 @@ import {
   controlActiveLink,
   controlNotification,
   showZeroNotif,
+  updateNotifText,
 } from "../../features/controlActiveLink/controlActiveLink";
 
 function controlZero() {
@@ -87,12 +88,6 @@ export async function renderNotifications() {
     );
 
     const zero: any = document.querySelector(`.zero-notif`);
-
-    // if (sessionStorage.getItem("notification") === "0" &&!containerNotificationsAll.querySelector(".container-notif")) {
-    //   zero.style.display = "flex"
-    // } else {
-    //   zero.style.display = "none"
-    // }
     const timeCont =
       sessionStorage.getItem("notification") === "0"
         ? containerNotificationsAll
@@ -102,6 +97,7 @@ export async function renderNotifications() {
       !timeCont.querySelector(".container-notif") &&
       window.location.pathname === "/notifications"
     ) {
+      updateNotifText(zero, sessionStorage.getItem("notification"));
       zero.style.display = "flex";
     } else if (container.querySelector(".container-notif")) {
       zero.style.display = "none";
