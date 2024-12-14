@@ -1547,6 +1547,7 @@ form input[type="text"]:focus {
   display: flex;
   flex-direction: column;
 }
+.posts.focus-timer,
 .post-container.focus-timer {
   animation: highlight 4s ease-in-out;
 }
@@ -3212,6 +3213,7 @@ canvas {
   filter: brightness(0.85);
 }
 .container-send-comment {
+  margin-top: 26px;
   display: flex;
   justify-content: center;
   flex-direction: row;

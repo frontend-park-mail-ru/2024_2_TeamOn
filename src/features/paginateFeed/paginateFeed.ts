@@ -1340,7 +1340,7 @@ export async function paginateComments(
   allComments: any,
   containerComments: any,
   postID: string,
-  flag: number,
+  flag: any,
 ) {
   let stopLoadComments: boolean = false;
   let offset = 0;

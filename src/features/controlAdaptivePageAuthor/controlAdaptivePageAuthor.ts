@@ -389,7 +389,7 @@ export async function setComments(container: any, post: any) {
           [],
           placeContent,
           post.postId,
-          placeContent.querySelectorAll(".container-comment").length,
+          1,
         );
       } finally {
         divLoader.style.display = "none";
@@ -427,7 +427,7 @@ export async function setComments(container: any, post: any) {
     const placeContent: any = container.querySelector(`.place-content`);
     const nextCommentsButton: any = container.querySelector(`.next-comments`);
 
-    const comments: any = await getComments(post.postId, 1, 300);
+    const comments: any = await getComments(post.postId, 0, 300);
     const nextComments = comments.slice(0, 1);
     placeContent.append(...(await renderComments(nextComments)));
     modifireComments(placeContent, nextComments.reverse(), post.postId);
@@ -461,7 +461,7 @@ export async function setComments(container: any, post: any) {
             [],
             placeContent,
             post.postId,
-            -1,
+            1,
           );
         } finally {
           divLoader.style.display = "none";
