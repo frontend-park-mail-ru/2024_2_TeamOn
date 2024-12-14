@@ -27,8 +27,13 @@ export function convertISOToRussianDate(isoString: string): any {
   ];
   const month = monthNames[date.getUTCMonth()];
   const year = date.getUTCFullYear();
-  const hours = String(date.getUTCHours() + 3).padStart(2, "0"); // Преобразуем в московское время
+  let hours: any = date.getUTCHours() + 3; // Преобразуем в московское время
+
+  // Приводим часы к 24-часовому формату
+  hours = hours % 24;
+
   const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+  hours = String(hours).padStart(2, "0"); // Приводим часы к формату 2 цифры
 
   return `${day} ${month} ${year} ${hours}:${minutes}`; // Форматируем строку
 }

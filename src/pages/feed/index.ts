@@ -45,7 +45,7 @@ export async function controlEventIFrame(container: any = pageContainer) {
         controlIFRAME();
       }
     },
-    1 * 10 * 1000,
+    3 * 60 * 1000,
   );
 }
 async function controlIFRAME() {

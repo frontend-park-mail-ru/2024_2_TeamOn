@@ -5,7 +5,11 @@ import {
   modifireNotifications,
   paginateNotifications,
 } from "../paginateNotification/paginateNotification";
-import { iconNotificationClear, iconNotificationRead, urlIconNotification } from "../../app";
+import {
+  iconNotificationClear,
+  iconNotificationRead,
+  urlIconNotification,
+} from "../../app";
 
 function controlFeed(tab: any) {
   const containerPopularPosts: any = document.querySelector(

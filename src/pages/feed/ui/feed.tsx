@@ -126,6 +126,7 @@ export function modal() {
   );
 }
 async function renderFeedForm() {
+  const flag = hasLogged() ? true : false;
   return (
     <div class="main-content">
       {await Sidebar()}
@@ -136,7 +137,7 @@ async function renderFeedForm() {
           <a> Подписки </a>
         </div>
         {containerPopularposts()}
-        {containerRecentlyposts()}
+        {flag ? containerRecentlyposts() : ""}
       </div>
       {complaintForm()}
       {deleteCommentForm()}

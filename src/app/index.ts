@@ -203,7 +203,9 @@ export const urlIconNotification: any = await getUrlStatic(
   "/icon_notification.png",
 );
 export const iconNotificationRead: any = await getUrlStatic("/readNotif.png");
-export const iconNotificationClear: any = await getUrlStatic("/notificationClear.png");
+export const iconNotificationClear: any = await getUrlStatic(
+  "/notificationClear.png",
+);
 export const urlIconSettings: any = await getUrlStatic("/icon_settings.png");
 export const urlIconProfile: any = await getUrlStatic("/icon_profile.png");
 export const urlIconModeration: any = await getUrlStatic("/police.png");

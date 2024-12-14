@@ -57,7 +57,8 @@ async function updatePageContent(render: string): Promise<void> {
   if (
     feedRegex.test(render) &&
     window.location.pathname !== "/profile" &&
-    window.location.pathname !== "/profile/createpost"
+    window.location.pathname !== "/profile/createpost" &&
+    window.location.pathname !== "/profile/updateepost"
   ) {
     const authorId: any = render.split("/").pop();
     sessionStorage.setItem("authorid", authorId);

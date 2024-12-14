@@ -63,12 +63,12 @@ export function validateMainInfo(
 ): { usernameError: string; emailError: string } {
   const errors = { usernameError: "", emailError: "" };
 
-  if (!username) {
-    errors.usernameError = "Имя пользователя не может быть пустым.";
+  if (!username && email === "") {
+    errors.usernameError = "Имя пользователя не может быть пустым";
   }
 
-  if (!email || !REGEXP.REGEXP_EMAIL.test(email)) {
-    errors.emailError = "Введите корректную электронную почту.";
+  if ((!email || !REGEXP.REGEXP_EMAIL.test(email)) && username === "") {
+    errors.emailError = "Введите корректную электронную почту";
   }
 
   return errors;

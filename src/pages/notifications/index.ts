@@ -2,7 +2,11 @@
 // прочитано
 // всплывающие уведомления
 import { ELEMENTS_CLASS, LINKS, state } from "../../shared/consts/consts";
-import { iconNotificationClear, pageContainer, urlIconNotification } from "../../app/index";
+import {
+  iconNotificationClear,
+  pageContainer,
+  urlIconNotification,
+} from "../../app/index";
 import { update } from "../../../lib/vdom/lib";
 import { route } from "../../shared/routing/routing";
 import { removeItemLocalStorage } from "../../shared/utils/storages";

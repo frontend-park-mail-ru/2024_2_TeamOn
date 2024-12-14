@@ -327,7 +327,7 @@ async function updateContent(
 async function createProfileForm(userdata: any): Promise<HTMLDivElement> {
   const formContainer = document.createElement("div");
   formContainer.className = "form-container";
-
+  const user: any = await getAccount();
   const formTitle = document.createElement("h2");
   formTitle.textContent = "Персонализируйте свою страницу";
   formContainer.appendChild(formTitle);
@@ -338,7 +338,7 @@ async function createProfileForm(userdata: any): Promise<HTMLDivElement> {
   const usernameRow = document.createElement("div");
   usernameRow.className = "form-row";
   const usernameLabel = createLabel("Имя пользователя", "username");
-  const usernameInput = createInput("text", "username", userdata.username);
+  const usernameInput = createInput("text", "username", user.username);
   const usernameError = createErrorMessage();
   usernameRow.append(usernameLabel, usernameInput);
   formContainer.append(usernameRow, usernameError);
@@ -346,7 +346,7 @@ async function createProfileForm(userdata: any): Promise<HTMLDivElement> {
   const emailRow = document.createElement("div");
   emailRow.className = "form-row";
   const emailLabel = createLabel("Электронная почта", "email");
-  const emailInput = createInput("email", "email", userdata.email);
+  const emailInput = createInput("email", "email", user.email);
   const buttonSetAuthor = await createButtonSetAuthor();
   const emailError = createErrorMessage();
   emailRow.append(emailLabel, emailInput);
@@ -363,7 +363,7 @@ async function createProfileForm(userdata: any): Promise<HTMLDivElement> {
       validationMainInfoSave(usernameInput.value, emailInput.value);
     usernameError.textContent = usernameErrorMsg || "";
     emailError.textContent = emailErrorMsg || "";
-    if (!usernameError.textContent && !emailError.textContent) {
+    if (!usernameError.textContent || !emailError.textContent) {
       const ok: any = await saveSettings(username.value, email.value, "", "");
       ok.message
         ? (emailError.textContent = ok.message)
@@ -1135,7 +1135,7 @@ async function createFeedback() {
 
   time = "infinity";
   const responseTableInfinity = await getDataTable(time);
-  titleInfinity.innerHTML = "<i>За последнее время</i>";
+  titleInfinity.innerHTML = "<i>За все время</i>";
   const tableInfinity: any = renderTable();
 
   containerDay.appendChild(titleDay);
