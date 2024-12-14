@@ -5,7 +5,7 @@ import {
   modifireNotifications,
   paginateNotifications,
 } from "../paginateNotification/paginateNotification";
-import { iconNotificationRead, urlIconNotification } from "../../app";
+import { iconNotificationClear, iconNotificationRead, urlIconNotification } from "../../app";
 
 function controlFeed(tab: any) {
   const containerPopularPosts: any = document.querySelector(
@@ -132,14 +132,12 @@ export function updateNotifText(zero: any, idx: any) {
     case "0":
       noNotifications.textContent = "Уведомлений пока нет";
       notifText.style.display = "block";
-      setStatic(iconNotificationBig, urlIconNotification);
-      // icon.classList.remove("read");
+      setStatic(iconNotificationBig, iconNotificationClear);
       break;
     case "1":
       noNotifications.textContent = "Уже все прочитано!";
       notifText.style.display = "none";
       setStatic(iconNotificationBig, iconNotificationRead);
-      // icon.classList.add("read");
       break;
   }
 }

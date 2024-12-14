@@ -2,7 +2,7 @@
 // прочитано
 // всплывающие уведомления
 import { ELEMENTS_CLASS, LINKS, state } from "../../shared/consts/consts";
-import { pageContainer, urlIconNotification } from "../../app/index";
+import { iconNotificationClear, pageContainer, urlIconNotification } from "../../app/index";
 import { update } from "../../../lib/vdom/lib";
 import { route } from "../../shared/routing/routing";
 import { removeItemLocalStorage } from "../../shared/utils/storages";
@@ -53,7 +53,7 @@ export async function renderNotifications() {
     const iconNotificationBig = container.querySelector(
       `.icon-notification-big`,
     );
-    setStatic(iconNotificationBig, urlIconNotification);
+    setStatic(iconNotificationBig, iconNotificationClear);
 
     const mainContent = container.querySelector(".main-content");
 
