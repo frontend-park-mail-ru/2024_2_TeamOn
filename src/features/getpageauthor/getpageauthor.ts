@@ -1,3 +1,4 @@
+import { controlPush } from "../../shared/push/push";
 import { pageContainer } from "../../app";
 import { LINKS } from "../../shared/consts/consts";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
@@ -22,9 +23,9 @@ async function getPageAuthor(link: string, authorId: any = null) {
           response.json().then((data) => {
             resolve(data);
           });
-        } else if (response.status === 401) {
-          localStorage.clear();
-          route(LINKS.HOME.HREF);
+        } else if (response.status === 400) {
+          const message = "У пользователя нет своей страницы";
+          controlPush({ status: false, message: message }, "isnotpush");
         } else {
           fetch("/error.html")
             .then((response) => {

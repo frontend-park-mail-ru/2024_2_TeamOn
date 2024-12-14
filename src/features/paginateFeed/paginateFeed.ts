@@ -833,7 +833,7 @@ async function customizeComment(container: any, comment: any, postID: string) {
 
   const username = container.querySelector(`.author-comment-name`);
   username.addEventListener("click", () => {
-    gotoauthor(comment.authorId);
+    gotoauthor(comment.userID);
   });
   const buttonDelete = container.querySelector(`.button-delete-comment`);
   const divDeleteButton = container.querySelector(`.container-delete-comment`);

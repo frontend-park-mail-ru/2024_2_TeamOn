@@ -164,6 +164,8 @@ async function controlPush(objSettings: any = null, flag = "") {
         ? objSettings.message
         : objSettings.message;
       messageElement.style.color = objSettings.status ? "green" : "red";
+      messageElement.style.fontWeight = "bold";
+      container2.style.textAlign = "center";
       close.addEventListener("click", () => {
         container2.remove();
       });
