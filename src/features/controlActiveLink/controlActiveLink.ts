@@ -7,6 +7,7 @@ import {
 } from "../paginateNotification/paginateNotification";
 import {
   iconNotificationClear,
+  iconNotificationHave,
   iconNotificationRead,
   urlIconNotification,
 } from "../../app";
@@ -114,7 +115,7 @@ export async function showZeroNotif(container: any, idx: number) {
       containerNotificationsNotRead,
     );
   }
-
+  const iconNotif: any = document.querySelector(`.icon-notification`);
   if (
     zero &&
     !container.querySelector(".container-notif") &&
@@ -122,8 +123,10 @@ export async function showZeroNotif(container: any, idx: number) {
   ) {
     updateNotifText(zero, sessionStorage.getItem("notification"));
     zero.style.display = "flex";
+    setStatic(iconNotif, iconNotificationHave);
   } else if (container.querySelector(".container-notif")) {
     zero.style.display = "none";
+    setStatic(iconNotif, urlIconNotification);
   }
 }
 export function updateNotifText(zero: any, idx: any) {

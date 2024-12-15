@@ -4,6 +4,7 @@
 import { ELEMENTS_CLASS, LINKS, state } from "../../shared/consts/consts";
 import {
   iconNotificationClear,
+  iconNotificationHave,
   pageContainer,
   urlIconNotification,
 } from "../../app/index";
@@ -25,9 +26,6 @@ import {
   updateNotifText,
 } from "../../features/controlActiveLink/controlActiveLink";
 
-function controlZero() {
-  const zero: any = document.querySelector(`.zero-notif`);
-}
 /**
  * Функция рендера уведомлений
  * @returns
@@ -103,8 +101,10 @@ export async function renderNotifications() {
     ) {
       updateNotifText(zero, sessionStorage.getItem("notification"));
       zero.style.display = "flex";
+      setStatic(iconNotification, urlIconNotification);
     } else if (container.querySelector(".container-notif")) {
       zero.style.display = "none";
+      setStatic(iconNotification, iconNotificationHave);
     }
 
     return container;

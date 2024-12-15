@@ -23,8 +23,6 @@ async function generateNewNotification() {
   const iconNotif: any = document.querySelector(`.icon-notification`);
   if (notifications.length !== 0) {
     setStatic(iconNotif, iconNotificationHave);
-  } else {
-    setStatic(iconNotif, urlIconNotification);
   }
   if (
     notifications.length !== 0 &&
@@ -51,7 +49,7 @@ async function generateNewNotification() {
 
 async function controlPush(objSettings: any = null, flag = "") {
   const placeModal: any = document.querySelector(`.placemodal`);
-  // placeModal.innerHTML = "";
+  placeModal.innerHTML = "";
 
   const maxNotifications = 3;
   const displayedNotifications = notifications.slice(0, maxNotifications);
@@ -88,7 +86,7 @@ async function controlPush(objSettings: any = null, flag = "") {
     placeModal.appendChild(container2);
 
     close.addEventListener("click", () => {
-      // container2.remove();
+      container2.remove();
       notifications = notifications.filter(
         (n: any) => n.notificationID !== notification.notificationID,
       );
@@ -98,7 +96,7 @@ async function controlPush(objSettings: any = null, flag = "") {
 
     // Логика для таймера и наведения
     let timeoutId = setTimeout(() => {
-      // container2.remove();
+      container2.remove();
       notifications = notifications.filter(
         (n: any) => n.notificationID !== notification.notificationID,
       );
@@ -111,7 +109,7 @@ async function controlPush(objSettings: any = null, flag = "") {
 
     container2.addEventListener("mouseleave", () => {
       timeoutId = setTimeout(() => {
-        // container2.remove();
+        container2.remove();
         notifications = notifications.filter(
           (n: any) => n.notificationID !== notification.notificationID,
         );
@@ -137,7 +135,7 @@ async function controlPush(objSettings: any = null, flag = "") {
     const additionalMessage = placeModal.querySelector(".message-info");
 
     if (allPushes.length === 0 && additionalMessage) {
-      // additionalMessage.remove();
+      additionalMessage.remove();
     } else if (additionalMessage) {
       additionalMessage.innerHTML = `И еще ${totalNotificationsCount - maxNotifications} уведом.`;
     }
@@ -171,7 +169,7 @@ async function controlPush(objSettings: any = null, flag = "") {
       messageElement.style.fontWeight = "bold";
       container2.style.textAlign = "center";
       close.addEventListener("click", () => {
-        // container2.remove();
+        container2.remove();
       });
     }
     flag = "";
