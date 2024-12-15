@@ -26,6 +26,11 @@ body {
   --main-color-hover: #4f80aa;
   --main-color-focus: #829db480;
   --main-color-black: #333;
+  --main-color-black-hover: #7c7c7c;
+}
+
+:root::-webkit-scrollbar {
+  width: 5px;
 }
 
 .blur {
@@ -747,11 +752,16 @@ form input[type=text]:focus {
   margin-top: 20px;
 }
 
+@media (min-width: 768px) {
+  .left-column,
+  .right-column {
+    border-radius: 10px;
+  }
+}
 .left-column,
 .right-column {
   background-color: white;
   padding: 20px;
-  border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: relative;
 }
@@ -763,19 +773,24 @@ form input[type=text]:focus {
 .left-column {
   width: 100%;
   max-width: 250px;
-  height: 500px;
+  height: 100%;
   display: block;
   margin-right: 20px;
   top: -200px;
 }
 
 .right-column {
+  height: 100%;
   width: 100%;
   max-width: 300px;
   margin-left: 20px;
-  height: 700px;
 }
 
+@media (max-width: 768px) {
+  .right-column {
+    border-radius: 10px 10px 0 0;
+  }
+}
 .center-column-profile {
   flex: 1;
   width: 100%;
@@ -939,7 +954,6 @@ form input[type=text]:focus {
   flex-direction: column;
   align-items: center;
   display: flex;
-  background-color: var(--new-color);
   padding: 20px;
   margin: 10px;
   border-radius: 10px;
@@ -977,10 +991,19 @@ form input[type=text]:focus {
   transition: background 0.3s ease;
 }
 
+@media (min-width: 768px) {
+  .feed-profile {
+    border-radius: 10px;
+  }
+}
+@media (max-width: 768px) {
+  .feed-profile {
+    border-radius: 10px 10px 0 0;
+  }
+}
 .feed-profile {
   background-color: white;
   padding: 20px;
-  border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -1049,7 +1072,6 @@ form input[type=text]:focus {
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
-  border-radius: 10px;
 }
 
 .profile-avatar {
@@ -1169,6 +1191,9 @@ form input[type=text]:focus {
   justify-content: center;
   background-color: white;
   border-bottom: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 0px 0px 10px 10px;
+  margin-bottom: 20px;
 }
 
 .tabs-mobile div {
@@ -1181,6 +1206,8 @@ form input[type=text]:focus {
   text-align: center;
   padding: 20px;
   background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 .date {
@@ -1239,16 +1266,13 @@ form input[type=text]:focus {
   .container-updatepost {
     display: flex;
     justify-content: space-between;
-    min-width: 145%;
     flex-direction: column;
-    right: 12%;
-    margin-top: 5%;
     position: relative;
   }
   .visibility-container-createpost {
     background-color: #ffffff;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 10px 10px 0 0 !important;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     min-width: 70%;
     height: -moz-fit-content;
@@ -1261,16 +1285,26 @@ form input[type=text]:focus {
 .container-updatepost {
   display: flex;
   justify-content: space-between;
-  width: 80%;
+  margin-top: 60px;
 }
 
+@media (min-width: 768px) {
+  .post-container-createpost,
+  .post-container-updatepost {
+    width: 70%;
+    margin-left: 20px;
+  }
+  .container-createpost,
+  .container-updatepost {
+    width: 80%;
+  }
+}
 .post-container-createpost,
 .post-container-updatepost {
   background-color: #ffffff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 70%;
 }
 
 .post-container-createpost h1,
@@ -1369,15 +1403,19 @@ form input[type=text]:focus {
   height: 100px;
 }
 
+@media (min-width: 768px) {
+  .visibility-container-createpost {
+    width: 25%;
+    margin-left: 20px;
+  }
+}
 .visibility-container-createpost {
   background-color: #ffffff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 25%;
   height: -moz-fit-content;
   height: fit-content;
-  margin-left: 20px;
   display: flex;
   flex-direction: column;
 }
@@ -1531,7 +1569,63 @@ form input[type=text]:focus {
   height: 70px;
   width: 70px;
   background-size: cover;
-  background-image: url("photos/fon.png");
+}
+
+.followers-author-amount,
+.posts-author-amount,
+.subs-author-amount {
+  color: var(--main-color-black);
+  display: flex;
+  justify-content: space-between;
+  color: var(--main-color-black-hover);
+}
+
+.amount-title,
+.amount-followers,
+.amount-posts,
+.amount-subscriptions {
+  cursor: pointer;
+}
+
+.photoses {
+  cursor: pointer;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  background-size: cover;
+}
+
+.username-subscription {
+  cursor: pointer;
+}
+
+.authors-subscription {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.about-subscription {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.subscription-author-full {
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.line-stats {
+  opacity: 0.2;
+  border-top: 1px solid var(--main-color-black-hover);
 }
 
 .username-profile-sidebar {
@@ -1543,7 +1637,6 @@ form input[type=text]:focus {
   height: 100px;
   width: 100px;
   background-size: cover;
-  background-image: url("photos/clearSubs.png");
 }
 
 .media-post {
@@ -2043,7 +2136,9 @@ span {
 @media (min-width: 768px) {
   .main-content {
     flex-grow: 1;
-    padding: 40px;
+  }
+  .main-content h1 {
+    top: 38px;
   }
 }
 @media (max-width: 768px) {
@@ -2578,7 +2673,7 @@ select {
     min-height: 200px;
   }
   .profile-form {
-    margin-top: -40px;
+    margin-top: -60px;
     position: absolute;
     right: 5px;
     left: 5px;
@@ -2809,6 +2904,11 @@ select {
   border: 2px solid black;
 }
 
+@media (max-width: 768px) {
+  .searchbar-wrapper-feed {
+    top: 15px !important;
+  }
+}
 .searchbar-wrapper-feed {
   top: 40px;
   height: 40px;
@@ -2981,6 +3081,7 @@ select {
   }
   .results {
     left: 120px;
+    top: 9%;
   }
 }
 .result-item {
@@ -3709,7 +3810,6 @@ progress::-moz-progress-bar {
 }
 
 .section-push {
-  max-width: 200px;
   gap: 10px;
   display: flex;
   align-content: center;

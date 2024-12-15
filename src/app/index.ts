@@ -232,6 +232,9 @@ export const urlDeleteComment: any = await getUrlStatic("/deleteComm.png");
 export const urlSad: any = await getUrlStatic("/sad.png");
 export const iconStatusBlock: any = await getUrlStatic("/blocked.png");
 export const iconStatusPublished: any = await getUrlStatic("/published.png");
+export const iconClearSubs: any = await getUrlStatic("/clearSubs.png");
+export const iconNotificationHave: any =
+  await getUrlStatic("/notificationNRead");
 
 const favicon: any = await getUrlStatic("/fav.png");
 
@@ -239,17 +242,13 @@ const link = document.createElement("link");
 link.rel = "icon";
 link.href = favicon;
 document.head.appendChild(link);
-// const sidebar = await Sidebar();
-// const divSidebar = renderTo(sidebar);
 if (flag) {
   let root: HTMLElement | null = startA(config.menu, state);
   render(Virtual);
   root?.appendChild(placemodal);
-  // root?.appendChild(divSidebar);
   root?.appendChild(pageContainer);
   route(LINKS.HOME.HREF, window.location.pathname);
   startPushNotifications();
-  modifierSidebar(document.querySelector("#main"));
 }
 
 if ("serviceWorker" in navigator) {

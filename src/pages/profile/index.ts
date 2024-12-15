@@ -1,8 +1,9 @@
 import { LINKS, state } from "../../shared/consts/consts";
 import { getAccount } from "../../features/getAccount/getAccount";
 import { renderAbout } from "../../entities/profileabout/index";
-import { update } from "../../../lib/vdom/lib";
+import { renderTo, update } from "../../../lib/vdom/lib";
 import {
+  iconClearSubs,
   pageContainer,
   urlAddCustomSubs,
   urlCloseModal,
@@ -43,6 +44,8 @@ import { renderUserSubscriptins } from "../../entities/profileInfo";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { setStatic } from "../../shared/getStatic/getStatic";
 import { hideLoader, showLoader } from "../feed";
+import { renderContainerSubsInStat } from "../../entities/profileInfo/ui/ui";
+import { controlSlideShow } from "../../features/paginateFeed/paginateFeed";
 
 async function renderContainerSubscriptions(authorData: any, overlay: any) {
   const modalSubscriptions: any = document.querySelector(
@@ -91,14 +94,59 @@ async function renderContainerSubscriptions(authorData: any, overlay: any) {
 
   return results;
 }
+async function renderSubsInStat(container: any, authorData: any) {
+  const subscriptionPromises = authorData.subscriptions.map(
+    async (sub: any, index: number) => {
+      if (index > 2) return;
+      console.log(index);
+      const pageSub: any = await getPageAuthor("/feed", sub.AuthorID);
+      const avatarSub: any = await getAvatar("/feed", sub.AuthorID);
+      const div = renderTo(renderContainerSubsInStat(sub.AuthorName));
+      const authorElement = div.querySelector(`.username-subscription`);
+      const authorAvatar = div.querySelector(`.photoses`);
 
-export function showSubscriptions(authorData: any, container: any) {
+      authorAvatar.src = avatarSub;
+
+      authorElement.addEventListener("click", async () => {
+        gotoauthor(sub.AuthorID);
+      });
+      container.appendChild(div);
+      return container; // Возвращаем элемент для добавления в результаты
+    },
+  );
+
+  return 0;
+}
+export async function showSubscriptions(authorData: any, container: any) {
   const div: any = container.querySelector(`.div-subscriptions`);
 
   if (!div) return;
 
   const profileForm: any = container.querySelector(`.profile-form`);
   let overlay: any = undefined;
+
+  const divSubs = container.querySelector(`.authors-subscription`);
+  const data = {
+    subscriptions: [
+      {
+        AuthorID: "d8e56467-e183-4631-88d4-2c7fc195cad2",
+        AuthorName: "frf2",
+      },
+      {
+        AuthorID: "3e6f659e-8157-42ce-b07f-bb1d8f02d706",
+        AuthorName: "asd1123s",
+      },
+      {
+        AuthorID: "3e6f659e-8157-42ce-b07f-bb1d8f02d706",
+        AuthorName: "asd1123s",
+      },
+      {
+        AuthorID: "3e6f659e-8157-42ce-b07f-bb1d8f02d706",
+        AuthorName: "asd1123s",
+      },
+    ],
+  };
+  await renderSubsInStat(divSubs, authorData);
 
   const handleClickSubscriptions = async () => {
     update(div, renderUserSubscriptins());
@@ -391,7 +439,6 @@ export async function renderProfile() {
       route(LINKS.FEED.HREF);
       return;
     }
-    // showLoader();
     document.body.style.overflow = "auto";
     setTitle(LINKS.PROFILE.TEXT);
     const posts: any = [];
@@ -449,6 +496,9 @@ export async function renderProfile() {
       `.rightarrow-modal-view `,
     );
     setStatic(rightArrowModalView, urlRightArrowModal);
+
+    const divClearSubs = container.querySelector(`.icon-dontsubs`);
+    setStatic(divClearSubs, iconClearSubs);
 
     // Отрисовка информации о пользователе
     const content = renderAbout(authorData);

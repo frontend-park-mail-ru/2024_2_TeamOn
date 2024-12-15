@@ -1,3 +1,4 @@
+import { getAvatar } from "../../features/getavatar/getavatar";
 import {
   urlIconHome,
   urlIconModeration,
@@ -16,11 +17,15 @@ import { hasLogged } from "../utils/hasLogged";
  * @param sidebar
  * @returns
  */
-function modifierSidebar(mainContainer?: any) {
+async function modifierSidebar(mainContainer?: any) {
   if (!mainContainer) {
     return;
   }
-
+  const avatar: any = await getAvatar("/profile");
+  const divAvatar: any = mainContainer.querySelector(`.avatar-profile-sidebar`);
+  if (divAvatar) {
+    divAvatar.src = avatar;
+  }
   const sidebar = mainContainer.querySelector(".sidebar");
   const burger: any = mainContainer.querySelector(`.burger2`);
   if (burger) {

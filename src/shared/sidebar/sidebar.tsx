@@ -38,8 +38,8 @@ const Sidebar = async () => {
 
         <div class="sidebar">
           <div class="about-profile-sidebar">
-            <div class="avatar-profile-sidebar"></div>
-            <div class="username-profile-sidebar">antoshka</div>
+            <img class="avatar-profile-sidebar"></img>
+            <div class="username-profile-sidebar">{userdata.username}</div>
           </div>
           <div class="nav-menu">
             <a class="referens">
@@ -91,7 +91,7 @@ const Sidebar = async () => {
         </div>
 
         <div class="sidebar">
-          <div class="nav-menu">
+          <div class="nav-menu" style="margin-top: 50px;">
             <a class="referens">
               <i class="icon-home"></i>
               Лента

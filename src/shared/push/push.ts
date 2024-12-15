@@ -1,3 +1,4 @@
+import { iconNotificationHave, urlIconNotification } from "../../app";
 import { getPushNotification } from "../../features/getNotification/getNotification";
 import { getAvatar } from "../../features/getavatar/getavatar";
 import {
@@ -5,6 +6,7 @@ import {
   modifireNotifications,
   renderNotifications,
 } from "../../features/paginateNotification/paginateNotification";
+import { setStatic } from "../getStatic/getStatic";
 
 let notifications: any = [];
 let totalNotificationsCount = notifications.length; // Общее количество уведомлений
@@ -18,10 +20,12 @@ async function generateNewNotification() {
   );
 
   notifications = await getPushNotification();
-  // if (notifications.length !== 0 ) {
-  //   const iconNotif: any = document.querySelector(`.icon-notification`);
-  //   iconNotif.style.background = "gray"
-  // }
+  const iconNotif: any = document.querySelector(`.icon-notification`);
+  if (notifications.length !== 0) {
+    setStatic(iconNotif, iconNotificationHave);
+  } else {
+    setStatic(iconNotif, urlIconNotification);
+  }
   if (
     notifications.length !== 0 &&
     containerNotificationsAll &&
@@ -47,7 +51,7 @@ async function generateNewNotification() {
 
 async function controlPush(objSettings: any = null, flag = "") {
   const placeModal: any = document.querySelector(`.placemodal`);
-  placeModal.innerHTML = "";
+  // placeModal.innerHTML = "";
 
   const maxNotifications = 3;
   const displayedNotifications = notifications.slice(0, maxNotifications);
@@ -84,7 +88,7 @@ async function controlPush(objSettings: any = null, flag = "") {
     placeModal.appendChild(container2);
 
     close.addEventListener("click", () => {
-      container2.remove();
+      // container2.remove();
       notifications = notifications.filter(
         (n: any) => n.notificationID !== notification.notificationID,
       );
@@ -94,7 +98,7 @@ async function controlPush(objSettings: any = null, flag = "") {
 
     // Логика для таймера и наведения
     let timeoutId = setTimeout(() => {
-      container2.remove();
+      // container2.remove();
       notifications = notifications.filter(
         (n: any) => n.notificationID !== notification.notificationID,
       );
@@ -107,7 +111,7 @@ async function controlPush(objSettings: any = null, flag = "") {
 
     container2.addEventListener("mouseleave", () => {
       timeoutId = setTimeout(() => {
-        container2.remove();
+        // container2.remove();
         notifications = notifications.filter(
           (n: any) => n.notificationID !== notification.notificationID,
         );
@@ -133,7 +137,7 @@ async function controlPush(objSettings: any = null, flag = "") {
     const additionalMessage = placeModal.querySelector(".message-info");
 
     if (allPushes.length === 0 && additionalMessage) {
-      additionalMessage.remove();
+      // additionalMessage.remove();
     } else if (additionalMessage) {
       additionalMessage.innerHTML = `И еще ${totalNotificationsCount - maxNotifications} уведом.`;
     }
@@ -167,7 +171,7 @@ async function controlPush(objSettings: any = null, flag = "") {
       messageElement.style.fontWeight = "bold";
       container2.style.textAlign = "center";
       close.addEventListener("click", () => {
-        container2.remove();
+        // container2.remove();
       });
     }
     flag = "";

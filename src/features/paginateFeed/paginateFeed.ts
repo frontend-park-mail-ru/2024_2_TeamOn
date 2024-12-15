@@ -136,6 +136,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
       videoModal.style.display = "none";
       videoHud.style.display = "none";
     }
+
     imageModal.src = imgAvatar.src;
     return;
   };

@@ -257,7 +257,7 @@ async function updateContent(
       stat = await createStat();
     }
     const fb = await createFeedback();
-    // hideLoadSet(document.body);
+    hideLoadSet(document.body);
 
     contentContainer.appendChild(profileForm);
     contentContainer.appendChild(securityForm);
