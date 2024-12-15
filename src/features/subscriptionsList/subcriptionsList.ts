@@ -229,14 +229,14 @@ export async function renderContainerSubs(
       const button: any = div.querySelector(`.button-buy-subs`);
       button.classList.add("issubs");
       const rightColumn: any = document.querySelector(`.right-column`);
-      rightColumn.style.height = "200px";
+      rightColumn.style.height = "250px";
       return subs;
     }
   }
 
   if (allSubcriptions.length === 0 && window.location.pathname !== "/profile") {
     const rightColumn: any = document.querySelector(`.right-column`);
-    rightColumn.style.height = "200px";
+    rightColumn.style.height = "250px";
     const container: any = containerNoneCustomSubcsribe();
     const div = renderTo(container);
     subs.push(div);

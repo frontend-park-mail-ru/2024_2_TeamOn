@@ -391,7 +391,7 @@ export async function renderProfile() {
       route(LINKS.FEED.HREF);
       return;
     }
-    showLoader();
+    // showLoader();
     document.body.style.overflow = "auto";
     setTitle(LINKS.PROFILE.TEXT);
     const posts: any = [];

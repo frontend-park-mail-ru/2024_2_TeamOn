@@ -20,7 +20,9 @@ async function addComment(place: any, postID: string, content: string) {
       },
       (response) => {
         if (response.ok) {
-          resolve(true);
+          response.json().then((data: any) => {
+            resolve(data);
+          });
         } else if (response.status === 400) {
           response.json().then((data: any) => {
             let input = place.querySelector(`.form-group-add`);

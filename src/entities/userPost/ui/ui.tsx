@@ -10,18 +10,22 @@ import { renderPlaceAddComment } from "../../../entities/comments";
  */
 
 async function renderUserPost(post: any) {
-  const flag: any =
+  let flag: any =
     window.location.pathname === "/profile"
       ? "padding: 10px; display: block;"
       : "padding: 10px; display: none;";
   let styleStatus = "status-post";
   let titleStatus;
   let styleInitial;
+  let state;
   let flagBlock = "display: none";
   if (post.status === "PUBLISHED") {
+    state = true;
     styleStatus += " ok";
     titleStatus = "Опубликован";
   } else if (post.status === "BLOCKED") {
+    state = false;
+    flag += " display: none;";
     styleStatus += " display: none";
     titleStatus = "Заблокирован";
     styleInitial = "filter: blur(8px);";
@@ -98,7 +102,7 @@ async function renderUserPost(post: any) {
             <h3 class="amount-comments"></h3>
           </div>
         </div>
-        {renderPlaceAddComment()}
+        {state ? renderPlaceAddComment() : ""}
         <div class="show-comments" style="display: none;"></div>
       </div>
     </div>

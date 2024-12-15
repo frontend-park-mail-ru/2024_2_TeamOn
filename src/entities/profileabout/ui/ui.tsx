@@ -29,7 +29,11 @@ export function renderAbout(
 
   if (authorData.info == null) {
     if (newValue === undefined) {
-      result = "Изменить статус...";
+      if (window.location.pathname !== "/profile") {
+        result = "";
+      } else {
+        result = "Укажите, чем вы занимаетесь";
+      }
     } else {
       result = newValue;
     }
@@ -38,17 +42,21 @@ export function renderAbout(
   }
   const editModeValue = (
     <div class="about">
-      <h2>ОБО МНЕ</h2>
+      <h2>ОБ АВТОРЕ</h2>
       <input
         class="about-input"
-        value={authorData.info == null ? "Мой статус..." : authorData.info}
+        value={
+          authorData.info == null
+            ? "Укажите, чем вы занимаетесь"
+            : authorData.info
+        }
         /*maxLength={MAX_SYMBOLS_ABOUT}*/
       ></input>
       <p class="about-profile" style="display: none;">
         {createText(
           authorData.info == null
             ? newValue == undefined
-              ? "Изменить статус..."
+              ? "Укажите, чем вы занимаетесь"
               : newValue
             : authorData.info,
         )}
@@ -61,10 +69,10 @@ export function renderAbout(
   );
   const defaultModeValue = (
     <div class="about">
-      <h2>ОБО МНЕ</h2>
+      <h2>ОБ АВТОРЕ</h2>
       <input
         class="about-input"
-        value={newValue == undefined ? "Мой статус..." : newValue}
+        value={newValue == undefined ? "Укажите, чем вы занимаетесь" : newValue}
         style="display: none;"
       ></input>
       <p class="about-profile">{result}</p>

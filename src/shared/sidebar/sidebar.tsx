@@ -37,10 +37,14 @@ const Sidebar = async () => {
         </div>
 
         <div class="sidebar">
+          <div class="about-profile-sidebar">
+            <div class="avatar-profile-sidebar"></div>
+            <div class="username-profile-sidebar">antoshka</div>
+          </div>
           <div class="nav-menu">
             <a class="referens">
               <i class="icon-home"></i>
-              Главная
+              Лента
             </a>
             <a class="referens">
               <i class="icon-notification"></i>
@@ -90,7 +94,7 @@ const Sidebar = async () => {
           <div class="nav-menu">
             <a class="referens">
               <i class="icon-home"></i>
-              Главная
+              Лента
             </a>
           </div>
           <div class="become-a-creator" style="display: none">

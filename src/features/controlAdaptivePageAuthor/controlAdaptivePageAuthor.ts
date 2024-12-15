@@ -48,6 +48,7 @@ import { getPopularPosts } from "../getPopularPosts/getPopularPosts";
 import { getAvatar } from "../getavatar/getavatar";
 import { addComment } from "../../entities/comments/api/api";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
+import { findCommentById } from "../../shared/findByID/findByID";
 
 /**
  * Управление адаптивностью на странице автора
@@ -326,6 +327,8 @@ export async function customizePostProfile(
 export async function setComments(container: any, post: any) {
   const divComments: any = container.querySelector(`.comments-container`);
   const text = container.querySelector(`.textarea-group`);
+  if (!text) return;
+  let commentID: any;
   const handleInput = () => {
     const input = container.querySelector(`.form-group-add`);
     const error = input.querySelector("p");
@@ -368,6 +371,9 @@ export async function setComments(container: any, post: any) {
         post.postId,
         text.value,
       );
+      if (response && !response.message) {
+        commentID = response.commentID;
+      }
     } catch (error) {
       console.error(error);
     }
@@ -380,7 +386,7 @@ export async function setComments(container: any, post: any) {
     loader.style.display = "flex";
     const formComment: any = container.querySelector(`.form-group-comment`);
     const nextCommentsButton: any = container.querySelector(`.next-comments`);
-    if (placeContent.querySelectorAll(".container-comment").length <= 1) {
+    if (placeContent.querySelectorAll(".container-comment").length === 1) {
       try {
         const activeRequests = new Set();
         const placeContent = container.querySelector(`.place-content`);
@@ -397,15 +403,43 @@ export async function setComments(container: any, post: any) {
         formComment.style.display = "flex";
         nextCommentsButton.textContent = "Скрыть комментарии";
       }
+    } else if (
+      placeContent.querySelectorAll(".container-comment").length === 0
+    ) {
+      try {
+        const activeRequests = new Set();
+        const placeContent = container.querySelector(`.place-content`);
+        await paginateComments(
+          activeRequests,
+          [],
+          placeContent,
+          post.postId,
+          0,
+        );
+      } finally {
+        divLoader.style.display = "none";
+        loader.style.display = "none";
+        formComment.style.display = "flex";
+        nextCommentsButton.textContent = "Скрыть комментарии";
+      }
     } else {
-      divLoader.style.display = "none";
-      loader.style.display = "none";
-      const comments: any = await getComments(post.postId, 0, 300);
-      placeContent.append(
-        ...(await renderComments([comments[comments.length - 1]])),
-      );
-      console.log(placeComments);
-      modifireComments(placeContent, [comments.pop()], post.postId);
+      try {
+        formComment.style.display = "flex";
+        nextCommentsButton.textContent = "Скрыть комментарии";
+        divLoader.style.display = "none";
+        loader.style.display = "none";
+        const comments: any = await getComments(post.postId, 0, 300);
+        const myComment = findCommentById(commentID, comments);
+        placeContent.append(...(await renderComments([myComment])));
+        modifireComments(placeContent, [myComment], post.postId);
+      } catch (error) {
+      } finally {
+        nextCommentsButton.style.display = "flex";
+        divLoader.style.display = "none";
+        loader.style.display = "none";
+        formComment.style.display = "flex";
+        nextCommentsButton.textContent = "Скрыть комментарии";
+      }
     }
     console.log(placeContent);
     text.value = "";
@@ -482,11 +516,16 @@ export async function setComments(container: any, post: any) {
           }
         });
         // Прокрутка обратно на сохраненное положение
-        window.scrollTo({ top: currentScrollPositipn, behavior: "smooth" });
+        window.scrollTo({
+          top: currentScrollPositipn
+            ? currentScrollPositipn
+            : Number(sessionStorage.getItem("scrollPosition")),
+          behavior: "smooth",
+        });
         container.classList.add("focus-timer");
         setTimeout(() => {
           container.classList.remove("focus-timer");
-        }, 4000);
+        }, 1000);
       }
     });
   }

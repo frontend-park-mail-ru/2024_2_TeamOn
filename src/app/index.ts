@@ -18,6 +18,7 @@ import { hasLogged } from "../shared/utils/hasLogged";
 import { renderModeration } from "../pages/moderation";
 import { getUrlStatic } from "../shared/getStatic/getStatic";
 import { startPushNotifications } from "../shared/push/push";
+import { Sidebar } from "../shared/sidebar/sidebar";
 
 /**
  * Объект, содержащий конфигурацию меню приложения.
@@ -238,11 +239,13 @@ const link = document.createElement("link");
 link.rel = "icon";
 link.href = favicon;
 document.head.appendChild(link);
-
+// const sidebar = await Sidebar();
+// const divSidebar = renderTo(sidebar);
 if (flag) {
   let root: HTMLElement | null = startA(config.menu, state);
   render(Virtual);
   root?.appendChild(placemodal);
+  // root?.appendChild(divSidebar);
   root?.appendChild(pageContainer);
   route(LINKS.HOME.HREF, window.location.pathname);
   startPushNotifications();

@@ -55,9 +55,7 @@ function hideLoadSet(container: any) {
   const mask: any = container.querySelector(".mask_settings");
   if (mask) {
     mask.style.opacity = 0;
-    setTimeout(() => {
-      mask.style.display = "none";
-    }, 600);
+    mask.style.display = "none";
   }
 }
 /**
@@ -259,7 +257,7 @@ async function updateContent(
       stat = await createStat();
     }
     const fb = await createFeedback();
-    hideLoadSet(document.body);
+    // hideLoadSet(document.body);
 
     contentContainer.appendChild(profileForm);
     contentContainer.appendChild(securityForm);
@@ -288,32 +286,24 @@ async function updateContent(
 
   switch (index) {
     case 0:
-      setTimeout(() => {
-        containerPersonalize.style.display = "block";
-        containerPassword.style.display = "none";
-      }, 600);
+      containerPersonalize.style.display = "block";
+      containerPassword.style.display = "none";
       break;
     case 1:
-      setTimeout(() => {
-        containerPersonalize.style.display = "none";
-        containerPassword.style.display = "block";
-      }, 600);
+      containerPersonalize.style.display = "none";
+      containerPassword.style.display = "block";
       break;
     case 2:
-      setTimeout(() => {
-        containerPersonalize.style.display = "none";
-        if (containerStatistics) {
-          containerStatistics.style.display = "block";
-        }
-      }, 600);
+      containerPersonalize.style.display = "none";
+      if (containerStatistics) {
+        containerStatistics.style.display = "block";
+      }
       break;
     case 3:
-      setTimeout(() => {
-        containerPersonalize.style.display = "none";
-        if (containerFeedback) {
-          containerFeedback.style.display = "block";
-        }
-      }, 600);
+      containerPersonalize.style.display = "none";
+      if (containerFeedback) {
+        containerFeedback.style.display = "block";
+      }
       break;
     default:
       return [buttonPersonalize, buttonPassword];
