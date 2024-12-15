@@ -1715,11 +1715,16 @@ form input[type="text"]:focus {
 }
 .title-notif {
   padding: 10px;
+  overflow-wrap: break-word;
+}
+.message-push {
+  overflow-wrap: break-word;
 }
 .title,
 .content {
   padding-top: 10px;
 }
+
 .title,
 .title-notif {
   font-weight: bold;

@@ -25,7 +25,7 @@ import {
   showZeroNotif,
   updateNotifText,
 } from "../../features/controlActiveLink/controlActiveLink";
-import { getNotification } from "src/features/getNotification/getNotification";
+import { getNotification } from "../../features/getNotification/getNotification";
 
 /**
  * Функция рендера уведомлений
