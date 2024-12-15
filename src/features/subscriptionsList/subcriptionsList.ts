@@ -22,7 +22,7 @@ import { renderUserStats } from "../../entities/profileInfo/ui/ui";
 import { VNode } from "lib/vdom/src/source";
 import { showOverlay } from "../../shared/overlay/overlay";
 import { setStatic } from "../../shared/getStatic/getStatic";
-import { urlPushbackIcon } from "../../app";
+import { iconClearSubs, urlPushbackIcon } from "../../app";
 import { controlPush } from "../../shared/push/push";
 
 function foundCancel(div: any) {
@@ -239,6 +239,8 @@ export async function renderContainerSubs(
     rightColumn.style.height = "250px";
     const container: any = containerNoneCustomSubcsribe();
     const div = renderTo(container);
+    const icon = div.querySelector(`.icon-dontsubs`);
+    setStatic(icon, iconClearSubs);
     subs.push(div);
   }
 
