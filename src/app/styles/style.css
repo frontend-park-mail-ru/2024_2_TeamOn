@@ -1816,6 +1816,11 @@ form input[type=text]:focus {
 
 .title-notif {
   padding: 10px;
+  overflow-wrap: break-word;
+}
+
+.message-push {
+  overflow-wrap: break-word;
 }
 
 .title,
@@ -1823,13 +1828,8 @@ form input[type=text]:focus {
   padding-top: 10px;
 }
 
-em {
-  overflow-wrap: break-word;
-}
-
 .title,
 .title-notif {
-  overflow-wrap: break-word;
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 10px;

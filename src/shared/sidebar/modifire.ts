@@ -1,5 +1,6 @@
 import { getAvatar } from "../../features/getavatar/getavatar";
 import {
+  iconNotificationHave,
   urlIconHome,
   urlIconModeration,
   urlIconNotification,
@@ -12,6 +13,7 @@ import { setStatic } from "../getStatic/getStatic";
 import { route } from "../routing/routing";
 import { setActiveLink } from "../setActiveLink/setActiveLink";
 import { hasLogged } from "../utils/hasLogged";
+import { getNotification } from "../../features/getNotification/getNotification";
 /**
  * Кастомизирует сайдбар
  * @param sidebar
@@ -45,7 +47,12 @@ async function modifierSidebar(mainContainer?: any) {
     setStatic(iconModeration, urlIconModeration);
 
     const iconNotification: any = sidebar.querySelector(`.icon-notification`);
-    setStatic(iconNotification, urlIconNotification);
+    const allNotRead: any = await getNotification(0, "NOTREAD", 300);
+    if (allNotRead.length !== 0) {
+      setStatic(iconNotification, iconNotificationHave);
+    } else {
+      setStatic(iconNotification, urlIconNotification);
+    }
 
     const iconProfile: any = sidebar.querySelector(`.icon-profile`);
     setStatic(iconProfile, urlIconProfile);
