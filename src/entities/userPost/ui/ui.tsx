@@ -17,7 +17,7 @@ async function renderUserPost(post: any) {
   let styleStatus = "status-post";
   let titleStatus;
   let styleInitial;
-  let state;
+  let state = true;
   let flagBlock = "display: none";
   if (post.status === "PUBLISHED") {
     state = true;

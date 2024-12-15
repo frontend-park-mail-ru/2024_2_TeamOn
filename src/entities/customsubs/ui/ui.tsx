@@ -130,7 +130,7 @@ function renderModalRealizeCustomSubs(
           Закрыть
         </button>
         <button class="save save__button save__button__effects">
-          <a>Оплатить</a>
+          Оплатить
         </button>
       </div>
       <div

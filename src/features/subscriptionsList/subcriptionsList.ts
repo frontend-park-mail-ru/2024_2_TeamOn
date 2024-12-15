@@ -60,6 +60,8 @@ function modifireModalConfirmSubscription(
     `#subscription-duration`,
   );
   const handleClickPayment = async () => {
+    window.location.href = subscriptionRequestID;
+    return;
     const response: any = await realizePay(subscriptionRequestID);
     const modalConfirmNew: any = document.querySelector(`.modal__confirmsubs`);
     if (!response || response.message) {
@@ -149,12 +151,10 @@ function modifireModalConfirmSubscription(
       const buttonCancel: any = foundCancel(modalRealize);
       const buttonSave: any = foundSave(modalRealize);
       buttonCancel.addEventListener("click", handleClickCancel);
-      const linkKassa = modalRealize.querySelector(`a`);
-      linkKassa.href = subscriptionRequestID;
-      // if (buttonSave.value == "Оплатить") {
-      //   buttonSave.addEventListener("click", handleClickPayment);
-      // }
-      // buttonSave.addEventListener("click", handleClickPayment);
+      if (buttonSave.value == "Оплатить") {
+        buttonSave.addEventListener("click", handleClickPayment);
+      }
+      buttonSave.addEventListener("click", handleClickPayment);
 
       profileForm.classList.add("blur");
       modalRealize.style.display = "block";

@@ -3558,15 +3558,21 @@ canvas {
   filter: brightness(0.85);
 }
 
+.dop-section {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+}
+
 .container-send-comment {
-  margin-top: 26px;
   display: flex;
   justify-content: center;
   flex-direction: row;
-  margin-left: 34px;
+  margin-left: 20px;
   align-content: center;
   flex-wrap: wrap;
-  height: 60px;
 }
 
 @media (max-width: 768px) {

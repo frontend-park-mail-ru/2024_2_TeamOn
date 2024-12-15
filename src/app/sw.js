@@ -62,33 +62,77 @@ self.addEventListener("fetch", (event) => {
     "/api/pages/author/me",
     "/api/tech/subscription/me/custom",
   ];
-
+  const cachePaths = [
+    "/close.png",
+    "/left-arrow.png",
+    "/right-arrow.png",
+    "/pushback.png",
+    "/addsubs.png",
+    "/icon_edit.png",
+    "/icon_home.png",
+    "/icon_notification.png",
+    "/readNotif.png",
+    "/notificationClear.png",
+    "/icon_settings.png",
+    "/icon_profile.png",
+    "/police.png",
+    "/icon_like.png",
+    "/icon_comment.png",
+    "/paperclip.png",
+    "/closefile.png",
+    "/fon.png",
+    "/human.jpg",
+    "/login.png",
+    "/signup.png",
+    "/eye_see.png",
+    "/eye_nsee.png",
+    "/forward.png",
+    "/sendblue.png",
+    "/volume.png",
+    "/volumeStop.png",
+    "/shar.png",
+    "/playArrow.png",
+    "/stopArrow.png",
+    "/penEdit.png",
+    "/deleteComm.png",
+    "/sad.png",
+    "/blocked.png",
+    "/published.png",
+    "/clearSubs.png",
+    "/notificationNRead.png",
+    "/fav.png",
+  ];
   // URL, который не нужно кэшировать
-  const shouldBypassCache = noCachePaths.some((path) =>
+  // const shouldBypassCache = noCachePaths.some((path) =>
+  //   event.request.url.endsWith(path),
+  // );
+  // URL, который нужно кэшировать
+  const shouldBypassCache = cachePaths.some((path) =>
     event.request.url.endsWith(path),
   );
-  return;
+  // return;
   // if (event.request.url.endsWith("/token-endpoint")) return;
   if (event.request.method === "GET") {
     // Проверяем, является ли запрашиваемый URL тем, который нужно исключить из кэширования
+    // if (shouldBypassCache) {
+    //   // Если это тот URL, просто выполняем сетевой запрос
+    //   event.respondWith(
+    //     fetch(event.request)
+    //       .then((response) => {
+    //         console.log("Status:", response.status);
+    //         if (!response.ok) {
+    //           console.warn("Network response not ok:", response.status);
+    //           return response; // Возвращаем сетевой ответ, даже если он не успешен
+    //         }
+    //         return response; // Возвращаем сетевой ответ
+    //       })
+    //       .catch((error) => {
+    //         console.error("Fetch failed:", error);
+    //         throw error; // Обрабатываем ошибки
+    //       }),
+    //   );
+    // } else {
     if (shouldBypassCache) {
-      // Если это тот URL, просто выполняем сетевой запрос
-      event.respondWith(
-        fetch(event.request)
-          .then((response) => {
-            console.log("Status:", response.status);
-            if (!response.ok) {
-              console.warn("Network response not ok:", response.status);
-              return response; // Возвращаем сетевой ответ, даже если он не успешен
-            }
-            return response; // Возвращаем сетевой ответ
-          })
-          .catch((error) => {
-            console.error("Fetch failed:", error);
-            throw error; // Обрабатываем ошибки
-          }),
-      );
-    } else {
       // Обрабатываем кэширование для всех остальных запросов
       event.respondWith(
         caches

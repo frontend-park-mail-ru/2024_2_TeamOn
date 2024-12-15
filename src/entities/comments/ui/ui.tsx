@@ -31,13 +31,15 @@ function renderPlaceAddComment() {
           <div class="next-comments" style="display: none;">
             Показать следующие комментарии...
           </div>
-          <textarea
-            class="textarea-group"
-            placeholder="Написать комментарий..."
-          ></textarea>
-        </div>
-        <div class="container-send-comment">
-          <i class="button-send-comment"></i>
+          <div class="dop-section">
+            <textarea
+              class="textarea-group"
+              placeholder="Написать комментарий..."
+            ></textarea>
+            <div class="container-send-comment">
+              <i class="button-send-comment"></i>
+            </div>
+          </div>
         </div>
       </div>
     </div>

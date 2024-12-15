@@ -498,7 +498,9 @@ export async function renderProfile() {
     setStatic(rightArrowModalView, urlRightArrowModal);
 
     const divClearSubs = container.querySelector(`.icon-dontsubs`);
-    setStatic(divClearSubs, iconClearSubs);
+    if (divClearSubs) {
+      setStatic(divClearSubs, iconClearSubs);
+    }
 
     // Отрисовка информации о пользователе
     const content = renderAbout(authorData);
