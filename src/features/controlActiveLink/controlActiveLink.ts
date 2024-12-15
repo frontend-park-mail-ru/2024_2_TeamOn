@@ -123,10 +123,10 @@ export async function showZeroNotif(container: any, idx: number) {
   ) {
     updateNotifText(zero, sessionStorage.getItem("notification"));
     zero.style.display = "flex";
-    setStatic(iconNotif, iconNotificationHave);
+    // setStatic(iconNotif, iconNotificationHave);
   } else if (container.querySelector(".container-notif")) {
     zero.style.display = "none";
-    setStatic(iconNotif, urlIconNotification);
+    // setStatic(iconNotif, urlIconNotification);
   }
 }
 export function updateNotifText(zero: any, idx: any) {

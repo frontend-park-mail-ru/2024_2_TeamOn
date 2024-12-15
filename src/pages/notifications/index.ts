@@ -25,6 +25,7 @@ import {
   showZeroNotif,
   updateNotifText,
 } from "../../features/controlActiveLink/controlActiveLink";
+import { getNotification } from "src/features/getNotification/getNotification";
 
 /**
  * Функция рендера уведомлений
@@ -81,6 +82,12 @@ export async function renderNotifications() {
     );
     const activeRequests: any = new Set();
 
+    const allNotRead: any = await getNotification(0, "NOTREAD", 300);
+    if (allNotRead.length !== 0) {
+      setStatic(iconNotification, iconNotificationHave);
+    } else {
+      setStatic(iconNotification, urlIconNotification);
+    }
     await paginateNotifications(
       activeRequests,
       allNotifications,
@@ -101,10 +108,10 @@ export async function renderNotifications() {
     ) {
       updateNotifText(zero, sessionStorage.getItem("notification"));
       zero.style.display = "flex";
-      setStatic(iconNotification, urlIconNotification);
+      // setStatic(iconNotification, urlIconNotification);
     } else if (container.querySelector(".container-notif")) {
       zero.style.display = "none";
-      setStatic(iconNotification, iconNotificationHave);
+      // setStatic(iconNotification, iconNotificationHave);
     }
 
     return container;
