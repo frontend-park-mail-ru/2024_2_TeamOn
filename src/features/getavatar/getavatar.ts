@@ -12,7 +12,7 @@ export async function getAvatar(link: string, authorID: any = null) {
       "GET",
       link == "/profile"
         ? "/api/accounts/account/me/avatar"
-        : `/api/accounts/account/${authorID}/avatar`,
+        : `/api/accounts/account/${authorID ? authorID : link.split("/").pop()}/avatar`,
       null,
       (response) => {
         if (response.ok) {

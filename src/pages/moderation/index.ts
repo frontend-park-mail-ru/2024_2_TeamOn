@@ -3,15 +3,19 @@ import { controlLogout } from "../../features/controlLogout/controlLogout";
 import { renderTo, update } from "../../../lib/vdom/lib";
 import { pageContainer } from "../../app/index";
 import { renderModerationForm } from "./ui/moderation";
-import { paginate } from "../../features/paginateFeed/paginateFeed";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
-import { controlActiveLink } from "../../features/controlActiveLink/controlActiveLink";
+import {
+  controlActiveLink,
+  controlModeration,
+} from "../../features/controlActiveLink/controlActiveLink";
 import { renderRating } from "../../entities/rating";
 import { addResult, getQuestion } from "../settings";
 import { showSearch } from "../../entities/searchbar";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { setTitle } from "../../shared/settitle/setTitle";
 import { paginateModeration } from "../../features/paginateModeration/paginateModeration";
+import { hideLoader, showLoader } from "../feed";
+import { route } from "../../shared/routing/routing";
 
 export async function controlEventIFrame(container: any = pageContainer) {
   const div: any = document.querySelector(`#rating-iframe`);
@@ -81,6 +85,12 @@ async function controlIFRAME() {
  */
 export async function renderModeration() {
   try {
+    if (sessionStorage.getItem("role") !== "Moderator" || !hasLogged()) {
+      route(LINKS.FEED.HREF);
+      return;
+    }
+
+    showLoader();
     setTitle(LINKS.MODERATION.TEXT);
     const allApprovePosts: any = []; // Массив для хранения всех загруженных популярных постов
     const allReportedPosts: any = []; // Массив для хранения всех загруженных недавних постов
@@ -94,7 +104,7 @@ export async function renderModeration() {
       : (state.currentUser.author = user);
 
     const doc = document.body;
-    doc.style.height = "100%";
+    doc.style.minHeight = "100%";
 
     const vdom = await renderModerationForm();
 
@@ -106,12 +116,10 @@ export async function renderModeration() {
 
     const tabs = container.querySelector(".tabs");
 
-    const rightContent = container.querySelector(`.right-content`);
+    controlActiveLink(tabs, controlModeration);
 
-    controlActiveLink(tabs, rightContent);
-
-    const containerApprovePosts = container.querySelector(
-      ".main-container-approve",
+    const containerPublishPosts = container.querySelector(
+      ".main-container-publish",
     );
     const containerReportedPosts = container.querySelector(
       ".main-container-reported",
@@ -126,7 +134,7 @@ export async function renderModeration() {
     await paginateModeration(
       allApprovePosts,
       allReportedPosts,
-      containerApprovePosts,
+      containerPublishPosts,
       containerReportedPosts,
     );
 
@@ -134,5 +142,7 @@ export async function renderModeration() {
   } catch (error) {
     console.log("ERROR in feed");
     throw error;
+  } finally {
+    hideLoader();
   }
 }

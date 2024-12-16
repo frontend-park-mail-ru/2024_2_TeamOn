@@ -21,9 +21,9 @@ async function containerCreatePost() {
   return (
     <div class="main-content">
       {await Sidebar()}
+      <h1>Добавление поста</h1>
       <div class="container-createpost">
         <div class="post-container-createpost">
-          <h1>Добавление поста</h1>
           <div class="form-group-add">
             <input
               class="input-group"

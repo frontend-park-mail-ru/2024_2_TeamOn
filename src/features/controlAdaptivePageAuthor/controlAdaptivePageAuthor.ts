@@ -1,15 +1,16 @@
 import { convertISOToRussianDate } from "../../shared/utils/parsedate";
 import { renderTo, update } from "../../../lib/vdom/lib";
 import {
-  addUserPost,
   deletePost,
-  editPost,
-  //renderAddPost,
   renderDeletePost,
-  //renderEditPost,
   renderUserPost,
 } from "../../entities/userPost";
-import { ELEMENTS_CLASS, LINKS, state } from "../../shared/consts/consts";
+import {
+  ELEMENTS_CLASS,
+  LINKS,
+  QUERY,
+  state,
+} from "../../shared/consts/consts";
 import { getUserPosts } from "../getuserposts/getUserPosts";
 import DOMPurify from "dompurify";
 import { getPayments } from "../getpayments/getpayments";
@@ -18,12 +19,28 @@ import { VNode } from "lib/vdom/src/source";
 import { renderTip, sendTip } from "../../entities/tip";
 import { getPageAuthor } from "../getpageauthor/getpageauthor";
 import { setLike } from "../../entities/likes";
-import { following } from "../../entities/profileInfo";
 import { route } from "../../shared/routing/routing";
-import { containerMediaPost } from "../../widgest/feed/ui/post/post";
-import { controlSlideShow } from "../paginateFeed/paginateFeed";
+import {
+  controlSlideShow,
+  modifireComments,
+  paginateComments,
+  renderComments,
+  setCapture,
+} from "../paginateFeed/paginateFeed";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { showOverlay } from "../../shared/overlay/overlay";
+import { setStatic } from "../../shared/getStatic/getStatic";
+import {
+  iconStatusPublished,
+  pageContainer,
+  urlIconComment,
+  urlIconLike,
+  urlSad,
+  urlSendComment,
+} from "../../app";
+import { addComment } from "../../entities/comments/api/api";
+import { fetchAjax } from "../../shared/fetch/fetchAjax";
+import { findCommentById } from "../../shared/findByID/findByID";
 
 /**
  * Управление адаптивностью на странице автора
@@ -68,7 +85,7 @@ async function controlAdaptivePageAuthors(
         `.${ELEMENTS_CLASS.SEND_TIP.BLOCK}`,
       );
 
-      containerTip.style.display = "block";
+      containerTip.style.display = "flex";
       profileForm.classList.add("blur");
 
       buttonSend.addEventListener("click", async (event: any) => {
@@ -93,6 +110,16 @@ async function controlAdaptivePageAuthors(
           return;
         }
 
+        if (sanitizedMessage.length > 200) {
+          const error = input.querySelector("p");
+          if (!error) {
+            const error = document.createElement("p");
+            error.style.color = "red";
+            error.textContent = "Ошибка. Сообщение слишком большое";
+            input.appendChild(error);
+          }
+          return;
+        }
         let error = input.querySelector("p");
         if (error) {
           error.remove();
@@ -137,6 +164,8 @@ async function controlAdaptivePageAuthors(
           sanitizedMessage,
           cost,
         });
+        const newUrl: any = ok;
+        window.location.href = newUrl;
         containerTip.style.display = "none";
         profileForm.classList.remove("blur");
         document.body.style.overflow = "auto";
@@ -166,7 +195,32 @@ async function renderPosts(authorPosts: any[]) {
   });
   return posts;
 }
-
+export async function getComments(
+  postID: string,
+  offset: number,
+  limit: number = 0,
+) {
+  return new Promise((resolve, reject) => {
+    fetchAjax(
+      "GET",
+      "/api/posts/posts/" +
+        `${postID}/comments` +
+        `?limit=${limit ? limit : QUERY.LIMIT}&offset=${offset}`,
+      null,
+      (response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            resolve(data);
+          });
+        } else if (response.status === 400) {
+          route(LINKS.ERROR.HREF);
+        } else {
+          reject(new Error("Внутреняя ошибка сервера"));
+        }
+      },
+    );
+  });
+}
 /**
  * Кастомизация одного поста профиля
  * @param container Контейнер поста
@@ -178,6 +232,20 @@ export async function customizePostProfile(
   post: any,
   postId: any = null,
 ) {
+  const iconLike: any = container.querySelector(`.likes`);
+  const iconComment: any = container.querySelector(`.comments`);
+  const iconSad: any = container.querySelector(`.sad`);
+  const iconOk: any = container.querySelector(`.ok`);
+
+  setStatic(iconLike, urlIconLike);
+  setStatic(iconComment, urlIconComment);
+
+  if (post.status === "BLOCKED") {
+    setStatic(iconSad, urlSad);
+  }
+  if (iconOk) {
+    setStatic(iconOk, iconStatusPublished);
+  }
   setTitle(container, post);
 
   setContent(container, post);
@@ -185,6 +253,11 @@ export async function customizePostProfile(
   setDate(container, post);
 
   setLike(container, post);
+
+  setComments(container, post);
+
+  setCapture(container);
+
   const key = new Set();
 
   const menu = container.querySelector(`.menu-icon`);
@@ -197,7 +270,14 @@ export async function customizePostProfile(
   const buttonedit: any = dropdownmenu.querySelector(`.button-edit-post`);
   const buttondelete: any = dropdownmenu.querySelector(`.button-delete-post`);
   const mediaPlace: any = container.querySelector(`.container-image-photos`);
+  const buttonFastChange: any = container.querySelector(`.change-post-fast`);
 
+  const handleClickFastChange = () => {
+    state.currentPostId = post;
+    if (!state.currentPostId) return;
+    route(LINKS.UPDATE_POST.HREF);
+    return;
+  };
   // mediaPlace.append(...await containerMediaPost(post.postId));
   if (!menu) return;
   const handleClickMenu = async (event: any) => {
@@ -224,11 +304,224 @@ export async function customizePostProfile(
       dropdownmenu.classList.toggle(ELEMENTS_CLASS.ACTIVE);
     }
   };
+  pageContainer.addEventListener("click", (event: any) => {
+    if (event.target !== menu) {
+      alldropdownMenu.forEach((dropdown: any, dropdownIndex: number) => {
+        dropdown.classList.remove(ELEMENTS_CLASS.ACTIVE);
+      });
+    }
+  });
   menu.addEventListener("click", handleClickMenu);
+  buttonFastChange.addEventListener("click", handleClickFastChange);
   const rightContainer = document.querySelector(`.profile-form`);
   controlSlideShow(container, rightContainer);
 }
+export async function setComments(container: any, post: any) {
+  const divComments: any = container.querySelector(`.comments-container`);
+  const text = container.querySelector(`.textarea-group`);
+  if (!text) return;
+  let commentID: any;
+  const handleInput = () => {
+    const input = container.querySelector(`.form-group-add`);
+    const error = input.querySelector("p");
+    if (error) {
+      error.remove();
+    }
+  };
+  const handleClickKeySendComment = async (e: any) => {
+    if (e.key === "Enter" && e.shiftKey) return;
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendComment();
+    }
+  };
+  text.addEventListener("keydown", handleClickKeySendComment);
+  text.addEventListener("input", handleInput);
+  let sendCount = 0;
+  const sendComment = async () => {
+    if (!hasLogged()) {
+      route(LINKS.LOGIN.HREF);
+      return;
+    }
+    const placeContent = container.querySelector(`.place-content`);
+    const formGroup = container.querySelector(`.form-group-comment`);
 
+    try {
+      if (text.value.length > 100) {
+        const input = container.querySelector(`.form-group-add`);
+        const error = input.querySelector("p");
+        if (!error) {
+          const error = document.createElement("p");
+          error.style.color = "red";
+          error.textContent = "Комментарий слишком большой";
+          input.appendChild(error);
+        }
+        return;
+      }
+      const response: any = await addComment(
+        formGroup,
+        post.postId,
+        text.value,
+      );
+      if (response && !response.message) {
+        commentID = response.commentID;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    const placeComments: any = container.querySelector(`.place-comments`);
+    const divLoader: any = container.querySelector(`.comments-loader`);
+    const loader: any = container.querySelector(`.loader__search`);
+
+    placeComments.style.display = "block";
+    divLoader.style.display = "block";
+    loader.style.display = "flex";
+    const formComment: any = container.querySelector(`.form-group-comment`);
+    const nextCommentsButton: any = container.querySelector(`.next-comments`);
+    if (placeContent.querySelectorAll(".container-comment").length === 1) {
+      try {
+        const activeRequests = new Set();
+        const placeContent = container.querySelector(`.place-content`);
+        await paginateComments(
+          activeRequests,
+          [],
+          placeContent,
+          post.postId,
+          1,
+        );
+      } finally {
+        divLoader.style.display = "none";
+        loader.style.display = "none";
+        formComment.style.display = "flex";
+        nextCommentsButton.textContent = "Скрыть комментарии";
+      }
+    } else if (
+      placeContent.querySelectorAll(".container-comment").length === 0
+    ) {
+      try {
+        const activeRequests = new Set();
+        const placeContent = container.querySelector(`.place-content`);
+        await paginateComments(
+          activeRequests,
+          [],
+          placeContent,
+          post.postId,
+          0,
+        );
+      } finally {
+        divLoader.style.display = "none";
+        loader.style.display = "none";
+        formComment.style.display = "flex";
+        nextCommentsButton.textContent = "Скрыть комментарии";
+      }
+    } else {
+      try {
+        formComment.style.display = "flex";
+        nextCommentsButton.textContent = "Скрыть комментарии";
+        divLoader.style.display = "none";
+        loader.style.display = "none";
+        const comments: any = await getComments(post.postId, 0, 300);
+        const myComment = findCommentById(commentID, comments);
+        placeContent.append(...(await renderComments([myComment])));
+        modifireComments(placeContent, [myComment], post.postId);
+      } catch (error) {
+      } finally {
+        nextCommentsButton.style.display = "flex";
+        divLoader.style.display = "none";
+        loader.style.display = "none";
+        formComment.style.display = "flex";
+        nextCommentsButton.textContent = "Скрыть комментарии";
+      }
+    }
+    console.log(placeContent);
+    text.value = "";
+    sendCount++;
+  };
+  const handleClickButtonSendComment = async (e: any) => {
+    e.preventDefault();
+    sendComment();
+  };
+
+  if (divComments) {
+    const divLoader: any = container.querySelector(`.comments-loader`);
+    const loader: any = container.querySelector(`.loader__search`);
+    const formComment: any = container.querySelector(`.form-group-comment`);
+    const amountComments: any = container.querySelector(`.amount-comments`);
+    const commentsCount: any = await getComments(post.postId, 0, 300);
+
+    amountComments.innerHTML = `${commentsCount.length}`;
+
+    const placeComments: any = container.querySelector(`.place-comments`);
+    const placeContent: any = container.querySelector(`.place-content`);
+    const nextCommentsButton: any = container.querySelector(`.next-comments`);
+
+    const comments: any = await getComments(post.postId, 0, 300);
+    const nextComments = comments.slice(0, 1);
+    placeContent.append(...(await renderComments(nextComments)));
+    modifireComments(placeContent, nextComments.reverse(), post.postId);
+    if (comments.length > 1) {
+      nextCommentsButton.style.display = "block";
+    }
+    const buttonSendComment: any =
+      container.querySelector(`.button-send-comment`);
+    setStatic(buttonSendComment, urlSendComment);
+    buttonSendComment.addEventListener("click", handleClickButtonSendComment);
+    let currentScrollPositipn: any = null;
+
+    nextCommentsButton.addEventListener(`click`, async () => {
+      const placeContent = container.querySelector(`.place-content`);
+      const placeComments = container.querySelector(`.place-comments`);
+      const divLoader = container.querySelector(`.comments-loader`);
+      const loader = container.querySelector(`.loader__search`);
+      const formComment = container.querySelector(`.form-group-comment`);
+
+      if (placeContent.querySelectorAll(".container-comment").length <= 1) {
+        currentScrollPositipn = Number(
+          sessionStorage.getItem("scrollPosition"),
+        );
+        placeComments.style.display = "block";
+        divLoader.style.display = "block";
+        loader.style.display = "flex";
+        try {
+          const activeRequests = new Set();
+          await paginateComments(
+            activeRequests,
+            [],
+            placeContent,
+            post.postId,
+            1,
+          );
+        } finally {
+          divLoader.style.display = "none";
+          loader.style.display = "none";
+          formComment.style.display = "flex";
+          nextCommentsButton.textContent = "Скрыть комментарии";
+        }
+
+        // Прокрутка вниз после загрузки комментариев
+      } else {
+        nextCommentsButton.textContent = "Показать следующие комментарии...";
+        const allItems = placeComments.querySelectorAll(`.container-comment`);
+        allItems.forEach((item: any, index: number) => {
+          if (index !== 0) {
+            item.remove();
+          }
+        });
+        // Прокрутка обратно на сохраненное положение
+        window.scrollTo({
+          top: currentScrollPositipn
+            ? currentScrollPositipn
+            : Number(sessionStorage.getItem("scrollPosition")),
+          behavior: "smooth",
+        });
+        container.classList.add("focus-timer");
+        setTimeout(() => {
+          container.classList.remove("focus-timer");
+        }, 1000);
+      }
+    });
+  }
+}
 /**
  * Установка заголовка поста
  * @param container Контейнер, в котором нужно установить заголовок поста

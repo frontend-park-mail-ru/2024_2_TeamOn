@@ -1,22 +1,14 @@
 import { containerPost } from "../../widgest/moderation";
-import {
-  ELEMENTS_CLASS,
-  LINKS,
-  LOCATIONS,
-  QUERY,
-} from "../../shared/consts/consts";
+import { ELEMENTS_CLASS, LINKS, QUERY } from "../../shared/consts/consts";
 import { getModerationPosts } from "../getModerationPosts/getModerationPosts";
 import { renderTo, update } from "../../../lib/vdom/lib";
-import { containerMediaPost } from "../../widgest/moderation/ui/post/post";
+import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 import { getAvatar } from "../getavatar/getavatar";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { convertISOToRussianDate } from "../../shared/utils/parsedate";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { route } from "../../shared/routing/routing";
-import { AddLikeOnPost } from "../../entities/likes";
 import { controlSlideShow } from "../paginateFeed/paginateFeed";
-import { getRecentlyPosts } from "../getRecentlyPosts/getRecentlyPosts";
-import { getPopularPosts } from "../getPopularPosts/getPopularPosts";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { renderBlockPost } from "../../pages/moderation/ui/moderation";
 import { showOverlay } from "../../shared/overlay/overlay";
@@ -40,11 +32,11 @@ async function renderModalBlockPost(container: any, post: any) {
 
   // Обработчик события change для чекбокса
   inputCheck.addEventListener("change", () => {
-    const dontShowAgain = inputCheck.checked; // Используем checked вместо check
+    const dontShowAgain = inputCheck.checked;
     if (dontShowAgain) {
       localStorage.setItem("dontShowBlockPostModal", "true");
     } else {
-      localStorage.setItem("dontShowBlockPostModal", "false"); // Удаляем, если чекбокс снят
+      localStorage.setItem("dontShowBlockPostModal", "false");
     }
   });
 
@@ -246,15 +238,17 @@ async function modifirePostsModeration(
  * Рендерит скелет популярных постов
  * @returns
  */
-async function renderApprovePosts(approvePosts: any) {
+async function renderPublishPosts(approvePosts: any) {
   const postsPromises = approvePosts.map(async (post: any) => {
     const container = await containerPost(post);
+
     const div = renderTo(container);
+
     const containerMedia: any = await containerMediaPost(post.postID);
     if (containerMedia) {
       let arrayMedia: any = [];
       containerMedia[0].forEach((media: any) => {
-        const divMedia = renderTo(media);
+        const divMedia = renderTo(media, "content-media");
         arrayMedia.push(divMedia);
       });
       const place: any = div.querySelector(`.container-image-photos`);
@@ -264,6 +258,7 @@ async function renderApprovePosts(approvePosts: any) {
   });
 
   const posts = await Promise.all(postsPromises);
+  console.log(posts);
   return posts;
 }
 
@@ -324,28 +319,27 @@ async function paginateModeration(
         if (activeRequests.has(requestId)) return; // Проверяем, был ли этот запрос уже отправлен
         activeRequests.add(requestId);
 
-        const approvePosts: any = await getModerationPosts(
+        const publishPosts: any = await getModerationPosts(
           offsetApprove,
           "PUBLISHED",
         );
-        const nextApprovePosts = approvePosts.slice(0, QUERY.LIMIT);
-        if (nextApprovePosts.length > 0) {
-          allApprovePosts.push(...nextApprovePosts);
+        const nextPublishPosts = publishPosts.slice(0, QUERY.LIMIT);
+        if (nextPublishPosts.length > 0) {
+          allApprovePosts.push(...nextPublishPosts);
           console.log(allApprovePosts);
           offsetApprove += QUERY.LIMIT;
           containerApprovePosts.append(
-            ...(await renderApprovePosts(nextApprovePosts)),
+            ...(await renderPublishPosts(nextPublishPosts)),
           );
           modifirePostsModeration(
             containerApprovePosts,
             containerReportedPosts,
-            nextApprovePosts.reverse(),
+            nextPublishPosts.reverse(),
             [],
           );
         } else {
           stopLoadApprovePosts = true;
         }
-        activeRequests.delete(requestId); // Удаляем запрос из активных
       }
 
       if (
@@ -378,7 +372,6 @@ async function paginateModeration(
         } else {
           stopLoadReportedPosts = true;
         }
-        activeRequests.delete(requestId); // Удаляем запрос из активных
       }
     } finally {
       isLoading = false; // Сбрасываем флаг загрузки
@@ -386,19 +379,31 @@ async function paginateModeration(
   }
 
   // Инициализируем загрузку первых постов
+  // await loadPosts();
+
+  // // Обработчик события прокрутки
+  // let isLoadingTop = false;
+
+  // window.addEventListener("scroll", async () => {
+  //   const { scrollTop, clientHeight, scrollWidth } = document.documentElement;
+  //   // Проверяем, достиг ли пользователь нижней части страницы и не загружаем ли мы данные в данный момент
+  //   if (scrollTop + clientHeight >= 3000 && !isLoadingTop) {
+  //     isLoadingTop = true; // Устанавливаем флаг загрузки
+  //     await loadPosts();
+  //     isLoadingTop = false; // Сбрасываем флаг после загрузки
+  //   }
+  // });
   await loadPosts();
-
   // Обработчик события прокрутки
-  let isLoadingTop: boolean = false;
-
+  let isLoadingOnScroll = false;
   window.addEventListener("scroll", async () => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
 
-    // Проверяем, достиг ли пользователь нижней части страницы и не загружаем ли мы данные в данный момент
-    if (scrollTop + clientHeight >= scrollHeight - 100 && !isLoadingTop) {
-      isLoadingTop = true; // Устанавливаем флаг загрузки
+    // Проверяем, достиг ли пользователь нижней части страницы
+    if (scrollHeight - scrollTop <= clientHeight + 100 && !isLoadingOnScroll) {
+      isLoadingOnScroll = true;
       await loadPosts();
-      isLoadingTop = false; // Сбрасываем флаг после загрузки
+      isLoadingOnScroll = false;
     }
   });
 }

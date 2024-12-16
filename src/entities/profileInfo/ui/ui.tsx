@@ -57,23 +57,34 @@ async function renderUserStats(user: any, payments: any = null) {
     <div class="stats">
       <p style="font-weight: bold; font-size: 26px">{user.authorUsername}</p>
       <div class="container-subscription">
-        <p
-          class="amount-subscriptions"
-          style="font-weight: bold; cursor: pointer;"
-        >
-          {subscriptions}
-        </p>
-        <p class="subscriptions" style="color: #7c7c7c">
-          Подписки
-        </p>
+        <div class="followers-author-amount">
+          <p class="amount-title">Подписчики</p>
+          <p class="amount-followers">{followers}</p>
+        </div>
+        <div class="posts-author-amount">
+          <p class="amount-title">Посты</p>
+          <p class="amount-posts">{amountPosts}</p>
+        </div>
+        <div class="line-stats"></div>
+        <div class="subscription-author-full">
+          <div class="subs-author-amount">
+            <p class="amount-title">Подписки</p>
+            <p class="amount-subscriptions">{subscriptions}</p>
+          </div>
+          <div class="authors-subscription"></div>
+        </div>
       </div>
-      <p>Подписчики {followers}</p>
-      <p>Посты {amountPosts}</p>
-      <p style={flag}>Выплаты {paymentsCount}</p>
     </div>
   );
 }
-
+export function renderContainerSubsInStat(username: any) {
+  return (
+    <div class="about-subscription">
+      <img class="photoses profile-avatar"></img>
+      <div class="username-subscription">{username}</div>
+    </div>
+  );
+}
 function renderUserSubscriptins() {
   return (
     <div class="modal__subscriptions">

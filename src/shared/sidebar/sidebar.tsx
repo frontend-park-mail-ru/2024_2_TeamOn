@@ -7,35 +7,48 @@ import { getAccount } from "../../features/getAccount/getAccount";
  * @param userdata Информация о юзере
  * @returns
  */
-async function Sidebar() {
+const Sidebar = async () => {
+  // async function Sidebar() {
   let result: any;
   if (hasLogged()) {
     const userdata: any = await getAccount();
-
     sessionStorage.setItem("account", userdata.username);
     const role = userdata.role;
+    sessionStorage.setItem("role", role);
     const styleProfileIcon =
-      role === "Reader" ? "display: none" : "display: flex;";
+      role === "Reader" || role === "Moderator"
+        ? "display: none"
+        : "display: flex;";
     const styleModerationIcon =
-      role === "Reader" ? "display: none" : "display: flex;";
+      role === "Moderator" ? "display: flex" : "display: none;";
     result = (
       <div class="side">
-        <div class="burger">
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
+        <div class="burger2 burger" id="nav-icon3">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
+
         <div class="sidebar">
+          <div class="about-profile-sidebar">
+            <img class="avatar-profile-sidebar"></img>
+            <div class="username-profile-sidebar">{userdata.username}</div>
+          </div>
           <div class="nav-menu">
             <a class="referens">
               <i class="icon-home"></i>
-              Главная
+              Лента
+            </a>
+            <a class="referens">
+              <i class="icon-notification"></i>
+              Уведомления
             </a>
             <a class="referens">
               <i class="icon-settings"></i>
               Настройки
             </a>
-            <a class="referens">
+            <a class="referens" style={styleModerationIcon}>
               <i class="icon-moderation"></i>
               Модерация
             </a>
@@ -64,16 +77,18 @@ async function Sidebar() {
   } else {
     result = (
       <div class="side">
-        <div class="burger">
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
+        <div class="burger2 burger" id="nav-icon3">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
+
         <div class="sidebar">
-          <div class="nav-menu">
+          <div class="nav-menu" style="margin-top: 50px;">
             <a class="referens">
               <i class="icon-home"></i>
-              Главная
+              Лента
             </a>
           </div>
           <div class="become-a-creator" style="display: none">
@@ -87,6 +102,6 @@ async function Sidebar() {
     );
   }
   return result;
-}
+};
 
 export { Sidebar };

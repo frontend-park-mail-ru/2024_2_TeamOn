@@ -1,11 +1,10 @@
-import { allowedExtensions, LINKS } from "../../../shared/consts/consts";
+import { LINKS } from "../../../shared/consts/consts";
 import { route } from "../../../shared/routing/routing";
 import DOMPurify from "dompurify";
 import { addUserPost, deletePost } from "../../../entities/userPost";
 import { getUserPosts } from "../../../features/getuserposts/getUserPosts";
 import { uploadMediaFiles } from "../../../features/uploadMediaFiles/uploadMediaFiles";
 import { controlSlideShow } from "../../../features/paginateFeed/paginateFeed";
-import { paginateProfile } from "src/features/paginateprofile/paginateprofile";
 
 async function modifireCreatePost() {
   const containerCreatePost: any = document.querySelector(
@@ -139,39 +138,33 @@ async function modifireCreatePost() {
     containerCreatePost.querySelector(`.media-upload-input`);
   let selectedFiles: File[] = []; // Массив для хранения выбранных файлов
   const attacheInfo: any = buttonUploadMedia.querySelector(`.attache-info`);
-
   mediaInput.addEventListener("change", (event: any) => {
-    const files = (event.target as HTMLInputElement).files;
-
+    const files: any = event.target.files;
     if (files && files.length) {
       const newFiles = Array.from(files);
+      const voiceFiles: any = []; // Массив для голосовых файлов
+      const videoFiles: any = []; // Массив для видеофайлов
 
-      // Фильтруем валидные файлы
-      const validFiles = newFiles.filter((file) => {
-        const extension: any = file.name.split(".").pop()?.toLowerCase(); // Получаем расширение файла
-        return allowedExtensions.includes(extension); // Проверяем, допустимо ли расширение
-      });
-
-      // Удаляем невалидные файлы из нового выбора
-      const invalidFiles = newFiles.filter(
-        (file) => !validFiles.includes(file),
-      );
-
-      previewContainer.innerHTML = "";
-      let loadedFilesCount = 0;
-
-      // Добавляем валидные файлы в массив selectedFiles, исключая дубликаты
-      validFiles.forEach((file) => {
-        if (!selectedFiles.includes(file)) {
-          selectedFiles.push(file);
+      // Обработка файлов
+      newFiles.forEach((file: any) => {
+        if (file.type.startsWith("audio/")) {
+          voiceFiles.push(file); // Добавляем в массив голосовых файлов
+        } else if (file.type.startsWith("image/")) {
+          videoFiles.push(file);
+        } else {
+          videoFiles.push(file);
         }
       });
 
-      // Отображаем превью для всех выбранных файлов
+      // Объединяем массивы: сначала видеофайлы, затем голосовые
+      selectedFiles = [...videoFiles, ...voiceFiles];
+
+      // Отображение превью для всех выбранных файлов
+      let loadedFilesCount = 0;
       selectedFiles.forEach((file, index) => {
         const reader = new FileReader();
-        reader.onload = (e: ProgressEvent<FileReader>) => {
-          const fileDiv = createFileDiv(e.target?.result as string, index);
+        reader.onload = (e: any) => {
+          const fileDiv = createFileDiv(e.target.result, file.type, index);
           previewContainer.appendChild(fileDiv);
           loadedFilesCount++;
 
@@ -181,25 +174,14 @@ async function modifireCreatePost() {
         };
         reader.readAsDataURL(file);
       });
-
-      // Обработка недопустимых файлов
-      if (invalidFiles.length > 0) {
-        const input =
-          containerCreatePost.querySelectorAll(`.form-group-add`)[1];
-        let error = input.querySelector("p");
-        if (!error) {
-          error = document.createElement("p");
-          error.style.color = "red";
-          input.appendChild(error);
-        }
-        error.textContent =
-          "Ошибка. Неподдерживаемый формат файла: " +
-          invalidFiles.map((file) => file.name).join(", ");
-      }
     }
   });
 
-  function createFileDiv(src: string, index: number): HTMLDivElement {
+  function createFileDiv(
+    src: string,
+    type: string,
+    index: number,
+  ): HTMLDivElement {
     const fileDiv = document.createElement("div");
     fileDiv.className = "file-preview";
     fileDiv.style.display = "flex";
@@ -209,15 +191,38 @@ async function modifireCreatePost() {
     fileDiv.style.borderRadius = "5px";
     fileDiv.style.padding = "5px";
 
-    const img = document.createElement("img");
-    img.src = src;
-    img.className = "image-photo";
-    img.style.width = "100px";
-    img.style.marginRight = "10px";
+    let mediaElement;
+    // Определяем тип медиафайла и создаем соответствующий элемент
+    if (type.startsWith("video/")) {
+      mediaElement = document.createElement("video");
+      mediaElement.src = src;
+      mediaElement.controls = true;
+      if (window.innerWidth > 768) {
+        mediaElement.style.maxWidth = "400px";
+      } else {
+        mediaElement.style.maxWidth = "200px";
+      }
+    } else if (type.startsWith("audio/")) {
+      mediaElement = document.createElement("audio");
+      mediaElement.src = src;
+      mediaElement.controls = true;
+    } else {
+      const img = document.createElement("img");
+      img.src = src;
+      img.className = "image-photo";
+      if (window.innerWidth < 768) {
+        img.style.maxWidth = "400px";
+      } else {
+        img.style.maxWidth = "200px";
+      }
+      fileDiv.appendChild(img);
+    }
+
+    if (mediaElement) {
+      fileDiv.appendChild(mediaElement);
+    }
 
     const removeButton = createRemoveButton(index, fileDiv);
-
-    fileDiv.appendChild(img);
     fileDiv.appendChild(removeButton);
 
     return fileDiv;

@@ -1,5 +1,7 @@
 import { LINKS, state } from "../consts/consts";
 import { goToPage } from "../../app/index";
+import { findUsername, hasLogged } from "../utils/hasLogged";
+import { getPageAuthor } from "../../features/getpageauthor/getpageauthor";
 
 class Routing {
   public history: string[] = [];
@@ -47,10 +49,27 @@ interface MenuElements {
  * @param render Ссылка на страницу
  * @returns
  */
-function updatePageContent(render: string): void {
+async function updatePageContent(render: string): Promise<void> {
   const feedRegex = /^\/profile\/[0-9a-zA-Z-]+$/;
   const menuElements: MenuElements = state.menuElements as MenuElements;
   const authorPayRegex = /^\/profile\/[0-9a-zA-Z-]+(\?act=payments)?$/;
+  if (
+    feedRegex.test(render) &&
+    window.location.pathname !== "/profile" &&
+    window.location.pathname !== "/profile/createpost" &&
+    window.location.pathname !== "/profile/updateepost"
+  ) {
+    const authorId: any = render.split("/").pop();
+    sessionStorage.setItem("authorid", authorId);
+    if (hasLogged()) {
+      const myUsername: any = findUsername();
+      const user: any = await getPageAuthor(window.location.pathname, authorId);
+
+      if (myUsername === user.authorUsername) {
+        route("/profile");
+      }
+    }
+  }
   if (
     feedRegex.test(render) ||
     authorPayRegex.test(render) ||

@@ -1,5 +1,4 @@
 import * as VDom from "vdom";
-import { createText } from "jsxteamon2/dist/jsxteamon";
 import { Sidebar } from "../../../shared/sidebar/sidebar";
 import { getAccount } from "../../../features/getAccount/getAccount";
 
@@ -7,10 +6,16 @@ export async function settingsContainer() {
   return (
     <div class="main-content">
       {await Sidebar()}
-      <div class="container">
-        <h1>Настройки</h1>
-        <div class="tabs"></div>
-        <div class="content-container"></div>
+      <div class="container-popular">
+        <div style="position: fixed;  margin-left: -20px; z-index: 1000;">
+          <h1>Настройки</h1>
+        </div>
+        <div class="tabs settings"></div>
+        <div class="content-container">
+          <div class="mask_settings">
+            <div class="loader_settings"></div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -19,18 +24,18 @@ export async function settingsContainer() {
 async function renderStat() {
   const role: any = await getAccount();
   const flag: string =
-    role.role === "Author" ? "display: block" : "display: none";
+    role.role === "Author" ? "display: block;" : "display: none;";
   const inlineStyle: string =
-    "display: flex; flex-direction: column; gap: 50px";
+    " display: flex; flex-direction: column; gap: 40px";
   const inlineStyleFlag: string = flag + inlineStyle;
   return (
     <div class="container-static" style={inlineStyleFlag}>
       <div class="stat-posts">
-        <div class="graphic-posts">
+        <div class="graphic-posts" style="width: 905px">
           <p>
             <i style="font-weight: bold;">Статистика постов </i>
           </p>
-          <canvas class="canv-posts" width="800" height="300"></canvas>
+          <canvas class="canv-posts" width="900" height="300"></canvas>
         </div>
         <div class="table-posts">
           <table class="table-stat-posts">
@@ -52,11 +57,11 @@ async function renderStat() {
         </div>
       </div>
       <div class="stat-posts">
-        <div class="graphic-payments">
+        <div class="graphic-payments" style="width: 905px">
           <p>
             <i style="font-weight: bold;">Статистика выплат</i>
           </p>
-          <canvas class="canv-payments" width="800" height="300"></canvas>
+          <canvas class="canv-payments" width="900" height="300"></canvas>
         </div>
         <div class="tables">
           <div class="table-payments">

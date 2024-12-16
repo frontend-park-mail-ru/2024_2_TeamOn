@@ -1,6 +1,6 @@
-import { LINKS } from "../../shared/consts/consts";
+import { controlPush } from "../../shared/push/push";
+import { pageContainer } from "../../app";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
-import { route } from "../../shared/routing/routing";
 
 /**
  * Получение текущей страницы профиля через объект типа промис
@@ -13,19 +13,31 @@ async function getPageAuthor(link: string, authorId: any = null) {
       link === "/profile" && !authorId
         ? "/api/pages/author/me"
         : !authorId
-          ? `/api/pages/author/${sessionStorage.getItem("authorid")}`
-          : `/api/pages/author/${authorId}`,
+          ? `/api/pages/author/${sessionStorage.getItem("authorid") ? sessionStorage.getItem("authorid") : link.split("/").pop()}`
+          : `/api/pages/author/${authorId ? authorId : link.split("/").pop()}`,
       null,
       (response) => {
         if (response.ok) {
           response.json().then((data) => {
             resolve(data);
           });
-        } else if (response.status === 401) {
-          localStorage.clear();
-          route(LINKS.HOME.HREF);
+        } else if (response.status === 400) {
+          const message = "У пользователя нет своей страницы";
+          controlPush({ status: false, message: message }, "isnotpush");
         } else {
-          reject(new Error("Ответ от фетча с ошибкой"));
+          fetch("/error.html")
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.text();
+            })
+            .then((data) => {
+              pageContainer.innerHTML = data;
+            })
+            .catch((error) => {
+              console.error(error);
+            });
         }
       },
     );

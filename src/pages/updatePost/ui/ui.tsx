@@ -1,5 +1,6 @@
 import * as VDom from "vdom";
 import { Sidebar } from "../../../shared/sidebar/sidebar";
+
 async function containerUpdatePost() {
   return (
     <div class="main-content">

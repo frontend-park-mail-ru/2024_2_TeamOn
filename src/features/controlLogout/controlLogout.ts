@@ -10,7 +10,7 @@ import { removeItemLocalStorage } from "../../shared/utils/storages";
  */
 function controlLogout(container: any, authorData: any) {
   if (hasLogged()) {
-    const logoutbutton = container.querySelector(
+    const logoutbutton: any = document.body.querySelector(
       `.${ELEMENTS_CLASS.LOGOUT.BLOCK}`,
     );
     logoutbutton.addEventListener("click", (event: any) => {

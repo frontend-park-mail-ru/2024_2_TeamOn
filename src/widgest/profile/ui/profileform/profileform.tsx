@@ -1,7 +1,6 @@
 import * as VDom from "vdom";
 import { renderDesktopProfileHeader } from "../../../../entities/profileDesktopHeader";
 import { renderUserInfo } from "../../../../entities/profileInfo/ui/ui";
-import { getCustomSubscription } from "../../../../features/getCustomSubs/getCustomSubs";
 import { renderContainerAddCustomSubs } from "../../../../pages/profile/ui/profile";
 
 function containerCustomSubscribe(subscription: any, userdata: any = null) {
@@ -38,7 +37,8 @@ function containerCustomSubscribe(subscription: any, userdata: any = null) {
 function containerNoneCustomSubcsribe() {
   return (
     <div class="subscription-level">
-      <h3 class="title-level">У этого пользователя еще нет подписок</h3>
+      <div class="icon-dontsubs"></div>
+      <h3 class="title-level">У этого автора еще нет подписок</h3>
     </div>
   );
 }
@@ -75,7 +75,7 @@ async function profileForm(
           </div>
         </div>
         <div class="right-column">
-          <h2>Подписки</h2>
+          <h2 class="info-subs">УРОВНИ ПОДПИСОК</h2>
           {renderContainerAddCustomSubs()}
           <div class="subscription-levels"></div>
         </div>

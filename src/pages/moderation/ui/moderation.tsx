@@ -1,38 +1,33 @@
-import {
-  containerPopularposts,
-  containerRecentlyposts,
-} from "../../../widgest/feed/index";
 import { Sidebar } from "../../../shared/sidebar/sidebar";
 import { renderSearchbar } from "../../../entities/searchbar/index";
 import * as VDom from "vdom";
 import {
-  containerApprovePosts,
+  containerPublishPosts,
   containerBlockPost,
   containerReportedPosts,
 } from "../../../widgest/moderation";
+import { modal } from "../../../pages/feed/ui/feed";
 
 async function renderModerationForm() {
   return (
     <div class="main-content">
-      {await Sidebar()}
-      {renderSearchbar()}
+      <div>
+        {await Sidebar()}
+        {renderSearchbar()}
+        <div style="position: fixed; margin-left: -27px; z-index: 1000;">
+          <h1>Модерация</h1>
+        </div>
+      </div>
       <div class="right-content">
         <div class="tabs feed">
           <a class="active"> Опубликованные </a>
           <a> Жалобы </a>
         </div>
-        {containerApprovePosts()}
+        {containerPublishPosts()}
         {containerReportedPosts()}
       </div>
       <div class="modal-view-photos" style="display: none; z-index=10101010">
-        <div class="close-modal-view"></div>
-        <div class="modal-container-photos">
-          <img class="image-photos-modal"></img>
-        </div>
-        <div class="slideshow">
-          <div class="leftarrow-modal-view"></div>
-          <div class="rightarrow-modal-view"></div>
-        </div>
+        {modal()}
       </div>
       {containerBlockPost()}
     </div>
@@ -45,20 +40,39 @@ async function renderModerationForm() {
 function renderBlockPost(post: any) {
   const flag: string =
     localStorage.getItem("dontShowBlockPostModal") == "true"
-      ? "display: none"
-      : "display: flex";
+      ? ` display: flex;
+    flex-direction: row-reverse;
+    gap: 10px; display: none`
+      : `display: flex;
+    flex-direction: row-reverse;
+    gap: 10px;`;
   return (
     <div class="modal__deletepost">
       <div class="modal-header">
         <h2>Блокировка поста</h2>
       </div>
-      <div class="form-group">
+      <div
+        class="form-group"
+        style="display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;"
+      >
         <p class="textarea-group-delete">
-          Вы действительно хотите заблокировать пост {post.title} ?
+          Вы действительно хотите заблокировать пост{" "}
+          <strong>{post.title}</strong> ?
         </p>
         <label class="label-check" style={flag}>
-          <input type="checkbox" class="input-check" />
-          <h4 style="width: 500px">Не показывать это сообщение</h4>
+          <input
+            style="flex-grow: 1;
+    width: 20px;
+    height: 20px;
+    "
+            type="checkbox"
+            class="input-check"
+          />
+          <span style="cursor: pointer;" class="slider"></span>
+          <h4>Не показывать это сообщение</h4>
         </label>
       </div>
       <div class="form-actions">

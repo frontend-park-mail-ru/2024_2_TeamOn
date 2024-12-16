@@ -1,8 +1,15 @@
 import { LINKS, state } from "../../shared/consts/consts";
 import { getAccount } from "../../features/getAccount/getAccount";
 import { renderAbout } from "../../entities/profileabout/index";
-import { update } from "../../../lib/vdom/lib";
-import { pageContainer } from "../../app/index";
+import { renderTo, update } from "../../../lib/vdom/lib";
+import {
+  iconClearSubs,
+  pageContainer,
+  urlAddCustomSubs,
+  urlCloseModal,
+  urlLeftArrowModal,
+  urlRightArrowModal,
+} from "../../app/index";
 import { mobilepr, profileContent } from "./ui/profile";
 import { getBackgroundAuthor } from "../../entities/profileDesktopHeader";
 import { getPageAuthor } from "../../features/getpageauthor/getpageauthor";
@@ -35,6 +42,9 @@ import { setTitle } from "../../shared/settitle/setTitle";
 import { showOverlay } from "../../shared/overlay/overlay";
 import { renderUserSubscriptins } from "../../entities/profileInfo";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
+import { setStatic } from "../../shared/getStatic/getStatic";
+import { hideLoader } from "../feed";
+import { renderContainerSubsInStat } from "../../entities/profileInfo/ui/ui";
 
 async function renderContainerSubscriptions(authorData: any, overlay: any) {
   const modalSubscriptions: any = document.querySelector(
@@ -83,14 +93,40 @@ async function renderContainerSubscriptions(authorData: any, overlay: any) {
 
   return results;
 }
+async function renderSubsInStat(container: any, authorData: any) {
+  const subscriptionPromises = authorData.subscriptions.map(
+    async (sub: any, index: number) => {
+      if (index > 2) return;
+      console.log(index);
+      const pageSub: any = await getPageAuthor("/feed", sub.AuthorID);
+      const avatarSub: any = await getAvatar("/feed", sub.AuthorID);
+      const div = renderTo(renderContainerSubsInStat(sub.AuthorName));
+      const authorElement = div.querySelector(`.username-subscription`);
+      const authorAvatar = div.querySelector(`.photoses`);
 
-export function showSubscriptions(authorData: any, container: any) {
+      authorAvatar.src = avatarSub;
+
+      authorElement.addEventListener("click", async () => {
+        gotoauthor(sub.AuthorID);
+      });
+      container.appendChild(div);
+      return container; // Возвращаем элемент для добавления в результаты
+    },
+  );
+
+  return 0;
+}
+export async function showSubscriptions(authorData: any, container: any) {
   const div: any = container.querySelector(`.div-subscriptions`);
 
   if (!div) return;
 
   const profileForm: any = container.querySelector(`.profile-form`);
   let overlay: any = undefined;
+
+  const divSubs = container.querySelector(`.authors-subscription`);
+
+  await renderSubsInStat(divSubs, authorData);
 
   const handleClickSubscriptions = async () => {
     update(div, renderUserSubscriptins());
@@ -118,7 +154,7 @@ export function showSubscriptions(authorData: any, container: any) {
     const buttonCancel: any =
       modalSubscriptions.querySelector(`.close__button`);
     buttonCancel.addEventListener("click", handleClickCancel);
-
+    overlay.addEventListener("click", handleClickCancel);
     const resultItems = divResults.querySelectorAll(".result-item"); // Преобразуем NodeList в массив
     const input = modalSubscriptions.querySelector(".searchbar-input");
     input.addEventListener("input", () => {
@@ -228,6 +264,7 @@ async function controlCustomSubscriptions(container: any) {
     const handleClickCancel = (e: any) => {
       modalAddSubs.style.display = "none";
       profileForm.classList.remove("blur");
+      document.body.style.overflow = "auto";
       overlay.remove();
       return;
     };
@@ -296,6 +333,7 @@ async function controlCustomSubscriptions(container: any) {
       modalAddSubs.style.display = "none";
       profileForm.classList.remove("blur");
       overlay.remove();
+      document.body.style.overflow = "auto";
       const newsubs: any = await getCustomSubscription(
         window.location.pathname,
       );
@@ -320,16 +358,6 @@ async function controlCustomSubscriptions(container: any) {
 }
 
 export async function controlBecomeCreator(div: any) {
-  if (hasLogged()) {
-    const userdata: any = await getAccount();
-    const role = userdata.role;
-    if (role === "Reader") {
-      div.classList.add("fade"); // Добавляем класс для анимации
-      div.style.display = "flex";
-    } else {
-      div.style.display = "none";
-    }
-  }
   const button: any = div.querySelector(`.join-button`);
 
   if (!hasLogged()) {
@@ -342,6 +370,7 @@ export async function controlBecomeCreator(div: any) {
     }
     if (hasLogged()) {
       const setrole = await setAuthor();
+      sessionStorage.setItem("role", "Author");
     }
 
     // Запускаем анимацию
@@ -352,7 +381,6 @@ export async function controlBecomeCreator(div: any) {
       div.style.display = "none";
       const profile: any = document.querySelector(`.profile`);
 
-      // profile.classList.add("new");
       const span: any = pageContainer.querySelector(".new-badge");
 
       span.style.display = "block";
@@ -363,6 +391,16 @@ export async function controlBecomeCreator(div: any) {
   };
 
   button.addEventListener("click", handleClick);
+  if (hasLogged()) {
+    const userdata: any = await getAccount();
+    const role = userdata.role;
+    if (role === "Reader") {
+      div.classList.add("fade"); // Добавляем класс для анимации
+      div.style.display = "flex";
+    } else {
+      div.style.display = "none";
+    }
+  }
   return;
 }
 /**
@@ -372,6 +410,14 @@ export async function controlBecomeCreator(div: any) {
  */
 export async function renderProfile() {
   try {
+    if (
+      (sessionStorage.getItem("role") === "Reader" ||
+        sessionStorage.getItem("role") === "Moderator") &&
+      window.location.pathname === "/profile"
+    ) {
+      route(LINKS.FEED.HREF);
+      return;
+    }
     document.body.style.overflow = "auto";
     setTitle(LINKS.PROFILE.TEXT);
     const posts: any = [];
@@ -392,12 +438,8 @@ export async function renderProfile() {
       payments = await getPayments(window.location.pathname);
     }
 
-    document.body.style.height = "100%";
+    document.body.style.minHeight = "100%";
     state.currentUser = authorData;
-
-    if (!authorData) {
-      throw new Error("Пользователь не найден");
-    }
 
     const vdom: any = await profileContent(
       authorData,
@@ -409,7 +451,6 @@ export async function renderProfile() {
     if (!vdom) {
       throw new Error("VirtualDOM не построился");
     }
-
     if (window.innerWidth <= 1024) {
       const mobileContaine2: any = await mobilepr(
         authorData,
@@ -420,6 +461,24 @@ export async function renderProfile() {
       const mobile: any = document.querySelector(`.div-mobile`);
       update(mobile, await mobileContaine2);
       controlAdaptiveProfile(container);
+    }
+    const addCustomSubs: any = container.querySelector(`.add-customsubs-icon`);
+    setStatic(addCustomSubs, urlAddCustomSubs);
+
+    const closeModalView: any = container.querySelector(`.close-modal-view`);
+    setStatic(closeModalView, urlCloseModal);
+    const leftArrowModalView: any = container.querySelector(
+      `.leftarrow-modal-view`,
+    );
+    setStatic(leftArrowModalView, urlLeftArrowModal);
+    const rightArrowModalView: any = container.querySelector(
+      `.rightarrow-modal-view `,
+    );
+    setStatic(rightArrowModalView, urlRightArrowModal);
+
+    const divClearSubs = container.querySelector(`.icon-dontsubs`);
+    if (divClearSubs) {
+      setStatic(divClearSubs, iconClearSubs);
     }
 
     // Отрисовка информации о пользователе
@@ -436,7 +495,6 @@ export async function renderProfile() {
 
     controlLogout(container, authorData);
     controlMediaProfile(container);
-
     controlInfo(authorData, placeEditInfo);
 
     const placeposts: any = container.querySelector(`.place-posts`);
@@ -454,5 +512,7 @@ export async function renderProfile() {
   } catch (error) {
     console.log("ERROR in profile");
     throw error;
+  } finally {
+    hideLoader();
   }
 }

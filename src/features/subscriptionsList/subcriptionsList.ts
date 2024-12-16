@@ -2,9 +2,7 @@ import {
   realizePay,
   renderModalRealizeCustomSubs,
   renderModalRequestCustomSubs,
-  renderModalUnfollow,
   requestPay,
-  unfollow,
 } from "../../entities/customsubs";
 import { getCustomSubscription } from "../getCustomSubs/getCustomSubs";
 import {
@@ -13,7 +11,6 @@ import {
 } from "../../widgest/profile/ui/profileform/profileform";
 import { renderTo, update } from "../../../lib/vdom/lib";
 import { route } from "../../shared/routing/routing";
-import { renderModalStatusUpload } from "../../shared/pushstatus/pushstatus";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { LINKS } from "../../shared/consts/consts";
 import { paginateProfile } from "../paginateprofile/paginateprofile";
@@ -22,6 +19,9 @@ import { getPayments } from "../getpayments/getpayments";
 import { renderUserStats } from "../../entities/profileInfo/ui/ui";
 import { VNode } from "lib/vdom/src/source";
 import { showOverlay } from "../../shared/overlay/overlay";
+import { setStatic } from "../../shared/getStatic/getStatic";
+import { iconClearSubs, urlPushbackIcon } from "../../app";
+import { controlPush } from "../../shared/push/push";
 
 function foundCancel(div: any) {
   const buttonCancel: any = div.querySelector(`.cancel`);
@@ -54,49 +54,14 @@ function modifireModalConfirmSubscription(
   profileForm.classList.add("blur");
   modalConfirm.style.display = "block";
 
-  let selectedDuration: number = 1;
   const subscriptionSelect: HTMLSelectElement = modalConfirm.querySelector(
     `#subscription-duration`,
   );
   const handleClickPayment = async () => {
-    const response: any = await realizePay(subscriptionRequestID);
-    const modalConfirmNew: any = document.querySelector(`.modal__confirmsubs`);
-    if (!response || response.message) {
-      const input = modalConfirmNew.querySelectorAll(`.form-group`);
-      const error = input[input.length - 1].querySelector("p");
-      if (!error) {
-        const error = document.createElement("p");
-        error.style.color = "red";
-        error.textContent = "Ошибка оплаты";
-        input[input.length - 1].appendChild(error);
-      }
-      return;
-    }
-    const media = "Оплата успешно проведена";
-    renderModalStatusUpload(true, media);
-    modalConfirmNew.style.display = "none";
-    profileForm.classList.remove("blur");
-    const newUrl = `/profile/${authorId}`;
-    window.history.pushState({ path: newUrl }, "", newUrl);
-    const placeposts: any = document.querySelector(`.place-posts`);
-    const placeSubscriptions: any =
-      document.querySelector(`.subscription-levels`);
-    placeSubscriptions.innerHTML = "";
-
-    overlay.remove();
-    document.body.style.overflow = "auto";
-
-    await paginateProfile([], placeposts);
-    await paginateSubscription([], placeSubscriptions);
-
-    const placeStats: any = document.querySelector(`.stats`);
-    const payments: any = await getPayments(window.location.pathname);
-    const authorData: any = await getPageAuthor(window.location.pathname);
-    const arrayStats: VNode = await renderUserStats(authorData, payments);
-    update(placeStats, arrayStats);
+    window.location.href = subscriptionRequestID;
     return;
   };
-
+  let selectedDuration: number = 1;
   const handleChange = (event: any) => {
     selectedDuration = Number(event.target.value);
   };
@@ -157,6 +122,9 @@ function modifireModalConfirmSubscription(
       modalRealize.style.display = "block";
 
       pushback.style.display = "block";
+      const pushbackIcon: any = pushback.querySelector(`.pushback-icon`);
+      setStatic(pushbackIcon, urlPushbackIcon);
+
       pushback.addEventListener("click", handlePushBack);
     }
   };
@@ -173,7 +141,7 @@ function modifireModalConfirmSubscription(
 
     const buttonCancel: any = foundCancel(div);
     const buttonSave: any = foundSave(div);
-
+    selectedDuration = 1;
     const subscriptionSelect: HTMLSelectElement = modalRealize.querySelector(
       `#subscription-duration`,
     );
@@ -223,16 +191,18 @@ export async function renderContainerSubs(
       const button: any = div.querySelector(`.button-buy-subs`);
       button.classList.add("issubs");
       const rightColumn: any = document.querySelector(`.right-column`);
-      rightColumn.style.height = "200px";
+      rightColumn.style.height = "250px";
       return subs;
     }
   }
 
   if (allSubcriptions.length === 0 && window.location.pathname !== "/profile") {
     const rightColumn: any = document.querySelector(`.right-column`);
-    rightColumn.style.height = "200px";
+    rightColumn.style.height = "250px";
     const container: any = containerNoneCustomSubcsribe();
     const div = renderTo(container);
+    const icon = div.querySelector(`.icon-dontsubs`);
+    setStatic(icon, iconClearSubs);
     subs.push(div);
   }
 
