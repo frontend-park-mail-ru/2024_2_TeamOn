@@ -18,10 +18,7 @@ export async function renderNotification() {
     <div class="main-content">
       {await Sidebar()}
       <div class="container-notification main-container-notification">
-        <div
-          class="title-page"
-          style="margin-left: -20px; z-index: 1000;"
-        >
+        <div class="title-page" style="margin-left: -20px; z-index: 1000;">
           <h1>Уведомления</h1>
         </div>
         <div class="tabs settings tab-notification">

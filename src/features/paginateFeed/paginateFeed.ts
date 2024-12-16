@@ -1338,9 +1338,16 @@ export async function paginateComments(
   postID: string,
   flag: any,
 ) {
+  const allItems = containerComments.querySelectorAll(`.container-comment`);
+  // allItems.forEach((item: any, index: number) => {
+  //   if (index !== 0) {
+  //     item.remove();
+  //   }
+  // });
   let stopLoadComments: boolean = false;
   let offset = 0;
-  !flag || flag === -1 ? (offset = 0) : (offset = flag);
+  // !flag || flag === -1 ? (offset = 0) : (offset = flag);
+  // offset = allItems.length;
   let isLoading = false;
   async function loadComments() {
     if (isLoading) return;
@@ -1353,12 +1360,15 @@ export async function paginateComments(
         activeRequests.add(requestId);
 
         const comments: any = await getComments(postID, offset);
+        for (let i = 0; i < flag; i++) {
+          comments.pop();
+        }
         const nextComments = comments.slice(0, QUERY.LIMIT);
         if (nextComments.length > 0) {
           allComments.push(...nextComments);
           offset += QUERY.LIMIT;
           containerComments.append(...(await renderComments(nextComments)));
-          modifireComments(containerComments, nextComments.reverse(), postID);
+          modifireComments(containerComments, nextComments, postID);
         } else {
           stopLoadComments = true;
         }

@@ -40,7 +40,6 @@ import {
 } from "../../app";
 import { addComment } from "../../entities/comments/api/api";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
-import { findCommentById } from "../../shared/findByID/findByID";
 
 /**
  * Управление адаптивностью на странице автора
@@ -378,61 +377,24 @@ export async function setComments(container: any, post: any) {
     loader.style.display = "flex";
     const formComment: any = container.querySelector(`.form-group-comment`);
     const nextCommentsButton: any = container.querySelector(`.next-comments`);
-    if (placeContent.querySelectorAll(".container-comment").length === 1) {
-      try {
-        const activeRequests = new Set();
-        const placeContent = container.querySelector(`.place-content`);
-        await paginateComments(
-          activeRequests,
-          [],
-          placeContent,
-          post.postId,
-          1,
-        );
-      } finally {
-        divLoader.style.display = "none";
-        loader.style.display = "none";
-        formComment.style.display = "flex";
-        nextCommentsButton.textContent = "Скрыть комментарии";
-      }
-    } else if (
-      placeContent.querySelectorAll(".container-comment").length === 0
-    ) {
-      try {
-        const activeRequests = new Set();
-        const placeContent = container.querySelector(`.place-content`);
-        await paginateComments(
-          activeRequests,
-          [],
-          placeContent,
-          post.postId,
-          0,
-        );
-      } finally {
-        divLoader.style.display = "none";
-        loader.style.display = "none";
-        formComment.style.display = "flex";
-        nextCommentsButton.textContent = "Скрыть комментарии";
-      }
-    } else {
-      try {
-        formComment.style.display = "flex";
-        nextCommentsButton.textContent = "Скрыть комментарии";
-        divLoader.style.display = "none";
-        loader.style.display = "none";
-        const comments: any = await getComments(post.postId, 0, 300);
-        const myComment = findCommentById(commentID, comments);
-        placeContent.append(...(await renderComments([myComment])));
-        modifireComments(placeContent, [myComment], post.postId);
-      } catch (error) {
-      } finally {
-        nextCommentsButton.style.display = "flex";
-        divLoader.style.display = "none";
-        loader.style.display = "none";
-        formComment.style.display = "flex";
-        nextCommentsButton.textContent = "Скрыть комментарии";
-      }
+    try {
+      const activeRequests = new Set();
+      const placeContent = container.querySelector(`.place-content`);
+      await paginateComments(
+        activeRequests,
+        [],
+        placeContent,
+        post.postId,
+        placeContent.querySelectorAll(".container-comment").length,
+      );
+    } catch (error) {
+    } finally {
+      divLoader.style.display = "none";
+      loader.style.display = "none";
+      formComment.style.display = "flex";
+      nextCommentsButton.textContent = "Скрыть комментарии";
     }
+
     console.log(placeContent);
     text.value = "";
     sendCount++;
@@ -456,7 +418,7 @@ export async function setComments(container: any, post: any) {
     const nextCommentsButton: any = container.querySelector(`.next-comments`);
 
     const comments: any = await getComments(post.postId, 0, 300);
-    const nextComments = comments.slice(0, 1);
+    const nextComments = comments.slice(comments.length - 1, comments.length);
     placeContent.append(...(await renderComments(nextComments)));
     modifireComments(placeContent, nextComments.reverse(), post.postId);
     if (comments.length > 1) {
@@ -489,7 +451,7 @@ export async function setComments(container: any, post: any) {
             [],
             placeContent,
             post.postId,
-            1,
+            placeContent.querySelectorAll(".container-comment").length,
           );
         } finally {
           divLoader.style.display = "none";

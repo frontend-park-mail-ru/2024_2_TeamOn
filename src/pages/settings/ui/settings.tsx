@@ -7,10 +7,7 @@ export async function settingsContainer() {
     <div class="main-content">
       {await Sidebar()}
       <div class="container-settingss">
-        <div
-          class="title-page"
-          style="margin-left: -20px; z-index: 1000;"
-        >
+        <div class="title-page" style="margin-left: -20px; z-index: 1000;">
           <h1>Настройки</h1>
         </div>
         <div class="tabs settings"></div>
