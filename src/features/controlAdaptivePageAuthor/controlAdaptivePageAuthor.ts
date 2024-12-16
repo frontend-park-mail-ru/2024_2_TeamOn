@@ -385,7 +385,7 @@ export async function setComments(container: any, post: any) {
         [],
         placeContent,
         post.postId,
-        placeContent.querySelectorAll(".container-comment").length,
+        placeContent.querySelectorAll(".comment-item").length,
       );
     } catch (error) {
     } finally {
@@ -398,6 +398,12 @@ export async function setComments(container: any, post: any) {
     console.log(placeContent);
     text.value = "";
     sendCount++;
+    const commentsCount: any = await getComments(post.postId, 0, 300);
+    const amountComments: any = container.querySelector(`.amount-comments`);
+    amountComments.innerHTML = `${commentsCount.length}`;
+    if (placeContent.querySelectorAll(".comment-item").length > 1) {
+      nextCommentsButton.style.display = "block";
+    }
   };
   const handleClickButtonSendComment = async (e: any) => {
     e.preventDefault();
@@ -437,7 +443,7 @@ export async function setComments(container: any, post: any) {
       const loader = container.querySelector(`.loader__search`);
       const formComment = container.querySelector(`.form-group-comment`);
 
-      if (placeContent.querySelectorAll(".container-comment").length <= 1) {
+      if (placeContent.querySelectorAll(".comment-item").length <= 1) {
         currentScrollPositipn = Number(
           sessionStorage.getItem("scrollPosition"),
         );
@@ -451,7 +457,7 @@ export async function setComments(container: any, post: any) {
             [],
             placeContent,
             post.postId,
-            placeContent.querySelectorAll(".container-comment").length,
+            placeContent.querySelectorAll(".comment-item").length,
           );
         } finally {
           divLoader.style.display = "none";
@@ -463,7 +469,7 @@ export async function setComments(container: any, post: any) {
         // Прокрутка вниз после загрузки комментариев
       } else {
         nextCommentsButton.textContent = "Показать следующие комментарии...";
-        const allItems = placeComments.querySelectorAll(`.container-comment`);
+        const allItems = placeComments.querySelectorAll(`.comment-item`);
         allItems.forEach((item: any, index: number) => {
           if (index !== 0) {
             item.remove();
