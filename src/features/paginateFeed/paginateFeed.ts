@@ -41,8 +41,6 @@ import DOMPurify from "dompurify";
 
 export function controlSlideShow(container: any, rightContainer: any) {
   const modalPhotos: any = document.querySelector(`.modal-view-photos`); //
-  // modalPhotos.innerHTML = "";
-  // update(modalPhotos, modal());
   const rightContent: any = rightContainer;
   const closeModal: any = document.querySelector(`.close-modal-view`); //
   const main: any = document.querySelector("main");
@@ -806,9 +804,7 @@ function modifierModalComplaintPost(
 
   const handleClickBlock = async (e: any) => {
     e.preventDefault();
-    const response: any = await complaintPost({
-      postID: post.postId,
-    });
+    const response: any = await complaintPost(post.postId);
     container.style.display = "none";
     modalsDelete.style.display = "none";
     mainContent.classList.remove("blur");

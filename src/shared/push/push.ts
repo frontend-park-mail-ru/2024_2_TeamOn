@@ -178,6 +178,12 @@ async function controlPush(objSettings: any = null, flag = "") {
 }
 
 async function startPushNotifications(objSettings = null, flag = "") {
+  if (
+    window.location.pathname === "/login" ||
+    window.location.pathname === "/signup" ||
+    window.location.pathname === "/"
+  )
+    return;
   controlPush(objSettings, flag); // Вызов функции один раз сразу
 
   // Периодически добавляем новые уведомления

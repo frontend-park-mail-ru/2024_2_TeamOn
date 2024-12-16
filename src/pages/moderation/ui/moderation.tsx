@@ -11,8 +11,13 @@ import { modal } from "../../../pages/feed/ui/feed";
 async function renderModerationForm() {
   return (
     <div class="main-content">
-      {await Sidebar()}
-      {renderSearchbar()}
+      <div>
+        {await Sidebar()}
+        {renderSearchbar()}
+        <div style="position: fixed; margin-left: -27px; z-index: 1000;">
+          <h1>Модерация</h1>
+        </div>
+      </div>
       <div class="right-content">
         <div class="tabs feed">
           <a class="active"> Опубликованные </a>

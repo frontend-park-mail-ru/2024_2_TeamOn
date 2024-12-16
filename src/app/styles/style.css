@@ -27,6 +27,9 @@ body {
   --main-color-focus: #829db480;
   --main-color-black: #333;
   --main-color-black-hover: #7c7c7c;
+  --yellow: #ffe270;
+  --red: #d9534f;
+  --red-hover: rgba(217, 84, 79, 0.7960784314);
 }
 
 :root::-webkit-scrollbar {
@@ -1208,7 +1211,7 @@ form input[type=text]:focus {
 }
 
 .date {
-  text-align: right;
+  text-align: left;
   color: gray;
 }
 
@@ -1851,7 +1854,7 @@ form input[type=text]:focus {
   width: 100%;
   font-size: 12px;
   color: #999;
-  text-align: right;
+  text-align: left;
 }
 
 .interaction-section {
@@ -2144,8 +2147,13 @@ span {
     flex-grow: 1;
     padding-top: 60px;
   }
+  .main-content h1 {
+    top: -58px !important;
+    margin-left: 60px !important;
+  }
 }
 .main-content h1 {
+  position: fixed;
   font-size: 24px;
   margin-bottom: 20px;
   z-index: 1;
@@ -2153,6 +2161,11 @@ span {
   margin-left: 20px;
 }
 
+@media (min-width: 768px) {
+  .main-content h1 {
+    margin-left: 40px !important;
+  }
+}
 .image-upload-label {
   display: inline-block;
   padding: 10px 20px;
@@ -2537,7 +2550,7 @@ select {
 }
 
 .block-button {
-  background-color: red;
+  background-color: var(--red);
 }
 
 .approve-button:hover {
@@ -2545,7 +2558,7 @@ select {
 }
 
 .block-button:hover {
-  background-color: rgba(255, 0, 0, 0.493);
+  background-color: var(--red-hover);
 }
 
 .form-container-stat button:hover {
@@ -2904,7 +2917,7 @@ select {
 
 @media (max-width: 768px) {
   .searchbar-wrapper-feed {
-    top: 15px !important;
+    top: 14px !important;
   }
 }
 .searchbar-wrapper-feed {
@@ -2920,7 +2933,16 @@ select {
 
 @media (max-width: 768px) {
   .searchbar-wrapper-feed {
-    left: 98% !important;
+    left: 105% !important;
+    height: 25px !important;
+    width: 190px !important;
+  }
+  .searchbar-wrapper-feed ::-moz-placeholder {
+    font-size: 14px;
+  }
+  .searchbar-wrapper,
+  .searchbar-wrapper-feed ::placeholder {
+    font-size: 14px;
   }
 }
 /* Поле ввода */
@@ -3079,7 +3101,7 @@ select {
   }
   .results {
     left: 120px;
-    top: 9%;
+    top: 7%;
   }
 }
 .result-item {
@@ -3199,9 +3221,10 @@ canvas {
 }
 
 .post-status {
+  height: 30px;
   display: flex;
   align-items: center;
-  width: 90px;
+  width: 300px;
   padding: 5px;
   margin-top: 5px;
   font-weight: bold;
@@ -3214,18 +3237,13 @@ canvas {
   .post-status {
     margin-left: 10%;
   }
-  .main-container-approve,
+  .main-container-publish,
   .main-container-reported,
   .main-container-popular,
   .main-container-recently {
     display: block;
     width: 100% !important;
     position: relative;
-  }
-}
-@media (min-width: 768px) {
-  .post-status {
-    margin-left: 57%;
   }
 }
 .container-image-photos {
@@ -3399,7 +3417,7 @@ canvas {
   }
 }
 #nav-icon3 {
-  width: 40px;
+  width: 25px;
   height: 40px;
   transform: rotate(0deg);
   transition: 0.5s ease-in-out;
@@ -3410,7 +3428,7 @@ canvas {
   display: block;
   position: absolute;
   height: 5px;
-  height: 9px;
+  height: 5px;
   width: 100%;
   background: #337ab7;
   border-radius: 9px;
@@ -3426,11 +3444,11 @@ canvas {
 
 #nav-icon3 span:nth-child(2),
 #nav-icon3 span:nth-child(3) {
-  top: 18px;
+  top: 9px;
 }
 
 #nav-icon3 span:nth-child(4) {
-  top: 36px;
+  top: 18px;
 }
 
 #nav-icon3.open span:nth-child(1) {
@@ -3532,7 +3550,7 @@ canvas {
 }
 
 .info-post-section {
-  width: 250%;
+  width: 200%;
   display: flex;
   flex-direction: column;
 }
@@ -3802,7 +3820,7 @@ progress::-moz-progress-bar {
 
 .main-container-popular,
 .main-container-recently,
-.main-container-approve,
+.main-container-publish,
 .main-container-reported {
   flex-direction: column;
   width: 50%;
@@ -3850,6 +3868,10 @@ progress::-moz-progress-bar {
 }
 .general-info-notif {
   width: 500px;
+}
+
+.main-container-publish {
+  flex-direction: column;
 }
 
 /*# sourceMappingURL=style.css.map */

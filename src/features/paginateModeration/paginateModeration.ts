@@ -379,18 +379,31 @@ async function paginateModeration(
   }
 
   // Инициализируем загрузку первых постов
+  // await loadPosts();
+
+  // // Обработчик события прокрутки
+  // let isLoadingTop = false;
+
+  // window.addEventListener("scroll", async () => {
+  //   const { scrollTop, clientHeight, scrollWidth } = document.documentElement;
+  //   // Проверяем, достиг ли пользователь нижней части страницы и не загружаем ли мы данные в данный момент
+  //   if (scrollTop + clientHeight >= 3000 && !isLoadingTop) {
+  //     isLoadingTop = true; // Устанавливаем флаг загрузки
+  //     await loadPosts();
+  //     isLoadingTop = false; // Сбрасываем флаг после загрузки
+  //   }
+  // });
   await loadPosts();
-
   // Обработчик события прокрутки
-  let isLoadingTop = false;
-
+  let isLoadingOnScroll = false;
   window.addEventListener("scroll", async () => {
-    const { scrollTop, clientHeight, scrollWidth } = document.documentElement;
-    // Проверяем, достиг ли пользователь нижней части страницы и не загружаем ли мы данные в данный момент
-    if (scrollTop + clientHeight >= 3000 && !isLoadingTop) {
-      isLoadingTop = true; // Устанавливаем флаг загрузки
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+
+    // Проверяем, достиг ли пользователь нижней части страницы
+    if (scrollHeight - scrollTop <= clientHeight + 100 && !isLoadingOnScroll) {
+      isLoadingOnScroll = true;
       await loadPosts();
-      isLoadingTop = false; // Сбрасываем флаг после загрузки
+      isLoadingOnScroll = false;
     }
   });
 }

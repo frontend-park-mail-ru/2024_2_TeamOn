@@ -20,13 +20,14 @@ body {
   --new-color: #8abae3;
   --main-test-color: #337ab7;
   --main-color: #337ab7;
-  // --main-color: #d9534f;
   --main-background-color: #f5f5f5;
-  // --main-color-hover: rgba(217, 84, 79, 0.7960784314);
   --main-color-hover: #4f80aa;
   --main-color-focus: #829db480;
   --main-color-black: #333;
   --main-color-black-hover: #7c7c7c;
+  --yellow: #ffe270;
+  --red: #d9534f;
+  --red-hover: rgba(217, 84, 79, 0.7960784314);
 }
 :root::-webkit-scrollbar {
   width: 5px;
@@ -1110,7 +1111,7 @@ form input[type="text"]:focus {
 
 // -------
 .date {
-  text-align: right;
+  text-align: left;
   color: gray;
 }
 .menu-icon {
@@ -1689,7 +1690,7 @@ form input[type="text"]:focus {
   width: 100%;
   font-size: 12px;
   color: #999;
-  text-align: right;
+  text-align: left;
 }
 .interaction-section {
   bottom: 10px;
@@ -1951,16 +1952,25 @@ span {
     flex-grow: 1;
     padding-top: 60px;
   }
+  .main-content h1 {
+    top: -58px !important;
+    margin-left: 60px !important;
+  }
 }
 
 .main-content h1 {
+  position: fixed;
   font-size: 24px;
   margin-bottom: 20px;
   z-index: 1;
   position: relative;
   margin-left: 20px;
 }
-
+@media (min-width: 768px) {
+  .main-content h1 {
+    margin-left: 40px !important;
+  }
+}
 .image-upload-label {
   display: inline-block;
   padding: 10px 20px;
@@ -2318,13 +2328,13 @@ select {
   background-color: green;
 }
 .block-button {
-  background-color: red;
+  background-color: var(--red);
 }
 .approve-button:hover {
   background-color: rgba(0, 128, 0, 0.493);
 }
 .block-button:hover {
-  background-color: rgba(255, 0, 0, 0.493);
+  background-color: var(--red-hover);
 }
 .form-container-stat button:hover {
   background: var(--main-color-hover);
@@ -2650,6 +2660,10 @@ select {
   transition: background-color 0.3s ease;
   padding: 6px;
 }
+
+// ::placeholder {
+//   font-size: 14px;
+// }
 .searchbar-wrapper,
 .searchbar-wrapper-feed {
   border: 2px solid white;
@@ -2659,7 +2673,7 @@ select {
 }
 @media (max-width: 768px) {
   .searchbar-wrapper-feed {
-    top: 15px !important;
+    top: 14px !important;
   }
 }
 .searchbar-wrapper-feed {
@@ -2674,7 +2688,13 @@ select {
 }
 @media (max-width: 768px) {
   .searchbar-wrapper-feed {
-    left: 98% !important;
+    left: 105% !important;
+    height: 25px !important;
+    width: 190px !important;
+  }
+  .searchbar-wrapper,
+  .searchbar-wrapper-feed ::placeholder {
+    font-size: 14px;
   }
 }
 /* Поле ввода */
@@ -2821,7 +2841,7 @@ select {
   }
   .results {
     left: 120px;
-    top: 9%;
+    top: 7%;
   }
 }
 .result-item {
@@ -2932,9 +2952,10 @@ canvas {
   margin-top: 10px;
 }
 .post-status {
+  height: 30px;
   display: flex;
   align-items: center;
-  width: 90px;
+  width: 300px;
   padding: 5px;
   margin-top: 5px;
   font-weight: bold;
@@ -2947,7 +2968,7 @@ canvas {
   .post-status {
     margin-left: 10%;
   }
-  .main-container-approve,
+  .main-container-publish,
   .main-container-reported,
   .main-container-popular,
   .main-container-recently {
@@ -2957,9 +2978,9 @@ canvas {
   }
 }
 @media (min-width: 768px) {
-  .post-status {
-    margin-left: 57%;
-  }
+  // .post-status {
+  //   margin-left: 57%;
+  // }
 }
 .container-image-photos {
   width: 100%;
@@ -3123,7 +3144,7 @@ canvas {
 }
 
 #nav-icon3 {
-  width: 40px;
+  width: 25px;
   height: 40px;
   transform: rotate(0deg);
   transition: 0.5s ease-in-out;
@@ -3133,7 +3154,7 @@ canvas {
   display: block;
   position: absolute;
   height: 5px;
-  height: 9px;
+  height: 5px;
   width: 100%;
   background: #337ab7;
   border-radius: 9px;
@@ -3147,10 +3168,10 @@ canvas {
 }
 #nav-icon3 span:nth-child(2),
 #nav-icon3 span:nth-child(3) {
-  top: 18px;
+  top: 9px;
 }
 #nav-icon3 span:nth-child(4) {
-  top: 36px;
+  top: 18px;
 }
 #nav-icon3.open span:nth-child(1) {
   top: 18px;
@@ -3241,7 +3262,7 @@ canvas {
   justify-content: space-between;
 }
 .info-post-section {
-  width: 250%;
+  width: 200%;
   display: flex;
   flex-direction: column;
 }
@@ -3483,7 +3504,7 @@ progress::-moz-progress-bar {
 }
 .main-container-popular,
 .main-container-recently,
-.main-container-approve,
+.main-container-publish,
 .main-container-reported {
   flex-direction: column;
   width: 50%;
@@ -3530,4 +3551,8 @@ progress::-moz-progress-bar {
 }
 .general-info-notif {
   width: 500px;
+}
+
+.main-container-publish {
+  flex-direction: column;
 }

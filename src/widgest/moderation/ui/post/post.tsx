@@ -12,18 +12,18 @@ async function containerPost(post: any) {
   const styleButtonBlock: string = "";
 
   let styleButtons: string = "";
-  const status: string = "PUBLISHED";
+  const status: string = post.status;
   let flag: string = "";
   let styleStatus: string = "";
   const styleShowButtons: string =
     "display: flex; align-items: center; justify-content: center; gap: 10px;";
   if (status && status == "PUBLISHED") {
     flag = "На проверке";
-    styleStatus = "background-color: yellow";
+    styleStatus = "background-color: var(--yellow)";
     styleButtons = styleShowButtons;
   } else if (status == "COMPLAINED") {
     flag = "Жалоба";
-    styleStatus = "background-color: gray";
+    styleStatus = "background-color: var(--red)";
     styleButtons = styleShowButtons;
   } else if (status == "ALLOWED") {
     flag = "Проверен";
@@ -89,62 +89,5 @@ export async function fetchFileFromImage(postId: any) {
   }
   return result;
 }
-export async function containerMediaPost(postId: any) {
-  if (!postId) return;
-  const propertiesPost: any = await getUrlFiles(postId);
-  let arrayMedia: any = [];
-  let mediaId: any = [];
-  const imageExtensions = [".jpeg", ".png"];
-  const mp3Extensions = [".mp3"];
-  const mp4Extensions = [".mp4"];
-  if (propertiesPost.message || propertiesPost.mediaContent.length <= 0) return;
-  for (const content of propertiesPost.mediaContent) {
-    const url: any = content.mediaURL;
-    mediaId.push(content.mediaID);
-    try {
-      // const response = await fetch("/" + url);
-      // const isImage = imageExtensions.some((extension) =>
-      //   response.url.toLowerCase().endsWith(extension));
-      // const isAudio = mp3Extensions.some((extension) =>
-      //   response.url.toLowerCase().endsWith(extension));
-      // const isVideo = mp4Extensions.some((extension) =>
-      //   response.url.toLowerCase().endsWith(extension));
 
-      // let containerFile = 0;
-
-      // const fileName = url.split('/').pop(); // Извлекаем имя файла из URL
-      // const extension = fileName.split('.').pop(); // Получаем расширение файла
-
-      // if (isImage) {
-      //   containerFile = <img class="image-photo" src={response.url}></img>;
-      // } else if (isAudio) {
-      //   containerFile =
-      //   <audio>
-      //     <source src={response.url} type={`audio/${extension}`}></source>
-      //     Ваш браузер не поддерживает аудио.
-      //   </audio>
-      // } else {
-      //   containerFile = (
-      //     <a style="margin-left: 5px;" href={response.url}>
-      //       Файл.{extension}
-      //     </a>
-      //   );
-      // }
-      const containerFile = (
-        <audio>
-          <source
-            src="https://zvuk.com/embed/track?id=140047798"
-            type={`audio/mp3`}
-          ></source>
-          Ваш браузер не поддерживает аудио.
-        </audio>
-      );
-
-      arrayMedia.push(containerFile);
-    } catch (error) {
-      console.error("Ошибка при запросе к URL:", url, error);
-    }
-  }
-  return [arrayMedia, mediaId];
-}
 export { containerPost };
