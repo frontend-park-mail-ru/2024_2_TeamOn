@@ -1,4 +1,4 @@
-import { state, ELEMENTS_CLASS, LINKS, REGEXP } from "../shared/consts/consts";
+import { state, ELEMENTS_CLASS, LINKS } from "../shared/consts/consts";
 import { renderSignup } from "../pages/signup";
 import { renderProfile } from "../pages/profile";
 import { renderHome } from "../pages/home";
@@ -9,16 +9,14 @@ import { route } from "../shared/routing/routing";
 import { renderNotifications } from "../pages/notifications";
 import { renderSettings } from "../pages/settings";
 import { VirtualDOM } from "../../lib/vdom/src/source";
-import { render, renderTo } from "../../lib/vdom/lib";
+import { render } from "../../lib/vdom/lib";
 import { renderLogin } from "../pages/login";
-import { modifierSidebar } from "../shared/sidebar/modifire";
 import { renderCreatePost } from "../pages/addPost";
 import { renderUpdatePost } from "../entities/userPost";
 import { hasLogged } from "../shared/utils/hasLogged";
 import { renderModeration } from "../pages/moderation";
 import { getUrlStatic } from "../shared/getStatic/getStatic";
 import { startPushNotifications } from "../shared/push/push";
-import { Sidebar } from "../shared/sidebar/sidebar";
 
 /**
  * Объект, содержащий конфигурацию меню приложения.

@@ -102,36 +102,11 @@ self.addEventListener("fetch", (event) => {
     "/notificationNRead.png",
     "/fav.png",
   ];
-  // URL, который не нужно кэшировать
-  // const shouldBypassCache = noCachePaths.some((path) =>
-  //   event.request.url.endsWith(path),
-  // );
-  // URL, который нужно кэшировать
+
   const shouldBypassCache = cachePaths.some((path) =>
     event.request.url.endsWith(path),
   );
-  // return;
-  // if (event.request.url.endsWith("/token-endpoint")) return;
   if (event.request.method === "GET") {
-    // Проверяем, является ли запрашиваемый URL тем, который нужно исключить из кэширования
-    // if (shouldBypassCache) {
-    //   // Если это тот URL, просто выполняем сетевой запрос
-    //   event.respondWith(
-    //     fetch(event.request)
-    //       .then((response) => {
-    //         console.log("Status:", response.status);
-    //         if (!response.ok) {
-    //           console.warn("Network response not ok:", response.status);
-    //           return response; // Возвращаем сетевой ответ, даже если он не успешен
-    //         }
-    //         return response; // Возвращаем сетевой ответ
-    //       })
-    //       .catch((error) => {
-    //         console.error("Fetch failed:", error);
-    //         throw error; // Обрабатываем ошибки
-    //       }),
-    //   );
-    // } else {
     if (shouldBypassCache) {
       // Обрабатываем кэширование для всех остальных запросов
       event.respondWith(
@@ -140,7 +115,7 @@ self.addEventListener("fetch", (event) => {
           .then((cachedResponse) => {
             if (cachedResponse) {
               console.log("Returning cached response for:", event.request.url);
-              return cachedResponse; // Возвращаем кэшированный ответ, если он есть
+              return cachedResponse;
             }
 
             // Если кэшированного ответа нет, выполняем сетевой запрос
@@ -148,20 +123,20 @@ self.addEventListener("fetch", (event) => {
               console.log("Status:", response.status);
               if (!response.ok) {
                 console.warn("Network response not ok:", response.status);
-                return response; // Возвращаем сетевой ответ, даже если он не успешен
+                return response;
               }
 
               // Кэшируем ответ для будущих запросов
               return caches.open("pushart-cache").then((cache) => {
-                cache.put(event.request, response.clone()); // Кэшируем клон ответа
+                cache.put(event.request, response.clone());
                 console.log("Caching new response:", event.request.url);
-                return response; // Возвращаем сетевой ответ
+                return response;
               });
             });
           })
           .catch((error) => {
             console.error("Fetch failed:", error);
-            throw error; // Обрабатываем ошибки
+            throw error;
           }),
       );
     }

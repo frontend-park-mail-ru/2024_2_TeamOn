@@ -1,11 +1,10 @@
-import { allowedExtensions, LINKS } from "../../../shared/consts/consts";
+import { LINKS } from "../../../shared/consts/consts";
 import { route } from "../../../shared/routing/routing";
 import DOMPurify from "dompurify";
 import { addUserPost, deletePost } from "../../../entities/userPost";
 import { getUserPosts } from "../../../features/getuserposts/getUserPosts";
 import { uploadMediaFiles } from "../../../features/uploadMediaFiles/uploadMediaFiles";
 import { controlSlideShow } from "../../../features/paginateFeed/paginateFeed";
-import { paginateProfile } from "src/features/paginateprofile/paginateprofile";
 
 async function modifireCreatePost() {
   const containerCreatePost: any = document.querySelector(
@@ -139,65 +138,6 @@ async function modifireCreatePost() {
     containerCreatePost.querySelector(`.media-upload-input`);
   let selectedFiles: File[] = []; // Массив для хранения выбранных файлов
   const attacheInfo: any = buttonUploadMedia.querySelector(`.attache-info`);
-
-  // mediaInput.addEventListener("change", (event: any) => {
-  //   const files = (event.target as HTMLInputElement).files;
-
-  //   if (files && files.length) {
-  //     const newFiles = Array.from(files);
-
-  //     // Фильтруем валидные файлы
-  //     const validFiles = newFiles.filter((file) => {
-  //       const extension: any = file.name.split(".").pop()?.toLowerCase(); // Получаем расширение файла
-  //       return allowedExtensions.includes(extension); // Проверяем, допустимо ли расширение
-  //     });
-
-  //     // Удаляем невалидные файлы из нового выбора
-  //     const invalidFiles = newFiles.filter(
-  //       (file) => !validFiles.includes(file),
-  //     );
-
-  //     previewContainer.innerHTML = "";
-  //     let loadedFilesCount = 0;
-
-  //     // Добавляем валидные файлы в массив selectedFiles, исключая дубликаты
-  //     validFiles.forEach((file) => {
-  //       if (!selectedFiles.includes(file)) {
-  //         selectedFiles.push(file);
-  //       }
-  //     });
-
-  //     // Отображаем превью для всех выбранных файлов
-  //     selectedFiles.forEach((file, index) => {
-  //       const reader = new FileReader();
-  //       reader.onload = (e: ProgressEvent<FileReader>) => {
-  //         const fileDiv = createFileDiv(e.target?.result as string, index);
-  //         previewContainer.appendChild(fileDiv);
-  //         loadedFilesCount++;
-
-  //         if (loadedFilesCount === selectedFiles.length) {
-  //           controlSlideShow(containerCreatePost, containerCreatePost);
-  //         }
-  //       };
-  //       reader.readAsDataURL(file);
-  //     });
-
-  //     // Обработка недопустимых файлов
-  //     if (invalidFiles.length > 0) {
-  //       const input =
-  //         containerCreatePost.querySelectorAll(`.form-group-add`)[1];
-  //       let error = input.querySelector("p");
-  //       if (!error) {
-  //         error = document.createElement("p");
-  //         error.style.color = "red";
-  //         input.appendChild(error);
-  //       }
-  //       error.textContent =
-  //         "Ошибка. Неподдерживаемый формат файла: " +
-  //         invalidFiles.map((file) => file.name).join(", ");
-  //     }
-  //   }
-  // });
   mediaInput.addEventListener("change", (event: any) => {
     const files: any = event.target.files;
     if (files && files.length) {
@@ -287,29 +227,6 @@ async function modifireCreatePost() {
 
     return fileDiv;
   }
-  // function createFileDiv(src: string, index: number): HTMLDivElement {
-  //   const fileDiv = document.createElement("div");
-  //   fileDiv.className = "file-preview";
-  //   fileDiv.style.display = "flex";
-  //   fileDiv.style.alignItems = "center";
-  //   fileDiv.style.margin = "10px";
-  //   fileDiv.style.border = "1px solid #ccc";
-  //   fileDiv.style.borderRadius = "5px";
-  //   fileDiv.style.padding = "5px";
-
-  //   const img = document.createElement("img");
-  //   img.src = src;
-  //   img.className = "image-photo";
-  //   img.style.width = "100px";
-  //   img.style.marginRight = "10px";
-
-  //   const removeButton = createRemoveButton(index, fileDiv);
-
-  //   fileDiv.appendChild(img);
-  //   fileDiv.appendChild(removeButton);
-
-  //   return fileDiv;
-  // }
 
   function createRemoveButton(
     index: number,

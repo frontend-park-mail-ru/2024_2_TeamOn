@@ -3,7 +3,6 @@ import { controlLogout } from "../../features/controlLogout/controlLogout";
 import { renderTo, update } from "../../../lib/vdom/lib";
 import { pageContainer } from "../../app/index";
 import { renderModerationForm } from "./ui/moderation";
-import { paginate } from "../../features/paginateFeed/paginateFeed";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import {
   controlActiveLink,

@@ -3,7 +3,7 @@ import { getPopularPosts } from "../getPopularPosts/getPopularPosts";
 import { getRecentlyPosts } from "../getRecentlyPosts/getRecentlyPosts";
 import { containerComment, containerPost } from "../../widgest/feed";
 import { renderTo, update } from "../../../lib/vdom/lib";
-import { AddLikeOnPost, setLike } from "../../entities/likes";
+import { setLike } from "../../entities/likes";
 import { convertISOToRussianDate } from "../../shared/utils/parsedate";
 import { route } from "../../shared/routing/routing";
 import { getAvatar } from "../getavatar/getavatar";
@@ -11,7 +11,7 @@ import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { showOverlay } from "../../shared/overlay/overlay";
-import { modal, renderComplaint } from "../../pages/feed/ui/feed";
+import { renderComplaint } from "../../pages/feed/ui/feed";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { setStatic } from "../../shared/getStatic/getStatic";
 import {
@@ -21,17 +21,13 @@ import {
   urlFullHD,
   urlIconComment,
   urlIconLike,
-  urlRemoveButtonFile,
   urlVideoDownload,
   urlVideoPlay,
   urlVideoStop,
   urlVideoVolume,
   urlVideoVolumeMute,
 } from "../../app";
-import { getPageAuthor } from "../getpageauthor/getpageauthor";
 import { hideLoader, showLoader } from "../../pages/feed";
-import { addUserPost } from "../../entities/userPost";
-import { getUserPosts } from "../getuserposts/getUserPosts";
 import {
   getComments,
   setComments,

@@ -1,10 +1,6 @@
-//текст уведомления
-// прочитано
-// всплывающие уведомления
 import { ELEMENTS_CLASS, LINKS, state } from "../../shared/consts/consts";
 import {
   iconNotificationClear,
-  iconNotificationHave,
   pageContainer,
   urlIconNotification,
 } from "../../app/index";
@@ -15,17 +11,13 @@ import { renderNotification } from "./ui/notifications";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
 import { setTitle } from "../../shared/settitle/setTitle";
 import { setStatic } from "../../shared/getStatic/getStatic";
-import { convertISOToRussianDate } from "../../shared/utils/parsedate";
-import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { paginateNotifications } from "../../features/paginateNotification/paginateNotification";
 import { hideLoader } from "../feed";
 import {
   controlActiveLink,
   controlNotification,
-  showZeroNotif,
   updateNotifText,
 } from "../../features/controlActiveLink/controlActiveLink";
-import { getNotification } from "../../features/getNotification/getNotification";
 
 /**
  * Функция рендера уведомлений
@@ -102,10 +94,8 @@ export async function renderNotifications() {
     ) {
       updateNotifText(zero, sessionStorage.getItem("notification"));
       zero.style.display = "flex";
-      // setStatic(iconNotification, urlIconNotification);
     } else if (container.querySelector(".container-notif")) {
       zero.style.display = "none";
-      // setStatic(iconNotification, iconNotificationHave);
     }
 
     return container;

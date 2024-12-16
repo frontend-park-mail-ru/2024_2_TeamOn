@@ -126,12 +126,8 @@ export async function fetchAjax(
     if (csrfToken) {
       headers["X-CSRF-Token"] = csrfToken.csrfToken;
     }
-    // if (csrfToken) {
-    //   headers["X-CSRF-Token"] = csrfToken.csrfToken;
-    // }
   }
   if (body instanceof FormData) {
-    // Не устанавливаем Content-Type, он будет установлен автоматически
   } else if (body) {
     headers["Content-Type"] = "application/json; charset=utf-8";
     body = JSON.stringify(body);
@@ -153,7 +149,6 @@ export async function fetchAjax(
       throw error;
     })
     .finally(() => {
-      // Сбрасываем токен после завершения запроса
       currentTokenPromise = null;
     });
 }

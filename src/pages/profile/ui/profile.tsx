@@ -10,7 +10,6 @@ import {
   followersForm,
 } from "../../../widgest/profile";
 import { renderUserInfo } from "../../../entities/profileInfo/index";
-import { urlAddCustomSubs } from "../../../app";
 import { modalMediaContainer } from "../../../pages/feed/ui/feed";
 
 /**

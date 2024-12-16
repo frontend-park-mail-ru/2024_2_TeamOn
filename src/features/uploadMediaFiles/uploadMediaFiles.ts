@@ -1,6 +1,4 @@
-import { LINKS } from "../../shared/consts/consts";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
-import { route } from "../../shared/routing/routing";
 
 /**
  * Функция загрузки медиа-контента

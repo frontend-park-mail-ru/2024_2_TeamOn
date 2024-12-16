@@ -1,5 +1,4 @@
 import * as VDom from "vdom";
-import { hasLogged } from "../../shared/utils/hasLogged";
 /**
  * Рендер контейнера поста
  * @param post Пост
@@ -23,10 +22,6 @@ async function containerNotification(notification: any) {
           <div class="header-post" style="display: flex">
             <div class="author-section" style="padding-top: 10px;">
               <img class="author-avatar avatar notif-avatar"></img>
-              <div class="info-post-section">
-                <div class="author-name"></div>
-                <div class="date"></div>
-              </div>
             </div>
           </div>
           <div
@@ -35,7 +30,7 @@ async function containerNotification(notification: any) {
               flex-direction: column;
               justify-content: space-between;"
           >
-            <div class="title-notif" style="font-weight: normal;">
+            <div class="title-notif" style="font-weight: normal; margin-left">
               {notification.message}
             </div>
             <div class="date" style="text-align: left;">

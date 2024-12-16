@@ -1,12 +1,6 @@
 import * as VDom from "vdom";
 import { hasLogged } from "../utils/hasLogged";
 import { getAccount } from "../../features/getAccount/getAccount";
-import {
-  urlIconHome,
-  urlIconModeration,
-  urlIconProfile,
-  urlIconSettings,
-} from "../../app";
 
 /**
  * Функция рендера сайдбара

@@ -8,6 +8,7 @@ import { Sidebar } from "../../../shared/sidebar/sidebar";
 import { renderSearchbar } from "../../../entities/searchbar/index";
 import * as VDom from "vdom";
 import { hasLogged } from "../../../shared/utils/hasLogged";
+
 export function modalMediaContainer() {
   return (
     <div class="modal-container-photos">

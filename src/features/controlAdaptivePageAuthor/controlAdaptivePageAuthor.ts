@@ -1,12 +1,8 @@
 import { convertISOToRussianDate } from "../../shared/utils/parsedate";
 import { renderTo, update } from "../../../lib/vdom/lib";
 import {
-  addUserPost,
   deletePost,
-  editPost,
-  //renderAddPost,
   renderDeletePost,
-  //renderEditPost,
   renderUserPost,
 } from "../../entities/userPost";
 import {
@@ -23,9 +19,7 @@ import { VNode } from "lib/vdom/src/source";
 import { renderTip, sendTip } from "../../entities/tip";
 import { getPageAuthor } from "../getpageauthor/getpageauthor";
 import { setLike } from "../../entities/likes";
-import { following } from "../../entities/profileInfo";
 import { route } from "../../shared/routing/routing";
-import { containerMediaPost } from "../../widgest/feed/ui/post/post";
 import {
   controlSlideShow,
   modifireComments,
@@ -33,7 +27,7 @@ import {
   renderComments,
   setCapture,
 } from "../paginateFeed/paginateFeed";
-import { findUsername, hasLogged } from "../../shared/utils/hasLogged";
+import { hasLogged } from "../../shared/utils/hasLogged";
 import { showOverlay } from "../../shared/overlay/overlay";
 import { setStatic } from "../../shared/getStatic/getStatic";
 import {
@@ -44,8 +38,6 @@ import {
   urlSad,
   urlSendComment,
 } from "../../app";
-import { getPopularPosts } from "../getPopularPosts/getPopularPosts";
-import { getAvatar } from "../getavatar/getavatar";
 import { addComment } from "../../entities/comments/api/api";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { findCommentById } from "../../shared/findByID/findByID";

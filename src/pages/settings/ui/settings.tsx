@@ -1,5 +1,4 @@
 import * as VDom from "vdom";
-import { createText } from "jsxteamon2/dist/jsxteamon";
 import { Sidebar } from "../../../shared/sidebar/sidebar";
 import { getAccount } from "../../../features/getAccount/getAccount";
 

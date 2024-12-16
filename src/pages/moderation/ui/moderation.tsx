@@ -1,7 +1,3 @@
-import {
-  containerPopularposts,
-  containerRecentlyposts,
-} from "../../../widgest/feed/index";
 import { Sidebar } from "../../../shared/sidebar/sidebar";
 import { renderSearchbar } from "../../../entities/searchbar/index";
 import * as VDom from "vdom";
@@ -27,14 +23,6 @@ async function renderModerationForm() {
       </div>
       <div class="modal-view-photos" style="display: none; z-index=10101010">
         {modal()}
-        {/* <div class="close-modal-view"></div>
-        <div class="modal-container-photos">
-          <img class="image-photos-modal"></img>
-        </div>
-        <div class="slideshow">
-          <div class="leftarrow-modal-view"></div>
-          <div class="rightarrow-modal-view"></div>
-        </div> */}
       </div>
       {containerBlockPost()}
     </div>

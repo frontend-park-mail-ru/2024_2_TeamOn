@@ -1,4 +1,4 @@
-import { LINKS, LOCATIONS, QUERY } from "../../shared/consts/consts";
+import { LINKS, QUERY } from "../../shared/consts/consts";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { route } from "../../shared/routing/routing";
 

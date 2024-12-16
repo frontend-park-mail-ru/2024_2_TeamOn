@@ -43,9 +43,8 @@ import { showOverlay } from "../../shared/overlay/overlay";
 import { renderUserSubscriptins } from "../../entities/profileInfo";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { setStatic } from "../../shared/getStatic/getStatic";
-import { hideLoader, showLoader } from "../feed";
+import { hideLoader } from "../feed";
 import { renderContainerSubsInStat } from "../../entities/profileInfo/ui/ui";
-import { controlSlideShow } from "../../features/paginateFeed/paginateFeed";
 
 async function renderContainerSubscriptions(authorData: any, overlay: any) {
   const modalSubscriptions: any = document.querySelector(
@@ -126,26 +125,7 @@ export async function showSubscriptions(authorData: any, container: any) {
   let overlay: any = undefined;
 
   const divSubs = container.querySelector(`.authors-subscription`);
-  const data = {
-    subscriptions: [
-      {
-        AuthorID: "d8e56467-e183-4631-88d4-2c7fc195cad2",
-        AuthorName: "frf2",
-      },
-      {
-        AuthorID: "3e6f659e-8157-42ce-b07f-bb1d8f02d706",
-        AuthorName: "asd1123s",
-      },
-      {
-        AuthorID: "3e6f659e-8157-42ce-b07f-bb1d8f02d706",
-        AuthorName: "asd1123s",
-      },
-      {
-        AuthorID: "3e6f659e-8157-42ce-b07f-bb1d8f02d706",
-        AuthorName: "asd1123s",
-      },
-    ],
-  };
+
   await renderSubsInStat(divSubs, authorData);
 
   const handleClickSubscriptions = async () => {
@@ -401,7 +381,6 @@ export async function controlBecomeCreator(div: any) {
       div.style.display = "none";
       const profile: any = document.querySelector(`.profile`);
 
-      // profile.classList.add("new");
       const span: any = pageContainer.querySelector(".new-badge");
 
       span.style.display = "block";

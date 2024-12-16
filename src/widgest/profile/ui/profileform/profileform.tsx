@@ -1,7 +1,6 @@
 import * as VDom from "vdom";
 import { renderDesktopProfileHeader } from "../../../../entities/profileDesktopHeader";
 import { renderUserInfo } from "../../../../entities/profileInfo/ui/ui";
-import { getCustomSubscription } from "../../../../features/getCustomSubs/getCustomSubs";
 import { renderContainerAddCustomSubs } from "../../../../pages/profile/ui/profile";
 
 function containerCustomSubscribe(subscription: any, userdata: any = null) {

@@ -1,8 +1,6 @@
 import {
-  allowedExtensions,
   ELEMENTS_CLASS,
   LINKS,
-  months,
   monthsSkl,
   state,
 } from "../../shared/consts/consts";
@@ -20,7 +18,7 @@ import {
 import { renderStat, settingsContainer } from "./ui/settings";
 import { getAvatar } from "../../features/getavatar/getavatar";
 import { modifierSidebar } from "../../shared/sidebar/modifire";
-import { renderStatics, renderTableTitle } from "../statistics/ui/ui";
+import { renderTableTitle } from "../statistics/ui/ui";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { setTitle } from "../../shared/settitle/setTitle";
 import { hideLoader } from "../feed";
@@ -29,7 +27,6 @@ import {
   customStatMonth,
   customStatYear,
   filterStat,
-  filterStatDay,
 } from "../../shared/utils/filterStat";
 import { controlPush } from "../../shared/push/push";
 

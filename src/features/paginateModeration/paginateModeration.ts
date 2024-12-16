@@ -1,10 +1,5 @@
 import { containerPost } from "../../widgest/moderation";
-import {
-  ELEMENTS_CLASS,
-  LINKS,
-  LOCATIONS,
-  QUERY,
-} from "../../shared/consts/consts";
+import { ELEMENTS_CLASS, LINKS, QUERY } from "../../shared/consts/consts";
 import { getModerationPosts } from "../getModerationPosts/getModerationPosts";
 import { renderTo, update } from "../../../lib/vdom/lib";
 import { containerMediaPost } from "../../widgest/feed/ui/post/post";
@@ -13,10 +8,7 @@ import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { convertISOToRussianDate } from "../../shared/utils/parsedate";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { route } from "../../shared/routing/routing";
-import { AddLikeOnPost } from "../../entities/likes";
 import { controlSlideShow } from "../paginateFeed/paginateFeed";
-import { getRecentlyPosts } from "../getRecentlyPosts/getRecentlyPosts";
-import { getPopularPosts } from "../getPopularPosts/getPopularPosts";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { renderBlockPost } from "../../pages/moderation/ui/moderation";
 import { showOverlay } from "../../shared/overlay/overlay";

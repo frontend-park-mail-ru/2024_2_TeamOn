@@ -1,6 +1,5 @@
 import { LINKS, state } from "../consts/consts";
 import { goToPage } from "../../app/index";
-import { gotoauthor } from "../gotoauthor/gotoauthor";
 import { findUsername, hasLogged } from "../utils/hasLogged";
 import { getPageAuthor } from "../../features/getpageauthor/getpageauthor";
 

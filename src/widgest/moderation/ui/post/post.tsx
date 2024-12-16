@@ -1,5 +1,3 @@
-import { renderTo } from "../../../../../lib/vdom/lib";
-import { getMediaFiles } from "../../../../features/getMediaFiles/getMediaFiles";
 import { getUrlFiles } from "../../../../features/getUrlFiles/getUrlFiiles";
 import * as VDom from "vdom";
 
@@ -12,10 +10,7 @@ import * as VDom from "vdom";
 async function containerPost(post: any) {
   const styleButtonApprove: string = "";
   const styleButtonBlock: string = "";
-  // const styleButtonApprove: string =
-  //   "background-color: green; color: white; border: none; padding: 10px; cursor: pointer;";
-  // const styleButtonBlock: string =
-  //   "background-color: red; color: white; border: none; padding: 10px; cursor: pointer;";
+
   let styleButtons: string = "";
   const status: string = "PUBLISHED";
   let flag: string = "";

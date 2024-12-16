@@ -1,6 +1,5 @@
-import { LINKS, LOCATIONS, QUERY } from "../../shared/consts/consts";
+import { QUERY } from "../../shared/consts/consts";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
-import { route } from "../../shared/routing/routing";
 
 /**
  * Функция получения популярных постов

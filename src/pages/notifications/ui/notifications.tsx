@@ -1,10 +1,7 @@
-// import * as VDom from "vdom";
 import { Sidebar } from "../../../shared/sidebar/sidebar";
-import { getAccount } from "../../../features/getAccount/getAccount";
 import * as VDom from "vdom";
-import { createText } from "jsxteamon2/dist/jsxteamon";
-import { renderNotifications } from "../index";
 import { modal } from "../../../pages/feed/ui/feed";
+
 export async function renderNotification() {
   let flagFirst: string =
     sessionStorage.getItem(`notification`) === "0" ||

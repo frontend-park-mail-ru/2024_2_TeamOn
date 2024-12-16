@@ -2,9 +2,7 @@ import {
   realizePay,
   renderModalRealizeCustomSubs,
   renderModalRequestCustomSubs,
-  renderModalUnfollow,
   requestPay,
-  unfollow,
 } from "../../entities/customsubs";
 import { getCustomSubscription } from "../getCustomSubs/getCustomSubs";
 import {
@@ -61,42 +59,6 @@ function modifireModalConfirmSubscription(
   );
   const handleClickPayment = async () => {
     window.location.href = subscriptionRequestID;
-    return;
-    const response: any = await realizePay(subscriptionRequestID);
-    const modalConfirmNew: any = document.querySelector(`.modal__confirmsubs`);
-    if (!response || response.message) {
-      const input = modalConfirmNew.querySelectorAll(`.form-group`);
-      const error = input[input.length - 1].querySelector("p");
-      if (!error) {
-        const error = document.createElement("p");
-        error.style.color = "red";
-        error.textContent = "Ошибка оплаты";
-        input[input.length - 1].appendChild(error);
-      }
-      return;
-    }
-    const media = "Оплата успешно проведена";
-    controlPush({ status: true, message: media }, "isnotpush");
-    modalConfirmNew.style.display = "none";
-    profileForm.classList.remove("blur");
-    const newUrl = `/profile/${authorId}`;
-    window.history.pushState({ path: newUrl }, "", newUrl);
-    const placeposts: any = document.querySelector(`.place-posts`);
-    const placeSubscriptions: any =
-      document.querySelector(`.subscription-levels`);
-    placeSubscriptions.innerHTML = "";
-
-    overlay.remove();
-    document.body.style.overflow = "auto";
-
-    await paginateProfile([], placeposts);
-    await paginateSubscription([], placeSubscriptions);
-
-    const placeStats: any = document.querySelector(`.stats`);
-    const payments: any = await getPayments(window.location.pathname);
-    const authorData: any = await getPageAuthor(window.location.pathname);
-    const arrayStats: VNode = await renderUserStats(authorData, payments);
-    update(placeStats, arrayStats);
     return;
   };
   let selectedDuration: number = 1;

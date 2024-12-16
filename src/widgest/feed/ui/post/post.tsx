@@ -1,11 +1,8 @@
 import { hasLogged } from "../../../../shared/utils/hasLogged";
-import { renderTo } from "../../../../../lib/vdom/lib";
-import { getMediaFiles } from "../../../../features/getMediaFiles/getMediaFiles";
 import { getUrlFiles } from "../../../../features/getUrlFiles/getUrlFiiles";
 import * as VDom from "vdom";
 import { renderPlaceAddComment } from "../../../../entities/comments";
 import { getComments } from "../../../../features/controlAdaptivePageAuthor/controlAdaptivePageAuthor";
-import { containerComment } from "../comments/comments";
 
 /**
  * Рендер контейнера поста

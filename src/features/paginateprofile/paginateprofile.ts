@@ -4,7 +4,6 @@ import { getUserPosts } from "../getuserposts/getUserPosts";
 import { renderUserPost } from "../../entities/userPost/index";
 import { renderTo } from "../../../lib/vdom/lib";
 import { containerMediaPost } from "../../widgest/feed/ui/post/post";
-import { getUrlFiles } from "../getUrlFiles/getUrlFiiles";
 
 /**
  * Функция рендера постов

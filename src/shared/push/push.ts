@@ -1,4 +1,4 @@
-import { iconNotificationHave, urlIconNotification } from "../../app";
+import { iconNotificationHave } from "../../app";
 import { getPushNotification } from "../../features/getNotification/getNotification";
 import { getAvatar } from "../../features/getavatar/getavatar";
 import {

@@ -1,16 +1,6 @@
 import { setStatic } from "../../shared/getStatic/getStatic";
-import { getNotification } from "../getNotification/getNotification";
-import { paginate } from "../paginateFeed/paginateFeed";
-import {
-  modifireNotifications,
-  paginateNotifications,
-} from "../paginateNotification/paginateNotification";
-import {
-  iconNotificationClear,
-  iconNotificationHave,
-  iconNotificationRead,
-  urlIconNotification,
-} from "../../app";
+import { paginateNotifications } from "../paginateNotification/paginateNotification";
+import { iconNotificationClear, iconNotificationRead } from "../../app";
 
 function controlFeed(tab: any) {
   const containerPopularPosts: any = document.querySelector(
@@ -123,10 +113,8 @@ export async function showZeroNotif(container: any, idx: number) {
   ) {
     updateNotifText(zero, sessionStorage.getItem("notification"));
     zero.style.display = "flex";
-    // setStatic(iconNotif, iconNotificationHave);
   } else if (container.querySelector(".container-notif")) {
     zero.style.display = "none";
-    // setStatic(iconNotif, urlIconNotification);
   }
 }
 export function updateNotifText(zero: any, idx: any) {

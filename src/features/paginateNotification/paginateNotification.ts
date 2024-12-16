@@ -1,14 +1,12 @@
-import { ELEMENTS_CLASS, QUERY } from "../../shared/consts/consts";
-import { renderTo, update } from "../../../lib/vdom/lib";
+import { QUERY } from "../../shared/consts/consts";
+import { renderTo } from "../../../lib/vdom/lib";
 import { convertISOToRussianDate } from "../../shared/utils/parsedate";
 import { getAvatar } from "../getavatar/getavatar";
 import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { getNotification } from "../getNotification/getNotification";
 import { containerNotification } from "../../widgest/notification/notification";
-import { parseUsername } from "../parseUsername/parseUsername";
 import { controlSlideShow } from "../paginateFeed/paginateFeed";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
-import { throttle } from "../../entities/searchbar";
 function formatMessage(message: any) {
   // Регулярное выражение для поиска ника
   const regex = /@(\w+)/;
@@ -59,6 +57,9 @@ async function customizeNotification(container: any, notification: any = null) {
     });
     username.classList.add("author");
   }
+
+  const date = container.querySelector(`.date`);
+  date.textContent = convertISOToRussianDate(notification.createdAt);
   const rightContent: any = document.querySelector(`.container-notification`);
   controlSlideShow(container, rightContent);
 }
