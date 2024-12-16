@@ -132,7 +132,7 @@ async function renderFeedForm() {
     <div class="main-content">
       {await Sidebar()}
       {renderSearchbar()}
-      <div style="position: fixed; margin-left: -20px; z-index: 1000;">
+      <div class="title-page" style="margin-left: -20px; z-index: 1000;">
         <h1>Лента</h1>
       </div>
       <div class="right-content">

@@ -14,7 +14,10 @@ async function renderModerationForm() {
       <div>
         {await Sidebar()}
         {renderSearchbar()}
-        <div style="position: fixed; margin-left: -27px; z-index: 1000;">
+        <div
+          class="title-page"
+          style="margin-left: -27px; z-index: 1000;"
+        >
           <h1>Модерация</h1>
         </div>
       </div>

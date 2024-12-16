@@ -1676,6 +1676,13 @@ form input[type=text]:focus {
     margin-left: 250px;
   }
 }
+@media (min-width: 768px) {
+  .right-content,
+  .container-notification,
+  .container-settingss {
+    margin-top: 54px;
+  }
+}
 .right-content {
   display: flex;
   height: 100%;
@@ -2150,10 +2157,13 @@ span {
   .main-content h1 {
     top: -58px !important;
     margin-left: 60px !important;
+    position: fixed;
+  }
+  .title-page {
+    position: fixed;
   }
 }
 .main-content h1 {
-  position: fixed;
   font-size: 24px;
   margin-bottom: 20px;
   z-index: 1;
