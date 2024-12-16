@@ -1061,10 +1061,10 @@ function modifierModalDeleteComment(
       const commentsCount: any = await getComments(postID, 0, 300);
 
       amountComments.innerHTML = `${commentsCount.length}`;
-      if (commentsCount.length === 1 || commentsCount.length) {
-        nextCommentsButton.style.display = "none";
+      if (oldCount > 1) {
+        nextCommentsButton.textContent = "Скрыть комментарии";
       }
-      if (oldCount == 1) {
+      if (commentsCount.length > 1 && oldCount === 1) {
         nextCommentsButton.textContent = "Показать следующие комментарии...";
         const allItems = placeContent.querySelectorAll(`.comment-item`);
         allItems.forEach((item: any, index: number) => {
@@ -1072,7 +1072,7 @@ function modifierModalDeleteComment(
             item.remove();
           }
         });
-      } else {
+      } else if (commentsCount.length === 1) {
         nextCommentsButton.style.display = "none";
       }
       mainContent.classList.remove("blur");
