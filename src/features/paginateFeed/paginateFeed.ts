@@ -823,8 +823,11 @@ async function customizeComment(container: any, comment: any, postID: string) {
   const content: any = container.querySelector(`.comment-title`);
   content.innerHTML = `${comment.content}`;
   const currentCommentID = comment.commentID;
+  console.log(comment)
 
   const username = container.querySelector(`.author-comment-name`);
+  username.innerHTML = `${comment.username}`;
+
   username.addEventListener("click", () => {
     gotoauthor(comment.userID);
   });
@@ -1394,7 +1397,7 @@ export async function paginateComments(
         if (nextComments.length > 0) {
           allComments.push(...nextComments);
           offset += QUERY.LIMIT;
-          containerComments.append(...(await renderComments(nextComments)));
+          containerComments.append(...((await renderComments(nextComments)).reverse()));
           modifireComments(containerComments, nextComments, postID);
         } else {
           stopLoadComments = true;

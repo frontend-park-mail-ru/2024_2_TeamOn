@@ -23,10 +23,12 @@ async function modifierSidebar(mainContainer?: any) {
   if (!mainContainer) {
     return;
   }
-  const avatar: any = await getAvatar("/profile");
-  const divAvatar: any = mainContainer.querySelector(`.avatar-profile-sidebar`);
-  if (divAvatar) {
-    divAvatar.src = avatar;
+  if (hasLogged()) {
+    const avatar: any = await getAvatar("/profile");
+    const divAvatar: any = mainContainer.querySelector(`.avatar-profile-sidebar`);
+    if (divAvatar) {
+      divAvatar.src = avatar;
+    }
   }
   const sidebar = mainContainer.querySelector(".sidebar");
   const burger: any = mainContainer.querySelector(`.burger2`);
