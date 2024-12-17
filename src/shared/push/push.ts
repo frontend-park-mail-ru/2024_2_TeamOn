@@ -182,7 +182,8 @@ async function startPushNotifications(objSettings = null, flag = "") {
   if (
     window.location.pathname === "/login" ||
     window.location.pathname === "/signup" ||
-    window.location.pathname === "/" || !hasLogged()
+    window.location.pathname === "/" ||
+    !hasLogged()
   )
     return;
 

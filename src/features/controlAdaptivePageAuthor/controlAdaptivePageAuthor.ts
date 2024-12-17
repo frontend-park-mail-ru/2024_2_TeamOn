@@ -424,9 +424,9 @@ export async function setComments(container: any, post: any) {
     const nextCommentsButton: any = container.querySelector(`.next-comments`);
 
     const comments: any = await getComments(post.postId, 0, 300);
-    const nextComments = comments.slice(comments.length - 1, comments.length);
+    const nextComments = comments.slice(0, 1);
     placeContent.append(...(await renderComments(nextComments)));
-    modifireComments(placeContent, nextComments.reverse(), post.postId);
+    modifireComments(placeContent, nextComments, post.postId);
     if (comments.length > 1) {
       nextCommentsButton.style.display = "block";
     }

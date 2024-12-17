@@ -25,7 +25,9 @@ async function modifierSidebar(mainContainer?: any) {
   }
   if (hasLogged()) {
     const avatar: any = await getAvatar("/profile");
-    const divAvatar: any = mainContainer.querySelector(`.avatar-profile-sidebar`);
+    const divAvatar: any = mainContainer.querySelector(
+      `.avatar-profile-sidebar`,
+    );
     if (divAvatar) {
       divAvatar.src = avatar;
     }

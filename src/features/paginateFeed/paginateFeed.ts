@@ -823,7 +823,7 @@ async function customizeComment(container: any, comment: any, postID: string) {
   const content: any = container.querySelector(`.comment-title`);
   content.innerHTML = `${comment.content}`;
   const currentCommentID = comment.commentID;
-  console.log(comment)
+  console.log(comment);
 
   const username = container.querySelector(`.author-comment-name`);
   username.innerHTML = `${comment.username}`;
@@ -1379,6 +1379,7 @@ export async function paginateComments(
   let stopLoadComments: boolean = false;
   let offset = 0;
   let isLoading = false;
+  offset = flag;
   async function loadComments() {
     if (isLoading) return;
     isLoading = true;
@@ -1390,15 +1391,13 @@ export async function paginateComments(
         activeRequests.add(requestId);
 
         const comments: any = await getComments(postID, offset);
-        for (let i = 0; i < flag; i++) {
-          comments.pop();
-        }
+
         const nextComments = comments.slice(0, QUERY.LIMIT);
         if (nextComments.length > 0) {
           allComments.push(...nextComments);
           offset += QUERY.LIMIT;
-          containerComments.append(...((await renderComments(nextComments)).reverse()));
-          modifireComments(containerComments, nextComments, postID);
+          containerComments.append(...(await renderComments(nextComments)));
+          modifireComments(containerComments, nextComments.reverse(), postID);
         } else {
           stopLoadComments = true;
         }
