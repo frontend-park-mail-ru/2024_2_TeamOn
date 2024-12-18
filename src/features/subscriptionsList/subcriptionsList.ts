@@ -192,6 +192,8 @@ export async function renderContainerSubs(
       button.classList.add("issubs");
       const rightColumn: any = document.querySelector(`.right-column`);
       rightColumn.style.height = "250px";
+      const customSibs = div.querySelector(".subscription-level");
+      customSibs.classList.add("box");
       return subs;
     }
   }
@@ -202,7 +204,8 @@ export async function renderContainerSubs(
     const container: any = containerNoneCustomSubcsribe();
     const div = renderTo(container);
     const icon = div.querySelector(`.icon-dontsubs`);
-    setStatic(icon, iconClearSubs);
+    const existCustomSibs = div.querySelector(".subscription-level");
+    // existCustomSibs.classList.remove("box");
     subs.push(div);
   }
 

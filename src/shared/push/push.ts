@@ -186,7 +186,6 @@ async function startPushNotifications(objSettings = null, flag = "") {
     !hasLogged()
   )
     return;
-
   controlPush(objSettings, flag); // Вызов функции один раз сразу
 
   // Периодически добавляем новые уведомления

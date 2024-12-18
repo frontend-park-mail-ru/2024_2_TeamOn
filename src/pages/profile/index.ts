@@ -4,6 +4,9 @@ import { renderAbout } from "../../entities/profileabout/index";
 import { renderTo, update } from "../../../lib/vdom/lib";
 import {
   iconClearSubs,
+  iconEditStatus,
+  iconPenUpload,
+  iconPremiumSub,
   pageContainer,
   urlAddCustomSubs,
   urlCloseModal,
@@ -481,6 +484,14 @@ export async function renderProfile() {
       setStatic(divClearSubs, iconClearSubs);
     }
 
+    const iconEditBackground = container.querySelector(`.icon-edit-background`);
+    if (iconEditBackground) {
+      setStatic(iconEditBackground, iconPenUpload);
+    }
+    const iconDivEditStatus = container.querySelector(`.edit-info-button`);
+    if (iconDivEditStatus) {
+      setStatic(iconDivEditStatus, iconEditStatus);
+    }
     // Отрисовка информации о пользователе
     const content = renderAbout(authorData);
     const place: any = document.querySelector(`.place-edit-info`);
@@ -508,6 +519,10 @@ export async function renderProfile() {
 
     controlCustomSubscriptions(container);
 
+    const allIconSubs = container.querySelectorAll(`.icon-subs`);
+    allIconSubs.forEach((icon: any) => {
+      setStatic(icon, iconPremiumSub);
+    });
     return container;
   } catch (error) {
     console.log("ERROR in profile");

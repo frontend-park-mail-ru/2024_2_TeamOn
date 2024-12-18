@@ -210,9 +210,17 @@ form input[type="text"]:focus {
   background-size: cover;
   background-position: center center;
   transition: opacity 0.3s ease;
-  overflow: hidden;
+  overflow-x: hidden;
+  position: relative;
+  scrollbar-width: none;
 }
-
+// .home-container-sec {
+//   background-image: url("./photos/fon.jpg");
+// }
+// .home-container,
+// .home-overlay {
+//   background-image: url("./photos/human.jpg");
+// }
 .defs {
   display: block;
 }
@@ -579,7 +587,7 @@ form input[type="text"]:focus {
   font-size: 16px;
   color: #555;
   margin-bottom: 15px;
-  max-width: 100%;
+  max-width: 90%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -587,7 +595,7 @@ form input[type="text"]:focus {
 }
 
 /* Стили для кнопки "Изменить" */
-.edit-info-button,
+
 .save-info-button {
   display: block;
   margin: 10px 0;
@@ -601,6 +609,12 @@ form input[type="text"]:focus {
   transition:
     background-color 0.3s,
     color 0.3s;
+}
+.edit-info-button {
+  // background-image: url("./photos/penBlack.png");
+  background-size: cover;
+  width: 25px;
+  height: 25px;
 }
 .cancel-info-button {
   display: block;
@@ -650,14 +664,7 @@ form input[type="text"]:focus {
   background-color: gray;
   color: white;
 }
-.edit-info-button {
-  background-color: white;
-  color: gray;
-}
-.edit-info-button:hover {
-  background-color: gray;
-  color: white;
-}
+
 .save-info-button:hover,
 .cancel-info-button:hover {
   background-color: var(--main-color-hover);
@@ -868,6 +875,10 @@ form input[type="text"]:focus {
   margin-bottom: 10px;
   color: var(--main-color-black);
 }
+.info-subs {
+  margin-left: 10px;
+  margin-bottom: 20px;
+}
 .about p,
 .posts-mobile__button p,
 .about-mobile__button p {
@@ -877,23 +888,41 @@ form input[type="text"]:focus {
 .subscription-levels {
   background-color: white;
 }
+
+.exist-subscription-level {
+  flex-direction: column;
+  display: flex;
+  padding-top: 20px;
+  margin: 10px;
+  border-radius: 10px;
+  align-items: center;
+}
 .subscription-level {
+  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.1);
   flex-direction: column;
   align-items: center;
   display: flex;
   padding: 20px;
   margin: 10px;
   border-radius: 10px;
-  box-shadow: 1px 1px 10px 10px rgba(0, 0, 0, 0.1);
+  align-items: flex-start;
 }
-.subscription-levels h2 {
+.title-level {
+  font-weight: normal;
+}
+.content-level {
+  z-index: 1;
+}
+.subscription-levels h2,
+.exist-subscription-level h2 {
   font-size: 18px;
   margin-bottom: 10px;
 }
 .subscription-level {
   margin-bottom: 20px;
 }
-.subscription-level h3 {
+.subscription-level h3,
+.exist-subscription-level h3 {
   font-size: 16px;
   margin-bottom: 5px;
 }
@@ -1092,7 +1121,7 @@ form input[type="text"]:focus {
   background-color: white;
   border-bottom: 1px solid #ddd;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 0px 0px 10px 10px;
+  border-radius: 10px;
   margin-bottom: 20px;
 }
 .tabs-mobile div {
@@ -1100,13 +1129,38 @@ form input[type="text"]:focus {
   cursor: pointer;
   font-size: 16px;
 }
-
+.sub-header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  flex-direction: column;
+  align-content: center;
+  align-items: flex-start;
+}
+// .icon-dontsubs {
+//   background-image: url("./photos/custom-subscribe-not-exist.jpg");
+// }
+.icon-subs {
+  // background-image: url("./photos/premium.png");
+  background-size: cover;
+  width: 150px;
+  height: 150px;
+  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%)
+    hue-rotate(533deg) brightness(79%) contrast(100%);
+  opacity: 0.35;
+  position: absolute;
+  right: 35px;
+  margin-top: -15px;
+  z-index: 0;
+}
 .content-mobile {
   text-align: center;
   padding: 20px;
   background-color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  border-radius: 0 0 10px 10px;
+  margin-bottom: 20px;
 }
 
 // -------
@@ -1417,11 +1471,17 @@ form input[type="text"]:focus {
   height: 60px;
 }
 .icon-edit-background {
+  // background-image: url("./photos/penWhite.png");
   width: 15px;
   height: 15px;
   float: left;
 }
-
+.iteraction-about {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 .about-profile-sidebar {
   display: flex;
   flex-direction: column;
@@ -1429,6 +1489,7 @@ form input[type="text"]:focus {
   align-items: center;
   padding: 20px;
   gap: 10px;
+  cursor: pointer;
 }
 .avatar-profile-sidebar {
   cursor: pointer;
@@ -1491,9 +1552,11 @@ form input[type="text"]:focus {
   font-size: 20px;
 }
 .icon-dontsubs {
-  height: 100px;
-  width: 100px;
+  // margin-left: 20%;
+  height: 120px;
+  width: 150px;
   background-size: cover;
+  opacity: 0.6;
 }
 .media-post {
   flex: 1 1 calc(33.333% - 10px);
@@ -1784,7 +1847,8 @@ form input[type="text"]:focus {
 .likes-container:hover .likes,
 .comments-container:hover .comments,
 .author-name:hover,
-.author-comment-name:hover {
+.author-comment-name:hover,
+.edit-info-button:hover {
   cursor: pointer;
   filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%)
     hue-rotate(180deg) brightness(65%) contrast(100%);
@@ -1966,7 +2030,7 @@ span {
     position: fixed;
   }
   .title-page {
-    position: fixed;
+    margin-bottom: -67px;
   }
 }
 
@@ -3566,4 +3630,83 @@ progress::-moz-progress-bar {
 
 .main-container-publish {
   flex-direction: column;
+}
+
+.footer {
+  padding: 40px 20px;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* margin-top: 800px; */
+  position: absolute;
+  top: 100%;
+  width: 100%;
+}
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 20px;
+}
+.footer-content div {
+  flex: 1;
+  margin: 0 20px;
+}
+.footer-content h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+.footer-content p,
+.footer-content a {
+  font-size: 16px;
+  color: #fff;
+  text-decoration: none;
+  margin: 5px 0;
+}
+.footer-content a:hover {
+  text-decoration: underline;
+}
+.footer-bottom {
+  width: 100%;
+  max-width: 1200px;
+  text-align: center;
+  border-top: 1px solid #444;
+  padding-top: 20px;
+}
+.footer-bottom p {
+  margin: 5px 0;
+}
+.social-icons {
+  margin-top: 10px;
+}
+.social-icons a {
+  color: #fff;
+  margin: 0 10px;
+  font-size: 20px;
+  text-decoration: none;
+}
+.social-icons a:hover {
+  color: #ccc;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.logo img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+  }
+  .footer-content div {
+    margin: 10px 0;
+  }
 }

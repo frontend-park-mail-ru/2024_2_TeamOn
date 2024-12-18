@@ -19,12 +19,15 @@ function containerCustomSubscribe(subscription: any, userdata: any = null) {
     : "";
   return (
     <div class="subscription-level">
-      <h3 style={styleSubs} class="title-level">
-        {subscription.title}
-      </h3>
-      <p style={styleSubs} class="count-level">
-        {String(subscription.cost)} ₽ в месяц
-      </p>
+      <div class="icon-subs"></div>
+      <div class="sub-header">
+        <h3 style={styleSubs} class="title-level">
+          {subscription.title}
+        </h3>
+        <p style={styleSubs} class="count-level">
+          {String(subscription.cost)} ₽ в месяц
+        </p>
+      </div>
       <p style={styleSubs} class="content-level">
         {String(subscription.description)}
       </p>
@@ -36,9 +39,11 @@ function containerCustomSubscribe(subscription: any, userdata: any = null) {
 }
 function containerNoneCustomSubcsribe() {
   return (
-    <div class="subscription-level">
+    <div class="exist-subscription-level">
       <div class="icon-dontsubs"></div>
-      <h3 class="title-level">У этого автора еще нет подписок</h3>
+      <h3 style="color: var(--main-color-black);" class="title-level">
+        Нет уровней подписок
+      </h3>
     </div>
   );
 }
