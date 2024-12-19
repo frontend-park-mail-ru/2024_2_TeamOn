@@ -15,6 +15,7 @@ import { renderComplaint } from "../../pages/feed/ui/feed";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { setStatic } from "../../shared/getStatic/getStatic";
 import {
+  iconArrowNextMediaFiles,
   pageContainer,
   urlDeleteComment,
   urlEditComment,
@@ -1121,6 +1122,8 @@ export function controlMediaFiles(container: any) {
           renderNextArrow(String(medias.length - 2)),
           "next-media-button",
         );
+        const icon = div.querySelector(`.next-arrow-media`);
+        setStatic(icon, iconArrowNextMediaFiles)
         media.appendChild(div);
         return;
       } else if (index > 1) {
@@ -1137,7 +1140,7 @@ export function controlMediaFiles(container: any) {
 async function customizePost(container: any, post: any) {
   
   controlMediaFiles(container);
-  
+
   const authorSection: any = container.querySelector(
     `.${ELEMENTS_CLASS.POST.AUTHOR.NAME}`,
   );

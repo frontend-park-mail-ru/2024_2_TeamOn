@@ -238,9 +238,9 @@ export const iconNotificationHave: any = await getUrlStatic(
 );
 export const iconPenUpload: any = await getUrlStatic("/penWhite.png");
 export const iconEditStatus: any = await getUrlStatic("/penBlack.png");
-// export const iconExistSubs: any = await getUrlStatic(
-//   "/custom-subscribe-not-exist.jpg",
-// );
+export const iconArrowNextMediaFiles: any = await getUrlStatic(
+  "/nextMedia.png",
+);
 export const iconBaseSub: any = await getUrlStatic("/base.png");
 export const iconPremiumSub: any = await getUrlStatic("/premium.png");
 export const iconVIPSub: any = await getUrlStatic("/CROWN.png");
