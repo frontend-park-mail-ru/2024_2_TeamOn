@@ -232,7 +232,7 @@ export async function customizePostProfile(
   post: any,
   postId: any = null,
 ) {
-  controlMediaFiles(container)
+  controlMediaFiles(container);
   const iconLike: any = container.querySelector(`.likes`);
   const iconComment: any = container.querySelector(`.comments`);
   const iconSad: any = container.querySelector(`.sad`);

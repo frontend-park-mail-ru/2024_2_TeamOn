@@ -2061,9 +2061,18 @@ span {
     padding-top: 60px;
   }
   .main-content h1 {
-    top: -58px !important;
-    margin-left: 60px !important;
-    position: fixed;
+    padding-left: 40px;
+    text-align: left;
+    display: flex;
+    height: 70px;
+    width: 100%;
+    top: 0px !important;
+    position: fixed !important;
+    background-color: var(--main-background-color);
+    justify-content: flex-start;
+    margin-top: 0px;
+    align-content: center;
+    align-items: center;
   }
   .title-page {
     margin-bottom: -67px;
@@ -2630,6 +2639,7 @@ select {
   .right-content {
     margin-left: 0;
     width: 100%;
+    margin-top: 0px;
   }
   .search-bar {
     width: 320px;
@@ -2640,6 +2650,7 @@ select {
   .tabs,
   .tabs.settings {
     border-bottom: none;
+    margin-top: 60px;
   }
 }
 

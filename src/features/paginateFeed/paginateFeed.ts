@@ -1123,7 +1123,7 @@ export function controlMediaFiles(container: any) {
           "next-media-button",
         );
         const icon = div.querySelector(`.next-arrow-media`);
-        setStatic(icon, iconArrowNextMediaFiles)
+        setStatic(icon, iconArrowNextMediaFiles);
         media.appendChild(div);
         return;
       } else if (index > 1) {
@@ -1138,7 +1138,6 @@ export function controlMediaFiles(container: any) {
  * @param post Пост
  */
 async function customizePost(container: any, post: any) {
-  
   controlMediaFiles(container);
 
   const authorSection: any = container.querySelector(
