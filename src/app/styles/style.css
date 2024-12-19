@@ -230,9 +230,17 @@ form input[type=text]:focus {
   background-size: cover;
   background-position: center center;
   transition: opacity 0.3s ease;
-  overflow-x: hidden;
-  position: relative;
+  overflow-x: clip;
+  position: absolute;
   scrollbar-width: none;
+}
+
+.home-container-sec {
+  background-image: url("./photos/human.jpg");
+}
+
+.home-container {
+  background-image: url("./photos/fon.jpg");
 }
 
 .defs {
@@ -248,7 +256,8 @@ form input[type=text]:focus {
   background: rgba(0, 0, 0, 0.3);
 }
 
-.home-header {
+.home-header,
+.home-description {
   padding: 20pt 20pt;
   position: absolute;
   top: 30%;
@@ -263,6 +272,32 @@ form input[type=text]:focus {
      -moz-user-select: none;
           user-select: none;
   opacity: 0.4;
+}
+
+@media (min-width: 768px) {
+  .home-description {
+    width: 90% !important;
+  }
+}
+.home-description {
+  font-size: 70px;
+  top: 60%;
+  width: 100%;
+  overflow-wrap: break-word;
+  text-align: center;
+  display: flex;
+  align-content: center;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.letter {
+  transition: color 0.3s ease; /* Плавный переход цвета */
+}
+
+.letter:hover {
+  color: #ff0000; /* Цвет подсветки при наведении */
 }
 
 .feed-buttons__button {
@@ -2706,6 +2741,9 @@ select {
   .home-header {
     font-size: 70px;
   }
+  .home-description {
+    font-size: 30px;
+  }
   .home-button {
     width: 50%;
     height: 50%;
@@ -2951,7 +2989,6 @@ select {
 }
 
 .searchbar-container {
-  bottom: 100%;
   position: relative;
   width: 150px;
   margin: 0 auto;
@@ -3012,7 +3049,6 @@ select {
 }
 /* Поле ввода */
 .searchbar-container {
-  bottom: 100%;
   position: relative;
   width: 150px;
   margin: 0 auto;
@@ -3941,44 +3977,50 @@ progress::-moz-progress-bar {
 
 .footer {
   padding: 40px 20px;
-  background-color: #000;
   color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
   /* margin-top: 800px; */
-  position: absolute;
-  top: 100%;
-  width: 100%;
+  position: relative;
+  bottom: 0;
+  /* width: 100%; */
+  opacity: 0.2;
 }
 
-.footer-content {
+.footer-content,
+.footer-bottom2 {
+  position: absolute;
   display: flex;
   justify-content: space-between;
   width: 100%;
-  max-width: 1200px;
   margin-bottom: 20px;
+  height: 100%;
 }
 
-.footer-content div {
+.footer-content {
+  background-color: #333;
+}
+
+.footer-bottom2 div {
   flex: 1;
   margin: 0 20px;
 }
 
-.footer-content h3 {
+.footer-bottom2 h3 {
   font-size: 18px;
   margin-bottom: 10px;
 }
 
-.footer-content p,
-.footer-content a {
+.footer-bottom2 p,
+.footer-bottom2 a {
   font-size: 16px;
   color: #fff;
   text-decoration: none;
   margin: 5px 0;
 }
 
-.footer-content a:hover {
+.footer-bottom2 a:hover {
   text-decoration: underline;
 }
 

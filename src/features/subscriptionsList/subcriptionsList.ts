@@ -20,7 +20,7 @@ import { renderUserStats } from "../../entities/profileInfo/ui/ui";
 import { VNode } from "lib/vdom/src/source";
 import { showOverlay } from "../../shared/overlay/overlay";
 import { setStatic } from "../../shared/getStatic/getStatic";
-import { iconClearSubs, urlPushbackIcon } from "../../app";
+import { iconClearSubs, iconPremiumSub, urlPushbackIcon } from "../../app";
 import { controlPush } from "../../shared/push/push";
 
 function foundCancel(div: any) {
@@ -162,6 +162,10 @@ function modifireModalConfirmSubscription(
 function customizeSubscription(container: any, subscription: any) {
   if (window.location.pathname === "/profile") {
     return;
+  }
+  const iconSub = container.querySelectorAll(`.icon-subs`);
+  if (subscription.layer === "2") {
+    setStatic(iconSub, iconPremiumSub);
   }
   const buttonSubscription: any = container.querySelector(`.button-buy-subs`);
   const profileForm: any = document.querySelector(`.profile-form`);

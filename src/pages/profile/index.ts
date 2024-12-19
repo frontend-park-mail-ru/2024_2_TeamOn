@@ -519,10 +519,10 @@ export async function renderProfile() {
 
     controlCustomSubscriptions(container);
 
-    const allIconSubs = container.querySelectorAll(`.icon-subs`);
-    allIconSubs.forEach((icon: any) => {
-      setStatic(icon, iconPremiumSub);
-    });
+    // const allIconSubs = container.querySelectorAll(`.icon-subs`);
+    // allIconSubs.forEach((icon: any) => {
+    //   setStatic(icon, iconPremiumSub);
+    // });
     return container;
   } catch (error) {
     console.log("ERROR in profile");
