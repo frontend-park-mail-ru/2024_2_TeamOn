@@ -2192,8 +2192,37 @@ span {
 // }
 .content-media {
   max-width: 100%;
-  height: 100%;
+  height: auto;
   cursor: pointer;
+}
+.next-arrow-media {
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+  background-image: url("./photos/nextMedia.png");
+}
+.next-media-button {
+  height: 100%;
+  width: 100%;
+  margin-top: 10%;
+}
+.next-media {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: var(--main-color);
+}
+.next-arrow-media {
+  transition: filter 0.3s ease;
+  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%)
+    hue-rotate(180deg) brightness(65%) contrast(100%);
+}
+.next-arrow-media:hover {
+  filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%)
+    hue-rotate(180deg) brightness(100%) contrast(100%);
 }
 .become-a-creator {
   background-color: #f9f9f9;

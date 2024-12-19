@@ -492,7 +492,7 @@ export async function renderProfile() {
     const content = renderAbout(authorData);
     const place: any = document.querySelector(`.place-edit-info`);
     update(place, content);
-    
+
     const iconDivEditStatus = container.querySelector(`.edit-info-button`);
     if (iconDivEditStatus) {
       setStatic(iconDivEditStatus, iconEditStatus);

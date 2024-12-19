@@ -21,6 +21,7 @@ import { getPageAuthor } from "../getpageauthor/getpageauthor";
 import { setLike } from "../../entities/likes";
 import { route } from "../../shared/routing/routing";
 import {
+  controlMediaFiles,
   controlSlideShow,
   modifireComments,
   paginateComments,
@@ -231,6 +232,7 @@ export async function customizePostProfile(
   post: any,
   postId: any = null,
 ) {
+  controlMediaFiles(container)
   const iconLike: any = container.querySelector(`.likes`);
   const iconComment: any = container.querySelector(`.comments`);
   const iconSad: any = container.querySelector(`.sad`);
