@@ -3089,7 +3089,7 @@ select {
 
 @media (max-width: 768px) {
   .searchbar-wrapper-feed {
-    left: 105% !important;
+    left: 107% !important;
     height: 25px !important;
     width: 190px !important;
   }

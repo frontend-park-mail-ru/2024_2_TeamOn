@@ -74,9 +74,6 @@ function controllerMask(container: any, containerSecond: any, mask: any) {
   //   containerSecond.style.webkitmask = "none";
   // });
 
-  const footer: any = document.querySelector(".footer");
-  const footerContent: any = document.querySelector(`.footer-content`);
-
   // Функция для обновления маски
   const updateMaskHome = (e: any) => {
     containerSecond.style.mask = "url(#circle-mask)";
@@ -91,18 +88,6 @@ function controllerMask(container: any, containerSecond: any, mask: any) {
     circle.setAttribute("cy", `${y}`);
   };
 
-  const updateMaskFooter = (e: any) => {
-    footerContent.style.mask = "url(#circle-mask)";
-    footerContent.style.webkitmask = "url(#circle-mask)";
-    const rect = container.getBoundingClientRect();
-    const x = e.clientX - rect.left; // Корректируем координаты по отношению к контейнеру
-    const y = e.clientY - rect.top;
-
-    // Обновляем позицию круга в маске
-    const circle = mask.querySelector("circle") as SVGCircleElement;
-    circle.setAttribute("cx", `${x}`);
-    circle.setAttribute("cy", `${y}`);
-  };
   // Добавляем обработчики событий для контейнера
   container.addEventListener("mousemove", updateMaskHome);
   container.addEventListener("mouseout", () => {
@@ -110,11 +95,5 @@ function controllerMask(container: any, containerSecond: any, mask: any) {
     containerSecond.style.webkitmask = "none";
   });
 
-  // Добавляем обработчики событий для футера
-  footer.addEventListener("mousemove", updateMaskFooter);
-  footer.addEventListener("mouseout", () => {
-    footerContent.style.mask = "none";
-    footerContent.style.webkitmask = "none";
-  });
 }
 export { createMask, controllerMask };

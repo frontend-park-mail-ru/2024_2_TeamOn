@@ -13,10 +13,12 @@ async function renderModerationForm() {
     <div class="main-content">
       <div>
         {await Sidebar()}
+        <h1>Модерация</h1>
         {renderSearchbar()}
-        <div class="title-page" style="margin-left: -27px; z-index: 1000;">
-          <h1>Модерация</h1>
-        </div>
+        <div
+          class="title-page"
+          style="margin-left: -27px; z-index: 1000;"
+        ></div>
       </div>
       <div class="right-content">
         <div class="tabs feed">
