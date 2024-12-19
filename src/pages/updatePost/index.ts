@@ -149,7 +149,6 @@ async function mofireUpdatePost() {
           const input =
             containerUpdatePost.querySelectorAll(`.form-group-add`)[1];
           const error = input.querySelector("p");
-          alert(error);
           if (!error) {
             const error = document.createElement("p");
             error.style.color = "red";
