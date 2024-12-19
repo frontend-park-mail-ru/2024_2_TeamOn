@@ -243,6 +243,8 @@ export const iconArrowNextMediaFiles: any =
 export const iconBaseSub: any = await getUrlStatic("/base.png");
 export const iconPremiumSub: any = await getUrlStatic("/premium.png");
 export const iconVIPSub: any = await getUrlStatic("/CROWN.png");
+export const iconReport: any = await getUrlStatic("/report.png");
+export const iconTimer: any = await getUrlStatic("/timer.png");
 
 const favicon: any = await getUrlStatic("/fav.png");
 

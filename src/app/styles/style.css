@@ -3379,7 +3379,7 @@ canvas {
   height: 30px;
   display: flex;
   align-items: center;
-  width: 300px;
+  width: 350px;
   padding: 5px;
   margin-top: 5px;
   font-weight: bold;
@@ -3389,6 +3389,9 @@ canvas {
 }
 
 @media (max-width: 768px) {
+  .post-status {
+    width: 450px !important;
+  }
   .main-container-publish,
   .main-container-reported,
   .main-container-popular,
@@ -3398,6 +3401,14 @@ canvas {
     position: relative;
   }
 }
+.timer {
+  background-image: url("./photos/timer.png");
+  background-size: cover;
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
 .container-image-photos {
   width: 100%;
 }

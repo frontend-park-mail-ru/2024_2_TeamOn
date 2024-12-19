@@ -2209,7 +2209,7 @@ span {
   background-size: cover;
   width: 30px;
   height: 30px;
-  background-image: url("./photos/nextMedia.png");
+  // background-image: url("./photos/nextMedia.png");
 }
 .next-media-button {
   height: 100%;
@@ -3115,7 +3115,7 @@ canvas {
   height: 30px;
   display: flex;
   align-items: center;
-  width: 300px;
+  width: 350px;
   padding: 5px;
   margin-top: 5px;
   font-weight: bold;
@@ -3125,6 +3125,9 @@ canvas {
 }
 
 @media (max-width: 768px) {
+  .post-status {
+    width: 450px !important;
+  }
   .main-container-publish,
   .main-container-reported,
   .main-container-popular,
@@ -3134,10 +3137,12 @@ canvas {
     position: relative;
   }
 }
-@media (min-width: 768px) {
-  // .post-status {
-  //   margin-left: 57%;
-  // }
+.timer {
+  // background-image: url("./photos/timer.png");
+  background-size: cover;
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
 }
 .container-image-photos {
   width: 100%;
