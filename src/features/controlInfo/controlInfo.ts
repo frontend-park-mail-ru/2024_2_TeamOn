@@ -11,6 +11,10 @@ import DOMPurify from "dompurify";
  * @returns
  */
 function controlInfo(authorData: any, container: any) {
+  const title = container.querySelector(`.about-profile`);
+  if (title.textContent === "" && window.location.pathname !== "/profile") {
+    title.textContent = "Автор еще ничего про себя не написал";
+  }
   if (window.location.pathname !== "/profile") {
     return 0;
   }
@@ -32,8 +36,8 @@ function controlInfo(authorData: any, container: any) {
 
     if (event.target.classList.contains("save-info-button")) {
       const input = container.querySelector(`.about-input`);
-      const newValue = input.value;
-
+      let newValue = input.value;
+      if (newValue === "") newValue = "Укажите чем вы занимаетесь";
       // Сохраняем информацию
       try {
         const response = await setVibe(newValue);

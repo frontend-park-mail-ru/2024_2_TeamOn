@@ -101,6 +101,7 @@ self.addEventListener("fetch", (event) => {
     "/clearSubs.png",
     "/notificationNRead.png",
     "/fav.png",
+    "/penWhite.png",
   ];
 
   const shouldBypassCache = cachePaths.some((path) =>

@@ -823,8 +823,11 @@ async function customizeComment(container: any, comment: any, postID: string) {
   const content: any = container.querySelector(`.comment-title`);
   content.innerHTML = `${comment.content}`;
   const currentCommentID = comment.commentID;
+  console.log(comment);
 
   const username = container.querySelector(`.author-comment-name`);
+  username.innerHTML = `${comment.username}`;
+
   username.addEventListener("click", () => {
     gotoauthor(comment.userID);
   });
@@ -899,7 +902,7 @@ async function customizeComment(container: any, comment: any, postID: string) {
     buttonCancel.style.display = "none";
   };
   const handleClickDeleteComent = () => {
-    modifierModalDeleteComment(container, comment);
+    modifierModalDeleteComment(container, comment, postID);
   };
   const handleClickEditComment = async () => {
     const comments: any = await getComments(postID, 0, 300);
@@ -1000,8 +1003,13 @@ async function deleteComment(commentID: string) {
     );
   });
 }
-function modifierModalDeleteComment(container: any, comment: any) {
-  const mainContent: any = document.querySelector(`.right-content`);
+function modifierModalDeleteComment(
+  container: any,
+  comment: any,
+  postID: string,
+) {
+  let mainContent: any = document.querySelector(`.right-content`);
+  if (!mainContent) mainContent = document.querySelector(`.profile-form`);
   const place = document.querySelector(`.delete-comment-form`);
   const modal: any = renderComplaint(comment, true);
   update(place, modal);
@@ -1023,6 +1031,9 @@ function modifierModalDeleteComment(container: any, comment: any) {
     return;
   };
 
+  const parentElement = container.parentNode;
+  const placeContent = parentElement.parentNode;
+  const oldCount = placeContent.querySelectorAll(".comment-item").length;
   const handleClickDelete = async (e: any) => {
     e.preventDefault();
     showLoader();
@@ -1040,7 +1051,33 @@ function modifierModalDeleteComment(container: any, comment: any) {
         return;
       }
       modalsDelete.style.display = "none";
-      container.remove();
+      parentElement.remove();
+      if (placeContent.querySelectorAll(`.comment-item`).length === 0) {
+        const activeRequests = new Set();
+        await paginateComments(activeRequests, [], placeContent, postID, 0);
+      }
+      console.log(placeContent);
+      const nextCommentsButton: any =
+        placeContent.parentNode.querySelector(`.next-comments`);
+      const amountComments: any =
+        placeContent.parentNode.parentNode.querySelector(`.amount-comments`);
+      const commentsCount: any = await getComments(postID, 0, 300);
+
+      amountComments.innerHTML = `${commentsCount.length}`;
+      if (oldCount > 1) {
+        nextCommentsButton.textContent = "Скрыть комментарии";
+      }
+      if (commentsCount.length > 1 && oldCount === 1) {
+        nextCommentsButton.textContent = "Показать следующие комментарии...";
+        const allItems = placeContent.querySelectorAll(`.comment-item`);
+        allItems.forEach((item: any, index: number) => {
+          if (index !== 0) {
+            item.remove();
+          }
+        });
+      } else if (commentsCount.length === 1) {
+        nextCommentsButton.style.display = "none";
+      }
       mainContent.classList.remove("blur");
       document.body.style.overflow = "auto";
       overlay.remove();
@@ -1338,10 +1375,11 @@ export async function paginateComments(
   postID: string,
   flag: any,
 ) {
+  const allItems = containerComments.querySelectorAll(`.container-comment`);
   let stopLoadComments: boolean = false;
   let offset = 0;
-  !flag || flag === -1 ? (offset = 0) : (offset = flag);
   let isLoading = false;
+  offset = flag;
   async function loadComments() {
     if (isLoading) return;
     isLoading = true;
@@ -1353,6 +1391,7 @@ export async function paginateComments(
         activeRequests.add(requestId);
 
         const comments: any = await getComments(postID, offset);
+
         const nextComments = comments.slice(0, QUERY.LIMIT);
         if (nextComments.length > 0) {
           allComments.push(...nextComments);
