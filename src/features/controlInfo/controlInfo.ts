@@ -3,6 +3,8 @@ import { setVibe } from "../setvibe/setvibe";
 import { getPageAuthor } from "../getpageauthor/getpageauthor";
 import { renderAbout } from "../../entities/profileabout";
 import DOMPurify from "dompurify";
+import { setStatic } from "src/shared/getStatic/getStatic";
+import { iconEditStatus } from "src/app";
 
 /**
  * УПравление информацией "О СЕБЕ"
@@ -28,6 +30,10 @@ function controlInfo(authorData: any, container: any) {
         const content: any = renderAbout(newdataUser, true);
         const place: any = document.querySelector(`.place-edit-info`);
         update(place, content);
+        const iconDivEditStatus = place.querySelector(`.edit-info-button`);
+        if (iconDivEditStatus) {
+          setStatic(iconDivEditStatus, iconEditStatus);
+        }
         return;
       } catch (error) {
         console.error("Ошибка при обновлении информации:", error);
@@ -45,6 +51,10 @@ function controlInfo(authorData: any, container: any) {
         const content = renderAbout(newdataUser, false, newValue);
         const place: any = document.querySelector(`.place-edit-info`);
         update(place, content);
+        const iconDivEditStatus = place.querySelector(`.edit-info-button`);
+        if (iconDivEditStatus) {
+          setStatic(iconDivEditStatus, iconEditStatus);
+        }
         return;
       } catch (error) {
         console.error("Ошибка при обновлении информации:", error);
@@ -61,6 +71,10 @@ function controlInfo(authorData: any, container: any) {
       const content = renderAbout(newdataUser, false, currentText);
       const place: any = document.querySelector(`.place-edit-info`);
       update(place, content);
+      const iconDivEditStatus = place.querySelector(`.edit-info-button`);
+      if (iconDivEditStatus) {
+        setStatic(iconDivEditStatus, iconEditStatus);
+      }
       return;
     }
     // container.removeEventListener("click", handleClick);
