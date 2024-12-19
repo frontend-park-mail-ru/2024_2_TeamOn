@@ -32,6 +32,10 @@ async function modifierSidebar(mainContainer?: any) {
     if (divAvatar) {
       divAvatar.src = avatar;
     }
+    const username = mainContainer.querySelector(`.username-profile-sidebar`);
+    if (sessionStorage.getItem("role") === "Moderator") {
+      username.style.color = "var(--red)"
+    }
     const navPage = mainContainer.querySelector(`.about-profile-sidebar`);
     navPage.addEventListener("click", () => {
       sidebarLinks.forEach((link: any, index: any) => {
