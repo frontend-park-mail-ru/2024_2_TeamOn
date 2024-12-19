@@ -1095,6 +1095,8 @@ function modifierModalDeleteComment(
  * @param post Пост
  */
 async function customizePost(container: any, post: any) {
+  const medias = container.querySelectorAll(`.content-media`);
+  medias.forEach((media: any) => {});
   const authorSection: any = container.querySelector(
     `.${ELEMENTS_CLASS.POST.AUTHOR.NAME}`,
   );

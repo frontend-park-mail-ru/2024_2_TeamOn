@@ -196,9 +196,9 @@ export async function renderContainerSubs(
     subs.push(div);
     const iconSub = div.querySelector(`.icon-subs`);
 
-    if (subscription.layer === 1) {
-      setStatic(iconSub, iconBaseSub);
-    }
+    // if (subscription.layer === 1) {
+    //   setStatic(iconSub, iconBaseSub);
+    // }
     if (subscription.layer === 2) {
       setStatic(iconSub, iconPremiumSub);
     }

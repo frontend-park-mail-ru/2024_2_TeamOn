@@ -488,14 +488,15 @@ export async function renderProfile() {
     if (iconEditBackground) {
       setStatic(iconEditBackground, iconPenUpload);
     }
-    const iconDivEditStatus = container.querySelector(`.edit-info-button`);
-    if (iconDivEditStatus) {
-      setStatic(iconDivEditStatus, iconEditStatus);
-    }
     // Отрисовка информации о пользователе
     const content = renderAbout(authorData);
     const place: any = document.querySelector(`.place-edit-info`);
     update(place, content);
+    
+    const iconDivEditStatus = container.querySelector(`.edit-info-button`);
+    if (iconDivEditStatus) {
+      setStatic(iconDivEditStatus, iconEditStatus);
+    }
 
     const mainContent = container.querySelector(".main-content");
     const profileForm = container.querySelector(`.profile-form`);

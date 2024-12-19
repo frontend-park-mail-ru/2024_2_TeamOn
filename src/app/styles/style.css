@@ -373,6 +373,10 @@ form input[type=text]:focus {
   color: black;
 }
 
+.next {
+  color: var(--main-color);
+}
+
 .delete__button {
   color: red;
 }
@@ -1261,6 +1265,19 @@ form input[type=text]:focus {
   align-items: flex-start;
 }
 
+.main-info-subscrioption,
+.tech-info-subscription {
+  border: 2px solid rgba(138, 186, 227, 0.3490196078);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.info-subscription {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
+
 .icon-subs {
   background-size: cover;
   width: 150px;
@@ -1693,6 +1710,7 @@ form input[type=text]:focus {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 5px;
 }
 
 .subscription-author-full {
@@ -2367,9 +2385,9 @@ span {
   left: 0%;
 }
 
-.container-image-photos .image-photo {
-  max-width: 300px;
-  max-height: 300px;
+.content-media {
+  max-width: 100%;
+  height: 100%;
   cursor: pointer;
 }
 
@@ -3368,7 +3386,8 @@ canvas {
   color: #fff;
 }
 
-.video-player {
+.video-player,
+.content-media .image-photo {
   background-size: cover;
   width: 100%;
   margin: 0;
