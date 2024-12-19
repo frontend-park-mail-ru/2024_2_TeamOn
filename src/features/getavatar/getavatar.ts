@@ -6,13 +6,20 @@ import { fetchAjax } from "../../shared/fetch/fetchAjax";
  * @param authorID Автор айди
  * @returns
  */
-export async function getAvatar(link: string, authorID: any = null) {
+export async function getAvatar(link: string, authorId: any = null) {
   return new Promise((resolve, reject) => {
     fetchAjax(
+      // "GET",
+      // link == "/profile" && !authorID
+      //   ? "/api/accounts/account/me/avatar"
+      //   : `/api/accounts/account/${authorID ? authorID : link.split("/").pop()}/avatar`,
+
       "GET",
-      link == "/profile"
+      link === "/profile" && !authorId
         ? "/api/accounts/account/me/avatar"
-        : `/api/accounts/account/${authorID ? authorID : link.split("/").pop()}/avatar`,
+        : !authorId
+          ? `/api/accounts/account/${sessionStorage.getItem("authorid") ? sessionStorage.getItem("authorid") : link.split("/").pop()}/avatar`
+          : `/api/accounts/account/${authorId ? authorId : link.split("/").pop()}/avatar`,
       null,
       (response) => {
         if (response.ok) {

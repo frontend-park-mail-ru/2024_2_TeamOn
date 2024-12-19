@@ -21,12 +21,61 @@ function createMask() {
  * @param mask Маска
  * @returns
  */
+// function controllerMask(container: any, containerSecond: any, mask: any) {
+//   // Проверяем, что контейнер определен
+//   if (container == undefined) {
+//     return 0;
+//   }
+
+//   // Добавляем обработчик события для движения мыши
+//   container.addEventListener("mousemove", (e: MouseEvent) => {
+//     containerSecond.style.mask = "url(#circle-mask)";
+//     containerSecond.style.webkitmask = "url(#circle-mask)";
+
+//     const rect = container.getBoundingClientRect();
+//     const x = e.pageX - rect.left - window.scrollX; // Корректируем координаты по отношению к контейнеру
+//     const y = e.pageY - rect.top - window.scrollY;
+//     console.log(e.pageY)
+//     console.log(window.scrollY)
+//     // Обновляем позицию круга в маске
+//     const circle = mask.querySelector("circle") as SVGCircleElement;
+//     circle.setAttribute("cx", `${x}`);
+//     circle.setAttribute("cy", `${y}`);
+//   });
+
+//   // Добавляем обработчик события для выхода мыши из элемента
+//   container.addEventListener("mouseout", () => {
+//     containerSecond.style.mask = "none";
+//     containerSecond.style.webkitmask = "none";
+//   });
+// }
+
 function controllerMask(container: any, containerSecond: any, mask: any) {
   // Добавляем обработчик события для движения мыши
   if (container == undefined) {
     return 0;
   }
-  container.addEventListener("mousemove", (e: MouseEvent) => {
+  // container.addEventListener("mousemove", (e: MouseEvent) => {
+  //   containerSecond.style.mask = "url(#circle-mask)";
+  //   containerSecond.style.webkitmask = "url(#circle-mask)";
+  //   const rect = container.getBoundingClientRect();
+  //   const x = e.clientX - rect.left; // Корректируем координаты по отношению к контейнеру
+  //   const y = e.clientY - rect.top;
+
+  //   // Обновляем позицию круга в маске
+  //   const circle = mask.querySelector("circle") as SVGCircleElement;
+  //   circle.setAttribute("cx", `${x}`);
+  //   circle.setAttribute("cy", `${y}`);
+  // });
+
+  // // Добавляем обработчик события для выхода мыши из элемента
+  // container.addEventListener("mouseout", () => {
+  //   containerSecond.style.mask = "none";
+  //   containerSecond.style.webkitmask = "none";
+  // });
+
+  // Функция для обновления маски
+  const updateMaskHome = (e: any) => {
     containerSecond.style.mask = "url(#circle-mask)";
     containerSecond.style.webkitmask = "url(#circle-mask)";
     const rect = container.getBoundingClientRect();
@@ -37,9 +86,10 @@ function controllerMask(container: any, containerSecond: any, mask: any) {
     const circle = mask.querySelector("circle") as SVGCircleElement;
     circle.setAttribute("cx", `${x}`);
     circle.setAttribute("cy", `${y}`);
-  });
+  };
 
-  // Добавляем обработчик события для выхода мыши из элемента
+  // Добавляем обработчики событий для контейнера
+  container.addEventListener("mousemove", updateMaskHome);
   container.addEventListener("mouseout", () => {
     containerSecond.style.mask = "none";
     containerSecond.style.webkitmask = "none";

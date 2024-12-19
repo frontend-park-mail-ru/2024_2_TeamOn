@@ -5,9 +5,9 @@ async function containerUpdatePost() {
   return (
     <div class="main-content">
       {await Sidebar()}
+      <h1>Редактирование поста</h1>
       <div class="container-updatepost">
         <div class="post-container-updatepost">
-          <h1>Редактирование поста</h1>
           <div class="form-group-add">
             <input
               class="input-group"

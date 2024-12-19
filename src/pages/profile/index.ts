@@ -4,6 +4,9 @@ import { renderAbout } from "../../entities/profileabout/index";
 import { renderTo, update } from "../../../lib/vdom/lib";
 import {
   iconClearSubs,
+  iconEditStatus,
+  iconPenUpload,
+  iconPremiumSub,
   pageContainer,
   urlAddCustomSubs,
   urlCloseModal,
@@ -481,10 +484,19 @@ export async function renderProfile() {
       setStatic(divClearSubs, iconClearSubs);
     }
 
+    const iconEditBackground = container.querySelector(`.icon-edit-background`);
+    if (iconEditBackground) {
+      setStatic(iconEditBackground, iconPenUpload);
+    }
     // Отрисовка информации о пользователе
     const content = renderAbout(authorData);
     const place: any = document.querySelector(`.place-edit-info`);
     update(place, content);
+
+    const iconDivEditStatus = container.querySelector(`.edit-info-button`);
+    if (iconDivEditStatus) {
+      setStatic(iconDivEditStatus, iconEditStatus);
+    }
 
     const mainContent = container.querySelector(".main-content");
     const profileForm = container.querySelector(`.profile-form`);

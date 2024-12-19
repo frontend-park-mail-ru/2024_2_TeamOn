@@ -44,6 +44,7 @@ async function containerPost(post: any) {
             <div class="date"></div>
           </div>
           <div class="post-status" style={styleStatus}>
+            <div class="timer"></div>
             <h5
               style="height: 0px;
     display: flex;
