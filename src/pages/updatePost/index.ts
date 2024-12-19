@@ -198,7 +198,7 @@ async function mofireUpdatePost() {
       validFiles.forEach((file) => {
         if (!selectedFiles.includes(file)) {
           selectedFiles.push(file);
-          allSendFiles.push(file)
+          allSendFiles.push(file);
         }
       });
       const voiceFiles: any = []; // Массив для голосовых файлов
@@ -229,12 +229,16 @@ async function mofireUpdatePost() {
           invalidFiles.map((file) => file.name).join(", ");
       }
       selectedFiles = [...videoFiles, ...voiceFiles];
-      allSendFiles = [...allSendFiles, selectedFiles]
+      allSendFiles = [...allSendFiles, selectedFiles];
       // Отображаем превью для всех выбранных файлов
       selectedFiles.forEach((file, index) => {
         const reader = new FileReader();
         reader.onload = (e: ProgressEvent<FileReader>) => {
-          const fileDiv = createFileDiv(e.target?.result as string, file.type, index);
+          const fileDiv = createFileDiv(
+            e.target?.result as string,
+            file.type,
+            index,
+          );
           previewContainer.appendChild(fileDiv);
           loadedFilesCount++;
 
@@ -244,7 +248,6 @@ async function mofireUpdatePost() {
         };
         reader.readAsDataURL(file);
       });
-
     }
   });
 
@@ -316,7 +319,7 @@ async function mofireUpdatePost() {
     // Обработчик для удаления изображения
     removeButton.addEventListener("click", () => {
       selectedFiles.splice(index, 1);
-      allSendFiles.splice(index,1);
+      allSendFiles.splice(index, 1);
       previewContainer.removeChild(fileDiv);
     });
 

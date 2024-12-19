@@ -3438,7 +3438,8 @@ canvas {
 }
 
 .video-player,
-.content-media .image-photo {
+.content-media .image-photo,
+.image-photo {
   background-size: cover;
   width: 100%;
   margin: 0;

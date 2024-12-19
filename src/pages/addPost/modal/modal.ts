@@ -100,7 +100,7 @@ async function modifireCreatePost() {
           invalidFiles.map((file: any) => file.name).join(", ");
       }
       // Объединяем массивы: сначала видеофайлы, затем голосовые
-      selectedFiles = [...videoFiles, ...voiceFiles]; 
+      selectedFiles = [...videoFiles, ...voiceFiles];
       allSendFiles = [...allSendFiles, ...selectedFiles];
 
       // Отображение превью для всех выбранных файлов
@@ -196,7 +196,6 @@ async function modifireCreatePost() {
       }
     });
   }
-
 
   function createFileDiv(
     src: string,
