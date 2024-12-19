@@ -8,7 +8,10 @@ import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { convertISOToRussianDate } from "../../shared/utils/parsedate";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { route } from "../../shared/routing/routing";
-import { controlSlideShow } from "../paginateFeed/paginateFeed";
+import {
+  controlMediaFiles,
+  controlSlideShow,
+} from "../paginateFeed/paginateFeed";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { renderBlockPost } from "../../pages/moderation/ui/moderation";
 import { showOverlay } from "../../shared/overlay/overlay";
@@ -99,6 +102,8 @@ async function decisionPost(body: { postID: string; status: string }) {
  * @param post Пост
  */
 async function customizePostModeration(container: any, post: any = null) {
+  controlMediaFiles(container);
+
   const authorSection: any = container.querySelector(
     `.${ELEMENTS_CLASS.POST.AUTHOR.NAME}`,
   );

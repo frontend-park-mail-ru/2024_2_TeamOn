@@ -3389,9 +3389,6 @@ canvas {
 }
 
 @media (max-width: 768px) {
-  .post-status {
-    margin-left: 10%;
-  }
   .main-container-publish,
   .main-container-reported,
   .main-container-popular,

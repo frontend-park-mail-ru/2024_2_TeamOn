@@ -34,7 +34,7 @@ async function modifierSidebar(mainContainer?: any) {
     }
     const username = mainContainer.querySelector(`.username-profile-sidebar`);
     if (sessionStorage.getItem("role") === "Moderator") {
-      username.style.color = "var(--red)"
+      username.style.color = "var(--red)";
     }
     const navPage = mainContainer.querySelector(`.about-profile-sidebar`);
     navPage.addEventListener("click", () => {

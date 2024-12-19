@@ -1477,7 +1477,7 @@ export async function renderComments(comments: any) {
     const div = renderTo(container, "container-comment");
     if (comment.username == "moderator") {
       const username = div.querySelector(`.author-comment-name`);
-      username.style.color = "var(--red)"
+      username.style.color = "var(--red)";
     }
     const avatarImage: any = div.querySelector(`.author-comment-avatar`);
     const avatarLoad: any = await getAvatar(

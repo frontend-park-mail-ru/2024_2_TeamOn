@@ -94,6 +94,5 @@ function controllerMask(container: any, containerSecond: any, mask: any) {
     containerSecond.style.mask = "none";
     containerSecond.style.webkitmask = "none";
   });
-
 }
 export { createMask, controllerMask };
