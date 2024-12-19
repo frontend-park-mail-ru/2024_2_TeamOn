@@ -38,10 +38,10 @@ export async function renderHome() {
       const container = update(pageContainer, vdom);
 
       const homeContainer: any = container.querySelector(`.home-container`);
-      // setStatic(homeContainer, urlHomeContainer);
+      setStatic(homeContainer, urlHomeContainer);
       const homeContainerSec: any =
         container.querySelector(`.home-container-sec`);
-      // setStatic(homeContainerSec, urlHomeContainerSec);
+      setStatic(homeContainerSec, urlHomeContainerSec);
       if (window.innerWidth <= 768) {
         setStatic(homeContainer, urlHomeContainerSec);
       }

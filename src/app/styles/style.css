@@ -235,14 +235,6 @@ form input[type=text]:focus {
   scrollbar-width: none;
 }
 
-.home-container-sec {
-  background-image: url("./photos/human.jpg");
-}
-
-.home-container {
-  background-image: url("./photos/fon.jpg");
-}
-
 .defs {
   display: block;
 }

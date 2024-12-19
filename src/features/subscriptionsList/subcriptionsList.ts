@@ -20,7 +20,13 @@ import { renderUserStats } from "../../entities/profileInfo/ui/ui";
 import { VNode } from "lib/vdom/src/source";
 import { showOverlay } from "../../shared/overlay/overlay";
 import { setStatic } from "../../shared/getStatic/getStatic";
-import { iconClearSubs, iconPremiumSub, urlPushbackIcon } from "../../app";
+import {
+  iconBaseSub,
+  iconClearSubs,
+  iconPremiumSub,
+  iconVIPSub,
+  urlPushbackIcon,
+} from "../../app";
 import { controlPush } from "../../shared/push/push";
 
 function foundCancel(div: any) {
@@ -163,10 +169,7 @@ function customizeSubscription(container: any, subscription: any) {
   if (window.location.pathname === "/profile") {
     return;
   }
-  const iconSub = container.querySelectorAll(`.icon-subs`);
-  if (subscription.layer === "2") {
-    setStatic(iconSub, iconPremiumSub);
-  }
+
   const buttonSubscription: any = container.querySelector(`.button-buy-subs`);
   const profileForm: any = document.querySelector(`.profile-form`);
 
@@ -191,6 +194,17 @@ export async function renderContainerSubs(
     const container: any = containerCustomSubscribe(subscription, userdata);
     const div = renderTo(container);
     subs.push(div);
+    const iconSub = div.querySelector(`.icon-subs`);
+
+    if (subscription.layer === 1) {
+      setStatic(iconSub, iconBaseSub);
+    }
+    if (subscription.layer === 2) {
+      setStatic(iconSub, iconPremiumSub);
+    }
+    if (subscription.layer === 3) {
+      setStatic(iconSub, iconVIPSub);
+    }
     if (userdata && userdata.isSubscribe) {
       const button: any = div.querySelector(`.button-buy-subs`);
       button.classList.add("issubs");
@@ -209,7 +223,9 @@ export async function renderContainerSubs(
     const div = renderTo(container);
     const icon = div.querySelector(`.icon-dontsubs`);
     const existCustomSibs = div.querySelector(".subscription-level");
-    // existCustomSibs.classList.remove("box");
+    if (icon) {
+      setStatic(icon, iconClearSubs);
+    }
     subs.push(div);
   }
 
