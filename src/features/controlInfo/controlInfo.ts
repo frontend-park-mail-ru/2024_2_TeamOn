@@ -3,8 +3,8 @@ import { setVibe } from "../setvibe/setvibe";
 import { getPageAuthor } from "../getpageauthor/getpageauthor";
 import { renderAbout } from "../../entities/profileabout";
 import DOMPurify from "dompurify";
-import { setStatic } from "src/shared/getStatic/getStatic";
-import { iconEditStatus } from "src/app";
+import { setStatic } from "../../shared/getStatic/getStatic";
+import { iconEditStatus } from "../../app";
 
 /**
  * УПравление информацией "О СЕБЕ"
