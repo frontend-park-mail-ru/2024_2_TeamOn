@@ -10,9 +10,6 @@ export function containerHome() {
       <div class="home-container-sec" src={urlHomeContainerSec}></div>
       <div class="home-overlay"></div>
       <div class="home-header">PUSHART</div>
-      <div class="home-description">
-        Твой вклад — их вдохновение: создавай вместе с нами!
-      </div>
       <div class="searchbar-container">{renderSearchbar()}</div>
       {containerFeedButtons()}
       {containerHomeButtons()}
