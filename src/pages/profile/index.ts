@@ -426,15 +426,21 @@ export async function renderProfile() {
     const posts: any = [];
     const subcriptions: any = [];
     const authorData: any = await getPageAuthor(window.location.pathname);
-
-    const avatar: any = await getAvatar(
-      window.location.pathname,
-      sessionStorage.getItem("authorid"),
-    );
-    const background: any = await getBackgroundAuthor(
-      window.location.pathname,
-      sessionStorage.getItem("authorid"),
-    );
+    let avatar: any;
+    let background: any;
+    if (window.location.pathname !== "/profile") {
+      avatar = await getAvatar(
+        window.location.pathname,
+        sessionStorage.getItem("authorid"),
+      );
+      background = await getBackgroundAuthor(
+        window.location.pathname,
+        sessionStorage.getItem("authorid"),
+      );
+    } else if (window.location.pathname === "/profile") {
+      avatar = await getAvatar(window.location.pathname);
+      background = await getBackgroundAuthor(window.location.pathname);
+    }
     let payments: any = 0;
 
     if (hasLogged()) {
