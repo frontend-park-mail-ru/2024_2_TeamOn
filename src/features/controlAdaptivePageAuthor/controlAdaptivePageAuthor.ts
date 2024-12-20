@@ -358,9 +358,8 @@ export async function setComments(container: any, post: any) {
       }
       const sanitizedMessage = DOMPurify.sanitize(text.value);
       if (sanitizedMessage.trim() == "") {
-        const error = container
-          .querySelector(`.iteraction-section-comment`)
-          .querySelector("p");
+        const input = container.querySelector(`.form-group-add`);
+        const error = input.querySelector("p");
         if (!error) {
           const error = document.createElement("p");
           error.style.color = "red";
