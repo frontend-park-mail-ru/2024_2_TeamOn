@@ -3709,6 +3709,11 @@ canvas {
   font-weight: bold;
 }
 
+@media (min-width: 768px) {
+  .comment-title {
+    width: 90% !important;
+  }
+}
 .comment-title {
   margin: 0;
   color: gray;
