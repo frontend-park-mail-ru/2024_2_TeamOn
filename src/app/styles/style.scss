@@ -2679,6 +2679,7 @@ select {
   cursor: pointer;
 }
 .results.feed {
+  top: 10%;
   background-color: #f5f5f5;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -3007,7 +3008,7 @@ select {
     margin-top: 26%;
   }
   .results {
-    left: 120px;
+    left: 160px;
     top: 7%;
   }
 }
