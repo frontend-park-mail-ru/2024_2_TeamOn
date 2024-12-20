@@ -1,5 +1,10 @@
 import { LINKS, state } from "../../shared/consts/consts";
-import { goToPage, pageContainer, urlSignup } from "../../app/index";
+import {
+  goToPage,
+  pageContainer,
+  urlHomeContainerSec,
+  urlSignup,
+} from "../../app/index";
 import { ELEMENTS_CLASS } from "../../shared/consts/consts";
 import { route } from "../../shared/routing/routing";
 import { update } from "../../../lib/vdom/lib";
@@ -23,8 +28,8 @@ export async function renderSignup() {
 
     const container = update(pageContainer, vdom);
 
-    const signupContainer: any = container.querySelector(`.signup`);
-    setStatic(signupContainer, urlSignup);
+    const signupContainer: any = container.querySelector(`.signup-bacgkround`);
+    // setStatic(signupContainer, urlHomeContainerSec);
 
     const form: any = container.querySelector(`.form-signup`);
     const inputUsername: any = container.querySelector(`.input-username`);

@@ -229,7 +229,6 @@ export const urlEditComment: any = await getUrlStatic("/penEdit.png");
 export const urlDeleteComment: any = await getUrlStatic("/deleteComm.png");
 export const urlSad: any = await getUrlStatic("/sad.png");
 export const iconStatusBlock: any = await getUrlStatic("/blocked.png");
-export const iconStatusPublished: any = await getUrlStatic("/published.png");
 export const iconClearSubs: any = await getUrlStatic(
   "/custom-subscribe-not-exist.jpg",
 );

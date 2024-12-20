@@ -32,7 +32,6 @@ import { hasLogged } from "../../shared/utils/hasLogged";
 import { showOverlay } from "../../shared/overlay/overlay";
 import { setStatic } from "../../shared/getStatic/getStatic";
 import {
-  iconStatusPublished,
   pageContainer,
   urlIconComment,
   urlIconLike,
@@ -244,9 +243,7 @@ export async function customizePostProfile(
   if (post.status === "BLOCKED") {
     setStatic(iconSad, urlSad);
   }
-  if (iconOk) {
-    setStatic(iconOk, iconStatusPublished);
-  }
+
   setTitle(container, post);
 
   setContent(container, post);

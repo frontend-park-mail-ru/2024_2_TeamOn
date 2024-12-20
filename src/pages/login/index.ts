@@ -6,6 +6,7 @@ import {
   pageContainer,
   urlEyeNoSeePassword,
   urlEyeSeePassword,
+  urlHomeContainerSec,
   urlLogin,
 } from "../../app/index";
 import { findUsername } from "../../shared/utils/hasLogged";
@@ -33,7 +34,7 @@ export async function renderLogin() {
     const container = update(pageContainer, vdom);
 
     const loginContainer: any = container.querySelector(`.login`);
-    setStatic(loginContainer, urlLogin);
+    // setStatic(loginContainer, urlHomeContainerSec);
 
     const iconEye: any = container.querySelector(`.password-eye`);
 

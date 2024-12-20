@@ -97,11 +97,18 @@ self.addEventListener("fetch", (event) => {
     "/deleteComm.png",
     "/sad.png",
     "/blocked.png",
-    "/published.png",
+    "/custom-subscribe-not-exist.jpg",
     "/clearSubs.png",
     "/notificationNRead.png",
-    "/fav.png",
     "/penWhite.png",
+    "/penBlack.png",
+    "/nextMedia.png",
+    "/base.png",
+    "/premium.png",
+    "/CROWN.png",
+    "/report.png",
+    "/timer.png",
+    "/fav.png",
   ];
 
   const shouldBypassCache = cachePaths.some((path) =>

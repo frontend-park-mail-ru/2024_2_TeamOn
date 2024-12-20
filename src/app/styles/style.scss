@@ -122,7 +122,6 @@ form {
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  border: 1px solid #ccc;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -210,7 +209,7 @@ form input[type="text"]:focus {
   background-size: cover;
   background-position: center center;
   transition: opacity 0.3s ease;
-  overflow-x: clip;
+  overflow: hidden;
   position: absolute;
   scrollbar-width: none;
 }
@@ -441,7 +440,7 @@ form input[type="text"]:focus {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.6);
   border-radius: 20px;
   padding: 40px;
   width: 300px;
@@ -456,7 +455,7 @@ form input[type="text"]:focus {
 .login__container h2 {
   margin: 0 0 20px;
   font-size: 24px;
-  color: var(--main-color-black);
+  color: black;
 }
 .login__container input[type="text"],
 .login__container input[type="password"] {
@@ -480,7 +479,7 @@ form input[type="text"]:focus {
   transition: background 0.3s ease;
 }
 .login__container input[type="submit"]:hover {
-  background-color: #555;
+  background-color: var(--main-color-black);
 }
 .login__container .signup-link {
   display: block;
@@ -534,7 +533,7 @@ form input[type="text"]:focus {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.6);
   border-radius: 20px;
   padding: 40px;
   width: 300px;
@@ -1169,6 +1168,14 @@ form input[type="text"]:focus {
   display: flex;
   gap: 20px;
   flex-direction: column;
+}
+.login-background,
+.signup-background {
+  background-image: url("./photos/human.jpg");
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  filter: blur(5px) brightness(0.8);
 }
 .icon-subs {
   // background-image: url("./photos/premium.png");
@@ -3578,7 +3585,7 @@ progress::-moz-progress-bar {
 }
 .change-post-fast {
   cursor: pointer;
-  color: var(--main-color);
+  color: var(--red);
   transition: color 0.3s ease;
 }
 .change-post-fast:hover {
