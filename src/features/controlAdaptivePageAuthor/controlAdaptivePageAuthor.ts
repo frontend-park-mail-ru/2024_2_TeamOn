@@ -573,6 +573,7 @@ async function modifierModalDeletePost(
   const handleClickCancel = () => {
     modalsDelete.style.display = "none";
     profileForm.classList.remove("blur");
+    document.body.style.overflow = "auto";
     overlay.remove();
     return;
   };
