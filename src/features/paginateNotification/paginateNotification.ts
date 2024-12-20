@@ -51,12 +51,9 @@ async function customizeNotification(container: any, notification: any = null) {
 
   const username = container.querySelector(`.user-mention`);
 
-  if (!parseMessage.includes("Пользователь")) {
-    username.addEventListener("click", () => {
-      gotoauthor(notification.senderID);
-    });
-    username.classList.add("author");
-  }
+  username.addEventListener("click", () => {
+    gotoauthor(notification.senderID);
+  });
 
   const date = container.querySelector(`.date`);
   date.textContent = convertISOToRussianDate(notification.createdAt);

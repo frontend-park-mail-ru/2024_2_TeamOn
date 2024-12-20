@@ -3955,9 +3955,6 @@ progress::-moz-progress-bar {
 
 .user-mention {
   font-weight: bold;
-}
-
-.user-mention.author {
   cursor: pointer;
 }
 
