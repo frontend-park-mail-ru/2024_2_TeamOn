@@ -124,7 +124,7 @@ async function modifireCreatePost() {
     buttonSave.addEventListener("click", async (event: any) => {
       event.preventDefault();
 
-      if (title.value == "" || content.value == "") {
+      if (title.value.trim() == "" || content.value.trim() == "") {
         const input =
           containerCreatePost.querySelectorAll(`.form-group-add`)[1];
         const error = input.querySelector("p");

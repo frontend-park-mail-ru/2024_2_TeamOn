@@ -43,7 +43,9 @@ function controlInfo(authorData: any, container: any) {
     if (event.target.classList.contains("save-info-button")) {
       const input = container.querySelector(`.about-input`);
       let newValue = input.value;
-      if (newValue === "") newValue = "Укажите чем вы занимаетесь";
+      const sanitizedValue = DOMPurify.sanitize(newValue.value);
+
+      if (sanitizedValue.trim() === "") newValue = "Укажите чем вы занимаетесь";
       // Сохраняем информацию
       try {
         const response = await setVibe(newValue);

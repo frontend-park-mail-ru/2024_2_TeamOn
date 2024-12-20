@@ -853,7 +853,7 @@ async function customizeComment(container: any, comment: any, postID: string) {
     const newContent = container.querySelector(`.comment-edit`);
     const containerContent = contentComment(newContent.value);
     const sanitizedMessage = DOMPurify.sanitize(newContent.value);
-    if (sanitizedMessage == "") {
+    if (sanitizedMessage.trim() == "") {
       const error = container
         .querySelector(`.iteraction-section-comment`)
         .querySelector("p");

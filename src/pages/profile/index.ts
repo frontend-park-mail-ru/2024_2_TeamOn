@@ -285,7 +285,7 @@ async function controlCustomSubscriptions(container: any) {
       const sanitizedCost = DOMPurify.sanitize(cost.value);
 
       const input = modalAddSubs.querySelectorAll(`.form-group`)[2];
-      if (!sanitizedTitle || !sanitizedDescription || !sanitizedCost) {
+      if (sanitizedTitle.trim() === "" || sanitizedDescription.trim() === "" || sanitizedCost.trim() === "") {
         const error = input.querySelector("p");
         if (!error) {
           const error = document.createElement("p");

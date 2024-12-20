@@ -98,7 +98,7 @@ async function controlAdaptivePageAuthors(
         const sanitizedCost = DOMPurify.sanitize(costInput.value);
 
         const input = containerTip.querySelectorAll(`.form-group`)[1];
-        if (sanitizedMessage == "" || sanitizedCost == "") {
+        if (sanitizedMessage.trim() == "" || sanitizedCost.trim() == "") {
           const error = input.querySelector("p");
           if (!error) {
             const error = document.createElement("p");
@@ -345,7 +345,7 @@ export async function setComments(container: any, post: any) {
     const formGroup = container.querySelector(`.form-group-comment`);
 
     try {
-      if (text.value.length > 100) {
+      if (text.value.length > 500) {
         const input = container.querySelector(`.form-group-add`);
         const error = input.querySelector("p");
         if (!error) {
@@ -353,6 +353,21 @@ export async function setComments(container: any, post: any) {
           error.style.color = "red";
           error.textContent = "Комментарий слишком большой";
           input.appendChild(error);
+        }
+        return;
+      }
+      const sanitizedMessage = DOMPurify.sanitize(text.value);
+      if (sanitizedMessage.trim() == "") {
+        const error = container
+          .querySelector(`.iteraction-section-comment`)
+          .querySelector("p");
+        if (!error) {
+          const error = document.createElement("p");
+          error.style.color = "red";
+          error.textContent = "Ошибка. Комментарий не может быть пустым";
+          container
+            .querySelector(`.iteraction-section-comment`)
+            .appendChild(error);
         }
         return;
       }

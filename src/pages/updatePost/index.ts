@@ -92,7 +92,7 @@ async function mofireUpdatePost() {
       const sanitizedTitle = DOMPurify.sanitize(title.value);
       const sanitizedContent = DOMPurify.sanitize(content.value);
 
-      if (title.value == "" || content.value == "") {
+      if (sanitizedContent.trim() == "" || sanitizedTitle.trim() == "") {
         const input =
           containerUpdatePost.querySelectorAll(`.form-group-add`)[1];
         const error = input.querySelector("p");

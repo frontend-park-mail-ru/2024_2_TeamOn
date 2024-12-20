@@ -1888,7 +1888,8 @@ form input[type="text"]:focus {
 .comments-container:hover .comments,
 .author-name:hover,
 .author-comment-name:hover,
-.edit-info-button:hover, .add-customsubs-icon:hover {
+.edit-info-button:hover,
+.add-customsubs-icon:hover {
   cursor: pointer;
   filter: brightness(0) saturate(100%) invert(43%) sepia(100%) saturate(1000%)
     hue-rotate(180deg) brightness(65%) contrast(100%);
