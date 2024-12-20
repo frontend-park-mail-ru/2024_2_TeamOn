@@ -1919,8 +1919,6 @@ form input[type=text]:focus {
 }
 
 .avatar {
-  width: 50px;
-  height: 50px;
   border-radius: 50%;
   margin-right: 10px;
   cursor: pointer;
@@ -3734,7 +3732,6 @@ canvas {
 }
 
 .info-post-section {
-  width: 200%;
   display: flex;
   flex-direction: column;
 }
