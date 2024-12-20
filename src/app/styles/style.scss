@@ -207,7 +207,6 @@ form input[type="text"]:focus {
 .home-container-sec {
   width: 100%;
   height: 100%;
-  // height: 1400px;
   background-size: cover;
   background-position: center center;
   transition: opacity 0.3s ease;
@@ -215,12 +214,7 @@ form input[type="text"]:focus {
   position: absolute;
   scrollbar-width: none;
 }
-// .home-container-sec {
-//   background-image: url("./photos/human.jpg");
-// }
-// .home-container {
-//   background-image: url("./photos/fon.jpg");
-// }
+
 .defs {
   display: block;
 }
@@ -2562,7 +2556,7 @@ select {
     display: none;
   }
   .home-container {
-    overflow-x: hidden;
+    overflow: hidden;
   }
   .home-header {
     font-size: 70px;

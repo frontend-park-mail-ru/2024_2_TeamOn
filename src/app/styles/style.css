@@ -2788,7 +2788,7 @@ select {
     display: none;
   }
   .home-container {
-    overflow-x: hidden;
+    overflow: hidden;
   }
   .home-header {
     font-size: 70px;
