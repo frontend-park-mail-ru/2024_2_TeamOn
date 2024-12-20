@@ -43,7 +43,7 @@ function controlInfo(authorData: any, container: any) {
     if (event.target.classList.contains("save-info-button")) {
       const input = container.querySelector(`.about-input`);
       let newValue = input.value;
-      const sanitizedValue = DOMPurify.sanitize(newValue.value);
+      const sanitizedValue = DOMPurify.sanitize(newValue);
 
       if (sanitizedValue.trim() === "") newValue = "Укажите чем вы занимаетесь";
       // Сохраняем информацию
