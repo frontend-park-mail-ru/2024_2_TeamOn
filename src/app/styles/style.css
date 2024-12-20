@@ -3710,7 +3710,7 @@ canvas {
 }
 
 @media (min-width: 768px) {
-  .comment-title {
+  .iteraction-section-comment {
     width: 90% !important;
   }
 }
