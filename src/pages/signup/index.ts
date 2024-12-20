@@ -28,8 +28,8 @@ export async function renderSignup() {
 
     const container = update(pageContainer, vdom);
 
-    const signupContainer: any = container.querySelector(`.signup-bacgkround`);
-    // setStatic(signupContainer, urlHomeContainerSec);
+    const signupContainer: any = container.querySelector(`.signup-background`);
+    setStatic(signupContainer, urlHomeContainerSec);
 
     const form: any = container.querySelector(`.form-signup`);
     const inputUsername: any = container.querySelector(`.input-username`);

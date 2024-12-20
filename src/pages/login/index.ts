@@ -33,8 +33,8 @@ export async function renderLogin() {
 
     const container = update(pageContainer, vdom);
 
-    const loginContainer: any = container.querySelector(`.login`);
-    // setStatic(loginContainer, urlHomeContainerSec);
+    const loginContainer: any = container.querySelector(`.login-background`);
+    setStatic(loginContainer, urlHomeContainerSec);
 
     const iconEye: any = container.querySelector(`.password-eye`);
 
