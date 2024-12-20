@@ -364,9 +364,7 @@ export async function setComments(container: any, post: any) {
           const error = document.createElement("p");
           error.style.color = "red";
           error.textContent = "Ошибка. Комментарий не может быть пустым";
-          container
-            .querySelector(`.iteraction-section-comment`)
-            .appendChild(error);
+          input.appendChild(error);
         }
         return;
       }
