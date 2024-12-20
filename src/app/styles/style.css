@@ -1213,6 +1213,8 @@ form input[type=text]:focus {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .profile-header-mobile .background-image-mobile {
@@ -1676,6 +1678,8 @@ form input[type=text]:focus {
   height: 70px;
   width: 70px;
   background-size: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .followers-author-amount,
@@ -1920,6 +1924,8 @@ form input[type=text]:focus {
   border-radius: 50%;
   margin-right: 10px;
   cursor: pointer;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .author-name {
@@ -2656,6 +2662,8 @@ select {
   border: 1px solid #000;
   border-radius: 10px;
   margin-bottom: 20px;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .custom-file-upload {
@@ -3690,6 +3698,8 @@ canvas {
   height: 30px;
   border-radius: 50%;
   margin-right: 10px;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .interaction-section-comment {
