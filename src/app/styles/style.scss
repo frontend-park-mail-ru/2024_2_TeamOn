@@ -3120,10 +3120,11 @@ canvas {
   margin-top: 10px;
 }
 .post-status {
+  margin-left: 20%;
   height: 30px;
   display: flex;
   align-items: center;
-  width: 350px;
+  width: 150px;
   padding: 5px;
   margin-top: 5px;
   font-weight: bold;
@@ -3134,7 +3135,8 @@ canvas {
 
 @media (max-width: 768px) {
   .post-status {
-    width: 450px !important;
+    margin-left: 10%;
+    width: 150px !important;
   }
   .main-container-publish,
   .main-container-reported,

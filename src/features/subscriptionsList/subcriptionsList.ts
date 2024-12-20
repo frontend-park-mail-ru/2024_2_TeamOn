@@ -208,8 +208,8 @@ export async function renderContainerSubs(
     if (userdata && userdata.isSubscribe) {
       const button: any = div.querySelector(`.button-buy-subs`);
       button.classList.add("issubs");
-      const rightColumn: any = document.querySelector(`.right-column`);
-      rightColumn.style.height = "250px";
+      // const rightColumn: any = document.querySelector(`.right-column`);
+      // rightColumn.style.height = "250px";
       const customSibs = div.querySelector(".subscription-level");
       customSibs.classList.add("box");
       return subs;
