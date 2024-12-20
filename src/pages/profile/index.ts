@@ -207,7 +207,6 @@ async function controlCustomSubscriptions(container: any) {
     window.location.pathname,
   );
   if (currentSubs.length === 3) {
-    rightColumn.style.height = "600px";
     div.style.display = "none";
     return;
   }
