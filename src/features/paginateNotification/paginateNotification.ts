@@ -1,4 +1,4 @@
-import { QUERY } from "../../shared/consts/consts";
+import { QUERY, sidebarLinks } from "../../shared/consts/consts";
 import { renderTo } from "../../../lib/vdom/lib";
 import { convertISOToRussianDate } from "../../shared/utils/parsedate";
 import { getAvatar } from "../getavatar/getavatar";
@@ -7,6 +7,7 @@ import { getNotification } from "../getNotification/getNotification";
 import { containerNotification } from "../../widgest/notification/notification";
 import { controlSlideShow } from "../paginateFeed/paginateFeed";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
+import { setActiveLink } from "../../shared/setActiveLink/setActiveLink";
 function formatMessage(message: any) {
   // Регулярное выражение для поиска ника
   const regex = /@(\w+)/;
@@ -52,6 +53,7 @@ async function customizeNotification(container: any, notification: any = null) {
   const username = container.querySelector(`.user-mention`);
 
   username.addEventListener("click", () => {
+    setActiveLink(sidebarLinks[4]);
     gotoauthor(notification.senderID);
   });
 
