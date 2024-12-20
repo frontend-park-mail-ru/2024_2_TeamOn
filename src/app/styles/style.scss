@@ -1753,8 +1753,6 @@ form input[type="text"]:focus {
   align-items: center;
 }
 .avatar {
-  width: 50px;
-  height: 50px;
   border-radius: 50%;
   margin-right: 10px;
   cursor: pointer;
@@ -3436,7 +3434,6 @@ canvas {
   justify-content: space-between;
 }
 .info-post-section {
-  width: 200%;
   display: flex;
   flex-direction: column;
 }
