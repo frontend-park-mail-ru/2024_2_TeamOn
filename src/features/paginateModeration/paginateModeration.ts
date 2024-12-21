@@ -293,7 +293,7 @@ async function renderReportedPosts(reportedPosts: any) {
     if (containerMedia) {
       let arrayMedia: any = [];
       containerMedia[0].forEach((media: any) => {
-        const divMedia = renderTo(media);
+        const divMedia = renderTo(media, "content-media");
         arrayMedia.push(divMedia);
       });
       const place: any = div.querySelector(`.container-image-photos`);
