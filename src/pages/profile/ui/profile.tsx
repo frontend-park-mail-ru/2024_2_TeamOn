@@ -11,6 +11,7 @@ import {
 } from "../../../widgest/profile";
 import { renderUserInfo } from "../../../entities/profileInfo/index";
 import { modalMediaContainer } from "../../../pages/feed/ui/feed";
+import { deleteCommentForm } from "../../../widgest/feed";
 
 /**
  * Рендер основного контента
@@ -42,6 +43,7 @@ export async function profileContent(
       </div>
       {tipForm()}
       {addCustomSubsForm()}
+      {deleteCommentForm()}
       {deletepostForm()}
       {confirmForm()}
       {unfollowForm()}
@@ -82,11 +84,11 @@ export async function mobilepr(
           Выбрать обложку{" "}
         </button>
       </div>
+      <div class="content-mobile">{await renderUserInfo(user, payments)}</div>
       <div class="tabs-mobile">
         <div class="about-mobile__button"> ПРОФИЛЬ </div>
         <div class="posts-mobile__button"> ЛЕНТА </div>
       </div>
-      <div class="content-mobile">{await renderUserInfo(user, payments)}</div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { LINKS } from "../../../shared/consts/consts";
+import { allowedExtensions, LINKS } from "../../../shared/consts/consts";
 import { route } from "../../../shared/routing/routing";
 import DOMPurify from "dompurify";
 import { addUserPost, deletePost } from "../../../entities/userPost";
@@ -51,11 +51,80 @@ async function modifireCreatePost() {
       layer = radio.id;
     }
   });
+  const mediaForm: any = containerCreatePost.querySelector(`.form-add-media`);
+  mediaForm.enctype = "multipart/form-data";
+  mediaForm.method = "POST";
+
+  const buttonUploadMedia: any =
+    containerCreatePost.querySelector(`.media-upload-label`);
+  const mediaInput: any =
+    containerCreatePost.querySelector(`.media-upload-input`);
+  let selectedFiles: any = []; // Массив для хранения выбранных файлов
+  let allSendFiles: any = [];
+  const attacheInfo: any = buttonUploadMedia.querySelector(`.attache-info`);
+  mediaInput.addEventListener("change", (event: any) => {
+    const files: any = event.target.files;
+    if (files && files.length) {
+      const newFiles = Array.from(files);
+      const voiceFiles: any = []; // Массив для голосовых файлов
+      const videoFiles: any = []; // Массив для видеофайлов
+
+      const validFiles = newFiles.filter((file: any) => {
+        const extension: any = file.name.split(".").pop()?.toLowerCase(); // Получаем расширение файла
+        return allowedExtensions.includes(extension); // Проверяем, допустимо ли расширение
+      });
+      // Обработка файлов
+      validFiles.forEach((file: any) => {
+        if (file.type.startsWith("audio/")) {
+          voiceFiles.push(file); // Добавляем в массив голосовых файлов
+        } else if (file.type.startsWith("image/")) {
+          videoFiles.push(file);
+        } else {
+          videoFiles.push(file);
+        }
+      });
+      const invalidFiles = newFiles.filter(
+        (file) => !validFiles.includes(file),
+      );
+      if (invalidFiles.length > 0) {
+        const input =
+          containerCreatePost.querySelectorAll(`.form-group-add`)[1];
+        let error = input.querySelector("p");
+        if (!error) {
+          error = document.createElement("p");
+          error.style.color = "red";
+          input.appendChild(error);
+        }
+        error.textContent =
+          "Ошибка. Неподдерживаемый формат файла: " +
+          invalidFiles.map((file: any) => file.name).join(", ");
+      }
+      // Объединяем массивы: сначала видеофайлы, затем голосовые
+      selectedFiles = [...videoFiles, ...voiceFiles];
+      allSendFiles = [...allSendFiles, ...selectedFiles];
+
+      // Отображение превью для всех выбранных файлов
+      let loadedFilesCount = 0;
+      selectedFiles.forEach((file: any, index: any) => {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          const fileDiv = createFileDiv(e.target.result, file.type, index);
+          previewContainer.appendChild(fileDiv);
+          loadedFilesCount++;
+
+          if (loadedFilesCount === selectedFiles.length) {
+            controlSlideShow(containerCreatePost, containerCreatePost);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  });
   if (buttonSave) {
     buttonSave.addEventListener("click", async (event: any) => {
       event.preventDefault();
 
-      if (title.value == "" || content.value == "") {
+      if (title.value.trim() == "" || content.value.trim() == "") {
         const input =
           containerCreatePost.querySelectorAll(`.form-group-add`)[1];
         const error = input.querySelector("p");
@@ -86,8 +155,8 @@ async function modifireCreatePost() {
         postId = postId[0].postId;
 
         try {
-          if (selectedFiles.length != 0) {
-            const ok: any = await uploadMediaFiles(postId, selectedFiles);
+          if (allSendFiles.length != 0) {
+            const ok: any = await uploadMediaFiles(postId, allSendFiles);
 
             if (!ok) {
               const response: any = await deletePost(postId);
@@ -127,55 +196,6 @@ async function modifireCreatePost() {
       }
     });
   }
-
-  const mediaForm: any = containerCreatePost.querySelector(`.form-add-media`);
-  mediaForm.enctype = "multipart/form-data";
-  mediaForm.method = "POST";
-
-  const buttonUploadMedia: any =
-    containerCreatePost.querySelector(`.media-upload-label`);
-  const mediaInput: any =
-    containerCreatePost.querySelector(`.media-upload-input`);
-  let selectedFiles: File[] = []; // Массив для хранения выбранных файлов
-  const attacheInfo: any = buttonUploadMedia.querySelector(`.attache-info`);
-  mediaInput.addEventListener("change", (event: any) => {
-    const files: any = event.target.files;
-    if (files && files.length) {
-      const newFiles = Array.from(files);
-      const voiceFiles: any = []; // Массив для голосовых файлов
-      const videoFiles: any = []; // Массив для видеофайлов
-
-      // Обработка файлов
-      newFiles.forEach((file: any) => {
-        if (file.type.startsWith("audio/")) {
-          voiceFiles.push(file); // Добавляем в массив голосовых файлов
-        } else if (file.type.startsWith("image/")) {
-          videoFiles.push(file);
-        } else {
-          videoFiles.push(file);
-        }
-      });
-
-      // Объединяем массивы: сначала видеофайлы, затем голосовые
-      selectedFiles = [...videoFiles, ...voiceFiles];
-
-      // Отображение превью для всех выбранных файлов
-      let loadedFilesCount = 0;
-      selectedFiles.forEach((file, index) => {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          const fileDiv = createFileDiv(e.target.result, file.type, index);
-          previewContainer.appendChild(fileDiv);
-          loadedFilesCount++;
-
-          if (loadedFilesCount === selectedFiles.length) {
-            controlSlideShow(containerCreatePost, containerCreatePost);
-          }
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-  });
 
   function createFileDiv(
     src: string,
@@ -245,6 +265,7 @@ async function modifireCreatePost() {
     // Обработчик для удаления изображения
     removeButton.addEventListener("click", () => {
       selectedFiles.splice(index, 1);
+      allSendFiles.splice(index, 1);
       previewContainer.removeChild(fileDiv);
     });
 

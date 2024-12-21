@@ -21,6 +21,7 @@ import { getPageAuthor } from "../getpageauthor/getpageauthor";
 import { setLike } from "../../entities/likes";
 import { route } from "../../shared/routing/routing";
 import {
+  controlMediaFiles,
   controlSlideShow,
   modifireComments,
   paginateComments,
@@ -31,7 +32,6 @@ import { hasLogged } from "../../shared/utils/hasLogged";
 import { showOverlay } from "../../shared/overlay/overlay";
 import { setStatic } from "../../shared/getStatic/getStatic";
 import {
-  iconStatusPublished,
   pageContainer,
   urlIconComment,
   urlIconLike,
@@ -40,7 +40,6 @@ import {
 } from "../../app";
 import { addComment } from "../../entities/comments/api/api";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
-import { findCommentById } from "../../shared/findByID/findByID";
 
 /**
  * Управление адаптивностью на странице автора
@@ -99,7 +98,7 @@ async function controlAdaptivePageAuthors(
         const sanitizedCost = DOMPurify.sanitize(costInput.value);
 
         const input = containerTip.querySelectorAll(`.form-group`)[1];
-        if (sanitizedMessage == "" || sanitizedCost == "") {
+        if (sanitizedMessage.trim() == "" || sanitizedCost.trim() == "") {
           const error = input.querySelector("p");
           if (!error) {
             const error = document.createElement("p");
@@ -232,6 +231,7 @@ export async function customizePostProfile(
   post: any,
   postId: any = null,
 ) {
+  controlMediaFiles(container);
   const iconLike: any = container.querySelector(`.likes`);
   const iconComment: any = container.querySelector(`.comments`);
   const iconSad: any = container.querySelector(`.sad`);
@@ -243,9 +243,7 @@ export async function customizePostProfile(
   if (post.status === "BLOCKED") {
     setStatic(iconSad, urlSad);
   }
-  if (iconOk) {
-    setStatic(iconOk, iconStatusPublished);
-  }
+
   setTitle(container, post);
 
   setContent(container, post);
@@ -347,13 +345,25 @@ export async function setComments(container: any, post: any) {
     const formGroup = container.querySelector(`.form-group-comment`);
 
     try {
-      if (text.value.length > 100) {
+      if (text.value.length > 500) {
         const input = container.querySelector(`.form-group-add`);
         const error = input.querySelector("p");
         if (!error) {
           const error = document.createElement("p");
           error.style.color = "red";
           error.textContent = "Комментарий слишком большой";
+          input.appendChild(error);
+        }
+        return;
+      }
+      const sanitizedMessage = DOMPurify.sanitize(text.value);
+      if (sanitizedMessage.trim() == "") {
+        const input = container.querySelector(`.form-group-add`);
+        const error = input.querySelector("p");
+        if (!error) {
+          const error = document.createElement("p");
+          error.style.color = "red";
+          error.textContent = "Ошибка. Комментарий не может быть пустым";
           input.appendChild(error);
         }
         return;
@@ -378,64 +388,33 @@ export async function setComments(container: any, post: any) {
     loader.style.display = "flex";
     const formComment: any = container.querySelector(`.form-group-comment`);
     const nextCommentsButton: any = container.querySelector(`.next-comments`);
-    if (placeContent.querySelectorAll(".container-comment").length === 1) {
-      try {
-        const activeRequests = new Set();
-        const placeContent = container.querySelector(`.place-content`);
-        await paginateComments(
-          activeRequests,
-          [],
-          placeContent,
-          post.postId,
-          1,
-        );
-      } finally {
-        divLoader.style.display = "none";
-        loader.style.display = "none";
-        formComment.style.display = "flex";
-        nextCommentsButton.textContent = "Скрыть комментарии";
-      }
-    } else if (
-      placeContent.querySelectorAll(".container-comment").length === 0
-    ) {
-      try {
-        const activeRequests = new Set();
-        const placeContent = container.querySelector(`.place-content`);
-        await paginateComments(
-          activeRequests,
-          [],
-          placeContent,
-          post.postId,
-          0,
-        );
-      } finally {
-        divLoader.style.display = "none";
-        loader.style.display = "none";
-        formComment.style.display = "flex";
-        nextCommentsButton.textContent = "Скрыть комментарии";
-      }
-    } else {
-      try {
-        formComment.style.display = "flex";
-        nextCommentsButton.textContent = "Скрыть комментарии";
-        divLoader.style.display = "none";
-        loader.style.display = "none";
-        const comments: any = await getComments(post.postId, 0, 300);
-        const myComment = findCommentById(commentID, comments);
-        placeContent.append(...(await renderComments([myComment])));
-        modifireComments(placeContent, [myComment], post.postId);
-      } catch (error) {
-      } finally {
-        nextCommentsButton.style.display = "flex";
-        divLoader.style.display = "none";
-        loader.style.display = "none";
-        formComment.style.display = "flex";
-        nextCommentsButton.textContent = "Скрыть комментарии";
-      }
+    try {
+      const activeRequests = new Set();
+      const placeContent = container.querySelector(`.place-content`);
+      await paginateComments(
+        activeRequests,
+        [],
+        placeContent,
+        post.postId,
+        placeContent.querySelectorAll(".comment-item").length,
+      );
+    } catch (error) {
+    } finally {
+      divLoader.style.display = "none";
+      loader.style.display = "none";
+      formComment.style.display = "flex";
+      nextCommentsButton.textContent = "Скрыть комментарии";
     }
+
     console.log(placeContent);
     text.value = "";
     sendCount++;
+    const commentsCount: any = await getComments(post.postId, 0, 300);
+    const amountComments: any = container.querySelector(`.amount-comments`);
+    amountComments.innerHTML = `${commentsCount.length}`;
+    if (placeContent.querySelectorAll(".comment-item").length > 1) {
+      nextCommentsButton.style.display = "block";
+    }
   };
   const handleClickButtonSendComment = async (e: any) => {
     e.preventDefault();
@@ -458,7 +437,7 @@ export async function setComments(container: any, post: any) {
     const comments: any = await getComments(post.postId, 0, 300);
     const nextComments = comments.slice(0, 1);
     placeContent.append(...(await renderComments(nextComments)));
-    modifireComments(placeContent, nextComments.reverse(), post.postId);
+    modifireComments(placeContent, nextComments, post.postId);
     if (comments.length > 1) {
       nextCommentsButton.style.display = "block";
     }
@@ -475,7 +454,7 @@ export async function setComments(container: any, post: any) {
       const loader = container.querySelector(`.loader__search`);
       const formComment = container.querySelector(`.form-group-comment`);
 
-      if (placeContent.querySelectorAll(".container-comment").length <= 1) {
+      if (placeContent.querySelectorAll(".comment-item").length <= 1) {
         currentScrollPositipn = Number(
           sessionStorage.getItem("scrollPosition"),
         );
@@ -489,7 +468,7 @@ export async function setComments(container: any, post: any) {
             [],
             placeContent,
             post.postId,
-            1,
+            placeContent.querySelectorAll(".comment-item").length,
           );
         } finally {
           divLoader.style.display = "none";
@@ -501,7 +480,7 @@ export async function setComments(container: any, post: any) {
         // Прокрутка вниз после загрузки комментариев
       } else {
         nextCommentsButton.textContent = "Показать следующие комментарии...";
-        const allItems = placeComments.querySelectorAll(`.container-comment`);
+        const allItems = placeComments.querySelectorAll(`.comment-item`);
         allItems.forEach((item: any, index: number) => {
           if (index !== 0) {
             item.remove();
@@ -594,6 +573,7 @@ async function modifierModalDeletePost(
   const handleClickCancel = () => {
     modalsDelete.style.display = "none";
     profileForm.classList.remove("blur");
+    document.body.style.overflow = "auto";
     overlay.remove();
     return;
   };

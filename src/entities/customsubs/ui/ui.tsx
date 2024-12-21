@@ -63,7 +63,7 @@ function renderModalRequestCustomSubs(subscription: any) {
     padding: 10px;
     border-radius: 10px;
     display: flex;
-    flex-direction: column;"
+    flex-direction: column;     border: 2px solid #8abae359;"
       >
         <div class="form-group">
           <h4>{subscription.title}</h4>
@@ -78,9 +78,12 @@ function renderModalRequestCustomSubs(subscription: any) {
       </div>
       <div
         class="form-group"
-        style="display: flex;
+        style="border-radius: 10px;
+    display: flex;
     flex-direction: column;
-    gap: 15px;"
+    gap: 15px;
+    border: 2px solid #8abae359;
+    padding: 10px;"
       >
         <label for="subscription-duration">Выберите срок подписки:</label>
         <select id="subscription-duration" class="subscription-select">
@@ -93,7 +96,9 @@ function renderModalRequestCustomSubs(subscription: any) {
         <button class="cancel cancel__button cancel__button__effects">
           Закрыть
         </button>
-        <button class="save save__button save__button__effects">Далее</button>
+        <button class="next save save__button save__button__effects">
+          Далее
+        </button>
       </div>
     </div>
   );
@@ -103,6 +108,14 @@ function renderModalRealizeCustomSubs(
   subscription: any,
   selectedDuration: any,
 ) {
+  let word;
+  if (subscription.layer === 1) {
+    word = "стандартную";
+  } else if (subscription.layer === 2) {
+    word = "премиум";
+  } else {
+    word = "вип";
+  }
   return (
     <div class="modal__confirmsubs">
       <div class="pushback" style="display: block;">
@@ -112,24 +125,37 @@ function renderModalRealizeCustomSubs(
         <h2>Подтверждение оплаты</h2>
       </div>
       <div class="form-group">
-        <p>Вы собираетесь оформить подписку: </p>
-        <h4 style="font-weight: bold;">{subscription.title}</h4>
+        <p>
+          Вы собираетесь оформить <strong> {word}</strong> подписку:{" "}
+        </p>
       </div>
-      <div class="form-group">
-        <h4>{subscription.description}</h4>
-        <div class="char-count"></div>
-      </div>
-      <div class="form-group">
-        <h4> {String(subscription.cost)}₽ в месяц</h4>
-      </div>
-      <div class="form-group">
-        <h4>Срок: {String(selectedDuration)} месяц(-ев)</h4>
+      <div class="info-subscription">
+        <div class="main-info-subscrioption">
+          <h4 style="font-weight: bold;">{subscription.title}</h4>
+          <div class="form-group">
+            <h4 style="font-weight: normal;">{subscription.description}</h4>
+            <div class="char-count"></div>
+          </div>
+        </div>
+        <div class="tech-info-subscription">
+          <div class="form-group">
+            <h4 style="font-weight: normal;">
+              {" "}
+              <strong>{String(subscription.cost)}₽</strong> в месяц
+            </h4>
+          </div>
+          <div class="form-group">
+            <h4 style="font-weight: normal;">
+              Период: {String(selectedDuration)} месяц(-ев)
+            </h4>
+          </div>
+        </div>
       </div>
       <div class="form-actions">
         <button class="cancel cancel__button cancel__button__effects">
           Закрыть
         </button>
-        <button class="save save__button save__button__effects">
+        <button class="next save save__button save__button__effects">
           Оплатить
         </button>
       </div>

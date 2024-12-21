@@ -4,6 +4,9 @@ import { renderAbout } from "../../entities/profileabout/index";
 import { renderTo, update } from "../../../lib/vdom/lib";
 import {
   iconClearSubs,
+  iconEditStatus,
+  iconPenUpload,
+  iconPremiumSub,
   pageContainer,
   urlAddCustomSubs,
   urlCloseModal,
@@ -204,7 +207,6 @@ async function controlCustomSubscriptions(container: any) {
     window.location.pathname,
   );
   if (currentSubs.length === 3) {
-    rightColumn.style.height = "600px";
     div.style.display = "none";
     return;
   }
@@ -282,7 +284,11 @@ async function controlCustomSubscriptions(container: any) {
       const sanitizedCost = DOMPurify.sanitize(cost.value);
 
       const input = modalAddSubs.querySelectorAll(`.form-group`)[2];
-      if (!sanitizedTitle || !sanitizedDescription || !sanitizedCost) {
+      if (
+        sanitizedTitle.trim() === "" ||
+        sanitizedDescription.trim() === "" ||
+        sanitizedCost.trim() === ""
+      ) {
         const error = input.querySelector("p");
         if (!error) {
           const error = document.createElement("p");
@@ -423,15 +429,21 @@ export async function renderProfile() {
     const posts: any = [];
     const subcriptions: any = [];
     const authorData: any = await getPageAuthor(window.location.pathname);
-
-    const avatar: any = await getAvatar(
-      window.location.pathname,
-      sessionStorage.getItem("authorid"),
-    );
-    const background: any = await getBackgroundAuthor(
-      window.location.pathname,
-      sessionStorage.getItem("authorid"),
-    );
+    let avatar: any;
+    let background: any;
+    if (window.location.pathname !== "/profile") {
+      avatar = await getAvatar(
+        window.location.pathname,
+        sessionStorage.getItem("authorid"),
+      );
+      background = await getBackgroundAuthor(
+        window.location.pathname,
+        sessionStorage.getItem("authorid"),
+      );
+    } else if (window.location.pathname === "/profile") {
+      avatar = await getAvatar(window.location.pathname);
+      background = await getBackgroundAuthor(window.location.pathname);
+    }
     let payments: any = 0;
 
     if (hasLogged()) {
@@ -481,10 +493,19 @@ export async function renderProfile() {
       setStatic(divClearSubs, iconClearSubs);
     }
 
+    const iconEditBackground = container.querySelector(`.icon-edit-background`);
+    if (iconEditBackground) {
+      setStatic(iconEditBackground, iconPenUpload);
+    }
     // Отрисовка информации о пользователе
     const content = renderAbout(authorData);
     const place: any = document.querySelector(`.place-edit-info`);
     update(place, content);
+
+    const iconDivEditStatus = container.querySelector(`.edit-info-button`);
+    if (iconDivEditStatus) {
+      setStatic(iconDivEditStatus, iconEditStatus);
+    }
 
     const mainContent = container.querySelector(".main-content");
     const profileForm = container.querySelector(`.profile-form`);

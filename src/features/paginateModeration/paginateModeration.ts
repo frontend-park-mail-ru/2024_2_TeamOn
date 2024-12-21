@@ -8,10 +8,15 @@ import { gotoauthor } from "../../shared/gotoauthor/gotoauthor";
 import { convertISOToRussianDate } from "../../shared/utils/parsedate";
 import { hasLogged } from "../../shared/utils/hasLogged";
 import { route } from "../../shared/routing/routing";
-import { controlSlideShow } from "../paginateFeed/paginateFeed";
+import {
+  controlMediaFiles,
+  controlSlideShow,
+} from "../paginateFeed/paginateFeed";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { renderBlockPost } from "../../pages/moderation/ui/moderation";
 import { showOverlay } from "../../shared/overlay/overlay";
+import { setStatic } from "../../shared/getStatic/getStatic";
+import { iconReport, iconTimer } from "../../app";
 
 async function renderModalBlockPost(container: any, post: any) {
   const mainContent: any = document.querySelector(`.right-content`);
@@ -99,6 +104,8 @@ async function decisionPost(body: { postID: string; status: string }) {
  * @param post Пост
  */
 async function customizePostModeration(container: any, post: any = null) {
+  controlMediaFiles(container);
+
   const authorSection: any = container.querySelector(
     `.${ELEMENTS_CLASS.POST.AUTHOR.NAME}`,
   );
@@ -243,7 +250,12 @@ async function renderPublishPosts(approvePosts: any) {
     const container = await containerPost(post);
 
     const div = renderTo(container);
-
+    const timer = div.querySelector(`.timer`);
+    if (post.status == "COMPLAINED") {
+      setStatic(timer, iconReport);
+    } else if (post.status == "PUBLISHED") {
+      setStatic(timer, iconTimer);
+    }
     const containerMedia: any = await containerMediaPost(post.postID);
     if (containerMedia) {
       let arrayMedia: any = [];
@@ -271,12 +283,17 @@ async function renderReportedPosts(reportedPosts: any) {
     const container = await containerPost(post);
 
     const div = renderTo(container);
-
+    const timer = div.querySelector(`.timer`);
+    if (post.status == "COMPLAINED") {
+      setStatic(timer, iconReport);
+    } else if (post.status == "PUBLISHED") {
+      setStatic(timer, iconTimer);
+    }
     const containerMedia: any = await containerMediaPost(post.postId);
     if (containerMedia) {
       let arrayMedia: any = [];
       containerMedia[0].forEach((media: any) => {
-        const divMedia = renderTo(media);
+        const divMedia = renderTo(media, "content-media");
         arrayMedia.push(divMedia);
       });
       const place: any = div.querySelector(`.container-image-photos`);
