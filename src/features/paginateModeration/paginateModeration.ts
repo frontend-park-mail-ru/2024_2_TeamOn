@@ -289,7 +289,7 @@ async function renderReportedPosts(reportedPosts: any) {
     } else if (post.status == "PUBLISHED") {
       setStatic(timer, iconTimer);
     }
-    const containerMedia: any = await containerMediaPost(post.postId);
+    const containerMedia: any = await containerMediaPost(post.postID);
     if (containerMedia) {
       let arrayMedia: any = [];
       containerMedia[0].forEach((media: any) => {
