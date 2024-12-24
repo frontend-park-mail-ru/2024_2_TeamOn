@@ -7,6 +7,7 @@ import {
   renderNotifications,
 } from "../../features/paginateNotification/paginateNotification";
 import { setStatic } from "../getStatic/getStatic";
+import { hasLogged } from "../utils/hasLogged";
 
 let notifications: any = [];
 let totalNotificationsCount = notifications.length; // Общее количество уведомлений
@@ -181,7 +182,8 @@ async function startPushNotifications(objSettings = null, flag = "") {
   if (
     window.location.pathname === "/login" ||
     window.location.pathname === "/signup" ||
-    window.location.pathname === "/"
+    window.location.pathname === "/" ||
+    !hasLogged()
   )
     return;
   controlPush(objSettings, flag); // Вызов функции один раз сразу

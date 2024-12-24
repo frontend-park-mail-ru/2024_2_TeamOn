@@ -15,6 +15,7 @@ import { renderComplaint } from "../../pages/feed/ui/feed";
 import { fetchAjax } from "../../shared/fetch/fetchAjax";
 import { setStatic } from "../../shared/getStatic/getStatic";
 import {
+  iconArrowNextMediaFiles,
   pageContainer,
   urlDeleteComment,
   urlEditComment,
@@ -38,8 +39,10 @@ import {
 } from "../../widgest/feed/ui/comments/comments";
 import { findCommentById } from "../../shared/findByID/findByID";
 import DOMPurify from "dompurify";
+import { renderNextArrow } from "./nextarrow";
 
 export function controlSlideShow(container: any, rightContainer: any) {
+  const nextButtonMedia = container.querySelector(`.next-media-button`);
   const modalPhotos: any = document.querySelector(`.modal-view-photos`); //
   const rightContent: any = rightContainer;
   const closeModal: any = document.querySelector(`.close-modal-view`); //
@@ -61,9 +64,7 @@ export function controlSlideShow(container: any, rightContainer: any) {
     videoHud = modalPhotos.querySelector(`.video-hud`);
   }
   const video: any = Array.from(container.querySelectorAll(".video-player"));
-  let allContent: any = Array.from(
-    container.querySelectorAll(".content-media"),
-  );
+  let allContent: any = Array.from(container.querySelectorAll(".image-photo"));
   // Функция для проверки, является ли элемент видео
   const isAudio = (element: any) => {
     // Предположим, что видео имеет тег <video> внутри элемента
@@ -372,65 +373,73 @@ export function controlSlideShow(container: any, rightContainer: any) {
   } else {
     MAX_SIZE = 1000;
   }
-
-  function filterImages() {
-    let resheight = 0;
-    let reswidth = 0;
-    let limitExceeded = false; // Флаг для отслеживания превышения лимита
-    allContent.forEach((img: any) => {
-      const imgHeight = img.naturalHeight;
-      const imgWidth = img.clientWidth;
-      if (reswidth + imgWidth <= MAX_SIZE) {
-        img.style.display = "block";
-        resheight += imgHeight;
-        reswidth += imgWidth;
-      } else {
-        img.style.display = "none";
-        limitExceeded = true; // Устанавливаем флаг, если лимит превышен
-      }
+  if (nextButtonMedia) {
+    nextButtonMedia.addEventListener("click", () => {
+      allContent.forEach((img: any) => {
+        img.parentNode.style.display = "block";
+      });
+      nextButtonMedia.parentNode.style.height = "auto";
+      nextButtonMedia.remove();
     });
-    if (toggleButton) {
-      // Показываем или скрываем кнопку в зависимости от превышения лимита
-      toggleButton.style.display = limitExceeded ? "block" : "none";
-    }
   }
+  // function filterImages() {
+  //   let resheight = 0;
+  //   let reswidth = 0;
+  //   let limitExceeded = false; // Флаг для отслеживания превышения лимита
+  //   allContent.forEach((img: any) => {
+  //     const imgHeight = img.naturalHeight;
+  //     const imgWidth = img.clientWidth;
+  //     if (reswidth + imgWidth <= MAX_SIZE) {
+  //       img.style.display = "block";
+  //       resheight += imgHeight;
+  //       reswidth += imgWidth;
+  //     } else {
+  //       img.style.display = "none";
+  //       limitExceeded = true; // Устанавливаем флаг, если лимит превышен
+  //     }
+  //   });
+  //   if (toggleButton) {
+  //     // Показываем или скрываем кнопку в зависимости от превышения лимита
+  //     toggleButton.style.display = limitExceeded ? "block" : "none";
+  //   }
+  // }
 
   // Функция для обработки загрузки изображений
-  function onImagesLoaded() {
-    filterImages();
-    if (!toggleButton) {
-      return;
-    }
-    toggleButton.addEventListener("click", () => {
-      const isHidden = toggleButton.textContent === "Показать...";
-      if (isHidden) {
-        allContent.forEach((img: any) => {
-          img.style.display = "block"; // Показываем все изображения
-        });
-      } else {
-        filterImages(); // Применяем фильтрацию
-      }
-      toggleButton.textContent = isHidden ? "Скрыть" : "Показать..."; // Меняем текст кнопки
-    });
-  }
+  // function onImagesLoaded() {
+  //   filterImages();
+  //   if (!toggleButton) {
+  //     return;
+  //   }
+  //   toggleButton.addEventListener("click", () => {
+  //     const isHidden = toggleButton.textContent === "Показать...";
+  //     if (isHidden) {
+  //       allContent.forEach((img: any) => {
+  //         img.style.display = "block"; // Показываем все изображения
+  //       });
+  //     } else {
+  //       filterImages(); // Применяем фильтрацию
+  //     }
+  //     toggleButton.textContent = isHidden ? "Скрыть" : "Показать..."; // Меняем текст кнопки
+  //   });
+  // }
 
   // Добавляем обработчик события загрузки для каждого изображения
-  let imagesLoaded = 0;
-  allContent.forEach((img: any) => {
-    onImagesLoaded();
-    img.onload = () => {
-      imagesLoaded++;
-      if (imagesLoaded === allContent.length) {
-        onImagesLoaded(); // Все изображения загружены
-      }
-    };
-    if (img.complete) {
-      imagesLoaded++;
-      if (imagesLoaded === allContent.length) {
-        onImagesLoaded(); // Все изображения загружены
-      }
-    }
-  });
+  // let imagesLoaded = 0;
+  // allContent.forEach((img: any) => {
+  //   onImagesLoaded();
+  //   img.onload = () => {
+  //     imagesLoaded++;
+  //     if (imagesLoaded === allContent.length) {
+  //       onImagesLoaded(); // Все изображения загружены
+  //     }
+  //   };
+  //   if (img.complete) {
+  //     imagesLoaded++;
+  //     if (imagesLoaded === allContent.length) {
+  //       onImagesLoaded(); // Все изображения загружены
+  //     }
+  //   }
+  // });
 
   allContent.forEach((img: any, index: any) => {
     img.addEventListener("click", (event: any) => {
@@ -823,8 +832,11 @@ async function customizeComment(container: any, comment: any, postID: string) {
   const content: any = container.querySelector(`.comment-title`);
   content.innerHTML = `${comment.content}`;
   const currentCommentID = comment.commentID;
+  console.log(comment);
 
   const username = container.querySelector(`.author-comment-name`);
+  username.innerHTML = `${comment.username}`;
+
   username.addEventListener("click", () => {
     gotoauthor(comment.userID);
   });
@@ -841,7 +853,7 @@ async function customizeComment(container: any, comment: any, postID: string) {
     const newContent = container.querySelector(`.comment-edit`);
     const containerContent = contentComment(newContent.value);
     const sanitizedMessage = DOMPurify.sanitize(newContent.value);
-    if (sanitizedMessage == "") {
+    if (sanitizedMessage.trim() == "") {
       const error = container
         .querySelector(`.iteraction-section-comment`)
         .querySelector("p");
@@ -899,7 +911,7 @@ async function customizeComment(container: any, comment: any, postID: string) {
     buttonCancel.style.display = "none";
   };
   const handleClickDeleteComent = () => {
-    modifierModalDeleteComment(container, comment);
+    modifierModalDeleteComment(container, comment, postID);
   };
   const handleClickEditComment = async () => {
     const comments: any = await getComments(postID, 0, 300);
@@ -1000,8 +1012,13 @@ async function deleteComment(commentID: string) {
     );
   });
 }
-function modifierModalDeleteComment(container: any, comment: any) {
-  const mainContent: any = document.querySelector(`.right-content`);
+function modifierModalDeleteComment(
+  container: any,
+  comment: any,
+  postID: string,
+) {
+  let mainContent: any = document.querySelector(`.right-content`);
+  if (!mainContent) mainContent = document.querySelector(`.profile-form`);
   const place = document.querySelector(`.delete-comment-form`);
   const modal: any = renderComplaint(comment, true);
   update(place, modal);
@@ -1023,6 +1040,9 @@ function modifierModalDeleteComment(container: any, comment: any) {
     return;
   };
 
+  const parentElement = container.parentNode;
+  const placeContent = parentElement.parentNode;
+  const oldCount = placeContent.querySelectorAll(".comment-item").length;
   const handleClickDelete = async (e: any) => {
     e.preventDefault();
     showLoader();
@@ -1040,7 +1060,33 @@ function modifierModalDeleteComment(container: any, comment: any) {
         return;
       }
       modalsDelete.style.display = "none";
-      container.remove();
+      parentElement.remove();
+      if (placeContent.querySelectorAll(`.comment-item`).length === 0) {
+        const activeRequests = new Set();
+        await paginateComments(activeRequests, [], placeContent, postID, 0);
+      }
+      console.log(placeContent);
+      const nextCommentsButton: any =
+        placeContent.parentNode.querySelector(`.next-comments`);
+      const amountComments: any =
+        placeContent.parentNode.parentNode.querySelector(`.amount-comments`);
+      const commentsCount: any = await getComments(postID, 0, 300);
+
+      amountComments.innerHTML = `${commentsCount.length}`;
+      if (oldCount > 1) {
+        nextCommentsButton.textContent = "Скрыть комментарии";
+      }
+      if (commentsCount.length > 1 && oldCount === 1) {
+        nextCommentsButton.textContent = "Показать следующие комментарии...";
+        const allItems = placeContent.querySelectorAll(`.comment-item`);
+        allItems.forEach((item: any, index: number) => {
+          if (index !== 0) {
+            item.remove();
+          }
+        });
+      } else if (commentsCount.length === 1) {
+        nextCommentsButton.style.display = "none";
+      }
       mainContent.classList.remove("blur");
       document.body.style.overflow = "auto";
       overlay.remove();
@@ -1052,12 +1098,48 @@ function modifierModalDeleteComment(container: any, comment: any) {
   buttonCancel.addEventListener("click", handleClickCancel);
   overlay.addEventListener("click", handleClickCancel);
 }
+export function controlMediaFiles(container: any) {
+  const medias = container.querySelectorAll(`.content-media`);
+  const placeMedia = container.querySelector(`.container-image-photos`);
+  if (medias.length === 1) {
+    medias.forEach((media: any, index: number) => {
+      placeMedia.style.display = "block";
+    });
+  }
+  if (medias.length === 2) {
+    medias.forEach((media: any, index: number) => {
+      media.style.maxWidth = "50%";
+    });
+  } else if (medias.length > 2) {
+    medias.forEach((media: any, index: number) => {
+      if (index === 0) {
+        media.style.maxWidth = "50%";
+      }
+      if (index === 1) {
+        media.style.maxWidth = "50%";
+        media.style.height = "50%";
+        const div = renderTo(
+          renderNextArrow(String(medias.length - 2)),
+          "next-media-button",
+        );
+        const icon = div.querySelector(`.next-arrow-media`);
+        setStatic(icon, iconArrowNextMediaFiles);
+        media.appendChild(div);
+        return;
+      } else if (index > 1) {
+        media.style.display = "none";
+      }
+    });
+  }
+}
 /**
  * Кастомизирует каждый пост, который к нему пришел
  * @param container Контейнер ( популярных | недавних постов )
  * @param post Пост
  */
 async function customizePost(container: any, post: any) {
+  controlMediaFiles(container);
+
   const authorSection: any = container.querySelector(
     `.${ELEMENTS_CLASS.POST.AUTHOR.NAME}`,
   );
@@ -1319,7 +1401,7 @@ async function renderRecentlyPosts(recentlyPosts: any) {
     if (containerMedia) {
       let arrayMedia: any = [];
       containerMedia[0].forEach((media: any) => {
-        const divMedia = renderTo(media);
+        const divMedia = renderTo(media, "content-media");
         arrayMedia.push(divMedia);
       });
       const place: any = div.querySelector(`.container-image-photos`);
@@ -1338,10 +1420,11 @@ export async function paginateComments(
   postID: string,
   flag: any,
 ) {
+  const allItems = containerComments.querySelectorAll(`.container-comment`);
   let stopLoadComments: boolean = false;
   let offset = 0;
-  !flag || flag === -1 ? (offset = 0) : (offset = flag);
   let isLoading = false;
+  offset = flag;
   async function loadComments() {
     if (isLoading) return;
     isLoading = true;
@@ -1353,6 +1436,7 @@ export async function paginateComments(
         activeRequests.add(requestId);
 
         const comments: any = await getComments(postID, offset);
+
         const nextComments = comments.slice(0, QUERY.LIMIT);
         if (nextComments.length > 0) {
           allComments.push(...nextComments);
@@ -1391,6 +1475,7 @@ export async function renderComments(comments: any) {
     const container = await containerComment(comment);
 
     const div = renderTo(container, "container-comment");
+
     const avatarImage: any = div.querySelector(`.author-comment-avatar`);
     const avatarLoad: any = await getAvatar(
       window.location.pathname,

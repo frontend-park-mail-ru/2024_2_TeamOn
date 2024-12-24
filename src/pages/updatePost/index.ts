@@ -67,6 +67,7 @@ async function mofireUpdatePost() {
         fileDiv.remove();
         saveFiles.push(containerMedia[1][index]);
         selectedFiles = selectedFiles.filter((file) => file !== media.file);
+        allSendFiles = allSendFiles.filter((file: any) => file !== media.file);
       });
 
       arrayMedia.push(fileDiv);
@@ -91,7 +92,7 @@ async function mofireUpdatePost() {
       const sanitizedTitle = DOMPurify.sanitize(title.value);
       const sanitizedContent = DOMPurify.sanitize(content.value);
 
-      if (title.value == "" || content.value == "") {
+      if (sanitizedContent.trim() == "" || sanitizedTitle.trim() == "") {
         const input =
           containerUpdatePost.querySelectorAll(`.form-group-add`)[1];
         const error = input.querySelector("p");
@@ -118,11 +119,10 @@ async function mofireUpdatePost() {
         );
 
         try {
-          if (selectedFiles.length != 0) {
-            console.log(selectedFiles);
+          if (allSendFiles.length != 0) {
             const ok: any = await uploadMediaFiles(
               currentPost.postId,
-              selectedFiles,
+              allSendFiles,
             );
             if (!ok) {
               await deletePost(currentPost.postId);
@@ -149,7 +149,6 @@ async function mofireUpdatePost() {
           const input =
             containerUpdatePost.querySelectorAll(`.form-group-add`)[1];
           const error = input.querySelector("p");
-          alert(error);
           if (!error) {
             const error = document.createElement("p");
             error.style.color = "red";
@@ -175,7 +174,7 @@ async function mofireUpdatePost() {
   const attacheInfo: any = buttonUploadMedia.querySelector(`.attache-info`);
 
   let selectedFiles: File[] = []; // Массив для хранения выбранных файлов
-
+  let allSendFiles: any = [];
   mediaInput.addEventListener("change", (event: any) => {
     const files = (event.target as HTMLInputElement).files;
 
@@ -199,24 +198,22 @@ async function mofireUpdatePost() {
       validFiles.forEach((file) => {
         if (!selectedFiles.includes(file)) {
           selectedFiles.push(file);
+          allSendFiles.push(file);
         }
       });
+      const voiceFiles: any = []; // Массив для голосовых файлов
+      const videoFiles: any = []; // Массив для видеофайлов
 
-      // Отображаем превью для всех выбранных файлов
-      selectedFiles.forEach((file, index) => {
-        const reader = new FileReader();
-        reader.onload = (e: ProgressEvent<FileReader>) => {
-          const fileDiv = createFileDiv(e.target?.result as string, index);
-          previewContainer.appendChild(fileDiv);
-          loadedFilesCount++;
-
-          if (loadedFilesCount === selectedFiles.length) {
-            controlSlideShow(containerUpdatePost, containerUpdatePost);
-          }
-        };
-        reader.readAsDataURL(file);
+      // Обработка файлов
+      validFiles.forEach((file: any) => {
+        if (file.type.startsWith("audio/")) {
+          voiceFiles.push(file); // Добавляем в массив голосовых файлов
+        } else if (file.type.startsWith("image/")) {
+          videoFiles.push(file);
+        } else {
+          videoFiles.push(file);
+        }
       });
-
       // Обработка недопустимых файлов
       if (invalidFiles.length > 0) {
         const input =
@@ -231,9 +228,34 @@ async function mofireUpdatePost() {
           "Ошибка. Неподдерживаемый формат файла: " +
           invalidFiles.map((file) => file.name).join(", ");
       }
+      selectedFiles = [...videoFiles, ...voiceFiles];
+      allSendFiles = [...allSendFiles, selectedFiles];
+      // Отображаем превью для всех выбранных файлов
+      selectedFiles.forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = (e: ProgressEvent<FileReader>) => {
+          const fileDiv = createFileDiv(
+            e.target?.result as string,
+            file.type,
+            index,
+          );
+          previewContainer.appendChild(fileDiv);
+          loadedFilesCount++;
+
+          if (loadedFilesCount === selectedFiles.length) {
+            controlSlideShow(containerUpdatePost, containerUpdatePost);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
     }
   });
-  function createFileDiv(src: string, index: number): HTMLDivElement {
+
+  function createFileDiv(
+    src: string,
+    type: string,
+    index: number,
+  ): HTMLDivElement {
     const fileDiv = document.createElement("div");
     fileDiv.className = "file-preview";
     fileDiv.style.display = "flex";
@@ -243,15 +265,38 @@ async function mofireUpdatePost() {
     fileDiv.style.borderRadius = "5px";
     fileDiv.style.padding = "5px";
 
-    const img = document.createElement("img");
-    img.src = src;
-    img.className = "image-photo";
-    img.style.width = "100px";
-    img.style.marginRight = "10px";
+    let mediaElement;
+    // Определяем тип медиафайла и создаем соответствующий элемент
+    if (type.startsWith("video/")) {
+      mediaElement = document.createElement("video");
+      mediaElement.src = src;
+      mediaElement.controls = true;
+      if (window.innerWidth > 768) {
+        mediaElement.style.maxWidth = "400px";
+      } else {
+        mediaElement.style.maxWidth = "200px";
+      }
+    } else if (type.startsWith("audio/")) {
+      mediaElement = document.createElement("audio");
+      mediaElement.src = src;
+      mediaElement.controls = true;
+    } else {
+      const img = document.createElement("img");
+      img.src = src;
+      img.className = "image-photo";
+      if (window.innerWidth < 768) {
+        img.style.maxWidth = "400px";
+      } else {
+        img.style.maxWidth = "200px";
+      }
+      fileDiv.appendChild(img);
+    }
+
+    if (mediaElement) {
+      fileDiv.appendChild(mediaElement);
+    }
 
     const removeButton = createRemoveButton(index, fileDiv);
-
-    fileDiv.appendChild(img);
     fileDiv.appendChild(removeButton);
 
     return fileDiv;
@@ -274,6 +319,7 @@ async function mofireUpdatePost() {
     // Обработчик для удаления изображения
     removeButton.addEventListener("click", () => {
       selectedFiles.splice(index, 1);
+      allSendFiles.splice(index, 1);
       previewContainer.removeChild(fileDiv);
     });
 

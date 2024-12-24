@@ -5,6 +5,7 @@ import { urlLogin } from "../../../app";
 export function containerLogin() {
   return (
     <div class="login" src={urlLogin}>
+      <div class="login-background"></div>
       <div class="login__container">
         <button class="close__button close__hover"></button>
         <h2>Вход</h2>

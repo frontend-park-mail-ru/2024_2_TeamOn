@@ -31,13 +31,12 @@ async function renderUserPost(post: any) {
     styleInitial = "filter: blur(8px);";
     flagBlock = `
     z-index: 1;
-    width: 100%;
+    width: 93%;
     display: flex;
     align-content: center;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    height: 100%;
     position: absolute;
     flex-direction: column;
     `;

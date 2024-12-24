@@ -47,6 +47,7 @@ declare module "vdom" {
       figure: { [key: string]: any };
       figcaption: { [key: string]: any };
       strong: { [key: string]: any };
+      footer: { [key: string]: any };
     }
   }
 }

@@ -626,6 +626,8 @@ async function createStat() {
   if (sessionStorage.getItem("settings") !== "2") return formContainer;
 
   const postsYear: any = await getStatisticsForPost("year");
+  // const postsYear: any = await {valueX: [1,2,3,4,5,6,7,8,9,10,11,12], valueY: [1,10,15,20,1,5,0,0,5,10,3,12]}
+  // const paymentsYear: any = await {valueX: [1,2,3,4,5,6,7,8,9,10,11,12], valueY: [1000,100000,15000,20000,10000,5000,8000,1000,10500,10000,30000,12000]}
   let [valuesX, valuesY] = filterStat(postsYear, 1);
   postsYear.valueX = valuesX;
   postsYear.valueY = valuesY;
@@ -633,12 +635,15 @@ async function createStat() {
   customStatYear(postsYear);
 
   const paymentsYear: any = await getStatisticsForPayments("year");
+
   [valuesX, valuesY] = filterStat(paymentsYear, 1);
   paymentsYear.valueX = valuesX;
   paymentsYear.valueY = valuesY;
   customStatYear(paymentsYear);
 
   const postsMonth: any = await getStatisticsForPost("month");
+  // const postsMonth: any = await {valueX: [1,2,3,4,5,6,7,8,9,10,11,12], valueY: [1,10,15,20,1,5,0,0,5,10,3,12]}
+
   [valuesX, valuesY] = filterStat(postsMonth, 1);
   postsMonth.valueX = valuesX;
   postsMonth.valueY = valuesY;

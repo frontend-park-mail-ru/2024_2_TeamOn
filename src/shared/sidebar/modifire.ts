@@ -14,6 +14,7 @@ import { route } from "../routing/routing";
 import { setActiveLink } from "../setActiveLink/setActiveLink";
 import { hasLogged } from "../utils/hasLogged";
 import { getNotification } from "../../features/getNotification/getNotification";
+import { gotoauthor } from "../gotoauthor/gotoauthor";
 /**
  * Кастомизирует сайдбар
  * @param sidebar
@@ -23,10 +24,26 @@ async function modifierSidebar(mainContainer?: any) {
   if (!mainContainer) {
     return;
   }
-  const avatar: any = await getAvatar("/profile");
-  const divAvatar: any = mainContainer.querySelector(`.avatar-profile-sidebar`);
-  if (divAvatar) {
-    divAvatar.src = avatar;
+  if (hasLogged()) {
+    const avatar: any = await getAvatar("/profile");
+    const divAvatar: any = mainContainer.querySelector(
+      `.avatar-profile-sidebar`,
+    );
+    if (divAvatar) {
+      divAvatar.src = avatar;
+    }
+    const username = mainContainer.querySelector(`.username-profile-sidebar`);
+    if (sessionStorage.getItem("role") === "Moderator") {
+      username.style.color = "var(--red)";
+    }
+    const navPage = mainContainer.querySelector(`.about-profile-sidebar`);
+    navPage.addEventListener("click", () => {
+      sidebarLinks.forEach((link: any, index: any) => {
+        sidebarReferenses[index].classList.remove(ELEMENTS_CLASS.ACTIVE);
+      });
+      setActiveLink(sidebarLinks[4]);
+      route("/profile");
+    });
   }
   const sidebar = mainContainer.querySelector(".sidebar");
   const burger: any = mainContainer.querySelector(`.burger2`);

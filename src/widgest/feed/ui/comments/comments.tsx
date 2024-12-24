@@ -1,8 +1,8 @@
 import { hasLogged } from "../../../../shared/utils/hasLogged";
 import * as VDom from "vdom";
 
-export function contentComment(alo: string = "") {
-  return <div class="comment-title content">{alo ? alo : ""}</div>;
+export function contentComment(text: string = "") {
+  return <div class="comment-title content">{text ? text : ""}</div>;
 }
 export function editContentComment() {
   return (
@@ -18,7 +18,7 @@ function containerComment(comment: any, flagEdit: any = null) {
   const flagMobile =
     window.innerWidth < 768 || window.location.pathname !== "/feed"
       ? "height: 100%;"
-      : "height: 100%; min-width: 580px;";
+      : "height: 100%;";
   const flagButtons =
     sessionStorage.getItem("account") === comment.username
       ? "display: flex"
@@ -44,7 +44,7 @@ function containerComment(comment: any, flagEdit: any = null) {
         </div>
         {contentComment()}
         <div class="date" style="text-align: left;">
-          {comment.createdAt}
+          {/* {comment.createdAt} */}
         </div>
         <div
           class="buttons-comment"

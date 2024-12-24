@@ -86,6 +86,7 @@ export async function renderHome() {
         // Начинаем анимацию
         requestAnimationFrame(animate);
       }
+
       return container;
     }
   } catch (error) {

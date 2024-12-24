@@ -229,11 +229,21 @@ export const urlEditComment: any = await getUrlStatic("/penEdit.png");
 export const urlDeleteComment: any = await getUrlStatic("/deleteComm.png");
 export const urlSad: any = await getUrlStatic("/sad.png");
 export const iconStatusBlock: any = await getUrlStatic("/blocked.png");
-export const iconStatusPublished: any = await getUrlStatic("/published.png");
-export const iconClearSubs: any = await getUrlStatic("/clearSubs.png");
+export const iconClearSubs: any = await getUrlStatic(
+  "/custom-subscribe-not-exist.jpg",
+);
 export const iconNotificationHave: any = await getUrlStatic(
   "/notificationNRead.png",
 );
+export const iconPenUpload: any = await getUrlStatic("/penWhite.png");
+export const iconEditStatus: any = await getUrlStatic("/penBlack.png");
+export const iconArrowNextMediaFiles: any =
+  await getUrlStatic("/nextMedia.png");
+export const iconBaseSub: any = await getUrlStatic("/base.png");
+export const iconPremiumSub: any = await getUrlStatic("/premium.png");
+export const iconVIPSub: any = await getUrlStatic("/CROWN.png");
+export const iconReport: any = await getUrlStatic("/report.png");
+export const iconTimer: any = await getUrlStatic("/timer.png");
 
 const favicon: any = await getUrlStatic("/fav.png");
 

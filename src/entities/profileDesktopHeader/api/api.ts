@@ -8,13 +8,20 @@ import { LINKS } from "../../../shared/consts/consts";
  * @param authorID Автор айди
  * @returns
  */
-async function getBackgroundAuthor(link: string, authorID: any) {
+async function getBackgroundAuthor(link: string, authorId: any = null) {
   return new Promise((resolve, reject) => {
     fetchAjax(
       "GET",
-      link == "/profile"
+      link === "/profile" && !authorId
         ? "/api/pages/author/me/background"
-        : `/api/pages/author/${authorID ? authorID : link.split("/").pop()}/background`,
+        : !authorId
+          ? `/api/pages/author/${sessionStorage.getItem("authorid") ? sessionStorage.getItem("authorid") : link.split("/").pop()}/background`
+          : `/api/pages/author/${authorId ? authorId : link.split("/").pop()}/background`,
+
+      // "GET",
+      // link == "/profile"
+      //   ? "/api/pages/author/me/background"
+      //   : `/api/pages/author/${authorID ? authorID : link.split("/").pop()}/background`,
       null,
       (response) => {
         if (response.ok) {

@@ -37,6 +37,11 @@ export function renderAbout(
     } else {
       result = newValue;
     }
+  } else if (
+    authorData.info === "Укажите, чем вы занимаетесь" &&
+    window.location.pathname !== "/profile"
+  ) {
+    result = "";
   } else {
     result = authorData.info;
   }
@@ -70,19 +75,21 @@ export function renderAbout(
   const defaultModeValue = (
     <div class="about">
       <h2>ОБ АВТОРЕ</h2>
-      <input
-        class="about-input"
-        value={newValue == undefined ? "Укажите, чем вы занимаетесь" : newValue}
-        style="display: none;"
-      ></input>
-      <p class="about-profile">{result}</p>
+      <div class="iteraction-about">
+        <input
+          class="about-input"
+          value={
+            newValue == undefined ? "Укажите, чем вы занимаетесь" : newValue
+          }
+          style="display: none;"
+        ></input>
+        <p class="about-profile">{result}</p>
+        <div class="edit-info-button" style={flag}></div>
+      </div>
       <div class="interaction-place-info" style="display: none;">
         <button class="save-info-button">Сохранить</button>
         <button class="cancel-info-button">Отменить</button>
       </div>
-      <button class="edit-info-button" style={flag}>
-        Изменить
-      </button>
     </div>
   );
 
